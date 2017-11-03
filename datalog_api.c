@@ -1,0 +1,593 @@
+/**
+ * @file        datalog_api.c
+ * @author      Alexander Hoffman
+ * @email       alxhoff@gmail.com
+ * @website     http://alexhoffman.info
+ * @copyright   GNU GPL v3
+ * @brief       API functions to use the LUA/C datalog implementation found
+ *              found at http://datalog.sourceforge.net
+ *  
+@verbatim
+   ----------------------------------------------------------------------
+    Copyright (C) Alexander Hoffman, 2017
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+   ----------------------------------------------------------------------
+@endverbatim
+ */
+
+#include <stdlib.h>
+#include <string.h>
+
+#include "datalog_api.h"
+
+datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
+{
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG] DEBUG: processing query answers\n"); 
+#endif
+    //alloc return struct
+    datalog_query_answer_t* ret_struct = (datalog_query_answer_t*)
+        malloc(sizeof(datalog_query_answer_t));
+
+    if(ret_struct == NULL) return NULL;
+
+    ret_struct->predic = dl_getpred(a);
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: predicate:                          %s\n", 
+        ret_struct->predic);
+#endif
+   
+    //alloc list pointer
+    ret_struct->answer_pairs = (datalog_query_answer_pair_t**)
+        malloc(sizeof(datalog_query_answer_pair_t*));
+
+    //alloc first list item
+    ret_struct->answer_pairs[0] = (datalog_query_answer_pair_t*)
+        malloc(sizeof(datalog_query_answer_pair_t));
+
+    int index = 0;
+    int arg1_len;
+    //get first term
+    char* tmp1 = dl_getconst(a, index, 0); 
+    arg1_len = dl_getconstlen(a, index, 0);
+    //get second term
+    char* tmp2 = tmp1 + arg1_len + 1;
+
+
+    ret_struct->answer_pairs[0]->arg1 = tmp1;
+    ret_struct->answer_pairs[0]->arg2 = tmp2;
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: first constant pair: (%s, %s)\n", 
+            tmp1, tmp2);
+#endif
+    while(tmp1 != NULL){
+        index++;
+        
+        tmp1 = dl_getconst(a, index, 0);
+        if(tmp1 == NULL) break;
+        arg1_len = dl_getconstlen(a, index, 0);
+        tmp2 = tmp1 + arg1_len + 1;
+        if(tmp2 == NULL) break;
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: index %d constant pair: (%s, %s)\n", 
+            index, tmp1, tmp2);
+#endif
+        ret_struct->answer_pairs = (datalog_query_answer_pair_t**)
+            realloc((ret_struct->answer_pairs),
+                    sizeof(datalog_query_answer_pair_t*) * (index + 1));
+
+        ret_struct->answer_pairs[index] = (datalog_query_answer_pair_t*)
+            malloc(sizeof(datalog_query_answer_pair_t));
+
+        ret_struct->answer_pairs[index]->arg1 = tmp1;
+        ret_struct->answer_pairs[index]->arg2 = tmp2;
+    }
+    ret_struct->argc = index;
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: found \"%d\" answers\n", 
+            ret_struct->argc);
+#endif
+}
+
+DATALOG_ERR_t datalog_assert_clause(int literal_count){
+
+    int ret = 0;
+
+    //create clause from complete literal
+    ret = dl_pushhead(datalog_db);
+    
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: empty clause created:               %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    for(int i = 0; i<literal_count; i++){
+        ret = dl_addliteral(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: literal %d added to clause:         %s\n",
+        i, (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+    }
+
+    //finalise the clause
+    ret = dl_makeclause(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: clause finalised:                   %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    //assert clause
+    ret = dl_assert(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: clause asserted:                    %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+    
+    return DATALOG_OK;
+}
+
+void datalog_print_answers(datalog_query_answer_t* a)
+{
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG] DEBUG: printing query answers\n"); 
+#endif
+}
+
+datalog_query_t* datalog_query_init(char* predicate, char* arg1, char* arg2,
+        DATALOG_LIT_t lit_type)
+{
+    datalog_query_t* query = (datalog_query_t*)malloc(sizeof(datalog_query_t));
+
+    if(query == NULL) return NULL;
+
+    query->literal = datalog_init_literal(predicate, arg1, arg2, lit_type); 
+
+    return query;
+}
+
+datalog_query_t* datalog_query_init_s(datalog_literal_t* lit)
+{
+    datalog_query_t* query = (datalog_query_t*)malloc(sizeof(datalog_query_t));
+
+    if(query == NULL) return NULL;
+
+    query->literal = lit;
+
+    return query;
+}
+
+DATALOG_ERR_t datalog_query(char* predicate, 
+        char* arg1, char* arg2, DATALOG_LIT_t lit_type)  
+{
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG] DEBUG: query cc %s(%s, %s)\n", predicate, arg1, arg2); 
+#endif
+   
+    DATALOG_ERR_t ret = DATALOG_OK;
+
+    ret = datalog_create_literal(lit_type, predicate, arg1, arg2);
+  
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: query literal created:              %s\n", 
+        (ret == DATALOG_OK ? "SUCCSESS" : "FAIL"));
+#endif
+
+    dl_answers_t a;
+    
+    ret = dl_ask(datalog_db, &a);
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: query sent:                         %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG] VERBOSE: query resulted in answer:           %s\n", 
+        (a != NULL ? "SUCCSESS" : "FAIL"));
+#endif
+   
+    datalog_query_answer_t* processed = 
+        datalog_process_answer(a);
+
+    return DATALOG_OK;
+}
+
+DATALOG_ERR_t datalog_query_s(datalog_query_t* query)
+{
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG] DEBUG: query cc %s(%s, %s)\n", 
+            query->literal->predicate, query->literal->arg1, query->literal->arg2); 
+#endif
+   
+    DATALOG_ERR_t ret = DATALOG_OK;
+
+    ret = datalog_create_literal_s(query->literal);
+  
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: query literal created:              %s\n", 
+        (ret == DATALOG_OK ? "SUCCSESS" : "FAIL"));
+#endif
+
+    dl_answers_t a;
+    
+    ret = dl_ask(datalog_db, &a);
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: query sent:                         %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG] VERBOSE: query resulted in answer:           %s\n", 
+        (a != NULL ? "SUCCSESS" : "FAIL"));
+#endif
+   
+    query->answer = (dl_answers_t*)calloc(1, sizeof(dl_answers_t));
+
+    memcpy(query->answer, &a, sizeof(dl_answers_t));
+   
+    query->processed_answer = datalog_process_answer(a); 
+
+    return DATALOG_OK;
+}
+
+DATALOG_ERR_t datalog_update_and_assert_literal(datalog_literal_t* lit,
+        char* predicate, char* arg1, char* arg2, DATALOG_LIT_t lit_type)
+{
+    if(datalog_update_literal(lit, predicate, arg1, arg2, lit_type) 
+            != DATALOG_OK) return DATALOG_LIT;
+    if(datalog_create_and_assert_literal_s(lit) != DATALOG_OK) 
+        return DATALOG_ASRT;
+}
+
+DATALOG_ERR_t datalog_update_literal(datalog_literal_t* lit,
+        char* predicate, char* arg1, char* arg2, DATALOG_LIT_t lit_type)
+{
+    if(lit == NULL) return DATALOG_MEM;
+
+    if(lit_type != 0 && ((lit_type == DL_CC) || (lit_type == DL_CV)
+                || (lit_type == DL_VC) || (lit_type == DL_VV)))
+        lit->lit_type = lit_type;
+    else if(lit_type != 0 && !((lit_type == DL_CC) || (lit_type == DL_CV)
+                || (lit_type == DL_VC) || (lit_type == DL_VV))){
+#ifdef DATALOG_ERR 
+    fprintf(stderr, "[DATALOG] ERROR: invalid type passed to datalog_update_literal\n"); 
+#endif
+        return DATALOG_TYPE;
+    }
+
+    lit->predicate = 
+        (char*)realloc(lit->predicate, sizeof(char)*strlen(predicate)); 
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG] VERBOSE: query resulted in answer:           %s\n", 
+        (lit->predicate != NULL ? "SUCCSESS" : "FAIL"));
+#endif
+    if(lit->predicate == NULL) return DATALOG_MEM;
+    strcpy(lit->predicate, predicate);
+    
+    lit->arg1 =
+        (char*)realloc(lit->arg1, sizeof(char)*strlen(arg1));
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG] VERBOSE: query resulted in answer:           %s\n", 
+        (lit->arg1 != NULL ? "SUCCSESS" : "FAIL"));
+#endif
+    if(lit->arg1 == NULL) return DATALOG_MEM;
+    strcpy(lit->arg1, arg1);
+    
+    lit->arg2 = 
+        (char*)realloc(lit->arg2, sizeof(char)*strlen(arg2));
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG] VERBOSE: query resulted in answer:           %s\n", 
+        (lit->arg2 != NULL ? "SUCCSESS" : "FAIL"));
+#endif
+    if(lit->arg2 == NULL) return DATALOG_MEM;
+    strcpy(lit->arg2, arg2);
+
+    return DATALOG_OK;
+}
+
+datalog_literal_t* datalog_init_literal(char* predicate, char* arg1,
+        char* arg2, DATALOG_LIT_t lit_type)
+{
+    datalog_literal_t* lit = 
+        (datalog_literal_t*)malloc(sizeof(datalog_literal_t));
+    
+    if(lit == NULL) return NULL;
+
+    lit->lit_type = lit_type;
+    lit->predicate = (char*)malloc(sizeof(char) * strlen(predicate));
+    strcpy(lit->predicate, predicate);
+    lit->arg1= (char*)malloc(sizeof(char) * strlen(arg1));
+    strcpy(lit->arg1, arg1);
+    lit->arg2 = (char*)malloc(sizeof(char) * strlen(arg2));
+    strcpy(lit->arg2, arg2);
+
+    return lit;
+}
+
+DATALOG_ERR_t datalog_create_and_assert_literal_s(datalog_literal_t* lit)
+{
+    if(datalog_create_literal_s(lit) != DATALOG_OK) return DATALOG_LIT;
+    if(datalog_assert_clause(0) != DATALOG_OK) return DATALOG_ASRT;
+
+    return DATALOG_OK;
+}
+
+DATALOG_ERR_t datalog_create_literal(DATALOG_LIT_t lit_type, 
+        char* predicate, char* arg1, char* arg2)
+{
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG] DEBUG: create literal %s(%s, %s)\n",
+            predicate, arg1, arg2); 
+#endif
+
+    int ret = 0;
+    
+    //start literal, push empty literal onto stack
+    ret = dl_pushliteral(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: empty literal pushed onto stack:    %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+
+    //push predicate symbol onto the stack via string
+    char* test_predicate = predicate;
+    ret = dl_pushlstring(datalog_db, test_predicate, 
+            (size_t)strlen(test_predicate));
+        
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: predicate string pushed onto stack: %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+   
+    ret = dl_addpred(datalog_db); 
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: predicate created:                  %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+
+    //push const1's string onto the stack
+    char* test_arg1 = arg1;
+    ret = dl_pushlstring(datalog_db, test_arg1, 
+           (size_t)strlen(test_arg1));
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: arg1 string pushed onto stack:      %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+
+    //create const1 from string on stack
+    ret = datalog_add_var_const(lit_type, 0);
+
+    if(ret) return DATALOG_LIT;
+    
+    //push const2's string onto the stack
+    char* test_arg2 = arg2;
+    ret = dl_pushlstring(datalog_db, test_arg2, 
+            (size_t)strlen(test_arg2));
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: arg2 string pushed onto stack       %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+    
+    //create arg2 from string on stack
+    ret = datalog_add_var_const(lit_type, 1);
+
+    if(ret) return DATALOG_LIT;
+
+    //finish creating literal
+    ret = dl_makeliteral(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: literal created:                    %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+   if(ret) return DATALOG_LIT;
+
+   return DATALOG_OK;
+}
+
+DATALOG_ERR_t datalog_create_literal_s(datalog_literal_t* literal) 
+{
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG] DEBUG: create literal %s(%s, %s)\n",
+            literal->predicate,literal->arg1,literal->arg2); 
+#endif
+
+    int ret = 0;
+    
+    //start literal, push empty literal onto stack
+    ret = dl_pushliteral(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: empty literal pushed onto stack:    %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+
+    //push predicate symbol onto the stack via string
+    char* test_predicate = literal->predicate;
+    ret = dl_pushlstring(datalog_db, test_predicate, 
+            (size_t)strlen(test_predicate));
+        
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: predicate string pushed onto stack: %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+   
+    ret = dl_addpred(datalog_db); 
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: predicate created:                  %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+
+    //push const1's string onto the stack
+    char* test_arg1 = literal->arg1;
+    ret = dl_pushlstring(datalog_db, test_arg1, 
+           (size_t)strlen(test_arg1));
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: arg1 string pushed onto stack:      %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+
+    //create const1 from string on stack
+    ret = datalog_add_var_const(literal->lit_type, 0);
+
+    if(ret) return DATALOG_LIT;
+    
+    //push const2's string onto the stack
+    char* test_arg2 = literal->arg2;
+    ret = dl_pushlstring(datalog_db, test_arg2, 
+            (size_t)strlen(test_arg2));
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: arg2 string pushed onto stack       %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+    
+    //create arg2 from string on stack
+    ret = datalog_add_var_const(literal->lit_type, 1);
+
+    if(ret) return DATALOG_LIT;
+
+    //finish creating literal
+    ret = dl_makeliteral(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: literal created:                    %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+   if(ret) return DATALOG_LIT;
+
+   return DATALOG_OK;
+}
+
+
+DATALOG_ERR_t datalog_push_string(char* string)
+{
+    
+    return DATALOG_OK;
+}
+
+int datalog_add_var_const(DATALOG_LIT_t lit_type, int index)
+{
+    int ret = 0;
+
+    switch(index){
+        case 0:
+            switch(lit_type){
+                case DL_CC:
+                case DL_CV:
+                    ret = dl_addconst(datalog_db);
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: arg1 constant created:              %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+                    break;
+                case DL_VV:
+                case DL_VC:
+                    ret = dl_addvar(datalog_db);
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: arg1 variable created:              %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+                    break;
+                default:
+                    return 1;
+            }
+            break;
+        case 1:
+            switch(lit_type){
+                case DL_CC:
+                case DL_VC:
+                    ret = dl_addconst(datalog_db);
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: arg2 constant created:              %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+                    break;
+                case DL_CV:
+                case DL_VV:
+                    ret = dl_addvar(datalog_db);
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: arg2 variable created:              %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+                    break;
+                default:
+                    return 1;
+            }
+            break;
+        default:
+            return 1;
+    }
+    return ret;
+}
+
+DATALOG_ERR_t datalog_engine_db_init(void)
+{
+   datalog_db = dl_open();
+   
+#ifdef DATALOG_ERR
+    if(&datalog_db == NULL){
+        fprintf(stderr, "[DATALOG] ERR: dl_open() failed\n");
+        return DATALOG_MEM;
+    }
+#ifdef DATALOG_DEBUG
+    if(&datalog_db != NULL)
+        fprintf(stderr, "[DATALOG] DEBUG: database opened \n");
+#endif
+#endif
+
+    return DATALOG_OK;
+}
+
+DATALOG_ERR_t datalog_engine_db_deinit(void)
+{
+    dl_close(datalog_db);
+
+#ifdef DATALOG_DEBUG
+    printf("[DATALOG] DEBUG: database closed\n");
+#endif
+
+    return DATALOG_OK;
+}
