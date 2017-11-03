@@ -64,7 +64,7 @@ I wrote this quickly and dirtily, so excuse the mess.
 + Clauses with bodies
 + Error checking on literal types
 + Check that all methods are implemented for all objects, both with and without structs.
-+ Lots more stuff I am to yet discover
++ Lots more stuff I am to yet to discover
 
 ## Objects 
 The API revolves around a struct objects to enable a more logical way or representing datalog commands rather than the push and pop confusion found in the library.  
