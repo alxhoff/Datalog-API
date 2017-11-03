@@ -1,5 +1,7 @@
 # Datalog API
 
+_windows users you are on your own_
+
 ## Introduction
 The original implementation of the LUA/C library is not the easiest to work with and does not lead to logical or easy to follow code. I have quickly thrown this API together to make the coding datalog coding style similar to that of the Python implementation. 
 
@@ -41,6 +43,17 @@ and finally make
 The executable can be found in the bin subdirectory in the root dir.  
 
 Library objects in the build subdirectory.
+
+## Documentation
+
+To generate the documentation run the command
+
+```bash
+doxygen
+```
+from the doc folder. Then navigate to /html/index.html 
+
+
 
 ## Work in progress
 I wrote this quickly and dirtily, so excuse the mess.  
