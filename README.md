@@ -32,9 +32,13 @@ cd into the root director and create a build dir, or don't, it'll be your mess.
  mkdir build
  cd build
 ```
- Generate CMake junk
+ Generate CMake junk __or__ run ccmake to configure debugging options
 ```bash
  cmake ..
+```
+__or__
+```bash
+ ccmake ..
 ```
 and finally make
 ```bash
