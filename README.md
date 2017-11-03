@@ -21,7 +21,7 @@ The LUA/C library can be found [here](http://datalog.sourceforge.net) and must b
                       |---lua source files  
 ```
 ## Building
-I have included a demo main.c as well as a demo CMake that will build the API as a shared library that can then be linked into a exsisting project.  
+I have included a demo main.c as well as a demo CMake that will build the API as a shared library that can then be linked into an exsisting project.  
 
 ### How to build
 It's pretty tough....  
@@ -55,9 +55,7 @@ To generate the documentation run the command
 ```bash
 doxygen
 ```
-from the doc folder. Then navigate to /html/index.html 
-
-
+from the doc folder. Then navigate to ./html/index.html 
 
 ## Work in progress
 I wrote this quickly and dirtily, so excuse the mess.  
@@ -66,9 +64,10 @@ I wrote this quickly and dirtily, so excuse the mess.
 + Clauses with bodies
 + Error checking on literal types
 + Check that all methods are implemented for all objects, both with and without structs.
++ Lots more stuff I am to yet discover
 
 ## Objects 
 The API revolves around a struct objects to enable a more logical way or representing datalog commands rather than the push and pop confusion found in the library.  
 
-Literals are represented by the object datalog_literal_t, queries by datalog_query_t and clauses by datalog_clause_t. I may of missed a few methods to be implemented but I should get these done as I actually use this API for other code. 
+Literals are represented by the object __datalog_literal_t__, queries by __datalog_query_t__ and clauses by __datalog_clause_t__. I may of missed a few methods to be implemented but I should get these done as I actually use this API for other code. 
  
