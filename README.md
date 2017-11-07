@@ -61,7 +61,7 @@ from the doc folder. Then navigate to ./html/index.html
 I wrote this quickly and dirtily, so excuse the mess.  
 
 ### To-Do  
-+ Clauses with bodies
++ ~~Clauses with bodies~~
 + Error checking on literal types
 + Check that all methods are implemented for all objects, both with and without structs.
 + Lots more stuff I am to yet to discover
