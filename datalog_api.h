@@ -175,8 +175,7 @@ typedef struct datalog_clause datalog_clause_t;
 struct datalog_clause{
     datalog_literal_t* head;        /**< Clause's head literal pointer*/
     int literal_count;              /**< Number of literals in the clause's body*/
-    datalog_literal_t** body_list;  /**< List of pointers to the literals in the clause's
-                                    body*/
+    datalog_literal_t** body_list;  /**< List of pointers to the literals in the clause's body*/
 };
 
 /**
@@ -308,22 +307,21 @@ DATALOG_ERR_t datalog_update_literal(datalog_literal_t* lit,
 */
 DATALOG_ERR_t datalog_create_and_assert_literal_s(datalog_literal_t* lit);
 
-
 /**
 * @brief Creates a literal from the given arguments
 *
 * Creates a literal from the given terms, of a specified type,
 * and leaves the literal on top of the stack.
 * 
-* @param lit_type specifies the types of arguments to be created in the
-* literal. 
 * @param predicate string literal of the literal's predicate
 * @param arg1 string literal for the literal's first term
 * @param arg2 string literal for the literal's second term
+* @param lit_type specifies the types of arguments to be created in the
+* literal. 
 * @return DATALOG_ERR_t error message
 */
-DATALOG_ERR_t datalog_create_literal(DATALOG_LIT_t lit_type, 
-        char* predicate, char* var1, char* var2);
+DATALOG_ERR_t datalog_create_literal(char* predicate, char* var1, 
+    char* var2, DATALOG_LIT_t lit_type);
 
 /**
 * @brief Creates a literal from a literal struct 
@@ -361,6 +359,73 @@ DATALOG_ERR_t datalog_push_string(char* string);
 int datalog_add_var_const(DATALOG_LIT_t lit_type, int index);
 
 /**
+* @brief Prints a clause structure in a datalog representation 
+*
+* @param clause pointer to the clause object to be printed
+* @return DATALOG_ERR_t 
+*/
+DATALOG_ERR_t datalog_print_clause(datalog_clause_t* clause);
+/**
+* @brief Initialises a clause structure, populating the head literal
+* with the arguments parsed to the function.
+*
+* @param head_predicate string literal of the literal's predicate
+* @param head_arg1 string literal for the literal's first term
+* @param head_arg2 string literal for the literal's second term
+* @param head_lit_type specifies the types of arguments to be created in the
+* literal. 
+* @return datalog_clause_t* pointer to the clause struct created 
+*/
+datalog_clause_t* datalog_init_clause(char* head_predicate,
+        char* head_arg1, char* head_arg2, DATALOG_LIT_t head_lit_type);
+
+/**
+* @brief Initialises a clause structure, initialising the clause's
+* head literal with the values passed to the funciton.
+*
+* @param head_predicate string literal of the literal's predicate
+* @param head_arg1 string literal for the literal's first term
+* @param head_arg2 string literal for the literal's second term
+* @param head_lit_type specifies the types of arguments to be created in the
+* literal. 
+* @return DATALOG_ERR_t error message
+*/
+DATALOG_ERR_t datalog_clause_add_literal(datalog_clause_t* clause,
+        char* predicate, char* arg1, char* arg2, DATALOG_LIT_t lit_type);
+
+/**
+* @brief Initialises a clause structure, but instead of creating a copy
+* of the passed literal as the clause's head literal, the clause struct
+* only points to it.
+*
+* One must be careful that the literal is never free'd as this would 
+* lead to undefined behavious.
+*
+* @param clause pointer to the clause object to which the literal shall
+* be added
+* @param literal pointer to the literal object that will be copied in as
+* the clause's head literal
+* @return DATALOG_ERR_t error message
+*/
+DATALOG_ERR_t datalog_clause_add_literal_s(datalog_clause_t* clause,
+        datalog_literal_t* literal);
+
+/**
+* @brief Initialises a clause structure, the clause's head literal
+* is created as a copy of the literal that is passed to the function
+*
+* With this function one can free the initialising head literal
+*
+* @param clause pointer to the clause object to which the literal shall
+* be added
+* @param literal pointer to the literal object that will be copied in as
+* the clause's head literal
+* @return DATALOG_ERR_t error message
+*/
+DATALOG_ERR_t datalog_clause_add_literal_s_copy(datalog_clause_t* clause,
+        datalog_literal_t* literal);
+
+/**
 * @brief Asserts a clause that does not have a body
 *
 * Pops a literal off the stack to create and assert a clause.
@@ -370,7 +435,6 @@ int datalog_add_var_const(DATALOG_LIT_t lit_type, int index);
 * @return DATALOG_ERR_t error message
 */
 DATALOG_ERR_t datalog_assert_clause(int literal_count);
-
 
 /**
 * @brief Initialises the datalog database
@@ -387,7 +451,5 @@ DATALOG_ERR_t datalog_engine_db_init(void);
 * @return DATALOG_ERR_t error message 
 */
 DATALOG_ERR_t datalog_engine_db_deinit(void);
-
-
 
 #endif
