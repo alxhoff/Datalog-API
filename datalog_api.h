@@ -1,5 +1,5 @@
 /**
- * @file keyboard.h
+ * @file datalog_api.h
  * @author Alex Hoffman
  * @date 11 October 2017
  * @brief Data types and functions for performing classical keyboard functions
