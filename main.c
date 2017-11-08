@@ -27,6 +27,7 @@
 #include <string.h>
 
 #include "datalog_api.h"
+#include "datalog_parser.h"
 
 //global datalog database
 dl_db_t datalog_db;
@@ -60,5 +61,9 @@ int main(void)
     ret = datalog_engine_db_deinit();
 
     if(ret != DATALOG_OK) return -1;
+
+    dl_parser_runtime("text_xml.xml");
+
+    return 0;
 }
 

@@ -1,0 +1,1 @@
+/usr/bin/cc  -fPIC -g  -shared -Wl,-soname,libDATALOG.so -o libDATALOG.so CMakeFiles/DATALOG.dir/libs/libdatalog/datalog.c.o 

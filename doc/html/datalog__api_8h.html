@@ -84,6 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
@@ -92,6 +93,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">/home/alxhoff/git/Datalog-API/datalog_api.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Data types and functions for performing classical keyboard functions.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;datalog.h&quot;</code><br />
 </div>
 <p><a href="datalog__api_8h_source.html">Go to the source code of this file.</a></p>
@@ -114,6 +118,11 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Struct to represent a datalog clause.  <a href="structdatalog__clause.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a2748a6cefd47f5a6c5d74c4b8e2d07fa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a2748a6cefd47f5a6c5d74c4b8e2d07fa">DATALOG_API</a>&#160;&#160;&#160;1</td></tr>
+<tr class="separator:a2748a6cefd47f5a6c5d74c4b8e2d07fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a734a9da1b36a22c0f4477a4bbceddb91"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structdatalog__query__answer__pair.html">datalog_query_answer_pair</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a734a9da1b36a22c0f4477a4bbceddb91">datalog_query_answer_pair_t</a></td></tr>
@@ -134,26 +143,20 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ad27ac7b01e9690a8c6d1bd37e131a421"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> { <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421a20806501d70ba513ecd502f806cb3fca">DL_CC</a>, 
+<tr class="memitem:ad27ac7b01e9690a8c6d1bd37e131a421"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> { <br />
+&#160;&#160;<a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421a20806501d70ba513ecd502f806cb3fca">DL_CC</a>, 
 <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421a4f492d6e702df758257c04aab23b7c51">DL_CV</a>, 
 <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421a90c5f679dcd0d3ccc596ce428124fc87">DL_VV</a>, 
-<a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a">DL_VC</a>
+<a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a">DL_VC</a>, 
+<br />
+&#160;&#160;<a class="el" href="datalog__parser_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421a20806501d70ba513ecd502f806cb3fca">DL_CC</a>, 
+<a class="el" href="datalog__parser_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421a4f492d6e702df758257c04aab23b7c51">DL_CV</a>, 
+<a class="el" href="datalog__parser_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421a90c5f679dcd0d3ccc596ce428124fc87">DL_VV</a>, 
+<a class="el" href="datalog__parser_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a">DL_VC</a>
+<br />
  }<tr class="memdesc:ad27ac7b01e9690a8c6d1bd37e131a421"><td class="mdescLeft">&#160;</td><td class="mdescRight">used to specify the type of literal to be created  <a href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:ad27ac7b01e9690a8c6d1bd37e131a421"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a358a9c107e26d9abb7c4caab3f732117"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> { <br />
-&#160;&#160;<a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117ae3e3c76b2916f6f4f9af6e7f38fd5725">DATALOG_OK</a> = 0, 
-<a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117ab96aa009f2044dac091af7771ecc8e07">DATALOG_ASRT</a>, 
-<a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117ae6aaf05a9dd461b25444e88d25aff652">DATALOG_INIT</a>, 
-<a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117a613b774b3e47225c27da5daa799b71fe">DATALOG_MEM</a>, 
-<br />
-&#160;&#160;<a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117afddfceeeee74e83eb07be05b5ced486c">DATALOG_LIT</a>, 
-<a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117ad9c5f1e06dd64698e20b891127a75d4c">DATALOG_QUE</a>, 
-<a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117a722d1f78ab8cb1a69604de6df3c9b98e">DATALOG_TYPE</a>
-<br />
- }<tr class="memdesc:a358a9c107e26d9abb7c4caab3f732117"><td class="mdescLeft">&#160;</td><td class="mdescRight">error messages  <a href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">More...</a><br /></td></tr>
-</td></tr>
-<tr class="separator:a358a9c107e26d9abb7c4caab3f732117"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -169,58 +172,58 @@ Functions</h2></td></tr>
 <tr class="memitem:ac78a6a23d6c47f9fe079dff6dbc43f5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a6d9910ac0606673043b4886a9eccfb5f">datalog_query_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ac78a6a23d6c47f9fe079dff6dbc43f5c">datalog_query_init_s</a> (<a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *lit)</td></tr>
 <tr class="memdesc:ac78a6a23d6c47f9fe079dff6dbc43f5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises a datalog query struct from a literal struct.  <a href="#ac78a6a23d6c47f9fe079dff6dbc43f5c">More...</a><br /></td></tr>
 <tr class="separator:ac78a6a23d6c47f9fe079dff6dbc43f5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3712d21b088163d9651c70b7079ebb6e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a3712d21b088163d9651c70b7079ebb6e">datalog_query</a> (char *predicate, char *const1, char *const2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type)</td></tr>
+<tr class="memitem:a3712d21b088163d9651c70b7079ebb6e"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a3712d21b088163d9651c70b7079ebb6e">datalog_query</a> (char *predicate, char *const1, char *const2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type)</td></tr>
 <tr class="memdesc:a3712d21b088163d9651c70b7079ebb6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Issues a query.  <a href="#a3712d21b088163d9651c70b7079ebb6e">More...</a><br /></td></tr>
 <tr class="separator:a3712d21b088163d9651c70b7079ebb6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0d604403e6a0aeb56c2761c51e6efc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ad0d604403e6a0aeb56c2761c51e6efc5">datalog_query_s</a> (<a class="el" href="datalog__api_8h.html#a6d9910ac0606673043b4886a9eccfb5f">datalog_query_t</a> *query)</td></tr>
+<tr class="memitem:ad0d604403e6a0aeb56c2761c51e6efc5"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ad0d604403e6a0aeb56c2761c51e6efc5">datalog_query_s</a> (<a class="el" href="datalog__api_8h.html#a6d9910ac0606673043b4886a9eccfb5f">datalog_query_t</a> *query)</td></tr>
 <tr class="memdesc:ad0d604403e6a0aeb56c2761c51e6efc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Issues a query and saves the answer.  <a href="#ad0d604403e6a0aeb56c2761c51e6efc5">More...</a><br /></td></tr>
 <tr class="separator:ad0d604403e6a0aeb56c2761c51e6efc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a140d89a93119c6e5f75f4b6aa89fc03c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a140d89a93119c6e5f75f4b6aa89fc03c">datalog_init_literal</a> (char *predicate, char *arg1, char *arg2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type)</td></tr>
 <tr class="memdesc:a140d89a93119c6e5f75f4b6aa89fc03c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises a datalog literal struct, does not create the literal in the database.  <a href="#a140d89a93119c6e5f75f4b6aa89fc03c">More...</a><br /></td></tr>
 <tr class="separator:a140d89a93119c6e5f75f4b6aa89fc03c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f828288e1fb48d1cebf4be55c5da55c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a6f828288e1fb48d1cebf4be55c5da55c">datalog_update_and_assert_literal</a> (<a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *lit, char *predicate, char *arg1, char *arg2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type)</td></tr>
+<tr class="memitem:a6f828288e1fb48d1cebf4be55c5da55c"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a6f828288e1fb48d1cebf4be55c5da55c">datalog_update_and_assert_literal</a> (<a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *lit, char *predicate, char *arg1, char *arg2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type)</td></tr>
 <tr class="memdesc:a6f828288e1fb48d1cebf4be55c5da55c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the values of a preexsisting literal structure and asserts the literal.  <a href="#a6f828288e1fb48d1cebf4be55c5da55c">More...</a><br /></td></tr>
 <tr class="separator:a6f828288e1fb48d1cebf4be55c5da55c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaca99c056777bf54759d67faa252387b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#aaca99c056777bf54759d67faa252387b">datalog_update_literal</a> (<a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *lit, char *predicate, char *arg1, char *arg2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type)</td></tr>
+<tr class="memitem:aaca99c056777bf54759d67faa252387b"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#aaca99c056777bf54759d67faa252387b">datalog_update_literal</a> (<a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *lit, char *predicate, char *arg1, char *arg2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type)</td></tr>
 <tr class="memdesc:aaca99c056777bf54759d67faa252387b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the values of a preexsisting literal structure.  <a href="#aaca99c056777bf54759d67faa252387b">More...</a><br /></td></tr>
 <tr class="separator:aaca99c056777bf54759d67faa252387b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3178948f93a28456018eaf53749dd29d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a3178948f93a28456018eaf53749dd29d">datalog_create_and_assert_literal_s</a> (<a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *lit)</td></tr>
+<tr class="memitem:a3178948f93a28456018eaf53749dd29d"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a3178948f93a28456018eaf53749dd29d">datalog_create_and_assert_literal_s</a> (<a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *lit)</td></tr>
 <tr class="memdesc:a3178948f93a28456018eaf53749dd29d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and assers a literal from a literal struct.  <a href="#a3178948f93a28456018eaf53749dd29d">More...</a><br /></td></tr>
 <tr class="separator:a3178948f93a28456018eaf53749dd29d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac059525441d22c1d3cf3b9d1fcf6bbec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ac059525441d22c1d3cf3b9d1fcf6bbec">datalog_create_literal</a> (char *predicate, char *var1, char *var2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type)</td></tr>
+<tr class="memitem:ac059525441d22c1d3cf3b9d1fcf6bbec"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ac059525441d22c1d3cf3b9d1fcf6bbec">datalog_create_literal</a> (char *predicate, char *var1, char *var2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type)</td></tr>
 <tr class="memdesc:ac059525441d22c1d3cf3b9d1fcf6bbec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a literal from the given arguments.  <a href="#ac059525441d22c1d3cf3b9d1fcf6bbec">More...</a><br /></td></tr>
 <tr class="separator:ac059525441d22c1d3cf3b9d1fcf6bbec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43679d256ebc05b1df19c7b689949013"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a43679d256ebc05b1df19c7b689949013">datalog_create_literal_s</a> (<a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *literal)</td></tr>
+<tr class="memitem:a43679d256ebc05b1df19c7b689949013"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a43679d256ebc05b1df19c7b689949013">datalog_create_literal_s</a> (<a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *literal)</td></tr>
 <tr class="memdesc:a43679d256ebc05b1df19c7b689949013"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a literal from a literal struct.  <a href="#a43679d256ebc05b1df19c7b689949013">More...</a><br /></td></tr>
 <tr class="separator:a43679d256ebc05b1df19c7b689949013"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d82e1c48a6e2e313a5f3dac07a47bb7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a8d82e1c48a6e2e313a5f3dac07a47bb7">datalog_push_string</a> (char *string)</td></tr>
+<tr class="memitem:a8d82e1c48a6e2e313a5f3dac07a47bb7"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a8d82e1c48a6e2e313a5f3dac07a47bb7">datalog_push_string</a> (char *string)</td></tr>
 <tr class="memdesc:a8d82e1c48a6e2e313a5f3dac07a47bb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the given string on to the top of the datalog stack.  <a href="#a8d82e1c48a6e2e313a5f3dac07a47bb7">More...</a><br /></td></tr>
 <tr class="separator:a8d82e1c48a6e2e313a5f3dac07a47bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2a856ebf735743b41b2ef493a9f39e4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ab2a856ebf735743b41b2ef493a9f39e4">datalog_add_var_const</a> (<a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type, int index)</td></tr>
 <tr class="memdesc:ab2a856ebf735743b41b2ef493a9f39e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds either a variable or constant to the current literal.  <a href="#ab2a856ebf735743b41b2ef493a9f39e4">More...</a><br /></td></tr>
 <tr class="separator:ab2a856ebf735743b41b2ef493a9f39e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa64abc074ffbeef15b5b081c8c7b712"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#aaa64abc074ffbeef15b5b081c8c7b712">datalog_print_clause</a> (<a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *clause)</td></tr>
+<tr class="memitem:aaa64abc074ffbeef15b5b081c8c7b712"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#aaa64abc074ffbeef15b5b081c8c7b712">datalog_print_clause</a> (<a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *clause)</td></tr>
 <tr class="memdesc:aaa64abc074ffbeef15b5b081c8c7b712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a clause structure in a datalog representation.  <a href="#aaa64abc074ffbeef15b5b081c8c7b712">More...</a><br /></td></tr>
 <tr class="separator:aaa64abc074ffbeef15b5b081c8c7b712"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4eba2141043515a2d2ea10a9b745dcdb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a4eba2141043515a2d2ea10a9b745dcdb">datalog_init_clause</a> (char *head_predicate, char *head_arg1, char *head_arg2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> head_lit_type)</td></tr>
 <tr class="memdesc:a4eba2141043515a2d2ea10a9b745dcdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises a clause structure, populating the head literal with the arguments parsed to the function.  <a href="#a4eba2141043515a2d2ea10a9b745dcdb">More...</a><br /></td></tr>
 <tr class="separator:a4eba2141043515a2d2ea10a9b745dcdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4013ae293f40a4be1ba267b3ef186cd6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a4013ae293f40a4be1ba267b3ef186cd6">datalog_clause_add_literal</a> (<a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *clause, char *predicate, char *arg1, char *arg2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type)</td></tr>
+<tr class="memitem:a4013ae293f40a4be1ba267b3ef186cd6"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a4013ae293f40a4be1ba267b3ef186cd6">datalog_clause_add_literal</a> (<a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *clause, char *predicate, char *arg1, char *arg2, <a class="el" href="datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421">DATALOG_LIT_t</a> lit_type)</td></tr>
 <tr class="memdesc:a4013ae293f40a4be1ba267b3ef186cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises a clause structure, initialising the clause's head literal with the values passed to the funciton.  <a href="#a4013ae293f40a4be1ba267b3ef186cd6">More...</a><br /></td></tr>
 <tr class="separator:a4013ae293f40a4be1ba267b3ef186cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46a14634cb9debca790b9e621f248218"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a46a14634cb9debca790b9e621f248218">datalog_clause_add_literal_s</a> (<a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *clause, <a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *literal)</td></tr>
+<tr class="memitem:a46a14634cb9debca790b9e621f248218"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a46a14634cb9debca790b9e621f248218">datalog_clause_add_literal_s</a> (<a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *clause, <a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *literal)</td></tr>
 <tr class="memdesc:a46a14634cb9debca790b9e621f248218"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises a clause structure, but instead of creating a copy of the passed literal as the clause's head literal, the clause struct only points to it.  <a href="#a46a14634cb9debca790b9e621f248218">More...</a><br /></td></tr>
 <tr class="separator:a46a14634cb9debca790b9e621f248218"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad81355624337671d979a79986df0c009"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ad81355624337671d979a79986df0c009">datalog_clause_add_literal_s_copy</a> (<a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *clause, <a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *literal)</td></tr>
+<tr class="memitem:ad81355624337671d979a79986df0c009"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ad81355624337671d979a79986df0c009">datalog_clause_add_literal_s_copy</a> (<a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *clause, <a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *literal)</td></tr>
 <tr class="memdesc:ad81355624337671d979a79986df0c009"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises a clause structure, the clause's head literal is created as a copy of the literal that is passed to the function.  <a href="#ad81355624337671d979a79986df0c009">More...</a><br /></td></tr>
 <tr class="separator:ad81355624337671d979a79986df0c009"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a746f99e170991bcf07f110c44fb4c7f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a746f99e170991bcf07f110c44fb4c7f2">datalog_assert_clause</a> (int literal_count)</td></tr>
+<tr class="memitem:a746f99e170991bcf07f110c44fb4c7f2"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#a746f99e170991bcf07f110c44fb4c7f2">datalog_assert_clause</a> (int literal_count)</td></tr>
 <tr class="memdesc:a746f99e170991bcf07f110c44fb4c7f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asserts a clause that does not have a body.  <a href="#a746f99e170991bcf07f110c44fb4c7f2">More...</a><br /></td></tr>
 <tr class="separator:a746f99e170991bcf07f110c44fb4c7f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad25cf650c3b30b15a5a9af39c7d6a406"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ad25cf650c3b30b15a5a9af39c7d6a406">datalog_engine_db_init</a> (void)</td></tr>
+<tr class="memitem:ad25cf650c3b30b15a5a9af39c7d6a406"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ad25cf650c3b30b15a5a9af39c7d6a406">datalog_engine_db_init</a> (void)</td></tr>
 <tr class="memdesc:ad25cf650c3b30b15a5a9af39c7d6a406"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialises the datalog database.  <a href="#ad25cf650c3b30b15a5a9af39c7d6a406">More...</a><br /></td></tr>
 <tr class="separator:ad25cf650c3b30b15a5a9af39c7d6a406"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab690dd58030bad81272d853762c748e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ab690dd58030bad81272d853762c748e5">datalog_engine_db_deinit</a> (void)</td></tr>
+<tr class="memitem:ab690dd58030bad81272d853762c748e5"><td class="memItemLeft" align="right" valign="top">DATALOG_ERR_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="datalog__api_8h.html#ab690dd58030bad81272d853762c748e5">datalog_engine_db_deinit</a> (void)</td></tr>
 <tr class="memdesc:ab690dd58030bad81272d853762c748e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinitialises the datalog database.  <a href="#ab690dd58030bad81272d853762c748e5">More...</a><br /></td></tr>
 <tr class="separator:ab690dd58030bad81272d853762c748e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -230,6 +233,23 @@ Variables</h2></td></tr>
 <tr class="memdesc:a89884ff24ff3b89b1e6db568650f0fbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global database used by datalog library.  <a href="#a89884ff24ff3b89b1e6db568650f0fbe">More...</a><br /></td></tr>
 <tr class="separator:a89884ff24ff3b89b1e6db568650f0fbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Data types and functions for performing classical keyboard functions. </p>
+<dl class="section author"><dt>Author</dt><dd>Alex Hoffman </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>11 October 2017 </dd></dl>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="a2748a6cefd47f5a6c5d74c4b8e2d07fa"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define DATALOG_API&#160;&#160;&#160;1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="a3ced79b6e2d5072d71508ff7af2ec418"></a>
 <div class="memitem">
@@ -302,36 +322,6 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a class="anchor" id="a358a9c107e26d9abb7c4caab3f732117"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>error messages </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a358a9c107e26d9abb7c4caab3f732117ae3e3c76b2916f6f4f9af6e7f38fd5725"></a>DATALOG_OK&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a358a9c107e26d9abb7c4caab3f732117ab96aa009f2044dac091af7771ecc8e07"></a>DATALOG_ASRT&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a358a9c107e26d9abb7c4caab3f732117ae6aaf05a9dd461b25444e88d25aff652"></a>DATALOG_INIT&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a358a9c107e26d9abb7c4caab3f732117a613b774b3e47225c27da5daa799b71fe"></a>DATALOG_MEM&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a358a9c107e26d9abb7c4caab3f732117afddfceeeee74e83eb07be05b5ced486c"></a>DATALOG_LIT&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a358a9c107e26d9abb7c4caab3f732117ad9c5f1e06dd64698e20b891127a75d4c"></a>DATALOG_QUE&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="a358a9c107e26d9abb7c4caab3f732117a722d1f78ab8cb1a69604de6df3c9b98e"></a>DATALOG_TYPE&#160;</td><td class="fielddoc">
-</td></tr>
-</table>
-
-</div>
-</div>
 <a class="anchor" id="ad27ac7b01e9690a8c6d1bd37e131a421"></a>
 <div class="memitem">
 <div class="memproto">
@@ -345,6 +335,18 @@ Variables</h2></td></tr>
 <p>used to specify the type of literal to be created </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="ad27ac7b01e9690a8c6d1bd37e131a421a20806501d70ba513ecd502f806cb3fca"></a>DL_CC&#160;</td><td class="fielddoc">
+<p>constant constant </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="ad27ac7b01e9690a8c6d1bd37e131a421a4f492d6e702df758257c04aab23b7c51"></a>DL_CV&#160;</td><td class="fielddoc">
+<p>constant variable </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="ad27ac7b01e9690a8c6d1bd37e131a421a90c5f679dcd0d3ccc596ce428124fc87"></a>DL_VV&#160;</td><td class="fielddoc">
+<p>variable variable </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a"></a>DL_VC&#160;</td><td class="fielddoc">
+<p>variaben constant </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="ad27ac7b01e9690a8c6d1bd37e131a421a20806501d70ba513ecd502f806cb3fca"></a>DL_CC&#160;</td><td class="fielddoc">
 <p>constant constant </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="ad27ac7b01e9690a8c6d1bd37e131a421a4f492d6e702df758257c04aab23b7c51"></a>DL_CV&#160;</td><td class="fielddoc">
@@ -403,7 +405,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_assert_clause </td>
+          <td class="memname">DATALOG_ERR_t datalog_assert_clause </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>literal_count</em></td><td>)</td>
@@ -429,7 +431,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_clause_add_literal </td>
+          <td class="memname">DATALOG_ERR_t datalog_clause_add_literal </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *&#160;</td>
           <td class="paramname"><em>clause</em>, </td>
@@ -485,7 +487,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_clause_add_literal_s </td>
+          <td class="memname">DATALOG_ERR_t datalog_clause_add_literal_s </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *&#160;</td>
           <td class="paramname"><em>clause</em>, </td>
@@ -522,7 +524,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_clause_add_literal_s_copy </td>
+          <td class="memname">DATALOG_ERR_t datalog_clause_add_literal_s_copy </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *&#160;</td>
           <td class="paramname"><em>clause</em>, </td>
@@ -559,7 +561,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_create_and_assert_literal_s </td>
+          <td class="memname">DATALOG_ERR_t datalog_create_and_assert_literal_s </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *&#160;</td>
           <td class="paramname"><em>lit</em></td><td>)</td>
@@ -585,7 +587,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_create_literal </td>
+          <td class="memname">DATALOG_ERR_t datalog_create_literal </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>predicate</em>, </td>
@@ -636,7 +638,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_create_literal_s </td>
+          <td class="memname">DATALOG_ERR_t datalog_create_literal_s </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *&#160;</td>
           <td class="paramname"><em>literal</em></td><td>)</td>
@@ -662,7 +664,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_engine_db_deinit </td>
+          <td class="memname">DATALOG_ERR_t datalog_engine_db_deinit </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -687,7 +689,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_engine_db_init </td>
+          <td class="memname">DATALOG_ERR_t datalog_engine_db_init </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -837,7 +839,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_print_clause </td>
+          <td class="memname">DATALOG_ERR_t datalog_print_clause </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="datalog__api_8h.html#a3ced79b6e2d5072d71508ff7af2ec418">datalog_clause_t</a> *&#160;</td>
           <td class="paramname"><em>clause</em></td><td>)</td>
@@ -888,7 +890,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_push_string </td>
+          <td class="memname">DATALOG_ERR_t datalog_push_string </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>string</em></td><td>)</td>
@@ -913,7 +915,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> <a class="el" href="structdatalog__query.html">datalog_query</a> </td>
+          <td class="memname">DATALOG_ERR_t <a class="el" href="structdatalog__query.html">datalog_query</a> </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>predicate</em>, </td>
@@ -1039,7 +1041,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_query_s </td>
+          <td class="memname">DATALOG_ERR_t datalog_query_s </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="datalog__api_8h.html#a6d9910ac0606673043b4886a9eccfb5f">datalog_query_t</a> *&#160;</td>
           <td class="paramname"><em>query</em></td><td>)</td>
@@ -1065,7 +1067,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_update_and_assert_literal </td>
+          <td class="memname">DATALOG_ERR_t datalog_update_and_assert_literal </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *&#160;</td>
           <td class="paramname"><em>lit</em>, </td>
@@ -1121,7 +1123,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="datalog__api_8h.html#a358a9c107e26d9abb7c4caab3f732117">DATALOG_ERR_t</a> datalog_update_literal </td>
+          <td class="memname">DATALOG_ERR_t datalog_update_literal </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="datalog__api_8h.html#aeb86f46db4f8142eeb397d20f69f6487">datalog_literal_t</a> *&#160;</td>
           <td class="paramname"><em>lit</em>, </td>

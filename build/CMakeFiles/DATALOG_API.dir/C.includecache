@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../libs/libdatalog/datalog.h
+stdio.h
+-
+lua.h
+-
+
+../libs/libdatalog/lua/lua.h
+stdarg.h
+-
+stddef.h
+-
+luaconf.h
+../libs/libdatalog/lua/luaconf.h
+
+../libs/libdatalog/lua/luaconf.h
+limits.h
+-
+stddef.h
+-
+math.h
+-
+stdint.h
+-
+
+/home/alxhoff/git/Datalog-API/datalog_api.c
+stdlib.h
+-
+string.h
+-
+datalog_api.h
+/home/alxhoff/git/Datalog-API/datalog_api.h
+
+/home/alxhoff/git/Datalog-API/datalog_api.h
+datalog.h
+/home/alxhoff/git/Datalog-API/datalog.h
+

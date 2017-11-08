@@ -1,0 +1,1 @@
+/usr/bin/cc  -g   CMakeFiles/EXAMPLE.dir/main.c.o  -o ../bin/EXAMPLE libDATALOG_API.so libDATALOG_PARSER.so libDATALOG.so libLUA.so -lm -Wl,-rpath,/home/alxhoff/git/Datalog-API/build 

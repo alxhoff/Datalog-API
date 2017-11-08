@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['predic',['predic',['../structdatalog__query__answer.html#a721776aabf590192c96df972333d38d4',1,'datalog_query_answer']]],
-  ['predicate',['predicate',['../structdatalog__literal.html#aad44475a0e606d9fd9c5e7aae3667412',1,'datalog_literal']]],
-  ['processed_5fanswer',['processed_answer',['../structdatalog__query.html#a54e2eef2c18bc5e4c0f0a6c10f1e6397',1,'datalog_query']]],
-  ['project',['project',['../CMakeLists_8txt.html#a0387fa1873cf8ebb5e59579b33fa7730',1,'CMakeLists.txt']]]
+  ['main',['main',['../main_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main.c']]],
+  ['main_2ec',['main.c',['../main_8c.html',1,'']]],
+  ['mappings_5fnode',['mappings_node',['../structdl__parser__doc.html#ab22e9a4005d93564188d786b878786dd',1,'dl_parser_doc']]],
+  ['metadata',['metadata',['../structdl__parser__doc.html#aed7768f7af6c53d24b4110b8163c8c27',1,'dl_parser_doc']]],
+  ['metadata_5froot',['metadata_root',['../structdl__parser__doc.html#a08c1f4a9ca83844d75f7caf2a74eec6d',1,'dl_parser_doc']]]
 ];

@@ -1,5 +1,7 @@
-\hypertarget{index_intro_sec}{}\section{Introduction}\label{index_intro_sec}
-The original implementation of the L\+U\+A/C library is not the easiest to work with and does not lead to logical or easy to follow code. I have quickly thrown this A\+PI together to make the coding datalog coding style similar to that of the Python implementation.  prereq\+\_\+sec Prerequisites The L\+U\+A/C library can be found here \href{http://datalog.sourceforge.net}{\tt http\+://datalog.\+sourceforge.\+net} and must be downlaoded and placed into the libs folder such that the file tree looks like this ~\newline
+\hypertarget{index_datalogapi_sec}{}\section{Datalog A\+PI}\label{index_datalogapi_sec}
+\hypertarget{index_intro_sec}{}\subsection{Introduction}\label{index_intro_sec}
+The original implementation of the L\+U\+A/C library is not the easiest to work with and does not lead to logical or easy to follow code. I have quickly thrown this A\+PI together to make the coding datalog coding style similar to that of the Python implementation. \hypertarget{index_prereq_sec}{}\subsection{Prerequisites}\label{index_prereq_sec}
+The L\+U\+A/C library can be found here \href{http://datalog.sourceforge.net}{\tt http\+://datalog.\+sourceforge.\+net} and must be downlaoded and placed into the libs folder such that the file tree looks like this ~\newline
 ~\newline
  \begin{DoxyVerb}  |--- Datalog-API 
         | 
@@ -13,9 +15,9 @@ The original implementation of the L\+U\+A/C library is not the easiest to work 
                  |---lua
                       |---lua source files
 \end{DoxyVerb}
- \hypertarget{index_building_sec}{}\section{Building}\label{index_building_sec}
+ \hypertarget{index_building_sec}{}\subsection{Building}\label{index_building_sec}
 I have included a demo \hyperlink{main_8c}{main.\+c} as well as a demo C\+Make that will build the A\+PI as a shared library that can then be linked into a exsisting project.~\newline
- \hypertarget{index_build_cmds}{}\subsection{How to build}\label{index_build_cmds}
+ \hypertarget{index_build_cmds}{}\subsubsection{How to build}\label{index_build_cmds}
 It\textquotesingle{}s pretty tough.... cd into the root director and create a build dir, or don\textquotesingle{}t, it\textquotesingle{}ll be your mess. \begin{DoxyVerb} cd Datalog-API
  mkdir build
  cd build\end{DoxyVerb}
@@ -23,16 +25,25 @@ It\textquotesingle{}s pretty tough.... cd into the root director and create a bu
  and finally make \begin{DoxyVerb} make\end{DoxyVerb}
  The executable can be found in the bin subdirectory in the root dir. ~\newline
 ~\newline
- Library objects in the build subdirectory. \hypertarget{index_progress_sec}{}\section{Work in progress}\label{index_progress_sec}
-I wrote this quickly and dirtily, so excuse the mess. \hypertarget{index_todo_sec}{}\subsection{To-\/\+Do}\label{index_todo_sec}
+ Library objects in the build subdirectory. \hypertarget{index_progress_sec}{}\subsection{Work in progress}\label{index_progress_sec}
+I wrote this quickly and dirtily, so excuse the mess. \hypertarget{index_todo_sec}{}\subsubsection{To-\/\+Do}\label{index_todo_sec}
 
 \begin{DoxyItemize}
 \item Clauses with bodies
 \item Error checking on literal types
 \item Check that all methods are implemented for all objects, both with and without structs. 
-\end{DoxyItemize}\hypertarget{index_objects_sec}{}\section{Objects}\label{index_objects_sec}
+\end{DoxyItemize}\hypertarget{index_objects_sec}{}\subsection{Objects}\label{index_objects_sec}
 The A\+PI revolves around a struct objects to enable a more logical way or representing datalog commands rather than the push and pop confusion found in the library. ~\newline
 ~\newline
  Literals are represented by the object datalog\+\_\+literal\+\_\+t, queries by datalog\+\_\+query\+\_\+t and clauses by datalog\+\_\+clause\+\_\+t. ~\newline
 ~\newline
- I may of missed a few methods to be implemented but I should get these done as I actually use this A\+PI for other code. 
+ I may of missed a few methods to be implemented but I should get these done as I actually use this A\+PI for other code. \hypertarget{index_parser_sec}{}\section{X\+M\+L Parser}\label{index_parser_sec}
+The X\+ML parser is designed to be used to be able to generate or create X\+ML files that can then be parsed to a datalog program to load rules and facts into the datalog database. The parser is built around libxml2 and I built the C\+Make to use stand alone libraries so to ensure easier building. The parser works by calling the dl\+\_\+parser\+\_\+init function, specifying the file to be opened. This will initialise the document object used by the parser. \hypertarget{index_literal_sec}{}\subsection{Literal objects}\label{index_literal_sec}
+The parser represents literals using the dl\+\_\+parser\+\_\+literal\+\_\+t object that stores the predicate and arguments for the literal. Literals are probably not used directly in the parser. \hypertarget{index_fact_sec}{}\subsection{Fact objects}\label{index_fact_sec}
+A fact in data log is a clause without a body, aka it\textquotesingle{}s a standard literal. Facts are essentailly a literal stored in a container allowing them to be used as elements of a linked list as well as storing a reference to the X\+ML node that corresponds to the fact. The parser will scan the entire document for facts, creating a linked list. This linked list is then traversed and each X\+ML fact node is walked and processed so that each fact is represented by a dl\+\_\+parser\+\_\+fact\+\_\+t object which contains the fact\textquotesingle{}s literal. ~\newline
+ The facts in the X\+ML tree can be found by calling dl\+\_\+parser\+\_\+mappings as this will in turn walk the X\+ML tree and call dl\+\_\+parser\+\_\+add\+\_\+fact on all found facts. Found facts are then processed using dl\+\_\+parser\+\_\+process\+\_\+fact. After processing the found facts can be found pointed to by the linked list head pointer dl\+\_\+parser\+\_\+fact\+\_\+t$\ast$ facts\+\_\+head found within the dl\+\_\+parser\+\_\+doc\+\_\+t object. \hypertarget{index_rule_sec}{}\subsection{Rule objects}\label{index_rule_sec}
+In Datalog rules are clauses that contain a body, the body being a potentially infinite length array of literals. In the X\+ML parser rules are represented similarly to facts, using the dl\+\_\+parser\+\_\+rule\+\_\+t object, with the exception that the rules object represents the body of the rule by an array of literal pointers. This list is dynamically allocated to allow for potentially infinite length rules. Parsing of rules happens in the same fashion as facts, in that a call to dl\+\_\+parser\+\_\+mappings will walk the X\+ML tree and call dl\+\_\+parser\+\_\+add\+\_\+rule on any found rules. These are then stores in a similar linked list fashion and processed through calls to dl\+\_\+parser\+\_\+process\+\_\+rule whilst iterating over the linked list. The linked list of processed rules can be found using the head pointer dl\+\_\+parser\+\_\+rule\+\_\+t$\ast$ rules\+\_\+head found in the dl\+\_\+parser\+\_\+doc\+\_\+t object. \hypertarget{index_parse_use_sec}{}\subsection{Parser use}\label{index_parse_use_sec}
+Parser use should pretty much only require the user to call \begin{DoxyVerb} dl_parser_doc_t* dl_doc = dl_parser_init(filename);\end{DoxyVerb}
+ followed by \begin{DoxyVerb} dl_parser_mappings(dl_doc);\end{DoxyVerb}
+ but one can also print any number of the objects in the library though the number of print functions. Document metadata can also be parsed by calling \hyperlink{structdl__parser__metadata}{dl\+\_\+parser\+\_\+metadata} which will populat a dl\+\_\+parser\+\_\+metadata\+\_\+t object stored in the main dl\+\_\+parser\+\_\+doc\+\_\+t object. ~\newline
+ See included example for furthur usage. 

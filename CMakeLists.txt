@@ -70,10 +70,26 @@ if(DATALOG_ERR)
     add_definitions(-DDATALOG_ERR)
 endif(DATALOG_ERR)
 
+option(PARSER_DEBUG "Enable debugging messages for datalog parser" ON)
+if(PARSER_DEBUG)
+    add_definitions(-DPARSER_DEBUG)
+endif(PARSER_DEBUG)
+
+option(PARSER_DEBUG_VERBOSE "Enable verbose debugging messages for datalog parser" ON)
+if(PARSER_DEBUG_VERBOSE)
+    add_definitions(-DPARSER_DEBUG_VERBOSE)
+endif(PARSER_DEBUG_VERBOSE)
+
+option(PARSER_ERR "Enable parser error messages" ON)
+if(PARSER_ERR)
+    add_definitions(-DPARSER_ERR)
+endif(PARSER_ERR)
+
 #includes
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/libs/libdatalog)
 include_directories(${PROJECT_SOURCE_DIR}/libs/libdatalog/lua)
+include_directories(${PROJECT_SOURCE_DIR}/libs/libxml2/include/libxml2)
 
 #SRCS
 #tars
@@ -86,6 +102,10 @@ MESSAGE( STATUS "CMAKE_BINARY_DIR:         " ${CMAKE_BINARY_DIR} )
 #my datalog api
 file(GLOB DATALOG_API_SRCS "datalog_api.c")
 add_library(DATALOG_API SHARED ${DATALOG_API_SRCS})
+
+#my datalog parser
+file(GLOB DATALOG_PARSER_SRCS "datalog_parser.c")
+add_library(DATALOG_PARSER SHARED ${DATALOG_PARSER_SRCS})
 
 #datalog
 file(GLOB DATALOG_SRCS "libs/libdatalog/datalog.c")
@@ -100,6 +120,7 @@ add_executable(EXAMPLE ${SOURCES})
 
 #LINKING
 target_link_libraries(EXAMPLE DATALOG_API)
+target_link_libraries(EXAMPLE DATALOG_PARSER)
 target_link_libraries(EXAMPLE DATALOG)
 target_link_libraries(EXAMPLE LUA)
 target_link_libraries(EXAMPLE m)
