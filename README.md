@@ -73,7 +73,7 @@ The API revolves around a struct objects to enable a more logical way or represe
 
 Literals are represented by the object __datalog_literal_t__, queries by __datalog_query_t__ and clauses by __datalog_clause_t__. I may of missed a few methods to be implemented but I should get these done as I actually use this API for other code. 
 
-# XML Parser
+# XML Parser (very Beta)
 
 he XML parser is designed to be used to be able to generate or create XML files that can then be parsed to a datalog program to load rules and facts into the datalog database. The parser is built around libxml2 and I built the CMake to use stand alone libraries so to ensure easier building. The parser works by calling the dl_parser_init function, specifying the file to be opened. This will initialise the document object used by the parser. 
 
