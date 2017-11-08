@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datalog>
     <metadata>
-        <description>EDD to NAMRS mappings</description>
+        <description>EDD to NAMUR mappings</description>
         <author>alex</author> 
     </metadata>
     <mappings>
