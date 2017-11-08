@@ -4,9 +4,6 @@
  * @date 11 October 2017
  * @brief Data types and functions for performing classical keyboard functions
  *
- * While the keyboard offers more advanced features, the classical keyboard I/O
- * features of the keyboard are implemented within this file
- *
  * @mainpage Datalog API
  * @section intro_sec Introduction
  * The original implementation of the LUA/C library is not the easiest to work 
