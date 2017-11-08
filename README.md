@@ -81,7 +81,7 @@ he XML parser is designed to be used to be able to generate or create XML files 
 The parser represents literals using the dl_parser_literal_t object that stores the predicate and arguments for the literal. Literals are probably not used directly in the parser.
 
 ## Fact objects
- A fact in data log is a clause without a body, aka it's a standard literal. Facts are essentailly a literal stored in a container allowing them to be used as elements of a linked list as well as storing a reference to the XML node that corresponds to the fact. The parser will scan the entire document for facts, creating a linked list. This linked list is then traversed and each XML fact node is walked and processed so that each fact is represented by a dl_parser_fact_t object which contains the fact's literal.   
+ A fact in Datalog is a clause without a body, aka it's a standard literal. Facts are essentailly a literal stored in a container allowing them to be used as elements of a linked list as well as storing a reference to the XML node that corresponds to the fact. The parser will scan the entire document for facts, creating a linked list. This linked list is then traversed and each XML fact node is walked and processed so that each fact is represented by a dl_parser_fact_t object which contains the fact's literal.   
 
  The facts in the XML tree can be found by calling dl_parser_mappings as this will in turn walk the XML tree and call dl_parser_add_fact on all found facts. Found facts are then processed using dl_parser_process_fact. After processing the found facts can be found pointed to by the linked list head pointer dl_parser_fact_t* facts_head found within the dl_parser_doc_t object.
 
