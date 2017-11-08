@@ -93,5 +93,5 @@ var searchData=
   ['dl_5fvc',['DL_VC',['../datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a',1,'DL_VC():&#160;datalog_api.h'],['../datalog__parser_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a',1,'DL_VC():&#160;datalog_parser.h']]],
   ['dl_5fvv',['DL_VV',['../datalog__api_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421a90c5f679dcd0d3ccc596ce428124fc87',1,'DL_VV():&#160;datalog_api.h'],['../datalog__parser_8h.html#ad27ac7b01e9690a8c6d1bd37e131a421a90c5f679dcd0d3ccc596ce428124fc87',1,'DL_VV():&#160;datalog_parser.h']]],
   ['document',['document',['../structdl__parser__doc.html#ae8457bf3e2bee4e2d6246c4e34a30169',1,'dl_parser_doc']]],
-  ['datalog_20api',['Datalog API',['../md__home_alxhoff_git_Datalog-API_README.html',1,'']]]
+  ['datalog_20api',['Datalog API',['../md__home_alxhoff_git_GitHub_Datalog-API_README.html',1,'']]]
 ];
