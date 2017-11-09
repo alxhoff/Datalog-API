@@ -6,7 +6,7 @@
 # @copyright   GNU GPL v3
 # @brief       API functions to use the LUA/C datalog implementation found
 #              found at http://datalog.sourceforge.net
-#  
+#
 #@verbatim
 #   ----------------------------------------------------------------------
 #    Copyright (C) Alexander Hoffman, 2017
@@ -124,3 +124,4 @@ target_link_libraries(EXAMPLE DATALOG_PARSER)
 target_link_libraries(EXAMPLE DATALOG)
 target_link_libraries(EXAMPLE LUA)
 target_link_libraries(EXAMPLE m)
+target_link_libraries(EXAMPLE ${PROJECT_SOURCE_DIR}/libs/libxml2/lib/libxml2.so.2.9.7)

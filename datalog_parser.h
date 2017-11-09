@@ -44,6 +44,7 @@ typedef enum{
     DL_PARSER_NO_NODE   /*!< no node mathing criteria*/
 }DL_PARSER_ERR_t;
 
+#ifndef __DATALOG_API_H__
 /**
 * @enum DATALOG_LIT_t
 * @brief used to specify the type of literal to be created
@@ -54,6 +55,7 @@ typedef enum{
     DL_VV,  /*!< variable variable */
     DL_VC   /*!< variaben constant */
 }DATALOG_LIT_t;
+#endif
 
 /**
 * @enum DL_PARSER_ARG_TYPE_t 

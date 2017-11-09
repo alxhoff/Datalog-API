@@ -28,6 +28,7 @@
 #include <string.h>
 
 #include "datalog_api.h"
+#include "datalog_parser.h"
 
 datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
 {

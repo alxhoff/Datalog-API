@@ -119,8 +119,6 @@
 
 #include "datalog.h"
 
-#define DATALOG_API	1
-
 /**
 * @enum DATALOG_LIT_t
 * @brief used to specify the type of literal to be created
@@ -132,7 +130,6 @@ typedef enum{
     DL_VC   /*!< variaben constant */
 }DATALOG_LIT_t;
 
-#ifndef DATALOG_API
 /**
 * @enum DATALOG_ERR_t
 * @brief error messages
@@ -146,7 +143,6 @@ typedef enum{
     DATALOG_QUE,
     DATALOG_TYPE
 }DATALOG_ERR_t;
-#endif
 
 /**
 * @typedef datalog_query_answer_pair_t

@@ -94,6 +94,7 @@ EXAMPLE_EXTERNAL_OBJECTS =
 ../bin/EXAMPLE: libDATALOG_PARSER.so
 ../bin/EXAMPLE: libDATALOG.so
 ../bin/EXAMPLE: libLUA.so
+../bin/EXAMPLE: ../libs/libxml2/lib/libxml2.so.2.9.7
 ../bin/EXAMPLE: CMakeFiles/EXAMPLE.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alxhoff/git/Datalog-API/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable ../bin/EXAMPLE"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/EXAMPLE.dir/link.txt --verbose=$(VERBOSE)
