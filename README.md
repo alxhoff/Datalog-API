@@ -3,10 +3,10 @@
 _windows users you are on your own_
 
 ## Introduction
-The original implementation of the LUA/C library is not the easiest to work with and does not lead to logical or easy to follow code. I have quickly thrown this API together to make the coding datalog coding style similar to that of the Python implementation. 
+The original implementation of the LUA/C library is not the easiest to work with and does not lead to logical or easy to follow code. I have quickly thrown this API together to make the datalog coding style similar to that of the Python implementation. 
 
 ## Prerequisites 
-The LUA/C library can be found [here](http://datalog.sourceforge.net) and must be downlaoded and placed into the libs folder such that the file tree looks like this  
+The LUA/C library can be found [here](http://datalog.sourceforge.net) and must be downloaded and placed into the libs folder such that the file tree looks like this  
 ```
   |--- Datalog-API  
         |  
@@ -75,7 +75,7 @@ Literals are represented by the object __datalog_literal_t__, queries by __datal
 
 # XML Parser (very Beta)
 
-he XML parser is designed to be used to be able to generate or create XML files that can then be parsed to a datalog program to load rules and facts into the datalog database. The parser is built around libxml2 and I built the CMake to use stand alone libraries so to ensure easier building. The parser works by calling the dl_parser_init function, specifying the file to be opened. This will initialise the document object used by the parser. 
+The XML parser is designed to be so that XML files can be parsed to a datalog program to load rules and facts into the datalog database. The parser is built around libxml2 and I built with gcc/CMake using stand alone libraries so as to ensure easier building. The parser works by calling the dl_parser_init function, specifying the file to be opened. This will initialise the document object used by the parser. 
 
 ## Literal objects
 The parser represents literals using the dl_parser_literal_t object that stores the predicate and arguments for the literal. Literals are probably not used directly in the parser.

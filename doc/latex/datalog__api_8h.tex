@@ -1,0 +1,712 @@
+\hypertarget{datalog__api_8h}{}\section{/home/alxhoff/git/\+Git\+Hub/\+Datalog-\/\+A\+P\+I/datalog\+\_\+api.h File Reference}
+\label{datalog__api_8h}\index{/home/alxhoff/git/\+Git\+Hub/\+Datalog-\/\+A\+P\+I/datalog\+\_\+api.\+h@{/home/alxhoff/git/\+Git\+Hub/\+Datalog-\/\+A\+P\+I/datalog\+\_\+api.\+h}}
+
+
+Data types and functions for performing classical keyboard functions.  
+
+
+{\ttfamily \#include \char`\"{}datalog.\+h\char`\"{}}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structdatalog__query__answer__pair}{datalog\+\_\+query\+\_\+answer\+\_\+pair}
+\begin{DoxyCompactList}\small\item\em Struct used to represent individual query answers in the A\+PI. \end{DoxyCompactList}\item 
+struct \hyperlink{structdatalog__query__answer}{datalog\+\_\+query\+\_\+answer}
+\begin{DoxyCompactList}\small\item\em Struct used to represent query answers in the A\+PI. \end{DoxyCompactList}\item 
+struct \hyperlink{structdatalog__literal}{datalog\+\_\+literal}
+\begin{DoxyCompactList}\small\item\em Struct to represent a datalog literal. \end{DoxyCompactList}\item 
+struct \hyperlink{structdatalog__query}{datalog\+\_\+query}
+\begin{DoxyCompactList}\small\item\em Struct used to represent send a query the A\+PI. \end{DoxyCompactList}\item 
+struct \hyperlink{structdatalog__clause}{datalog\+\_\+clause}
+\begin{DoxyCompactList}\small\item\em Struct to represent a datalog clause. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{datalog__api_8h_a2748a6cefd47f5a6c5d74c4b8e2d07fa}{D\+A\+T\+A\+L\+O\+G\+\_\+\+A\+PI}~1
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structdatalog__query__answer__pair}{datalog\+\_\+query\+\_\+answer\+\_\+pair} \hyperlink{datalog__api_8h_a734a9da1b36a22c0f4477a4bbceddb91}{datalog\+\_\+query\+\_\+answer\+\_\+pair\+\_\+t}
+\begin{DoxyCompactList}\small\item\em Typdef for \hyperlink{structdatalog__query__answer__pair}{datalog\+\_\+query\+\_\+answer\+\_\+pair}. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{structdatalog__query__answer}{datalog\+\_\+query\+\_\+answer} \hyperlink{datalog__api_8h_a34c189d3b3a5d5821691c8237e3922e6}{datalog\+\_\+query\+\_\+answer\+\_\+t}
+\begin{DoxyCompactList}\small\item\em Typdef for \hyperlink{structdatalog__query__answer}{datalog\+\_\+query\+\_\+answer}. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{structdatalog__literal}{datalog\+\_\+literal} \hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t}
+\begin{DoxyCompactList}\small\item\em Typdef for \hyperlink{structdatalog__literal}{datalog\+\_\+literal}. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{structdatalog__query}{datalog\+\_\+query} \hyperlink{datalog__api_8h_a6d9910ac0606673043b4886a9eccfb5f}{datalog\+\_\+query\+\_\+t}
+\begin{DoxyCompactList}\small\item\em Typdef for \hyperlink{structdatalog__query}{datalog\+\_\+query}. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{structdatalog__clause}{datalog\+\_\+clause} \hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t}
+\begin{DoxyCompactList}\small\item\em Typdef for \hyperlink{structdatalog__clause}{datalog\+\_\+clause}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t} \{ \newline
+\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a20806501d70ba513ecd502f806cb3fca}{D\+L\+\_\+\+CC}, 
+\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a4f492d6e702df758257c04aab23b7c51}{D\+L\+\_\+\+CV}, 
+\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a90c5f679dcd0d3ccc596ce428124fc87}{D\+L\+\_\+\+VV}, 
+\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a}{D\+L\+\_\+\+VC}, 
+\newline
+\hyperlink{datalog__parser_8h_ad27ac7b01e9690a8c6d1bd37e131a421a20806501d70ba513ecd502f806cb3fca}{D\+L\+\_\+\+CC}, 
+\hyperlink{datalog__parser_8h_ad27ac7b01e9690a8c6d1bd37e131a421a4f492d6e702df758257c04aab23b7c51}{D\+L\+\_\+\+CV}, 
+\hyperlink{datalog__parser_8h_ad27ac7b01e9690a8c6d1bd37e131a421a90c5f679dcd0d3ccc596ce428124fc87}{D\+L\+\_\+\+VV}, 
+\hyperlink{datalog__parser_8h_ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a}{D\+L\+\_\+\+VC}
+ \}\begin{DoxyCompactList}\small\item\em used to specify the type of literal to be created \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{datalog__api_8h_a34c189d3b3a5d5821691c8237e3922e6}{datalog\+\_\+query\+\_\+answer\+\_\+t} $\ast$ \hyperlink{datalog__api_8h_a66ac02cfdf21eacf2f8d35e2fa7dde4b}{datalog\+\_\+process\+\_\+answer} (dl\+\_\+answers\+\_\+t a)
+\begin{DoxyCompactList}\small\item\em Initialises the G\+P\+IO pins for the SR. \end{DoxyCompactList}\item 
+void \hyperlink{datalog__api_8h_a4e74444e8ea41e00279f24631b872e23}{datalog\+\_\+print\+\_\+answers} (\hyperlink{datalog__api_8h_a34c189d3b3a5d5821691c8237e3922e6}{datalog\+\_\+query\+\_\+answer\+\_\+t} $\ast$a)
+\begin{DoxyCompactList}\small\item\em Prints a visual representation of a query answer struct. \end{DoxyCompactList}\item 
+\hyperlink{datalog__api_8h_a6d9910ac0606673043b4886a9eccfb5f}{datalog\+\_\+query\+\_\+t} $\ast$ \hyperlink{datalog__api_8h_ab231a36bb798996ab914650a40325e3c}{datalog\+\_\+query\+\_\+init} (char $\ast$predicate, char $\ast$arg1, char $\ast$arg2, \hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t} lit\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Initialises a datalog query struct from the given arguements. \end{DoxyCompactList}\item 
+\hyperlink{datalog__api_8h_a6d9910ac0606673043b4886a9eccfb5f}{datalog\+\_\+query\+\_\+t} $\ast$ \hyperlink{datalog__api_8h_ac78a6a23d6c47f9fe079dff6dbc43f5c}{datalog\+\_\+query\+\_\+init\+\_\+s} (\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$lit)
+\begin{DoxyCompactList}\small\item\em Initialises a datalog query struct from a literal struct. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_a3712d21b088163d9651c70b7079ebb6e}{datalog\+\_\+query} (char $\ast$predicate, char $\ast$const1, char $\ast$const2, \hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t} lit\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Issues a query. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_ad0d604403e6a0aeb56c2761c51e6efc5}{datalog\+\_\+query\+\_\+s} (\hyperlink{datalog__api_8h_a6d9910ac0606673043b4886a9eccfb5f}{datalog\+\_\+query\+\_\+t} $\ast$query)
+\begin{DoxyCompactList}\small\item\em Issues a query and saves the answer. \end{DoxyCompactList}\item 
+\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$ \hyperlink{datalog__api_8h_a140d89a93119c6e5f75f4b6aa89fc03c}{datalog\+\_\+init\+\_\+literal} (char $\ast$predicate, char $\ast$arg1, char $\ast$arg2, \hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t} lit\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Initialises a datalog literal struct, does not create the literal in the database. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_a6f828288e1fb48d1cebf4be55c5da55c}{datalog\+\_\+update\+\_\+and\+\_\+assert\+\_\+literal} (\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$lit, char $\ast$predicate, char $\ast$arg1, char $\ast$arg2, \hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t} lit\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Updates the values of a preexsisting literal structure and asserts the literal. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_aaca99c056777bf54759d67faa252387b}{datalog\+\_\+update\+\_\+literal} (\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$lit, char $\ast$predicate, char $\ast$arg1, char $\ast$arg2, \hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t} lit\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Updates the values of a preexsisting literal structure. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_a3178948f93a28456018eaf53749dd29d}{datalog\+\_\+create\+\_\+and\+\_\+assert\+\_\+literal\+\_\+s} (\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$lit)
+\begin{DoxyCompactList}\small\item\em Creates and assers a literal from a literal struct. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_ac059525441d22c1d3cf3b9d1fcf6bbec}{datalog\+\_\+create\+\_\+literal} (char $\ast$predicate, char $\ast$var1, char $\ast$var2, \hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t} lit\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Creates a literal from the given arguments. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_a43679d256ebc05b1df19c7b689949013}{datalog\+\_\+create\+\_\+literal\+\_\+s} (\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$literal)
+\begin{DoxyCompactList}\small\item\em Creates a literal from a literal struct. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_a8d82e1c48a6e2e313a5f3dac07a47bb7}{datalog\+\_\+push\+\_\+string} (char $\ast$string)
+\begin{DoxyCompactList}\small\item\em Pushes the given string on to the top of the datalog stack. \end{DoxyCompactList}\item 
+int \hyperlink{datalog__api_8h_ab2a856ebf735743b41b2ef493a9f39e4}{datalog\+\_\+add\+\_\+var\+\_\+const} (\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t} lit\+\_\+type, int index)
+\begin{DoxyCompactList}\small\item\em Adds either a variable or constant to the current literal. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_aaa64abc074ffbeef15b5b081c8c7b712}{datalog\+\_\+print\+\_\+clause} (\hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t} $\ast$clause)
+\begin{DoxyCompactList}\small\item\em Prints a clause structure in a datalog representation. \end{DoxyCompactList}\item 
+\hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t} $\ast$ \hyperlink{datalog__api_8h_a4eba2141043515a2d2ea10a9b745dcdb}{datalog\+\_\+init\+\_\+clause} (char $\ast$head\+\_\+predicate, char $\ast$head\+\_\+arg1, char $\ast$head\+\_\+arg2, \hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t} head\+\_\+lit\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Initialises a clause structure, populating the head literal with the arguments parsed to the function. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_a4013ae293f40a4be1ba267b3ef186cd6}{datalog\+\_\+clause\+\_\+add\+\_\+literal} (\hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t} $\ast$clause, char $\ast$predicate, char $\ast$arg1, char $\ast$arg2, \hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t} lit\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Initialises a clause structure, initialising the clause\textquotesingle{}s head literal with the values passed to the funciton. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_a46a14634cb9debca790b9e621f248218}{datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s} (\hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t} $\ast$clause, \hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$literal)
+\begin{DoxyCompactList}\small\item\em Initialises a clause structure, but instead of creating a copy of the passed literal as the clause\textquotesingle{}s head literal, the clause struct only points to it. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_ad81355624337671d979a79986df0c009}{datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s\+\_\+copy} (\hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t} $\ast$clause, \hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$literal)
+\begin{DoxyCompactList}\small\item\em Initialises a clause structure, the clause\textquotesingle{}s head literal is created as a copy of the literal that is passed to the function. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_a746f99e170991bcf07f110c44fb4c7f2}{datalog\+\_\+assert\+\_\+clause} (int literal\+\_\+count)
+\begin{DoxyCompactList}\small\item\em Asserts a clause that does not have a body. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_ad25cf650c3b30b15a5a9af39c7d6a406}{datalog\+\_\+engine\+\_\+db\+\_\+init} (void)
+\begin{DoxyCompactList}\small\item\em Initialises the datalog database. \end{DoxyCompactList}\item 
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{datalog__api_8h_ab690dd58030bad81272d853762c748e5}{datalog\+\_\+engine\+\_\+db\+\_\+deinit} (void)
+\begin{DoxyCompactList}\small\item\em Deinitialises the datalog database. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+dl\+\_\+db\+\_\+t \hyperlink{datalog__api_8h_a89884ff24ff3b89b1e6db568650f0fbe}{datalog\+\_\+db}
+\begin{DoxyCompactList}\small\item\em Global database used by datalog library. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Data types and functions for performing classical keyboard functions. 
+
+\begin{DoxyAuthor}{Author}
+Alex Hoffman 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+11 October 2017 
+\end{DoxyDate}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{datalog__api_8h_a2748a6cefd47f5a6c5d74c4b8e2d07fa}\label{datalog__api_8h_a2748a6cefd47f5a6c5d74c4b8e2d07fa}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!D\+A\+T\+A\+L\+O\+G\+\_\+\+A\+PI@{D\+A\+T\+A\+L\+O\+G\+\_\+\+A\+PI}}
+\index{D\+A\+T\+A\+L\+O\+G\+\_\+\+A\+PI@{D\+A\+T\+A\+L\+O\+G\+\_\+\+A\+PI}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{D\+A\+T\+A\+L\+O\+G\+\_\+\+A\+PI}{DATALOG\_API}}
+{\footnotesize\ttfamily \#define D\+A\+T\+A\+L\+O\+G\+\_\+\+A\+PI~1}
+
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}\label{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+clause\+\_\+t@{datalog\+\_\+clause\+\_\+t}}
+\index{datalog\+\_\+clause\+\_\+t@{datalog\+\_\+clause\+\_\+t}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+clause\+\_\+t}{datalog\_clause\_t}}
+{\footnotesize\ttfamily \hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t}}
+
+
+
+Typdef for \hyperlink{structdatalog__clause}{datalog\+\_\+clause}. 
+
+\mbox{\Hypertarget{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}\label{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+literal\+\_\+t@{datalog\+\_\+literal\+\_\+t}}
+\index{datalog\+\_\+literal\+\_\+t@{datalog\+\_\+literal\+\_\+t}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+literal\+\_\+t}{datalog\_literal\_t}}
+{\footnotesize\ttfamily \hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t}}
+
+
+
+Typdef for \hyperlink{structdatalog__literal}{datalog\+\_\+literal}. 
+
+\mbox{\Hypertarget{datalog__api_8h_a734a9da1b36a22c0f4477a4bbceddb91}\label{datalog__api_8h_a734a9da1b36a22c0f4477a4bbceddb91}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+query\+\_\+answer\+\_\+pair\+\_\+t@{datalog\+\_\+query\+\_\+answer\+\_\+pair\+\_\+t}}
+\index{datalog\+\_\+query\+\_\+answer\+\_\+pair\+\_\+t@{datalog\+\_\+query\+\_\+answer\+\_\+pair\+\_\+t}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+query\+\_\+answer\+\_\+pair\+\_\+t}{datalog\_query\_answer\_pair\_t}}
+{\footnotesize\ttfamily \hyperlink{datalog__api_8h_a734a9da1b36a22c0f4477a4bbceddb91}{datalog\+\_\+query\+\_\+answer\+\_\+pair\+\_\+t}}
+
+
+
+Typdef for \hyperlink{structdatalog__query__answer__pair}{datalog\+\_\+query\+\_\+answer\+\_\+pair}. 
+
+\mbox{\Hypertarget{datalog__api_8h_a34c189d3b3a5d5821691c8237e3922e6}\label{datalog__api_8h_a34c189d3b3a5d5821691c8237e3922e6}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+query\+\_\+answer\+\_\+t@{datalog\+\_\+query\+\_\+answer\+\_\+t}}
+\index{datalog\+\_\+query\+\_\+answer\+\_\+t@{datalog\+\_\+query\+\_\+answer\+\_\+t}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+query\+\_\+answer\+\_\+t}{datalog\_query\_answer\_t}}
+{\footnotesize\ttfamily \hyperlink{datalog__api_8h_a34c189d3b3a5d5821691c8237e3922e6}{datalog\+\_\+query\+\_\+answer\+\_\+t}}
+
+
+
+Typdef for \hyperlink{structdatalog__query__answer}{datalog\+\_\+query\+\_\+answer}. 
+
+\mbox{\Hypertarget{datalog__api_8h_a6d9910ac0606673043b4886a9eccfb5f}\label{datalog__api_8h_a6d9910ac0606673043b4886a9eccfb5f}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+query\+\_\+t@{datalog\+\_\+query\+\_\+t}}
+\index{datalog\+\_\+query\+\_\+t@{datalog\+\_\+query\+\_\+t}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+query\+\_\+t}{datalog\_query\_t}}
+{\footnotesize\ttfamily \hyperlink{datalog__api_8h_a6d9910ac0606673043b4886a9eccfb5f}{datalog\+\_\+query\+\_\+t}}
+
+
+
+Typdef for \hyperlink{structdatalog__query}{datalog\+\_\+query}. 
+
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}\label{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t@{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}}
+\index{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t@{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}{DATALOG\_LIT\_t}}
+{\footnotesize\ttfamily enum \hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}}
+
+
+
+used to specify the type of literal to be created 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+L\+\_\+\+CC@{D\+L\+\_\+\+CC}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!D\+L\+\_\+\+CC@{D\+L\+\_\+\+CC}}}\mbox{\Hypertarget{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a20806501d70ba513ecd502f806cb3fca}\label{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a20806501d70ba513ecd502f806cb3fca}} 
+D\+L\+\_\+\+CC&constant constant \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+L\+\_\+\+CV@{D\+L\+\_\+\+CV}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!D\+L\+\_\+\+CV@{D\+L\+\_\+\+CV}}}\mbox{\Hypertarget{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a4f492d6e702df758257c04aab23b7c51}\label{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a4f492d6e702df758257c04aab23b7c51}} 
+D\+L\+\_\+\+CV&constant variable \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+L\+\_\+\+VV@{D\+L\+\_\+\+VV}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!D\+L\+\_\+\+VV@{D\+L\+\_\+\+VV}}}\mbox{\Hypertarget{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a90c5f679dcd0d3ccc596ce428124fc87}\label{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a90c5f679dcd0d3ccc596ce428124fc87}} 
+D\+L\+\_\+\+VV&variable variable \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+L\+\_\+\+VC@{D\+L\+\_\+\+VC}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!D\+L\+\_\+\+VC@{D\+L\+\_\+\+VC}}}\mbox{\Hypertarget{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a}\label{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a}} 
+D\+L\+\_\+\+VC&variaben constant \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+L\+\_\+\+CC@{D\+L\+\_\+\+CC}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!D\+L\+\_\+\+CC@{D\+L\+\_\+\+CC}}}\mbox{\Hypertarget{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a20806501d70ba513ecd502f806cb3fca}\label{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a20806501d70ba513ecd502f806cb3fca}} 
+D\+L\+\_\+\+CC&constant constant \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+L\+\_\+\+CV@{D\+L\+\_\+\+CV}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!D\+L\+\_\+\+CV@{D\+L\+\_\+\+CV}}}\mbox{\Hypertarget{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a4f492d6e702df758257c04aab23b7c51}\label{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a4f492d6e702df758257c04aab23b7c51}} 
+D\+L\+\_\+\+CV&constant variable \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+L\+\_\+\+VV@{D\+L\+\_\+\+VV}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!D\+L\+\_\+\+VV@{D\+L\+\_\+\+VV}}}\mbox{\Hypertarget{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a90c5f679dcd0d3ccc596ce428124fc87}\label{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421a90c5f679dcd0d3ccc596ce428124fc87}} 
+D\+L\+\_\+\+VV&variable variable \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+L\+\_\+\+VC@{D\+L\+\_\+\+VC}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!D\+L\+\_\+\+VC@{D\+L\+\_\+\+VC}}}\mbox{\Hypertarget{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a}\label{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421ad5966c99a2ed964351aded95ec1bfb4a}} 
+D\+L\+\_\+\+VC&variaben constant \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{datalog__api_8h_ab2a856ebf735743b41b2ef493a9f39e4}\label{datalog__api_8h_ab2a856ebf735743b41b2ef493a9f39e4}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+add\+\_\+var\+\_\+const@{datalog\+\_\+add\+\_\+var\+\_\+const}}
+\index{datalog\+\_\+add\+\_\+var\+\_\+const@{datalog\+\_\+add\+\_\+var\+\_\+const}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+add\+\_\+var\+\_\+const()}{datalog\_add\_var\_const()}}
+{\footnotesize\ttfamily int datalog\+\_\+add\+\_\+var\+\_\+const (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}}]{lit\+\_\+type,  }\item[{int}]{index }\end{DoxyParamCaption})}
+
+
+
+Adds either a variable or constant to the current literal. 
+
+Whilst a literal is in creation (whilst it is on top of the stack) this function takes the string ontop of the stack and adds it to the literal as either a variable or constant.
+
+
+\begin{DoxyParams}{Parameters}
+{\em lit\+\_\+type} & specifies the types of arguments to be created in the literal. \\
+\hline
+{\em index} & specifies if the variable or constant to be created is the 0th term or the 1st term of the literal \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a746f99e170991bcf07f110c44fb4c7f2}\label{datalog__api_8h_a746f99e170991bcf07f110c44fb4c7f2}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+assert\+\_\+clause@{datalog\+\_\+assert\+\_\+clause}}
+\index{datalog\+\_\+assert\+\_\+clause@{datalog\+\_\+assert\+\_\+clause}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+assert\+\_\+clause()}{datalog\_assert\_clause()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+assert\+\_\+clause (\begin{DoxyParamCaption}\item[{int}]{literal\+\_\+count }\end{DoxyParamCaption})}
+
+
+
+Asserts a clause that does not have a body. 
+
+Pops a literal off the stack to create and assert a clause. Literal must be already on the stack. Ordered appropriatley.
+
+
+\begin{DoxyParams}{Parameters}
+{\em literal\+\_\+count} & Number of literals in the body of the clause \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a4013ae293f40a4be1ba267b3ef186cd6}\label{datalog__api_8h_a4013ae293f40a4be1ba267b3ef186cd6}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+clause\+\_\+add\+\_\+literal@{datalog\+\_\+clause\+\_\+add\+\_\+literal}}
+\index{datalog\+\_\+clause\+\_\+add\+\_\+literal@{datalog\+\_\+clause\+\_\+add\+\_\+literal}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+clause\+\_\+add\+\_\+literal()}{datalog\_clause\_add\_literal()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+clause\+\_\+add\+\_\+literal (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t} $\ast$}]{clause,  }\item[{char $\ast$}]{predicate,  }\item[{char $\ast$}]{arg1,  }\item[{char $\ast$}]{arg2,  }\item[{\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}}]{lit\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Initialises a clause structure, initialising the clause\textquotesingle{}s head literal with the values passed to the funciton. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em head\+\_\+predicate} & string literal of the literal\textquotesingle{}s predicate \\
+\hline
+{\em head\+\_\+arg1} & string literal for the literal\textquotesingle{}s first term \\
+\hline
+{\em head\+\_\+arg2} & string literal for the literal\textquotesingle{}s second term \\
+\hline
+{\em head\+\_\+lit\+\_\+type} & specifies the types of arguments to be created in the literal. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a46a14634cb9debca790b9e621f248218}\label{datalog__api_8h_a46a14634cb9debca790b9e621f248218}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s@{datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s}}
+\index{datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s@{datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s()}{datalog\_clause\_add\_literal\_s()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t} $\ast$}]{clause,  }\item[{\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$}]{literal }\end{DoxyParamCaption})}
+
+
+
+Initialises a clause structure, but instead of creating a copy of the passed literal as the clause\textquotesingle{}s head literal, the clause struct only points to it. 
+
+One must be careful that the literal is never free\textquotesingle{}d as this would lead to undefined behavious.
+
+
+\begin{DoxyParams}{Parameters}
+{\em clause} & pointer to the clause object to which the literal shall be added \\
+\hline
+{\em literal} & pointer to the literal object that will be copied in as the clause\textquotesingle{}s head literal \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_ad81355624337671d979a79986df0c009}\label{datalog__api_8h_ad81355624337671d979a79986df0c009}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s\+\_\+copy@{datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s\+\_\+copy}}
+\index{datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s\+\_\+copy@{datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s\+\_\+copy}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s\+\_\+copy()}{datalog\_clause\_add\_literal\_s\_copy()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+clause\+\_\+add\+\_\+literal\+\_\+s\+\_\+copy (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t} $\ast$}]{clause,  }\item[{\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$}]{literal }\end{DoxyParamCaption})}
+
+
+
+Initialises a clause structure, the clause\textquotesingle{}s head literal is created as a copy of the literal that is passed to the function. 
+
+With this function one can free the initialising head literal
+
+
+\begin{DoxyParams}{Parameters}
+{\em clause} & pointer to the clause object to which the literal shall be added \\
+\hline
+{\em literal} & pointer to the literal object that will be copied in as the clause\textquotesingle{}s head literal \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a3178948f93a28456018eaf53749dd29d}\label{datalog__api_8h_a3178948f93a28456018eaf53749dd29d}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+create\+\_\+and\+\_\+assert\+\_\+literal\+\_\+s@{datalog\+\_\+create\+\_\+and\+\_\+assert\+\_\+literal\+\_\+s}}
+\index{datalog\+\_\+create\+\_\+and\+\_\+assert\+\_\+literal\+\_\+s@{datalog\+\_\+create\+\_\+and\+\_\+assert\+\_\+literal\+\_\+s}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+create\+\_\+and\+\_\+assert\+\_\+literal\+\_\+s()}{datalog\_create\_and\_assert\_literal\_s()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+create\+\_\+and\+\_\+assert\+\_\+literal\+\_\+s (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$}]{lit }\end{DoxyParamCaption})}
+
+
+
+Creates and assers a literal from a literal struct. 
+
+Creates a literal from the given struct, of a specified type, instead of leaving the literal on top of the stack the literal is asserted into the database.
+
+
+\begin{DoxyParams}{Parameters}
+{\em literal} & struct containing the information required to create the literal. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_ac059525441d22c1d3cf3b9d1fcf6bbec}\label{datalog__api_8h_ac059525441d22c1d3cf3b9d1fcf6bbec}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+create\+\_\+literal@{datalog\+\_\+create\+\_\+literal}}
+\index{datalog\+\_\+create\+\_\+literal@{datalog\+\_\+create\+\_\+literal}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+create\+\_\+literal()}{datalog\_create\_literal()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+create\+\_\+literal (\begin{DoxyParamCaption}\item[{char $\ast$}]{predicate,  }\item[{char $\ast$}]{var1,  }\item[{char $\ast$}]{var2,  }\item[{\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}}]{lit\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Creates a literal from the given arguments. 
+
+Creates a literal from the given terms, of a specified type, and leaves the literal on top of the stack.
+
+
+\begin{DoxyParams}{Parameters}
+{\em predicate} & string literal of the literal\textquotesingle{}s predicate \\
+\hline
+{\em arg1} & string literal for the literal\textquotesingle{}s first term \\
+\hline
+{\em arg2} & string literal for the literal\textquotesingle{}s second term \\
+\hline
+{\em lit\+\_\+type} & specifies the types of arguments to be created in the literal. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a43679d256ebc05b1df19c7b689949013}\label{datalog__api_8h_a43679d256ebc05b1df19c7b689949013}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+create\+\_\+literal\+\_\+s@{datalog\+\_\+create\+\_\+literal\+\_\+s}}
+\index{datalog\+\_\+create\+\_\+literal\+\_\+s@{datalog\+\_\+create\+\_\+literal\+\_\+s}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+create\+\_\+literal\+\_\+s()}{datalog\_create\_literal\_s()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+create\+\_\+literal\+\_\+s (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$}]{literal }\end{DoxyParamCaption})}
+
+
+
+Creates a literal from a literal struct. 
+
+Creates a literal from the given struct, of a specified type, and leaves the literal on top of the stack.
+
+
+\begin{DoxyParams}{Parameters}
+{\em literal} & struct containing the information required to create the literal. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_ab690dd58030bad81272d853762c748e5}\label{datalog__api_8h_ab690dd58030bad81272d853762c748e5}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+engine\+\_\+db\+\_\+deinit@{datalog\+\_\+engine\+\_\+db\+\_\+deinit}}
+\index{datalog\+\_\+engine\+\_\+db\+\_\+deinit@{datalog\+\_\+engine\+\_\+db\+\_\+deinit}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+engine\+\_\+db\+\_\+deinit()}{datalog\_engine\_db\_deinit()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+engine\+\_\+db\+\_\+deinit (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Deinitialises the datalog database. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em none} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_ad25cf650c3b30b15a5a9af39c7d6a406}\label{datalog__api_8h_ad25cf650c3b30b15a5a9af39c7d6a406}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+engine\+\_\+db\+\_\+init@{datalog\+\_\+engine\+\_\+db\+\_\+init}}
+\index{datalog\+\_\+engine\+\_\+db\+\_\+init@{datalog\+\_\+engine\+\_\+db\+\_\+init}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+engine\+\_\+db\+\_\+init()}{datalog\_engine\_db\_init()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+engine\+\_\+db\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Initialises the datalog database. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em none} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a4eba2141043515a2d2ea10a9b745dcdb}\label{datalog__api_8h_a4eba2141043515a2d2ea10a9b745dcdb}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+init\+\_\+clause@{datalog\+\_\+init\+\_\+clause}}
+\index{datalog\+\_\+init\+\_\+clause@{datalog\+\_\+init\+\_\+clause}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+init\+\_\+clause()}{datalog\_init\_clause()}}
+{\footnotesize\ttfamily \hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t}$\ast$ datalog\+\_\+init\+\_\+clause (\begin{DoxyParamCaption}\item[{char $\ast$}]{head\+\_\+predicate,  }\item[{char $\ast$}]{head\+\_\+arg1,  }\item[{char $\ast$}]{head\+\_\+arg2,  }\item[{\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}}]{head\+\_\+lit\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Initialises a clause structure, populating the head literal with the arguments parsed to the function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em head\+\_\+predicate} & string literal of the literal\textquotesingle{}s predicate \\
+\hline
+{\em head\+\_\+arg1} & string literal for the literal\textquotesingle{}s first term \\
+\hline
+{\em head\+\_\+arg2} & string literal for the literal\textquotesingle{}s second term \\
+\hline
+{\em head\+\_\+lit\+\_\+type} & specifies the types of arguments to be created in the literal. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+datalog\+\_\+clause\+\_\+t$\ast$ pointer to the clause struct created 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a140d89a93119c6e5f75f4b6aa89fc03c}\label{datalog__api_8h_a140d89a93119c6e5f75f4b6aa89fc03c}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+init\+\_\+literal@{datalog\+\_\+init\+\_\+literal}}
+\index{datalog\+\_\+init\+\_\+literal@{datalog\+\_\+init\+\_\+literal}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+init\+\_\+literal()}{datalog\_init\_literal()}}
+{\footnotesize\ttfamily \hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t}$\ast$ datalog\+\_\+init\+\_\+literal (\begin{DoxyParamCaption}\item[{char $\ast$}]{predicate,  }\item[{char $\ast$}]{arg1,  }\item[{char $\ast$}]{arg2,  }\item[{\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}}]{lit\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Initialises a datalog literal struct, does not create the literal in the database. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lit\+\_\+type} & specifies the types of arguments to be created in the literal. \\
+\hline
+{\em predicate} & string literal of the literal\textquotesingle{}s predicate \\
+\hline
+{\em arg1} & string literal for the literal\textquotesingle{}s first term \\
+\hline
+{\em arg2} & string literal for the literal\textquotesingle{}s second term \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+datalog\+\_\+literal\+\_\+t$\ast$ pointer to created literal object. N\+U\+LL on error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a4e74444e8ea41e00279f24631b872e23}\label{datalog__api_8h_a4e74444e8ea41e00279f24631b872e23}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+print\+\_\+answers@{datalog\+\_\+print\+\_\+answers}}
+\index{datalog\+\_\+print\+\_\+answers@{datalog\+\_\+print\+\_\+answers}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+print\+\_\+answers()}{datalog\_print\_answers()}}
+{\footnotesize\ttfamily void datalog\+\_\+print\+\_\+answers (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_a34c189d3b3a5d5821691c8237e3922e6}{datalog\+\_\+query\+\_\+answer\+\_\+t} $\ast$}]{a }\end{DoxyParamCaption})}
+
+
+
+Prints a visual representation of a query answer struct. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & A\+PI datalog query answers struct to be printed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_aaa64abc074ffbeef15b5b081c8c7b712}\label{datalog__api_8h_aaa64abc074ffbeef15b5b081c8c7b712}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+print\+\_\+clause@{datalog\+\_\+print\+\_\+clause}}
+\index{datalog\+\_\+print\+\_\+clause@{datalog\+\_\+print\+\_\+clause}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+print\+\_\+clause()}{datalog\_print\_clause()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+print\+\_\+clause (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_a3ced79b6e2d5072d71508ff7af2ec418}{datalog\+\_\+clause\+\_\+t} $\ast$}]{clause }\end{DoxyParamCaption})}
+
+
+
+Prints a clause structure in a datalog representation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em clause} & pointer to the clause object to be printed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a66ac02cfdf21eacf2f8d35e2fa7dde4b}\label{datalog__api_8h_a66ac02cfdf21eacf2f8d35e2fa7dde4b}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+process\+\_\+answer@{datalog\+\_\+process\+\_\+answer}}
+\index{datalog\+\_\+process\+\_\+answer@{datalog\+\_\+process\+\_\+answer}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+process\+\_\+answer()}{datalog\_process\_answer()}}
+{\footnotesize\ttfamily \hyperlink{datalog__api_8h_a34c189d3b3a5d5821691c8237e3922e6}{datalog\+\_\+query\+\_\+answer\+\_\+t}$\ast$ datalog\+\_\+process\+\_\+answer (\begin{DoxyParamCaption}\item[{dl\+\_\+answers\+\_\+t}]{a }\end{DoxyParamCaption})}
+
+
+
+Initialises the G\+P\+IO pins for the SR. 
+
+Takes the answers struct provided by the L\+U\+A/C library and exports it into an struct that this A\+PI uses to process query answers.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & The queries returned answers \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to an A\+PI query answer struct 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a8d82e1c48a6e2e313a5f3dac07a47bb7}\label{datalog__api_8h_a8d82e1c48a6e2e313a5f3dac07a47bb7}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+push\+\_\+string@{datalog\+\_\+push\+\_\+string}}
+\index{datalog\+\_\+push\+\_\+string@{datalog\+\_\+push\+\_\+string}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+push\+\_\+string()}{datalog\_push\_string()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+push\+\_\+string (\begin{DoxyParamCaption}\item[{char $\ast$}]{string }\end{DoxyParamCaption})}
+
+
+
+Pushes the given string on to the top of the datalog stack. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & string to be pushed onto the stack \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a3712d21b088163d9651c70b7079ebb6e}\label{datalog__api_8h_a3712d21b088163d9651c70b7079ebb6e}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+query@{datalog\+\_\+query}}
+\index{datalog\+\_\+query@{datalog\+\_\+query}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+query()}{datalog\_query()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t \hyperlink{structdatalog__query}{datalog\+\_\+query} (\begin{DoxyParamCaption}\item[{char $\ast$}]{predicate,  }\item[{char $\ast$}]{const1,  }\item[{char $\ast$}]{const2,  }\item[{\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}}]{lit\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Issues a query. 
+
+The datalog database is queried using the predicate and args passed to the function.
+
+
+\begin{DoxyParams}{Parameters}
+{\em predicate} & string literal of the literal\textquotesingle{}s predicate \\
+\hline
+{\em arg1} & string literal for the literal\textquotesingle{}s first term \\
+\hline
+{\em arg2} & string literal for the literal\textquotesingle{}s second term \\
+\hline
+{\em lit\+\_\+type} & specifies the types of arguments to be created in the literal. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_ab231a36bb798996ab914650a40325e3c}\label{datalog__api_8h_ab231a36bb798996ab914650a40325e3c}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+query\+\_\+init@{datalog\+\_\+query\+\_\+init}}
+\index{datalog\+\_\+query\+\_\+init@{datalog\+\_\+query\+\_\+init}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+query\+\_\+init()}{datalog\_query\_init()}}
+{\footnotesize\ttfamily \hyperlink{datalog__api_8h_a6d9910ac0606673043b4886a9eccfb5f}{datalog\+\_\+query\+\_\+t}$\ast$ datalog\+\_\+query\+\_\+init (\begin{DoxyParamCaption}\item[{char $\ast$}]{predicate,  }\item[{char $\ast$}]{arg1,  }\item[{char $\ast$}]{arg2,  }\item[{\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}}]{lit\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Initialises a datalog query struct from the given arguements. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em predicate} & string literal of the literal\textquotesingle{}s predicate \\
+\hline
+{\em arg1} & string literal for the literal\textquotesingle{}s first term \\
+\hline
+{\em arg2} & string literal for the literal\textquotesingle{}s second term \\
+\hline
+{\em lit\+\_\+type} & specifies the types of arguments to be created in the literal. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+datalog\+\_\+query\+\_\+t$\ast$ pointer to created query object. N\+U\+LL on error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_ac78a6a23d6c47f9fe079dff6dbc43f5c}\label{datalog__api_8h_ac78a6a23d6c47f9fe079dff6dbc43f5c}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+query\+\_\+init\+\_\+s@{datalog\+\_\+query\+\_\+init\+\_\+s}}
+\index{datalog\+\_\+query\+\_\+init\+\_\+s@{datalog\+\_\+query\+\_\+init\+\_\+s}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+query\+\_\+init\+\_\+s()}{datalog\_query\_init\_s()}}
+{\footnotesize\ttfamily \hyperlink{datalog__api_8h_a6d9910ac0606673043b4886a9eccfb5f}{datalog\+\_\+query\+\_\+t}$\ast$ datalog\+\_\+query\+\_\+init\+\_\+s (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$}]{lit }\end{DoxyParamCaption})}
+
+
+
+Initialises a datalog query struct from a literal struct. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lit} & pointer to literal struct to be used in the query object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+datalog\+\_\+query\+\_\+t$\ast$ pointer to created query object. N\+U\+LL on error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_ad0d604403e6a0aeb56c2761c51e6efc5}\label{datalog__api_8h_ad0d604403e6a0aeb56c2761c51e6efc5}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+query\+\_\+s@{datalog\+\_\+query\+\_\+s}}
+\index{datalog\+\_\+query\+\_\+s@{datalog\+\_\+query\+\_\+s}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+query\+\_\+s()}{datalog\_query\_s()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+query\+\_\+s (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_a6d9910ac0606673043b4886a9eccfb5f}{datalog\+\_\+query\+\_\+t} $\ast$}]{query }\end{DoxyParamCaption})}
+
+
+
+Issues a query and saves the answer. 
+
+The datalog database is queried using the literal pointed to from within the query struct.
+
+
+\begin{DoxyParams}{Parameters}
+{\em query} & struct holding a pointer to the literal to be used for the query and a pointer to where the answer should be stored. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_a6f828288e1fb48d1cebf4be55c5da55c}\label{datalog__api_8h_a6f828288e1fb48d1cebf4be55c5da55c}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+update\+\_\+and\+\_\+assert\+\_\+literal@{datalog\+\_\+update\+\_\+and\+\_\+assert\+\_\+literal}}
+\index{datalog\+\_\+update\+\_\+and\+\_\+assert\+\_\+literal@{datalog\+\_\+update\+\_\+and\+\_\+assert\+\_\+literal}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+update\+\_\+and\+\_\+assert\+\_\+literal()}{datalog\_update\_and\_assert\_literal()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+update\+\_\+and\+\_\+assert\+\_\+literal (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$}]{lit,  }\item[{char $\ast$}]{predicate,  }\item[{char $\ast$}]{arg1,  }\item[{char $\ast$}]{arg2,  }\item[{\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}}]{lit\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Updates the values of a preexsisting literal structure and asserts the literal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lit\+\_\+type} & specifies the types of arguments to be created in the literal. \\
+\hline
+{\em predicate} & string literal of the literal\textquotesingle{}s predicate \\
+\hline
+{\em arg1} & string literal for the literal\textquotesingle{}s first term \\
+\hline
+{\em arg2} & string literal for the literal\textquotesingle{}s second term \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{datalog__api_8h_aaca99c056777bf54759d67faa252387b}\label{datalog__api_8h_aaca99c056777bf54759d67faa252387b}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+update\+\_\+literal@{datalog\+\_\+update\+\_\+literal}}
+\index{datalog\+\_\+update\+\_\+literal@{datalog\+\_\+update\+\_\+literal}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+update\+\_\+literal()}{datalog\_update\_literal()}}
+{\footnotesize\ttfamily D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t datalog\+\_\+update\+\_\+literal (\begin{DoxyParamCaption}\item[{\hyperlink{datalog__api_8h_aeb86f46db4f8142eeb397d20f69f6487}{datalog\+\_\+literal\+\_\+t} $\ast$}]{lit,  }\item[{char $\ast$}]{predicate,  }\item[{char $\ast$}]{arg1,  }\item[{char $\ast$}]{arg2,  }\item[{\hyperlink{datalog__api_8h_ad27ac7b01e9690a8c6d1bd37e131a421}{D\+A\+T\+A\+L\+O\+G\+\_\+\+L\+I\+T\+\_\+t}}]{lit\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Updates the values of a preexsisting literal structure. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lit\+\_\+type} & specifies the types of arguments to be created in the literal. \\
+\hline
+{\em predicate} & string literal of the literal\textquotesingle{}s predicate \\
+\hline
+{\em arg1} & string literal for the literal\textquotesingle{}s first term \\
+\hline
+{\em arg2} & string literal for the literal\textquotesingle{}s second term \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+D\+A\+T\+A\+L\+O\+G\+\_\+\+E\+R\+R\+\_\+t error message 
+\end{DoxyReturn}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{datalog__api_8h_a89884ff24ff3b89b1e6db568650f0fbe}\label{datalog__api_8h_a89884ff24ff3b89b1e6db568650f0fbe}} 
+\index{datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}!datalog\+\_\+db@{datalog\+\_\+db}}
+\index{datalog\+\_\+db@{datalog\+\_\+db}!datalog\+\_\+api.\+h@{datalog\+\_\+api.\+h}}
+\subsubsection{\texorpdfstring{datalog\+\_\+db}{datalog\_db}}
+{\footnotesize\ttfamily dl\+\_\+db\+\_\+t datalog\+\_\+db}
+
+
+
+Global database used by datalog library. 
+
