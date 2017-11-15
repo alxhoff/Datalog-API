@@ -61,8 +61,8 @@ from the doc folder. Then navigate to ./html/index.html
 I wrote this quickly and dirtily, so excuse the mess.  
 
 ### To-Do  
-+ Fix demo project
-+ Integrate parser into API
++ ~~Fix demo project~~
++ ~~Integrate parser into API~~ Test parser wrapping
 + ~~Clauses with bodies~~
 + Error checking on literal types
 + Check that all methods are implemented for all objects, both with and without structs.
