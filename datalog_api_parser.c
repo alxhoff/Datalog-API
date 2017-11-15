@@ -28,7 +28,23 @@
 
 #include "datalog_api_parser.h"
 
-DATALOG_ERR_t datalog_assert_rule_list(dl_parser_doc_t* doc)
+DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc)
+{
+    DATALOG_ERR_t ret = DATALOG_OK;
+
+    ret = datalog_assert_fact_list(doc);
+    
+    if(ret != DATALOG_OK) return DATALOG_ASRT;
+    
+    ret = datalog_assert_rule_list(doc);
+
+    if(ret != DATALOG_OK) return DATALOG_ASRT;
+
+    return DATALOG_OK;
+}
+
+
+DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
 
@@ -53,7 +69,8 @@ DATALOG_ERR_t datalog_assert_rule_list(dl_parser_doc_t* doc)
     }
     return DATALOG_OK;
 }
-DATALOG_ERR_t datalog_assert_fact_list(dl_parser_doc_t* doc)
+
+DATALOG_ERR_t datalog_assert_fact_list(dl_parser_return_doc_t* doc)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
 

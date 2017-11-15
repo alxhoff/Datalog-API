@@ -2,16 +2,25 @@
 <datalog>
     <metadata>
         <description>EDD to NAMUR mappings</description>
-        <author>alex</author> 
+        <author>alex</author>
+        <device>
+            <name>test device</name>
+            <type>test type</type>
+            <manufacturer>siemens</manufacturer>
+            <contact>alxhoff@gmail.com</contact>
+            <model>test model</model>
+            <serial>test serial</serial>
+            <year>2017</year>
+        </device>
     </metadata>
     <mappings>
         <fact>
             <head>
                 <literal>
-                    <predicate>test_fact</predicate>
+                    <predicate>test</predicate>
                     <terms>
-                        <constant>test_fact_arg1</constant>
-                        <variable>test_fact_arg2</variable>
+                        <constant>hello</constant>
+                        <constant>milkyway</constant>
                     </terms>
                 </literal>
             </head>

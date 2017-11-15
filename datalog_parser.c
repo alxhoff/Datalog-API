@@ -29,7 +29,7 @@
 
 #include "libxml/parser.h"
 
-#include "../config.h"
+#include "config.h"
 
 #include "datalog_parser.h"
 
@@ -219,6 +219,7 @@ DL_PARSER_ERR_t dl_parser_terms(dl_parser_doc_t* doc, xmlNode* terms_node,
 #endif
             }
         }else if(!xmlStrcmp(tmp->name, (const xmlChar*) "variable")){
+            contents = xmlNodeListGetString(doc->document, tmp->xmlChildrenNode, 1);
             if(!arg1_type){
                 literal->arg1 = (char*)malloc(sizeof(char) * strlen((const char*)contents));
                 strcpy(literal->arg1, (const char*)contents);
@@ -748,7 +749,7 @@ dl_parser_doc_t* dl_parser_init(char* filename)
     doc->document = xmlReadFile(filename, NULL, 0);
 
 #ifdef PARSER_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG][PARSER] Verbose: XML document read");
+    fprintf(stderr, "[DATALOG][PARSER] Verbose: XML document read\n");
 #endif 
 
     doc->root_node = xmlDocGetRootElement(doc->document);

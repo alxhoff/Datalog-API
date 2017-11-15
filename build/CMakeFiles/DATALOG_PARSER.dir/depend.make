@@ -23,6 +23,7 @@ CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o: ../libs/libxml2/include/libxml
 CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o: ../libs/libxml2/include/libxml2/libxml/xmlstring.h
 CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o: ../libs/libxml2/include/libxml2/libxml/xmlversion.h
 CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o: ../config.h
+CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o: ../datalog_api_types.h
 CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o: ../datalog_parser.c
 CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o: ../datalog_parser.h
 

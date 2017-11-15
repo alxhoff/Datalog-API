@@ -202,6 +202,33 @@ datalog_api.c.s:
 	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_api.c.s
 .PHONY : datalog_api.c.s
 
+datalog_api_parser.o: datalog_api_parser.c.o
+
+.PHONY : datalog_api_parser.o
+
+# target to build an object file
+datalog_api_parser.c.o:
+	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o
+.PHONY : datalog_api_parser.c.o
+
+datalog_api_parser.i: datalog_api_parser.c.i
+
+.PHONY : datalog_api_parser.i
+
+# target to preprocess a source file
+datalog_api_parser.c.i:
+	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.i
+.PHONY : datalog_api_parser.c.i
+
+datalog_api_parser.s: datalog_api_parser.c.s
+
+.PHONY : datalog_api_parser.s
+
+# target to generate assembly for a file
+datalog_api_parser.c.s:
+	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.s
+.PHONY : datalog_api_parser.c.s
+
 datalog_parser.o: datalog_parser.c.o
 
 .PHONY : datalog_parser.o
@@ -1217,6 +1244,9 @@ help:
 	@echo "... datalog_api.o"
 	@echo "... datalog_api.i"
 	@echo "... datalog_api.s"
+	@echo "... datalog_api_parser.o"
+	@echo "... datalog_api_parser.i"
+	@echo "... datalog_api_parser.s"
 	@echo "... datalog_parser.o"
 	@echo "... datalog_parser.i"
 	@echo "... datalog_parser.s"

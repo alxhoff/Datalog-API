@@ -5,6 +5,13 @@ CMakeFiles/DATALOG_API.dir/datalog_api.c.o
  ../libs/libdatalog/datalog.h
  ../libs/libdatalog/lua/lua.h
  ../libs/libdatalog/lua/luaconf.h
+ /home/alxhoff/git/Datalog-API/datalog_api.c
+ /home/alxhoff/git/Datalog-API/datalog_api.h
+ /home/alxhoff/git/Datalog-API/datalog_api_types.h
+CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o
+ ../libs/libdatalog/datalog.h
+ ../libs/libdatalog/lua/lua.h
+ ../libs/libdatalog/lua/luaconf.h
  ../libs/libxml2/include/libxml2/libxml/SAX.h
  ../libs/libxml2/include/libxml2/libxml/SAX2.h
  ../libs/libxml2/include/libxml2/libxml/dict.h
@@ -26,6 +33,8 @@ CMakeFiles/DATALOG_API.dir/datalog_api.c.o
  ../libs/libxml2/include/libxml2/libxml/xmlregexp.h
  ../libs/libxml2/include/libxml2/libxml/xmlstring.h
  ../libs/libxml2/include/libxml2/libxml/xmlversion.h
- /home/alxhoff/git/Datalog-API/datalog_api.c
  /home/alxhoff/git/Datalog-API/datalog_api.h
+ /home/alxhoff/git/Datalog-API/datalog_api_parser.c
+ /home/alxhoff/git/Datalog-API/datalog_api_parser.h
+ /home/alxhoff/git/Datalog-API/datalog_api_types.h
  /home/alxhoff/git/Datalog-API/datalog_parser.h

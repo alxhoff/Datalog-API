@@ -28,6 +28,7 @@
 
 #include "datalog_api.h"
 #include "datalog_parser.h"
+#include "datalog_api_parser.h"
 
 //global datalog database
 dl_db_t datalog_db;
@@ -58,11 +59,17 @@ int main(void)
     if(datalog_query( "test", "hello", "X", DL_CV) != DATALOG_OK)
         return -1;
     
+    dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
+
+    //ret = datalog_parser_assert_doc(doc);
+    ret = datalog_assert_fact_list(doc);
+
+    if(datalog_query( "test", "hello", "X", DL_CV) != DATALOG_OK)
+        return -1;
+    
     ret = datalog_engine_db_deinit();
 
     if(ret != DATALOG_OK) return -1;
-
-    dl_parser_runtime("text_xml.xml");
 
     return 0;
 }

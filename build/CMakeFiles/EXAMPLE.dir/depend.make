@@ -26,6 +26,8 @@ CMakeFiles/EXAMPLE.dir/main.c.o: ../libs/libxml2/include/libxml2/libxml/xmlregex
 CMakeFiles/EXAMPLE.dir/main.c.o: ../libs/libxml2/include/libxml2/libxml/xmlstring.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../libs/libxml2/include/libxml2/libxml/xmlversion.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_api.h
+CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_api_parser.h
+CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_api_types.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_parser.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../main.c
 

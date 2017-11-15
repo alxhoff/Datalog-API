@@ -30,16 +30,24 @@
 #include "datalog_parser.h"
 
 /**
+ * @brief Calls functions to assert both the rule and fact list 
+ *
+ * @param doc pointer to parser document stuct
+ * @return DATALOG_ERR_t error message
+ */
+DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc);
+
+/**
  * @brief wraps the rule list from the passer into the API and
  * assersts it
  *
  * The linked list of rules is traversed and wrapped into the 
  * datalog_clause_t datatypes
  *
-* @param doc pointer to parser document stuct
+ * @param doc pointer to parser document stuct
  * @return DATALOG_ERR_t error message
  */
-DATALOG_ERR_t datalog_assert_rule_list(dl_parser_doc_t* doc);
+DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc);
 
 /**
  * @brief wraps the fact list from the passer into the API and
@@ -48,10 +56,10 @@ DATALOG_ERR_t datalog_assert_rule_list(dl_parser_doc_t* doc);
  * The linked list of facts is traversed and wrapped into the 
  * datalog_clause_t datatypes
  *
-* @param doc pointer to parser document stuct
+ * @param doc pointer to parser document stuct
  * @return DATALOG_ERR_t error message
  */
-DATALOG_ERR_t datalog_assert_fact_list(dl_parser_doc_t* doc);
+DATALOG_ERR_t datalog_assert_fact_list(dl_parser_return_doc_t* doc);
 
 /**
  * @brief wraps a dl_parser_literal_t object into a

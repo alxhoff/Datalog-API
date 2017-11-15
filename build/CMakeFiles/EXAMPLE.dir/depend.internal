@@ -27,5 +27,7 @@ CMakeFiles/EXAMPLE.dir/main.c.o
  ../libs/libxml2/include/libxml2/libxml/xmlstring.h
  ../libs/libxml2/include/libxml2/libxml/xmlversion.h
  /home/alxhoff/git/Datalog-API/datalog_api.h
+ /home/alxhoff/git/Datalog-API/datalog_api_parser.h
+ /home/alxhoff/git/Datalog-API/datalog_api_types.h
  /home/alxhoff/git/Datalog-API/datalog_parser.h
  /home/alxhoff/git/Datalog-API/main.c
