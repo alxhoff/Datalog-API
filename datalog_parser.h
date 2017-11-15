@@ -29,33 +29,20 @@
 #include <stdint.h>
 
 #include "libxml/parser.h"
-
+#include "datalog_api_types.h"
 /**
- * @enum DL_PARSER_ERR_t
- * @brief error messages
- * */
+* @enum DATALOG_ERR_t
+* @brief error messages
+* */
 typedef enum{
-    DL_PARSER_OK,       /*!< no errors*/
-    DL_PARSER_MEM,      /*!< memory error*/
-    DL_PARSER_DOC,      /*!< document error*/
-    DL_PARSER_FILENAME, /*!< document filename error*/
-    DL_PARSER_FILETYPE, /*!< document filetype error*/
-    DL_PARSER_EMPTY,    /*!< variable empty*/
-    DL_PARSER_NO_NODE   /*!< no node mathing criteria*/
+    DL_PARSER_OK,
+    DL_PARSER_MEM,
+    DL_PARSER_DOC_,
+    DL_PARSER_FILENAME,
+    DL_PARSER_FILETYPE,
+    DL_PARSER_EMPTY,
+    DL_PARSER_NO_NODE
 }DL_PARSER_ERR_t;
-
-#ifndef __DATALOG_API_H__
-/**
-* @enum DATALOG_LIT_t
-* @brief used to specify the type of literal to be created
-*/
-typedef enum{
-    DL_CC,  /*!< constant constant */
-    DL_CV,  /*!< constant variable */
-    DL_VV,  /*!< variable variable */
-    DL_VC   /*!< variaben constant */
-}DATALOG_LIT_t;
-#endif
 
 /**
 * @enum DL_PARSER_ARG_TYPE_t 
@@ -146,8 +133,16 @@ struct dl_parser_rule{
 * @brief 
 */
 typedef struct dl_parser_metadata{
-    char* description;              /*!< description of the document */
-    char* author;                   /*!< author of the document */
+
+    char* description;  /*!< description of the document */
+    char* author;       /*!< author of the document */
+    char* device_name;  /*!< device's name */
+    char* device_type;  /*!< device's type */
+    char* device_manufacturer;  /*!< devices's manufacturer*/
+    char* device_contact;   /*!< contact responsible for device */
+    char* device_model;     /*!< device's model */
+    char* device_serial;    /*!< device's serial */
+    char* device_year;      /*!< device's year */
 }dl_parser_metadata_t;
 
 /**
@@ -174,6 +169,25 @@ typedef struct dl_parser_doc{
 
     xmlDoc* document;                   /*!< XML document structure used by libxml */
 }dl_parser_doc_t;   
+
+/**
+* @typedef dl_parser_return_doc_t
+* @brief Typdef for struct dl_parser_return_doc
+*/
+/**
+* @struct dl_parser_return_doc
+* @brief 
+*/
+typedef struct dl_parser_return_doc{
+    char* filename;
+
+    dl_parser_literal_t* literals_head; /*!< pointer to the list of literals */
+    dl_parser_rule_t* rules_head;       /*!< pointer to the list of rules */
+    dl_parser_fact_t* facts_head;       /*!< pointer to the list of facts */
+
+    dl_parser_metadata_t* metadata;     /*!< pointer to the documents parsed metadata */
+
+}dl_parser_return_doc_t;
 
 /**
 * @brief prints the root node's name
@@ -357,6 +371,17 @@ DL_PARSER_ERR_t dl_parser_process_fact(dl_parser_doc_t* doc, dl_parser_fact_t* f
 DL_PARSER_ERR_t dl_parser_script(dl_parser_doc_t* doc);
 
 /**
+* @brief parses a <device> node of the metadata tree in
+* the XML document
+* 
+* @param doc pointer to parser document stuct
+* @param dev_node pointer to the <device> XML node
+* @return DL_PARSER_ERR_t error message
+*/
+DL_PARSER_ERR_t dl_parser_metadata_device(dl_parser_doc_t* doc,
+        xmlNode* dev_node);
+
+/**
 * @brief parses the metadata of the XML document
 * 
 * @param doc pointer to parser document stuct
@@ -376,11 +401,59 @@ DL_PARSER_ERR_t dl_parser_metadata(dl_parser_doc_t* doc);
 dl_parser_doc_t* dl_parser_init(char* filename);
 
 /**
-* @brief where all parser logic that the user needs can be written
+* @brief frees all the entires in the linked list of parsed literals
+* 
+* @param lit_head pointer to the head of the literal linked list
+* @return DL_PARSER_ERR_t error message
+*/
+DL_PARSER_ERR_t dl_parser_deinit_lit(dl_parser_literal_t* lit_head);
+
+/**
+* @brief frees all the entires in the linked list of parsed literals
+* 
+* @param rules_head pointer to the head of the rules linked list
+* @return DL_PARSER_ERR_t error message
+*/
+DL_PARSER_ERR_t dl_parser_deinit_rule(dl_parser_rule_t* rules_head);
+
+/**
+* @brief frees all the entires in the linked list of parsed literals
+* 
+* @param facts_head pointer to the head of the facts linked list
+* @return DL_PARSER_ERR_t error message
+*/
+DL_PARSER_ERR_t dl_parser_deinit_facts(dl_parser_fact_t* facts_head);
+
+/**
+* @brief deinitilises the parser but does not free the parsed data 
+* 
+* Frees just the document struct, does not walk and free the linked lists
+* of parsed data.
+* 
+* @param doc pointer to parser document stuct
+* @return DL_PARSER_ERR_t error message
+*/
+DL_PARSER_ERR_t dl_parser_deinit_wo_data(dl_parser_doc_t* doc);
+
+/**
+* @brief deinitilises the parser document and frees the parsed data
+* 
+* Free's all structs linked to the parser document object. Does not 
+* free the XML tree created by libxml2, that must be done my calling
+* the libraries deinit functions.
+* 
+* @param doc pointer to parser document stuct
+* @return DL_PARSER_ERR_t error message
+*/
+DL_PARSER_ERR_t dl_parser_deinit_w_data(dl_parser_doc_t* doc);
+
+/**
+* @brief runtime funciton that takes a XML filename and returns the parsed
+* document
 * 
 * @param filename spcified the filename of the XML file to be parsed
 * @return DL_PARSER_ERR_t error message
 */
-DL_PARSER_ERR_t dl_parser_runtime(char* filename);
+dl_parser_return_doc_t* dl_parser_runtime(char* filename);
 
 #endif

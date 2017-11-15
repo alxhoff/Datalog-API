@@ -28,7 +28,6 @@
 #include <string.h>
 
 #include "datalog_api.h"
-#include "datalog_parser.h"
 
 datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
 {
@@ -235,6 +234,40 @@ DATALOG_ERR_t datalog_clause_add_literal_s_copy(datalog_clause_t* clause,
             literal, sizeof(datalog_literal_t));
 
     clause->literal_count++;
+
+    return DATALOG_OK;
+}
+
+DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
+{
+    //push clause literals onto stack in reverse order
+    
+    for(int i = clause->literal_count; i > 0; i--){
+        if(datalog_create_literal_s(clause->body_list[i]) != DATALOG_OK){
+#ifdef DATALOG_ERR
+            fprintf(stderr, "[DATALOG][API] Err: failed to assert clause literal #%d\n",
+                    clause->literal_count - i);
+#endif
+            return DATALOG_LIT;
+        }
+    }
+
+    //create head on the stack
+    if(datalog_create_literal_s(clause->head) != DATALOG_OK){
+#ifdef DATALOG_ERR
+            fprintf(stderr, "[DATALOG][API] Err: failed to assert clause head \n");
+#endif
+        return DATALOG_LIT;
+    }
+
+    //assert clause
+    if(datalog_assert_clause(clause->literal_count + 1) != DATALOG_OK){
+#ifdef DATALOG_ERR
+        fprintf(stderr, "[DATALOG][API] Err: failed to assert "
+                "clause with #%d literals\n", clause->literal_count +1);
+#endif
+        return DATALOG_ASRT;
+    }
 
     return DATALOG_OK;
 }
@@ -712,12 +745,12 @@ DATALOG_ERR_t datalog_engine_db_init(void)
    datalog_db = dl_open();
    
 #ifdef DATALOG_ERR
-    if(&datalog_db == NULL){
+    if(datalog_db == NULL){
         fprintf(stderr, "[DATALOG] ERR: dl_open() failed\n");
         return DATALOG_MEM;
     }
 #ifdef DATALOG_DEBUG
-    if(&datalog_db != NULL)
+    if(datalog_db != NULL)
         fprintf(stderr, "[DATALOG] DEBUG: database opened \n");
 #endif
 #endif

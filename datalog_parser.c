@@ -29,7 +29,7 @@
 
 #include "libxml/parser.h"
 
-#include "config.h"
+#include "../config.h"
 
 #include "datalog_parser.h"
 
@@ -50,6 +50,12 @@ void dl_parser_print_metadata(dl_parser_doc_t* doc)
     printf(" \n");
     printf(" Description: %s\n", doc->metadata->description);
     printf(" Author: %s\n", doc->metadata->author);
+    printf(" Device Name: %s\n", doc->metadata->device_name);
+    printf(" Device Type: %s\n", doc->metadata->device_type);
+    printf(" Manufacturer: %s\n", doc->metadata->device_manufacturer);
+    printf(" Contact: %s\n", doc->metadata->device_contact);
+    printf(" Model: %s\n", doc->metadata->device_model);
+    printf(" Serial No#: %s\n", doc->metadata->device_serial);
     printf("*==========================================* \n");
 }
 
@@ -472,8 +478,99 @@ DL_PARSER_ERR_t dl_parser_script(dl_parser_doc_t* doc)
             break;
     }
 
-    //
+    //TODO maybe
         
+    return DL_PARSER_OK;
+}
+
+DL_PARSER_ERR_t dl_parser_alloc_xml_string(char** pointer, xmlChar* string)
+{
+    *pointer = (char*)malloc(sizeof(char) * strlen((const char*) string));
+
+    if(*pointer == NULL) return DL_PARSER_MEM;
+
+    strcpy(*pointer, (const char*)string);
+
+    return DL_PARSER_OK;
+}
+
+DL_PARSER_ERR_t dl_parser_metadata_device(dl_parser_doc_t* doc,
+        xmlNode* dev_node)
+{
+    xmlNode* tmp_node = dev_node->xmlChildrenNode;
+    xmlChar* contents;
+    DL_PARSER_ERR_t ret;
+
+    while(tmp_node != NULL){
+    
+        if(!xmlStrcmp(tmp_node->name, (const xmlChar*)"name")){
+            contents = xmlNodeListGetString(doc->document, tmp_node->xmlChildrenNode, 1);
+            if(dl_parser_alloc_xml_string(&doc->metadata->device_name, contents) != DL_PARSER_OK)
+                return DL_PARSER_MEM;
+            xmlFree(contents);
+#ifdef PARSER_DEBUG
+    fprintf(stderr, "[DATALOG][PARSER] Metadata node found with tag \"%s\" "
+            "and content \"%s\"\n", (const char*)tmp_node->name, doc->metadata->device_name);
+#endif
+        }else if(!xmlStrcmp(tmp_node->name, (const xmlChar*)"type")){
+            contents = xmlNodeListGetString(doc->document, tmp_node->xmlChildrenNode, 1);
+            if(dl_parser_alloc_xml_string(&doc->metadata->device_type, contents) != DL_PARSER_OK)
+                return DL_PARSER_MEM;
+            xmlFree(contents);
+#ifdef PARSER_DEBUG
+    fprintf(stderr, "[DATALOG][PARSER] Metadata node found with tag \"%s\" "
+            "and content \"%s\"\n", (const char*)tmp_node->name, doc->metadata->device_type);
+#endif
+        }else if(!xmlStrcmp(tmp_node->name, (const xmlChar*)"manufacturer")){
+            contents = xmlNodeListGetString(doc->document, tmp_node->xmlChildrenNode, 1);
+            if(dl_parser_alloc_xml_string(&doc->metadata->device_manufacturer, contents) != DL_PARSER_OK)
+                return DL_PARSER_MEM;
+            xmlFree(contents);
+#ifdef PARSER_DEBUG
+    fprintf(stderr, "[DATALOG][PARSER] Metadata node found with tag \"%s\" "
+            "and content \"%s\"\n", (const char*)tmp_node->name, doc->metadata->device_manufacturer);
+#endif
+        }else if(!xmlStrcmp(tmp_node->name, (const xmlChar*)"contact")){
+            contents = xmlNodeListGetString(doc->document, tmp_node->xmlChildrenNode, 1);
+            if(dl_parser_alloc_xml_string(&doc->metadata->device_contact, contents) != DL_PARSER_OK)
+                return DL_PARSER_MEM;
+            xmlFree(contents);
+#ifdef PARSER_DEBUG
+    fprintf(stderr, "[DATALOG][PARSER] Metadata node found with tag \"%s\" "
+            "and content \"%s\"\n", (const char*)tmp_node->name, doc->metadata->device_contact);
+#endif
+        }else if(!xmlStrcmp(tmp_node->name, (const xmlChar*)"model")){
+            contents = xmlNodeListGetString(doc->document, tmp_node->xmlChildrenNode, 1);
+            if(dl_parser_alloc_xml_string(&doc->metadata->device_model, contents) != DL_PARSER_OK)
+                return DL_PARSER_MEM;
+            xmlFree(contents);
+#ifdef PARSER_DEBUG
+    fprintf(stderr, "[DATALOG][PARSER] Metadata node found with tag \"%s\" "
+            "and content \"%s\"\n", (const char*)tmp_node->name, doc->metadata->device_model);
+#endif
+        }else if(!xmlStrcmp(tmp_node->name, (const xmlChar*)"serial")){
+            contents = xmlNodeListGetString(doc->document, tmp_node->xmlChildrenNode, 1);
+            if(dl_parser_alloc_xml_string(&doc->metadata->device_serial, contents) != DL_PARSER_OK)
+                return DL_PARSER_MEM;
+            xmlFree(contents);
+#ifdef PARSER_DEBUG
+    fprintf(stderr, "[DATALOG][PARSER] Metadata node found with tag \"%s\" "
+            "and content \"%s\"\n", (const char*)tmp_node->name, doc->metadata->device_serial);
+#endif
+        }else if(!xmlStrcmp(tmp_node->name, (const xmlChar*)"year")){
+            contents = xmlNodeListGetString(doc->document, tmp_node->xmlChildrenNode, 1);
+            if(dl_parser_alloc_xml_string(&doc->metadata->device_year, contents) != DL_PARSER_OK)
+                return DL_PARSER_MEM;
+            xmlFree(contents);
+#ifdef PARSER_DEBUG
+    fprintf(stderr, "[DATALOG][PARSER] Metadata node found with tag \"%s\" "
+            "and content \"%s\"\n", (const char*)tmp_node->name, doc->metadata->device_year);
+#endif
+        }
+        
+        tmp_node = tmp_node->next;
+    }
+
     return DL_PARSER_OK;
 }
 
@@ -529,13 +626,82 @@ DL_PARSER_ERR_t dl_parser_metadata(dl_parser_doc_t* doc)
     fprintf(stderr, "[DATALOG][PARSER] Metadata node found with tag \"%s\" "
             "and content \"%s\"\n", (const char*)node->name, doc->metadata->author);
 #endif
-        }
+        }else if(!xmlStrcmp(node->name, (const xmlChar*) "device")){
+            dl_parser_metadata_device(doc, node);
 
+#ifdef PARSER_DEBUG
+    fprintf(stderr, "[DATALOG][PARSER] Metadata device node found\n");
+#endif
+        }
     }
 
 #ifdef PARSER_DEBUG
     fprintf(stderr, "[DATALOG][PARSER] Metadata found \n");
 #endif
+    return DL_PARSER_OK;
+}
+
+DL_PARSER_ERR_t dl_parser_deinit_lit(dl_parser_literal_t* lit_head)
+{
+    dl_parser_literal_t* lit_tmp = lit_head;
+    dl_parser_literal_t* prev_lit;
+
+    while(lit_tmp != NULL){
+        prev_lit = lit_tmp->next;
+        free(lit_tmp);
+        lit_tmp = prev_lit;
+    }
+    return DL_PARSER_OK;
+}
+
+DL_PARSER_ERR_t dl_parser_deinit_rule(dl_parser_rule_t* rules_head)
+{
+    dl_parser_rule_t* rule_tmp = rules_head;
+    dl_parser_rule_t* prev_rule;
+
+    while(rule_tmp != NULL){
+        prev_rule = rule_tmp->next;
+        free(rule_tmp);
+        rule_tmp = prev_rule;
+    }
+    return DL_PARSER_OK;
+}
+
+DL_PARSER_ERR_t dl_parser_deinit_facts(dl_parser_fact_t* facts_head)
+{
+    dl_parser_fact_t* fact_tmp = facts_head;
+    dl_parser_fact_t* prev_fact;
+
+    while(fact_tmp != NULL){
+        prev_fact = fact_tmp->next;
+        free(fact_tmp);
+        fact_tmp = prev_fact;
+    }
+    return DL_PARSER_OK;
+}
+
+DL_PARSER_ERR_t dl_parser_deinit_wo_data(dl_parser_doc_t* doc)
+{
+    free(doc);
+    return DL_PARSER_OK;
+}
+
+DL_PARSER_ERR_t dl_parser_deinit_w_data(dl_parser_doc_t* doc)
+{
+    //free lists.
+    dl_parser_deinit_lit(doc->literals_head);
+    dl_parser_deinit_rule(doc->rules_head);
+    dl_parser_deinit_facts(doc->facts_head);
+
+    //free metadata
+    free(doc->metadata);
+
+    //free filename
+    free(doc->filename);
+
+    //free struct
+    free(doc);
+        
     return DL_PARSER_OK;
 }
 
@@ -611,32 +777,54 @@ dl_parser_doc_t* dl_parser_init(char* filename)
     return doc;
 }
 
-DL_PARSER_ERR_t dl_parser_runtime(char* filename)
+DL_PARSER_ERR_t dl_parser_copy_string(char* pointer, char* string)
+{
+    pointer = (char*)malloc(sizeof(char)*strlen(string));
+    if(pointer == NULL) return DL_PARSER_MEM;
+    strcpy(pointer, string);
+    return DL_PARSER_OK;
+}
+
+dl_parser_return_doc_t* dl_parser_prepare_return_doc(dl_parser_doc_t* doc)
+{
+    dl_parser_return_doc_t* ret = 
+        (dl_parser_return_doc_t*)calloc(1, sizeof(dl_parser_return_doc_t));
+
+    if(ret == NULL) return NULL;
+
+    memcpy(ret, doc, sizeof(dl_parser_return_doc_t)); 
+
+    return ret;
+}
+
+dl_parser_return_doc_t* dl_parser_runtime(char* filename)
 {
     dl_parser_doc_t* dl_doc = dl_parser_init(filename);
     DL_PARSER_ERR_t ret = DL_PARSER_OK;
 
 #ifdef PARSER_DEBUG
-    fprintf(stderr, "[DATALOG] [PARSER] Init finished:              %s\n",
+    fprintf(stderr, "[DATALOG][PARSER] Init finished:              %s\n",
             (ret == DL_PARSER_OK)?("SUCCESS"):("FAIL"));
 #endif
 
-
-    dl_parser_print_root(dl_doc);
-
+    //metadata
     ret = dl_parser_metadata(dl_doc); 
 
     dl_parser_print_metadata(dl_doc);
 
+    //mappings
     dl_parser_mappings(dl_doc);
 
     dl_parser_print_fact_list(dl_doc);
 
     dl_parser_print_rule_list(dl_doc);
 
+    //return results
+    dl_parser_return_doc_t* ret_doc = dl_parser_prepare_return_doc(dl_doc);
+
+    dl_parser_deinit_wo_data(dl_doc);
+
 //TODO script parsing
-
-    while(1)
-
-    return DL_PARSER_OK;
+    
+    return ret_doc;
 }

@@ -2,7 +2,8 @@
  * @file datalog_api.h
  * @author Alex Hoffman
  * @date 11 October 2017
- * @brief Data types and functions for performing classical keyboard functions
+ * @brief API functions to use the LUA/C datalog implementation found
+ *        found at http://datalog.sourceforge.net
  *
  * @mainpage TARS Assistant
  * @section datalogapi_sec Datalog API
@@ -118,17 +119,7 @@
 #define __DATALOG_API_H__
 
 #include "datalog.h"
-
-/**
-* @enum DATALOG_LIT_t
-* @brief used to specify the type of literal to be created
-*/
-typedef enum{
-    DL_CC,  /*!< constant constant */
-    DL_CV,  /*!< constant variable */
-    DL_VV,  /*!< variable variable */
-    DL_VC   /*!< variaben constant */
-}DATALOG_LIT_t;
+#include "datalog_api_types.h"
 
 /**
 * @enum DATALOG_ERR_t
@@ -173,23 +164,6 @@ struct datalog_query_answer{
     char* predic;
     int argc;
     datalog_query_answer_pair_t** answer_pairs;
-};
-
-/**
-* @typedef datalog_literal_t
-* @brief Typdef for datalog_literal
-*/
-typedef struct datalog_literal datalog_literal_t;
-
-/**
-* @struct datalog_literal
-* @brief Struct to represent a datalog literal
-*/
-struct datalog_literal{
-    char* predicate; /**< Literal's precidate string represenation*/
-    char* arg1;      /**< String representation of the literals first arg*/
-    char* arg2;      /**< String representation of the literals second arg*/
-    DATALOG_LIT_t lit_type; /** Type of literal */
 };
 
 /**
@@ -341,7 +315,7 @@ DATALOG_ERR_t datalog_update_literal(datalog_literal_t* lit,
         char* predicate, char* arg1, char* arg2, DATALOG_LIT_t lit_type);
 
 /**
-* @brief Creates and assers a literal from a literal struct 
+* @brief Creates and asserts a literal from a literal struct 
 *
 * Creates a literal from the given struct, of a specified type,
 * instead of leaving the literal on top of the stack the literal
@@ -470,6 +444,16 @@ DATALOG_ERR_t datalog_clause_add_literal_s(datalog_clause_t* clause,
 */
 DATALOG_ERR_t datalog_clause_add_literal_s_copy(datalog_clause_t* clause,
         datalog_literal_t* literal);
+
+/**
+* @brief Pushes a clause structure onto the stack then asserts the 
+* terms as a clause.
+*
+* @param clause pointer to the clause object to which the literal shall
+* be added
+* @return DATALOG_ERR_t error message
+*/
+DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause);
 
 /**
 * @brief Asserts a clause that does not have a body
