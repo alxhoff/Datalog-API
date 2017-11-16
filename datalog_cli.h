@@ -34,7 +34,8 @@
 */
 typedef enum{
     DL_CLI_HEAD_QUERY,      /*!< If a literal ends in a '?' then the literal is a query */
-    DL_CLI_HEAD_STATEMENT   /*!< If a literal ends in a '.' then the literal is either a fact or a rule */
+    DL_CLI_HEAD_STATEMENT,   /*!< If a literal ends in a '.' then the literal is either a fact or a rule */
+    DL_CLI_HEAD_RETRACTION  /*!< If a literal ends in a '~' then the literal is a retraction */
 } DATALOG_CLI_HEAD_TYPE_t;
 
 /**

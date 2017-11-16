@@ -279,15 +279,29 @@ datalog_cli_command_t* dl_cli_process_head(char* head_string)
 
     //get end characters
     int end_char_pos = strlen(head_string) - 1;
-
-    printf(" last char: %c\n", head_string[end_char_pos]);
+#ifdef CLI_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG][CLI] last character of head detected as: %c\n"
+            , head_string[end_char_pos]);
+#endif
      
     if(head_string[end_char_pos] == '?'){
-        printf("query\n");
+#if CLI_DEBUG_VERBOSE
+        fprintf(stderr, "[DATALOG][CLI] Verbose: last character of head "
+            "signifies query\n");
+#endif
         ret->head_type = DL_CLI_HEAD_QUERY;
     }else if(head_string[end_char_pos] == '.'){
-        printf("statement\n");
+#if CLI_DEBUG_VERBOSE
+        fprintf(stderr, "[DATALOG][CLI] Verbose: last character of head "
+            "signifies statement\n");
+#endif
         ret->head_type = DL_CLI_HEAD_STATEMENT;
+    }else if(head_string[end_char_pos] == '~'){
+#if CLI_DEBUG_VERBOSE
+        fprintf(stderr, "[DATALOG][CLI] Verbose: last character of head "
+            "signifies retraction\n");
+#endif
+        ret->head_type = DL_CLI_HEAD_RETRACTION;
     }else{
         fprintf(stderr, "[DATALOG][CLI] Debug: Syntax error, a literal "
                 "is missing a terminating symbol\n");
@@ -346,6 +360,12 @@ DATALOG_CLI_ERR_t dl_cli_parse_line(char* line)
 #endif
             test_cmd->cmd_type = DL_CLI_FACT;
         }
+        else if(test_cmd->head_type == DL_CLI_HEAD_RETRACTION){
+#ifdef CLI_DEBUG_VERBOSE
+            fprintf(stderr, "[DATALOG][CLI] Verbose: retraction created\n");
+#endif
+            test_cmd->cmd_type = DL_CLI_RETRACTION;
+        }
     }else{
         if(test_cmd->head_type == DL_CLI_HEAD_QUERY){
             fprintf(stderr, "[DATALOG][CLI] Syntax error: head literal cannot be a query and"
@@ -357,6 +377,12 @@ DATALOG_CLI_ERR_t dl_cli_parse_line(char* line)
             fprintf(stderr, "[DATALOG][CLI] Verbose: rule created\n");
 #endif
             test_cmd->cmd_type = DL_CLI_RULE;
+        }
+        else if(test_cmd->head_type == DL_CLI_HEAD_RETRACTION){
+#ifdef CLI_DEBUG_VERBOSE
+            fprintf(stderr, "[DATALOG][CLI] Verbose: retraction created\n");
+#endif
+            test_cmd->cmd_type = DL_CLI_RETRACTION;
         }
         
         datalog_cli_unprocessed_body_t* body_list
