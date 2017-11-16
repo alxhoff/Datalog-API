@@ -110,6 +110,7 @@ followed by
 dl_parser_mappings(dl_doc);
 ```
 but one can also print any number of the objects in the library though the number of print functions. Document metadata can also be parsed by calling dl_parser_metadata which will populat a dl_parser_metadata_t object stored in the main dl_parser_doc_t object.   
+
 See included example for furthur usage.
 
 ### Initialisation and Deinitialisation
@@ -175,7 +176,7 @@ A literal such as test(foo, BAR). would be represented using the following
     <predicate>test</predicate>
     <terms>
         <constant>foo</constant> <-- constant as the term has a lowercase letter
-        <variabel>BAR</variable> <-- Variable as the term has a capital letter
+        <variable>BAR</variable> <-- Variable as the term has a capital letter
     </terms>
 </literal>
 ```

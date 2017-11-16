@@ -128,7 +128,7 @@
     <predicate>test</predicate>
     <terms>
         <constant>foo</constant> <-- constant as the term has a lowercase letter
-        <variabel>BAR</variable> <-- Variable as the term has a capital letter
+        <variable>BAR</variable> <-- Variable as the term has a capital letter
     </terms>
 </literal>
 @endverbatim
