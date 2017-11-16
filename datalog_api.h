@@ -450,7 +450,7 @@ DATALOG_ERR_t datalog_clause_add_literal_s_copy(datalog_clause_t* clause,
 * terms as a clause.
 *
 * @param clause pointer to the clause object to which the literal shall
-* be added
+* be asserted
 * @return DATALOG_ERR_t error message
 */
 DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause);
@@ -466,8 +466,25 @@ DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause);
 */
 DATALOG_ERR_t datalog_assert_clause(int literal_count);
 
+/**
+* @brief Pushes a clause structure onto the stack then retracts the 
+* terms as a clause.
+*
+* @param clause pointer to the clause object to which the literal shall
+* be retracted
+* @return DATALOG_ERR_t error message
+*/
 DATALOG_ERR_t datalog_create_and_retract_clause_s(datalog_clause_t* clause);
 
+/**
+* @brief Retracts a clause that does not have a body
+*
+* Pops a literal off the stack to create and retracts a clause.
+* Literal must be already on the stack. Ordered appropriatley.
+* 
+* @param literal_count Number of literals in the body of the clause
+* @return DATALOG_ERR_t error message
+*/
 DATALOG_ERR_t datalog_retract_clause(int literal_count);
 
 /**
