@@ -386,7 +386,7 @@ DATALOG_ERR_t datalog_query(char* predicate,
 DATALOG_ERR_t datalog_query_s(datalog_query_t* query)
 {
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG] DEBUG: query cc %s(%s, %s)\n", 
+    fprintf(stderr, "[DATALOG] DEBUG: asserting query %s(%s, %s)\n", 
             query->literal->predicate, query->literal->arg1, query->literal->arg2); 
 #endif
    
@@ -599,7 +599,7 @@ DATALOG_ERR_t datalog_create_literal_s(datalog_literal_t* literal)
 #endif
 
     int ret = 0;
-    
+   //FAILIN HERE 
     //start literal, push empty literal onto stack
     ret = dl_pushliteral(datalog_db);
 

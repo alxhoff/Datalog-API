@@ -45,6 +45,10 @@ datalog_query_t* dl_cli_wrap_query(datalog_cli_command_t* command)
 
     ret->literal = dl_cli_wrap_literal(command->head);
 
+#ifdef CLI_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG][CLI] Verbose: command wrapped into query\n");
+#endif
+
     return ret;
 }
 
@@ -98,6 +102,11 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
             }
             break;
         case DL_CLI_QUERY:{
+#ifdef CLI_DEBUG_VERBOSE
+            fprintf(stderr, "[DATALOG][CLI] Verbose: Asserting query %s(%s,%s)?\n",
+                    command->head->predicate, command->head->term1,
+                    command->head->term2);
+#endif
             datalog_query_t* query = dl_cli_wrap_query(command);
             datalog_query_s(query);
             free(query);

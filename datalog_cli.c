@@ -171,6 +171,39 @@ datalog_cli_literal_t* dl_cli_process_literal(char* lit_string)
     fprintf(stderr, "[DATALOG][CLI] Verbose: processing literal term 1: %s\n", term1);
     fprintf(stderr, "[DATALOG][CLI] Verbose: processing literal term 2: %s\n", term2);
 #endif
+
+    ret->predicate = (char*)malloc(sizeof(char) * strlen(predicate));
+
+    if(ret->predicate == NULL){
+#ifdef CLI_ERR
+        fprintf(stderr, "[DATALOG][CLI] Err: process literal predicate alloc failed\n");
+#endif
+        return NULL;
+    }
+
+    strcpy(ret->predicate, predicate);
+    
+    ret->term1 = (char*)malloc(sizeof(char) * strlen(term1));
+    
+    if(ret->term1 == NULL){
+#ifdef CLI_ERR
+        fprintf(stderr, "[DATALOG][CLI] Err: process literal term 1 alloc failed\n");
+#endif
+        return NULL;
+    }
+   
+    strcpy(ret->term1, term1);
+
+    ret->term2 = (char*)malloc(sizeof(char) * strlen(term2));
+    
+    if(ret->term2 == NULL){
+#ifdef CLI_ERR
+        fprintf(stderr, "[DATALOG][CLI] Err: process literal term 2 alloc failed\n");
+#endif
+        return NULL;
+    }
+    
+    strcpy(ret->term2, term2);
     
     DATALOG_TERM_TYPE_t term1_type = dl_cli_process_string_type(term1);
     if(term1_type == 0){
