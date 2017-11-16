@@ -241,7 +241,6 @@ DATALOG_ERR_t datalog_clause_add_literal_s_copy(datalog_clause_t* clause,
 DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
 {
     //push clause literals onto stack in reverse order
-    
     for(int i = clause->literal_count; i > 0; i--){
         if(datalog_create_literal_s(clause->body_list[i]) != DATALOG_OK){
 #ifdef DATALOG_ERR
@@ -268,12 +267,11 @@ DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
 #endif
         return DATALOG_ASRT;
     }
-
     return DATALOG_OK;
 }
 
-DATALOG_ERR_t datalog_assert_clause(int literal_count){
-
+DATALOG_ERR_t datalog_assert_clause(int literal_count)
+{
     int ret = 0;
 
     //create clause from complete literal
@@ -309,6 +307,78 @@ DATALOG_ERR_t datalog_assert_clause(int literal_count){
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
     
+    return DATALOG_OK;
+}
+
+DATALOG_ERR_t datalog_create_and_retract_clause_s(datalog_clause_t* clause)
+{
+    //push clause literals onto stack in reverse order
+    for(int i = clause->literal_count; i > 0; i--){
+        if(datalog_create_literal_s(clause->body_list[i]) != DATALOG_OK){
+#ifdef DATALOG_ERR
+            fprintf(stderr, "[DATALOG][API] Err: failed to retract clause literal #%d\n",
+                    clause->literal_count - i);
+#endif
+            return DATALOG_LIT;
+        }
+    }
+
+    //create head on the stack
+    if(datalog_create_literal_s(clause->head) != DATALOG_OK){
+#ifdef DATALOG_ERR
+            fprintf(stderr, "[DATALOG][API] Err: failed to assert clause head \n");
+#endif
+        return DATALOG_LIT;
+    }
+
+    //assert clause
+    if(datalog_retract_clause(clause->literal_count + 1) != DATALOG_OK){
+#ifdef DATALOG_ERR
+        fprintf(stderr, "[DATALOG][API] Err: failed to retract "
+                "clause with #%d literals\n", clause->literal_count +1);
+#endif
+        return DATALOG_ASRT;
+    }
+    return DATALOG_OK;
+}
+
+DATALOG_ERR_t datalog_retract_clause(int literal_count)
+{
+    int ret = 0;
+
+    //create clause from complete literal
+    ret = dl_pushhead(datalog_db);
+    
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: empty clause created:               %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    for(int i = 0; i < literal_count; i++){
+        ret = dl_addliteral(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: literal %d added to clause:         %s\n",
+        i, (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+    }
+
+    //finalise the clause
+    ret = dl_makeclause(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: clause finalised:                   %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    //retract clause
+    ret = dl_retract(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: clause retracted:                   %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
     return DATALOG_OK;
 }
 

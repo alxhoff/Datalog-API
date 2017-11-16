@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/LUA.dir/libdatalog/lua/ltable.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/liolib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/loadlib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lbitlib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lopcodes.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lparser.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/ldo.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/linit.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lgc.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/ldblib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lstate.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lctype.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lzio.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/loslib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/ldebug.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lcorolib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lcode.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/ldump.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lstrlib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/llex.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lmem.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lundump.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/ltm.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lmathlib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/ltablib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lauxlib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lobject.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lutf8lib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lbaselib.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lapi.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lfunc.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/luac.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lvm.c.o"
+  "CMakeFiles/LUA.dir/libdatalog/lua/lstring.c.o"
+  "libLUA.pdb"
+  "libLUA.so"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang C)
+  include(CMakeFiles/LUA.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

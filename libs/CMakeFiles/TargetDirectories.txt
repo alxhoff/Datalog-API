@@ -1,0 +1,7 @@
+/home/alxhoff/git/Datalog-API/libs/CMakeFiles/edit_cache.dir
+/home/alxhoff/git/Datalog-API/libs/CMakeFiles/EXAMPLE.dir
+/home/alxhoff/git/Datalog-API/libs/CMakeFiles/DATALOG_API.dir
+/home/alxhoff/git/Datalog-API/libs/CMakeFiles/rebuild_cache.dir
+/home/alxhoff/git/Datalog-API/libs/CMakeFiles/DATALOG_PARSER.dir
+/home/alxhoff/git/Datalog-API/libs/CMakeFiles/DATALOG.dir
+/home/alxhoff/git/Datalog-API/libs/CMakeFiles/LUA.dir
