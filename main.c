@@ -29,9 +29,75 @@
 #include "datalog_api.h"
 #include "datalog_parser.h"
 #include "datalog_api_parser.h"
+#include "datalog_cli.h"
+
+#define clear() printf("\033[H\033[J")
 
 //global datalog database
 dl_db_t datalog_db;
+
+static int get_line (char *prmpt, char *buff, size_t sz) {
+    int ch, extra;
+
+    if (prmpt != NULL) {
+        printf ("%s", prmpt);
+        fflush (stdout);
+    }
+    if (fgets (buff, sz, stdin) == NULL)
+        return 1;
+
+    if (buff[strlen(buff)-1] != '\n') {
+        extra = 0;
+        while (((ch = getchar()) != '\n') && (ch != EOF))
+            extra = 1;
+        return (extra == 1) ? 2 : 0;
+    }
+
+    buff[strlen(buff)-1] = '\0';
+    return 0;
+}
+
+void datalog_splash()
+{
+    printf("*==========================================* \n");
+    printf("        _       _        _             \n");
+    printf("       | |     | |      | |            \n");
+    printf("     __| | __ _| |_ __ _| | ___   __ _ \n");
+    printf("    / _` |/ _` | __/ _` | |/ _ \\ / _` |\n");
+    printf("   | (_| | (_| | || (_| | | (_) | (_| |\n");
+    printf("    \\__,_|\\__,_|\\__\\__,_|_|\\___/ \\__, |\n");
+    printf("                                  __/ |\n");
+    printf("                                 |___/ \n");
+    printf(" \n");
+}
+
+void datalog_command_line_splash(void)
+{    
+    printf("*==========================================* \n");
+    printf(" \n");
+}
+
+void datalog_command_line_run(void)
+{
+    DATALOG_CLI_ERR_t ret = DATALOG_CLI_OK;
+    char command_line[100];
+    
+datalog_cli_restart:    
+    datalog_splash();
+    datalog_command_line_splash();
+    ret = get_line("\n-> ", command_line, 100);
+    printf("input is: %s\n", command_line);  
+    
+    ret = dl_cli_parse_line(command_line);
+    if(ret == DATALOG_CLI_EXIT){
+        clear();
+    }else if(ret == DATALOG_CLI_HELP){
+        clear();
+        dl_cli_print_help();
+        goto datalog_cli_restart;
+    }else
+        goto datalog_cli_restart;
+}
 
 int main(void)
 {
@@ -63,10 +129,12 @@ int main(void)
 
     //ret = datalog_parser_assert_doc(doc);
     ret = datalog_assert_fact_list(doc);
-
+   
     if(datalog_query( "test", "hello", "X", DL_CV) != DATALOG_OK)
         return -1;
-    
+
+    datalog_command_line_run();
+
     ret = datalog_engine_db_deinit();
 
     if(ret != DATALOG_OK) return -1;

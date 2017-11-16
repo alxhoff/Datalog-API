@@ -105,19 +105,71 @@ CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o.provides: CMakeFiles/DATALOG_A
 CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o.provides.build: CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o
 
 
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o: CMakeFiles/DATALOG_API.dir/flags.make
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o: ../datalog_cli.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alxhoff/git/Datalog-API/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/DATALOG_API.dir/datalog_cli.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/DATALOG_API.dir/datalog_cli.c.o   -c /home/alxhoff/git/Datalog-API/datalog_cli.c
+
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DATALOG_API.dir/datalog_cli.c.i"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/alxhoff/git/Datalog-API/datalog_cli.c > CMakeFiles/DATALOG_API.dir/datalog_cli.c.i
+
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DATALOG_API.dir/datalog_cli.c.s"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/alxhoff/git/Datalog-API/datalog_cli.c -o CMakeFiles/DATALOG_API.dir/datalog_cli.c.s
+
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o.requires:
+
+.PHONY : CMakeFiles/DATALOG_API.dir/datalog_cli.c.o.requires
+
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o.provides: CMakeFiles/DATALOG_API.dir/datalog_cli.c.o.requires
+	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_cli.c.o.provides.build
+.PHONY : CMakeFiles/DATALOG_API.dir/datalog_cli.c.o.provides
+
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o.provides.build: CMakeFiles/DATALOG_API.dir/datalog_cli.c.o
+
+
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o: CMakeFiles/DATALOG_API.dir/flags.make
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o: ../datalog_cli_asserter.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/alxhoff/git/Datalog-API/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o   -c /home/alxhoff/git/Datalog-API/datalog_cli_asserter.c
+
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.i"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/alxhoff/git/Datalog-API/datalog_cli_asserter.c > CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.i
+
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.s"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/alxhoff/git/Datalog-API/datalog_cli_asserter.c -o CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.s
+
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o.requires:
+
+.PHONY : CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o.requires
+
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o.provides: CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o.requires
+	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o.provides.build
+.PHONY : CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o.provides
+
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o.provides.build: CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o
+
+
 # Object files for target DATALOG_API
 DATALOG_API_OBJECTS = \
 "CMakeFiles/DATALOG_API.dir/datalog_api.c.o" \
-"CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o"
+"CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o" \
+"CMakeFiles/DATALOG_API.dir/datalog_cli.c.o" \
+"CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o"
 
 # External object files for target DATALOG_API
 DATALOG_API_EXTERNAL_OBJECTS =
 
 libDATALOG_API.so: CMakeFiles/DATALOG_API.dir/datalog_api.c.o
 libDATALOG_API.so: CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o
+libDATALOG_API.so: CMakeFiles/DATALOG_API.dir/datalog_cli.c.o
+libDATALOG_API.so: CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o
 libDATALOG_API.so: CMakeFiles/DATALOG_API.dir/build.make
 libDATALOG_API.so: CMakeFiles/DATALOG_API.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alxhoff/git/Datalog-API/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C shared library libDATALOG_API.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/alxhoff/git/Datalog-API/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C shared library libDATALOG_API.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/DATALOG_API.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -127,6 +179,8 @@ CMakeFiles/DATALOG_API.dir/build: libDATALOG_API.so
 
 CMakeFiles/DATALOG_API.dir/requires: CMakeFiles/DATALOG_API.dir/datalog_api.c.o.requires
 CMakeFiles/DATALOG_API.dir/requires: CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o.requires
+CMakeFiles/DATALOG_API.dir/requires: CMakeFiles/DATALOG_API.dir/datalog_cli.c.o.requires
+CMakeFiles/DATALOG_API.dir/requires: CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o.requires
 
 .PHONY : CMakeFiles/DATALOG_API.dir/requires
 

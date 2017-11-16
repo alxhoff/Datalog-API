@@ -28,6 +28,7 @@ CMakeFiles/EXAMPLE.dir/main.c.o: ../libs/libxml2/include/libxml2/libxml/xmlversi
 CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_api.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_api_parser.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_api_types.h
+CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_cli.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_parser.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../main.c
 

@@ -55,10 +55,10 @@
         <fact>
             <head>
                 <literal>
-                    <predicate>test_fact2</predicate>
+                    <predicate>test</predicate>
                     <terms>
-                        <constant>test_fact2_arg1</constant>
-                        <variable>test_fact2_arg2</variable>
+                        <constant>hello</constant>
+                        <constant>darko</constant>
                     </terms>
                 </literal>
             </head>

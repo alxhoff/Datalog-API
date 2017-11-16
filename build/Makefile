@@ -229,6 +229,60 @@ datalog_api_parser.c.s:
 	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.s
 .PHONY : datalog_api_parser.c.s
 
+datalog_cli.o: datalog_cli.c.o
+
+.PHONY : datalog_cli.o
+
+# target to build an object file
+datalog_cli.c.o:
+	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_cli.c.o
+.PHONY : datalog_cli.c.o
+
+datalog_cli.i: datalog_cli.c.i
+
+.PHONY : datalog_cli.i
+
+# target to preprocess a source file
+datalog_cli.c.i:
+	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_cli.c.i
+.PHONY : datalog_cli.c.i
+
+datalog_cli.s: datalog_cli.c.s
+
+.PHONY : datalog_cli.s
+
+# target to generate assembly for a file
+datalog_cli.c.s:
+	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_cli.c.s
+.PHONY : datalog_cli.c.s
+
+datalog_cli_asserter.o: datalog_cli_asserter.c.o
+
+.PHONY : datalog_cli_asserter.o
+
+# target to build an object file
+datalog_cli_asserter.c.o:
+	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o
+.PHONY : datalog_cli_asserter.c.o
+
+datalog_cli_asserter.i: datalog_cli_asserter.c.i
+
+.PHONY : datalog_cli_asserter.i
+
+# target to preprocess a source file
+datalog_cli_asserter.c.i:
+	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.i
+.PHONY : datalog_cli_asserter.c.i
+
+datalog_cli_asserter.s: datalog_cli_asserter.c.s
+
+.PHONY : datalog_cli_asserter.s
+
+# target to generate assembly for a file
+datalog_cli_asserter.c.s:
+	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.s
+.PHONY : datalog_cli_asserter.c.s
+
 datalog_parser.o: datalog_parser.c.o
 
 .PHONY : datalog_parser.o
@@ -1247,6 +1301,12 @@ help:
 	@echo "... datalog_api_parser.o"
 	@echo "... datalog_api_parser.i"
 	@echo "... datalog_api_parser.s"
+	@echo "... datalog_cli.o"
+	@echo "... datalog_cli.i"
+	@echo "... datalog_cli.s"
+	@echo "... datalog_cli_asserter.o"
+	@echo "... datalog_cli_asserter.i"
+	@echo "... datalog_cli_asserter.s"
 	@echo "... datalog_parser.o"
 	@echo "... datalog_parser.i"
 	@echo "... datalog_parser.s"

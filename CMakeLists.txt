@@ -100,7 +100,7 @@ MESSAGE( STATUS "CMAKE_CURRENT_SOURCE_DIR: " ${CMAKE_CURRENT_SOURCE_DIR} )
 MESSAGE( STATUS "CMAKE_BINARY_DIR:         " ${CMAKE_BINARY_DIR} )
 
 #my datalog api
-file(GLOB DATALOG_API_SRCS "datalog_api.c" "datalog_api_parser.c")
+file(GLOB DATALOG_API_SRCS "datalog_api.c" "datalog_api_parser.c" "datalog_cli.c" "datalog_cli_asserter.c")
 add_library(DATALOG_API SHARED ${DATALOG_API_SRCS})
 
 #my datalog parser

@@ -16,6 +16,16 @@
 },
 {
   "directory": "/home/alxhoff/git/Datalog-API/build",
+  "command": "/usr/bin/cc  -DDATALOG_API_EXPORTS -DDATALOG_DEBUG -DDATALOG_DEBUG_VERBOSE -DDATALOG_ERR -DPARSER_DEBUG -DPARSER_DEBUG_VERBOSE -DPARSER_ERR -I/home/alxhoff/git/Datalog-API -I/home/alxhoff/git/Datalog-API/libs/libdatalog -I/home/alxhoff/git/Datalog-API/libs/libdatalog/lua -I/home/alxhoff/git/Datalog-API/libs/libxml2/include/libxml2  -g -fPIC   -o CMakeFiles/DATALOG_API.dir/datalog_cli.c.o   -c /home/alxhoff/git/Datalog-API/datalog_cli.c",
+  "file": "/home/alxhoff/git/Datalog-API/datalog_cli.c"
+},
+{
+  "directory": "/home/alxhoff/git/Datalog-API/build",
+  "command": "/usr/bin/cc  -DDATALOG_API_EXPORTS -DDATALOG_DEBUG -DDATALOG_DEBUG_VERBOSE -DDATALOG_ERR -DPARSER_DEBUG -DPARSER_DEBUG_VERBOSE -DPARSER_ERR -I/home/alxhoff/git/Datalog-API -I/home/alxhoff/git/Datalog-API/libs/libdatalog -I/home/alxhoff/git/Datalog-API/libs/libdatalog/lua -I/home/alxhoff/git/Datalog-API/libs/libxml2/include/libxml2  -g -fPIC   -o CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o   -c /home/alxhoff/git/Datalog-API/datalog_cli_asserter.c",
+  "file": "/home/alxhoff/git/Datalog-API/datalog_cli_asserter.c"
+},
+{
+  "directory": "/home/alxhoff/git/Datalog-API/build",
   "command": "/usr/bin/cc  -DDATALOG_DEBUG -DDATALOG_DEBUG_VERBOSE -DDATALOG_ERR -DDATALOG_PARSER_EXPORTS -DPARSER_DEBUG -DPARSER_DEBUG_VERBOSE -DPARSER_ERR -I/home/alxhoff/git/Datalog-API -I/home/alxhoff/git/Datalog-API/libs/libdatalog -I/home/alxhoff/git/Datalog-API/libs/libdatalog/lua -I/home/alxhoff/git/Datalog-API/libs/libxml2/include/libxml2  -g -fPIC   -o CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o   -c /home/alxhoff/git/Datalog-API/datalog_parser.c",
   "file": "/home/alxhoff/git/Datalog-API/datalog_parser.c"
 },
