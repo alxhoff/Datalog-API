@@ -76,7 +76,7 @@ I wrote this quickly and dirtily, so excuse the mess.
 
 + Literal type checking
 
-#### CLIi
+#### CLI
 
 + Syntax checking
 + ~~Retractions~~
