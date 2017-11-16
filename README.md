@@ -100,13 +100,13 @@ All datalog XML documents must have a root tag <datalog>
 
 #### Metadata
 
-+ <name>: The name of the device
-+ <type>: The type of device
-+ <manufacturer>: Manufacturer of the device
-+ <contact>: Contact reguarding the device, probably from supplier
-+ <model>: Device model
-+ <serial>: Device serial number
-+ <year>: Year the device was produced
++ `<name>`: The name of the device
++ `<type>`: The type of device
++ `<manufacturer>`: Manufacturer of the device
++ `<contact>`: Contact reguarding the device, probably from supplier
++ `<model>`: Device model
++ `<serial>`: Device serial number
++ `<year>`: Year the device was produced
 
 #### Mappings
 
@@ -141,15 +141,70 @@ A literal such as test(foo, BAR). would be represented using the following
     </terms>
 </literal>
 ```
-+ <predicate>: The literal's predicated
-+ <terms>: Terms can have two types, the tags can be interchanged to modify the type of literal you wish to express
-    + <constant>: represents a constant term
-    + <variable>: represents a variable term
++ `<predicate>`: The literal's predicated
++ `<terms>`: Terms can have two types, the tags can be interchanged to modify the type of literal you wish to express
+    + `<constant>`: represents a constant term
+    + `<variable>`: represents a variable term
 
 ### Example XML
 
 ```xml
-
+<?xml version="1.0" encoding="UTF-8"?>
+<datalog>
+    <metadata>
+        <description>EDD to NAMUR mappings</description>
+        <author>alex</author>
+        <device>
+            <name>test device</name>
+            <type>test type</type>
+            <manufacturer>siemens</manufacturer>
+            <contact>alxhoff@gmail.com</contact>
+            <model>test model</model>
+            <serial>test serial</serial>
+            <year>2017</year>
+        </device>
+    </metadata>
+    <mappings>
+        <fact>
+            <head>
+                <literal>
+                    <predicate>test</predicate>
+                    <terms>
+                        <constant>hello</constant>
+                        <constant>world</constant>
+                    </terms>
+                </literal>
+            </head>
+        </fact>
+        <rule>
+            <head>
+                <literal>
+                    <predicate>test</predicate>
+                    <terms>
+                        <constant>this</constant>
+                        <variable>is</variable>
+                    </terms>
+                </literal>
+            </head>
+            <body>
+                <literal>
+                    <predicate>foo</predicate>
+                    <terms>
+                        <constant>a</constant>
+                        <variable>rule</variable>
+                    </terms>
+                </literal>
+                <literal>
+                    <predicate>test</predicate>
+                    <terms>
+                        <constant>with two</constant>
+                        <constant>literals</constant>
+                    </terms>
+                </literal>
+            </body>
+        </rule>
+    </mappings>
+</datalog>
 ```
 
 # Command Line Interface (CLI)
