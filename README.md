@@ -72,7 +72,19 @@ I wrote this quickly and dirtily, so excuse the mess.
 
 ### Testing To-Do
 
-+ write this list :P 
+#### API
+
++ Literal type checking
+
+#### CLIi
+
++ Syntax checking
++ ~~Retractions~~
+
+#### Parser
+
++ Literal type checking
++ Check file existance
 
 # Objects 
 
