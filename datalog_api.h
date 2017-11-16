@@ -29,35 +29,35 @@
                  |---lua
                       |---lua source files
 @endverbatim
- * @subsection building_sec Building
+@subsection building_sec Building
  * I have included a demo main.c as well as a demo CMake that will build the 
  * API as a shared library that can then be linked into a exsisting project.<br> 
- * @subsubsection build_cmds How to build
+@subsubsection build_cmds How to build
  * It's pretty tough.... cd into the root director and create a build dir, 
  * or don't, it'll be your mess.
- * @verbatim
+@verbatim
  cd Datalog-API
  mkdir build
  cd build
- @endverbatim
+@endverbatim
  * Generate CMake junk
  * @verbatim
  cmake ..
- @endverbatim
+@endverbatim
  * and finally make
  * @verbatim
  make
- @endverbatim
+@endverbatim
  * The executable can be found in the bin subdirectory in the root dir. <br><br>
  * Library objects in the build subdirectory.
- * @subsection progress_sec Work in progress
+@subsection progress_sec Work in progress
  * I wrote this quickly and dirtily, so excuse the mess. 
- * @subsubsection todo_sec To-Do
+@subsubsection todo_sec To-Do
  * - Clauses with bodies
  * - Error checking on literal types
  * - Check that all methods are implemented for all objects, both with and 
  * without structs.
- * @subsection objects_sec Objects 
+@subsection objects_sec Objects 
  * The API revolves around a struct objects to enable a more logical way or 
  * representing datalog commands rather than the push and pop confusion found
  * in the library. <br><br>
@@ -65,18 +65,155 @@
  * datalog_query_t and clauses by datalog_clause_t. <br><br>
  * I may of missed a few methods to be implemented but I should get these 
  * done as I actually use this API for other code. 
- * @section parser_sec XML Parser
- * The XML parser is designed to be used to be able to generate or create XML files
- * that can then be parsed to a datalog program to load rules and facts into the
- * datalog database. The parser is built around libxml2 and I built the CMake to use
- * stand alone libraries so to ensure easier building. The parser works by calling
+@section parser_sec XML Parser
+ * The XML parser is designed to be used to be able parse XML files
+ * to a datalog program to load rules and facts into the
+ * datalog database. The parser is built around libxml2 and built into a shared library
+ * through CMake to use
+ * to ensure easier building and linking. 
+@subsection parser_use_sec 
+@subsubsection parser_use_init_sec Initialisation and deinitialisation
+ * The parser must be started by calling
  * the dl_parser_init function, specifying the file to be opened. This will initialise
- * the document object used by the parser. 
- @subsection literal_sec Literal objects
+ * the document object used by the parser. Calling dl_parser_deinit all objects used
+ * by the parser are free'd and the parser deinit'd.
+@subsubsection parser_use_parsing_sec Parsing a document
+ * The function dl_parser_runtime can be called to completley pass a document, returning
+ * a dl_parser_return_doc_t object that contains a linked list to all the parsed rules,
+ * a linked list to all the parsed facts found within the document as well as populating
+ * the dl_parser_metadata_t object within the return doc object. <br>
+ * One can also parse the various types of data seperatley by running either:
+ * dl_parser_metadata or dl_parser_mappings to parse only the metadata or the rules and 
+ * facts respectivley. 
+@subsubsection parser_use_assert_sec Asserting a parsed document
+ * The dl_parser_return_doc_t object can have both it's rules list and facts lists asserted
+ by calling the functions dl_assert_fact_list and dl_assert_rule_list respectivley.
+@section xml_style_guide_sec XML Style Guide
+* The XML documents to be parsed must adhere to a strict style guide. I would
+* like to say I have been scrupulous in implementing error checking but as this
+* is more a time>quality implementation, you will most likley crash your program
+* by parsing an invalid XML document. More throrogh error checking is on the TODO.
+@subsection XML_style_tags_sec Tags
+@subsubsection XML_style_tags_document Document
+* All datalog XML documents must have a root tag <datalog>
+@subsubsection XML_style_tags_metadata Metadata
+* - <name>: The name of the device
+* - <type>: The type of device
+* - <manufacturer>: Manufacturer of the device
+* - <contact>: Contact reguarding the device, probably from supplier
+* - <model>: Device model
+* - <serial>: Device serial number
+* - <year>: Year the device was produced
+@subsubsection XML_style_tags_mappings Mappings
+* The mappings tags houses the portion of the document where all rules and
+* facts are to be represented.
+@subsubsection XML_style_tags_facts Facts
+* A fact is represented very similarly to a rule, except it does not contain a
+* <body> tag. The <head> tag contains one literal.
+@subsubsection XML_style_tags_rules Rules
+* A rule is represented by two tags, a <head> tag and a <body> tag. The head
+* can only contain one literal while the body can contain a theorerically
+* infinite number of literals.
+@subsubsection XML_style_tags_head Head
+* <head> tags are used to represent the head of a clause and contain one literal.
+@subsubsection XML_style_tags_body Body
+* <body> tags are used to represent the body of a calsue can can contain a 
+* theoretically infiinite number of literals.
+@subsubsection XML_style_tags_literal Literal
+* A literal is used to display datalog's most rudementary data type. One literal
+* is comprised of a predicate and the corresponsing terms. <br>
+* a literal such as test(foo, BAR). would be represented using the following
+@verbatim
+<literal>
+    <predicate>test</predicate>
+    <terms>
+        <constant>foo</constant> <-- constant as the term has a lowercase letter
+        <variabel>BAR</variable> <-- Variable as the term has a capital letter
+    </terms>
+</literal>
+@endverbatim
+* - <predicate>: The literal's predicated
+* - <terms>: Terms can have two types, the tags can be interchanged to modify the
+* type of literal you wish to express
+*   - <constant>: represents a constant term
+*   - <variable>: represents a variable term
+@subsection XML_style_example_sec Example XML
+@verbatim
+<?xml version="1.0" encoding="UTF-8"?>
+<datalog>
+    <metadata>
+        <description>EDD to NAMUR mappings</description>
+        <author>alex</author>
+        <device>
+            <name>test device</name>
+            <type>test type</type>
+            <manufacturer>siemens</manufacturer>
+            <contact>alxhoff@gmail.com</contact>
+            <model>test model</model>
+            <serial>test serial</serial>
+            <year>2017</year>
+        </device>
+    </metadata>
+    <mappings>
+        <fact>
+            <head>
+                <literal>
+                    <predicate>test</predicate>
+                    <terms>
+                        <constant>hello</constant>
+                        <constant>world</constant>
+                    </terms>
+                </literal>
+            </head>
+        </fact>
+        <rule>
+            <head>
+                <literal>
+                    <predicate>test</predicate>
+                    <terms>
+                        <constant>this</constant>
+                        <variable>is</variable>
+                    </terms>
+                </literal>
+            </head>
+            <body>
+                <literal>
+                    <predicate>foo</predicate>
+                    <terms>
+                        <constant>a</constant>
+                        <variable>rule</variable>
+                    </terms>
+                </literal>
+                <literal>
+                    <predicate>test</predicate>
+                    <terms>
+                        <constant>with two</constant>
+                        <constant>literals</constant>
+                    </terms>
+                </literal>
+            </body>
+        </rule>
+    </mappings>
+</datalog>
+@endverbatim
+@section CLI_sec Command Line Interface
+ * I have made a small set of funtions that work on a loop to read commands from the
+ * native CLI to the Datalog's CLI emulator. The CLI can be used to interact with
+ * and previous datalog happenings run within the same program as it shares the same
+ * global database as the other API modules. 
+@subsection CLI_use_sec Using the CLI
+ * The CLI accepts 4 types of input: normal datalog statements, "help" to display help,
+ * "clear" to clear the CLI and "exit" to exit the CLI function loop. <br>
+ * Please see the inbuilt help function for information on how to express datalog
+ * statements.<br>
+ * The CLI can be embedded into a program via it's main runtime fuction 
+ * datalog_command_line_run. The function runs on a goto loop and will run until the
+ * program is terminated or the "exit" command is given.
+@subsection literal_sec Literal objects
  * The parser represents literals using the dl_parser_literal_t object that stores the 
  * predicate and arguments for the literal. Literals are probably not used directly in
  * the parser.
- @subsection fact_sec Fact objects
+@subsection fact_sec Fact objects
  * A fact in data log is a clause without a body, aka it's a standard literal. Facts are
  * essentailly a literal stored in a container allowing them to be used as elements of a
  * linked list as well as storing a reference to the XML node that corresponds to the fact.
@@ -88,7 +225,7 @@
  * then processed using dl_parser_process_fact. After processing the found facts can be found
  * pointed to by the linked list head pointer dl_parser_fact_t* facts_head found within the
  * dl_parser_doc_t object.
- @subsection rule_sec Rule objects
+@subsection rule_sec Rule objects
  * In Datalog rules are clauses that contain a body, the body being a potentially infinite 
  * length array of literals. In the XML parser rules are represented similarly to facts,
  * using the dl_parser_rule_t object, with the exception that the rules object represents
@@ -99,15 +236,15 @@
  * fashion and processed through calls to dl_parser_process_rule whilst iterating over the
  * linked list. The linked list of processed rules can be found using the head pointer
  * dl_parser_rule_t* rules_head found in the dl_parser_doc_t object.
- @subsection parse_use_sec Parser use
+@subsection parse_use_sec Parser use
  * Parser use should pretty much only require the user to call 
- @verbatim
+@verbatim
  dl_parser_doc_t* dl_doc = dl_parser_init(filename);
- @endverbatim
+@endverbatim
  * followed by
- @verbatim
+@verbatim
  dl_parser_mappings(dl_doc);
- @endverbatim
+@endverbatim
  * but one can also print any number of the objects in the library though the number of 
  * print functions. Document metadata can also be parsed by calling dl_parser_metadata
  * which will populat a dl_parser_metadata_t object stored in the main dl_parser_doc_t
@@ -204,7 +341,7 @@ struct datalog_clause{
 extern dl_db_t datalog_db;
 
 /**
-* @brief Initialises the GPIO pins for the SR
+* @brief Processes the answers returned from a query.
 *
 * Takes the answers struct provided by the LUA/C library and exports it
 * into an struct that this API uses to process query answers.

@@ -461,13 +461,6 @@ DL_PARSER_ERR_t dl_parser_mappings(dl_parser_doc_t* doc)
             fprintf(stderr, "[DATALOG][PARSER] Verbose: facts processed in parse mappings\n");
 #endif
     
-/*    //print
-    dl_parser_fact_t* fact_tmp = doc->facts_head;
-    while(fact_tmp != NULL){
-        dl_parser_print_fact(fact_tmp);
-        fact_tmp = fact_tmp->next;
-    }
-*/
     return DL_PARSER_OK;
 }
 
