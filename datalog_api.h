@@ -621,7 +621,7 @@ DATALOG_ERR_t datalog_create_and_retract_clause_s(datalog_clause_t* clause);
 * @param literal_count Number of literals in the body of the clause
 * @return DATALOG_ERR_t error message
 */
-DATALOG_ERR_t datalog_retract_clause(int literal_count);
+DATALOG_ERR_t datalog_retract_clause(void);
 
 /**
 * @brief Initialises the datalog database
