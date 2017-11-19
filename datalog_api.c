@@ -426,9 +426,11 @@ DATALOG_ERR_t datalog_query(char* predicate,
     fprintf(stderr, "[DATALOG] VERBOSE: query resulted in answer:           %s\n", 
         (a != NULL ? "SUCCSESS" : "FAIL"));
 #endif
-   
-    datalog_query_answer_t* processed = 
-        datalog_process_answer(a);
+  
+    if(a != NULL){
+        datalog_query_answer_t* processed = 
+            datalog_process_answer(a);
+    }
 
     return DATALOG_OK;
 }
@@ -461,12 +463,14 @@ DATALOG_ERR_t datalog_query_s(datalog_query_t* query)
     fprintf(stderr, "[DATALOG] VERBOSE: query resulted in answer:           %s\n", 
         (a != NULL ? "SUCCSESS" : "FAIL"));
 #endif
-   
+  
     query->answer = (dl_answers_t*)calloc(1, sizeof(dl_answers_t));
-
-    memcpy(query->answer, &a, sizeof(dl_answers_t));
-   
-    query->processed_answer = datalog_process_answer(a); 
+    
+    if(a!= NULL){
+        memcpy(query->answer, &a, sizeof(dl_answers_t));
+  
+        query->processed_answer = datalog_process_answer(a); 
+    }
 
     return DATALOG_OK;
 }
