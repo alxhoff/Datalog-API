@@ -23,11 +23,22 @@
 @endverbatim
  */
 
-#define DATALOGAPI_VERSION_MAJOR      1
-#define DATALOGAPI_VERSION_MINOR      0
+#define TARS_VERSION_MAJOR      1
+#define TARS_VERSION_MINOR      0
+
+#define TARS_DEBUG              1
+#define TARS_DEBUG_VERBOSE      1
+#define TARS_ERR                1
 
 #define DATALOG_DEBUG           1
-#define DATALOG_DEBUG_BERBOSE   1
+#define DATALOG_DEBUG_VERBOSE   1
 #define DATALOG_ERR             1
 
+#define PARSER_DEBUG            1
+#define PARSER_DEBUG_VERBOSE    1
+#define PARSER_ERR              1
+
+#define CLI_DEBUG               1
+#define CLI_DEBUG_VERBOSE       1
+#define CLI_ERR                 1
 /* #undef USE_YCM */

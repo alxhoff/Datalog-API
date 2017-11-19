@@ -242,6 +242,7 @@ DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
 {
     //push clause literals onto stack in reverse order
     for(int i = clause->literal_count; i > 0; i--){
+    printf("here\n");
         if(datalog_create_literal_s(clause->body_list[i]) != DATALOG_OK){
 #ifdef DATALOG_ERR
             fprintf(stderr, "[DATALOG][API] Err: failed to assert clause literal #%d\n",
@@ -251,6 +252,11 @@ DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
         }
     }
 
+#ifdef PARSER_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG][PARSER] Verbose: asserting clause body literal"
+            " pushed onto the stack\n");
+#endif
+
     //create head on the stack
     if(datalog_create_literal_s(clause->head) != DATALOG_OK){
 #ifdef DATALOG_ERR
@@ -258,6 +264,11 @@ DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
 #endif
         return DATALOG_LIT;
     }
+
+#ifdef PARSER_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG][PARSER] Verbose: asserting clause head literal"
+            " pushed onto the stack\n");
+#endif
 
     //assert clause
     if(datalog_assert_clause(clause->literal_count + 1) != DATALOG_OK){

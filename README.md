@@ -66,6 +66,7 @@ I wrote this quickly and dirtily, so excuse the mess.
 + ~~Fix demo project~~
 + ~~Integrate parser into API~~ Test parser wrapping
 + ~~Clauses with bodies~~
++ Asserting rules list, currently seg faults
 + Error checking on literal types
 + Check that all methods are implemented for all objects, both with and without structs.
 + Lots more stuff I am to yet to discover
