@@ -115,7 +115,6 @@ int main(void)
 
     if(datalog_create_and_assert_literal_s(test_lit) != DATALOG_OK)
         return -1;
- /* 
 
     if(datalog_update_and_assert_literal
         (test_lit, "test", "hello", "universe", 0) != DATALOG_OK)
@@ -127,42 +126,19 @@ int main(void)
 
     if(datalog_query( "test", "hello", "X", DL_CV) != DATALOG_OK)
         return -1;
-  */  
     
-    datalog_clause_t* rule_clause = datalog_init_clause("test", "A", "B", DL_VV);
-
-    ret = datalog_clause_add_literal(rule_clause, 
-            "parent", "A", "B", DL_VV);
-
-    ret = datalog_create_and_assert_clause_s(rule_clause);
-
-    datalog_create_literal("test","A","B", DL_VV); 
-    
-    dl_pushhead(datalog_db);
-
-    datalog_create_literal("body","A","B", DL_VV); 
-
-    dl_addliteral(datalog_db);
-
-    ret = dl_makeclause(datalog_db);
-    
-    fprintf(stderr, "[DATALOG] VERBOSE: clause created:    %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
-
-    printf("here\n");
-
     //ret = datalog_create_and_assert_clause_s(rule_clause);
 
-    //dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
+    dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
 
-    //ret = datalog_parser_assert_doc(doc);
+    ret = datalog_parser_assert_doc(doc);
     //ret = datalog_assert_fact_list(doc);
-  /* 
+   
     if(datalog_query( "test", "hello", "X", DL_CV) != DATALOG_OK)
         return -1;
 
     datalog_command_line_run();
-*/
+
     ret = datalog_engine_db_deinit();
 
     if(ret != DATALOG_OK) return -1;
