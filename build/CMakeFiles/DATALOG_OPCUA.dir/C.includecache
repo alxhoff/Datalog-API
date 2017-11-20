@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/alxhoff/git/Datalog-API/datalog_opcua_generator.c
+stdio.h
+-
+datalog_opcua_generator.h
+/home/alxhoff/git/Datalog-API/datalog_opcua_generator.h
+
+/home/alxhoff/git/Datalog-API/datalog_opcua_generator.h
+

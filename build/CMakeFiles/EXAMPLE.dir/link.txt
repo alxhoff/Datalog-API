@@ -1,1 +1,1 @@
-/usr/bin/cc  -g   CMakeFiles/EXAMPLE.dir/main.c.o  -o ../bin/EXAMPLE libDATALOG_API.so libDATALOG_PARSER.so libDATALOG.so libLUA.so -lm ../libs/libxml2/lib/libxml2.so.2.9.7 -Wl,-rpath,/home/alxhoff/git/Datalog-API/build 
+/usr/bin/cc  -g   CMakeFiles/EXAMPLE.dir/main.c.o  -o ../bin/EXAMPLE libDATALOG_API.so libDATALOG_PARSER.so libDATALOG_OPCUA.so libDATALOG.so libLUA.so -lm ../libs/libxml2/lib/libxml2.so.2.9.7 -Wl,-rpath,/home/alxhoff/git/Datalog-API/build 

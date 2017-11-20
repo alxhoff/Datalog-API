@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named LUA
+
+# Build rule for target.
+LUA: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 LUA
+.PHONY : LUA
+
+# fast build rule for target.
+LUA/fast:
+	$(MAKE) -f CMakeFiles/LUA.dir/build.make CMakeFiles/LUA.dir/build
+.PHONY : LUA/fast
+
+#=============================================================================
 # Target rules for targets named EXAMPLE
 
 # Build rule for target.
@@ -150,6 +163,19 @@ DATALOG_PARSER/fast:
 .PHONY : DATALOG_PARSER/fast
 
 #=============================================================================
+# Target rules for targets named DATALOG_OPCUA
+
+# Build rule for target.
+DATALOG_OPCUA: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 DATALOG_OPCUA
+.PHONY : DATALOG_OPCUA
+
+# fast build rule for target.
+DATALOG_OPCUA/fast:
+	$(MAKE) -f CMakeFiles/DATALOG_OPCUA.dir/build.make CMakeFiles/DATALOG_OPCUA.dir/build
+.PHONY : DATALOG_OPCUA/fast
+
+#=============================================================================
 # Target rules for targets named DATALOG
 
 # Build rule for target.
@@ -161,19 +187,6 @@ DATALOG: cmake_check_build_system
 DATALOG/fast:
 	$(MAKE) -f CMakeFiles/DATALOG.dir/build.make CMakeFiles/DATALOG.dir/build
 .PHONY : DATALOG/fast
-
-#=============================================================================
-# Target rules for targets named LUA
-
-# Build rule for target.
-LUA: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 LUA
-.PHONY : LUA
-
-# fast build rule for target.
-LUA/fast:
-	$(MAKE) -f CMakeFiles/LUA.dir/build.make CMakeFiles/LUA.dir/build
-.PHONY : LUA/fast
 
 datalog_api.o: datalog_api.c.o
 
@@ -282,6 +295,33 @@ datalog_cli_asserter.s: datalog_cli_asserter.c.s
 datalog_cli_asserter.c.s:
 	$(MAKE) -f CMakeFiles/DATALOG_API.dir/build.make CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.s
 .PHONY : datalog_cli_asserter.c.s
+
+datalog_opcua_generator.o: datalog_opcua_generator.c.o
+
+.PHONY : datalog_opcua_generator.o
+
+# target to build an object file
+datalog_opcua_generator.c.o:
+	$(MAKE) -f CMakeFiles/DATALOG_OPCUA.dir/build.make CMakeFiles/DATALOG_OPCUA.dir/datalog_opcua_generator.c.o
+.PHONY : datalog_opcua_generator.c.o
+
+datalog_opcua_generator.i: datalog_opcua_generator.c.i
+
+.PHONY : datalog_opcua_generator.i
+
+# target to preprocess a source file
+datalog_opcua_generator.c.i:
+	$(MAKE) -f CMakeFiles/DATALOG_OPCUA.dir/build.make CMakeFiles/DATALOG_OPCUA.dir/datalog_opcua_generator.c.i
+.PHONY : datalog_opcua_generator.c.i
+
+datalog_opcua_generator.s: datalog_opcua_generator.c.s
+
+.PHONY : datalog_opcua_generator.s
+
+# target to generate assembly for a file
+datalog_opcua_generator.c.s:
+	$(MAKE) -f CMakeFiles/DATALOG_OPCUA.dir/build.make CMakeFiles/DATALOG_OPCUA.dir/datalog_opcua_generator.c.s
+.PHONY : datalog_opcua_generator.c.s
 
 datalog_parser.o: datalog_parser.c.o
 
@@ -1288,13 +1328,14 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... LUA"
 	@echo "... edit_cache"
 	@echo "... EXAMPLE"
 	@echo "... DATALOG_API"
 	@echo "... rebuild_cache"
 	@echo "... DATALOG_PARSER"
+	@echo "... DATALOG_OPCUA"
 	@echo "... DATALOG"
-	@echo "... LUA"
 	@echo "... datalog_api.o"
 	@echo "... datalog_api.i"
 	@echo "... datalog_api.s"
@@ -1307,6 +1348,9 @@ help:
 	@echo "... datalog_cli_asserter.o"
 	@echo "... datalog_cli_asserter.i"
 	@echo "... datalog_cli_asserter.s"
+	@echo "... datalog_opcua_generator.o"
+	@echo "... datalog_opcua_generator.i"
+	@echo "... datalog_opcua_generator.s"
 	@echo "... datalog_parser.o"
 	@echo "... datalog_parser.i"
 	@echo "... datalog_parser.s"

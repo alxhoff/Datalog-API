@@ -111,6 +111,10 @@ add_library(DATALOG_PARSER SHARED ${DATALOG_PARSER_SRCS})
 file(GLOB DATALOG_SRCS "libs/libdatalog/datalog.c")
 add_library(DATALOG SHARED ${DATALOG_SRCS})
 
+#datalog opcua generator
+file(GLOB DATALOG_OPCUA_SRCS "datalog_opcua_generator.c")
+add_library(DATALOG_OPCUA SHARED ${DATALOG_OPCUA_SRCS})
+
 #lua
 file(GLOB LUA_SRCS "libs/libdatalog/lua/*.c")
 add_library(LUA SHARED ${LUA_SRCS})
@@ -121,6 +125,7 @@ add_executable(EXAMPLE ${SOURCES})
 #LINKING
 target_link_libraries(EXAMPLE DATALOG_API)
 target_link_libraries(EXAMPLE DATALOG_PARSER)
+target_link_libraries(EXAMPLE DATALOG_OPCUA)
 target_link_libraries(EXAMPLE DATALOG)
 target_link_libraries(EXAMPLE LUA)
 target_link_libraries(EXAMPLE m)

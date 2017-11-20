@@ -32,6 +32,8 @@
 #include "datalog_parser.h"
 #include "datalog_api_parser.h"
 #include "datalog_cli.h"
+#include "datalog_opcua_generator.h"
+
 
 #define clear() printf("\033[H\033[J")
 
@@ -135,6 +137,8 @@ int main(void)
    
     if(datalog_query( "test", "hello", "X", DL_CV) != DATALOG_OK)
         return -1;
+
+    datalog_opcua_runtime();
 
     datalog_command_line_run();
 

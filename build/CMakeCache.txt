@@ -160,6 +160,9 @@ DATALOG_ERR:BOOL=ON
 DATALOG_LIB_DEPENDS:STATIC=
 
 //Dependencies for target
+DATALOG_OPCUA_LIB_DEPENDS:STATIC=
+
+//Dependencies for target
 DATALOG_PARSER_LIB_DEPENDS:STATIC=
 
 //Dependencies for target

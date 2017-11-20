@@ -92,6 +92,7 @@ EXAMPLE_EXTERNAL_OBJECTS =
 ../bin/EXAMPLE: CMakeFiles/EXAMPLE.dir/build.make
 ../bin/EXAMPLE: libDATALOG_API.so
 ../bin/EXAMPLE: libDATALOG_PARSER.so
+../bin/EXAMPLE: libDATALOG_OPCUA.so
 ../bin/EXAMPLE: libDATALOG.so
 ../bin/EXAMPLE: libLUA.so
 ../bin/EXAMPLE: ../libs/libxml2/lib/libxml2.so.2.9.7
