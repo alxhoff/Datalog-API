@@ -241,7 +241,7 @@ DATALOG_ERR_t datalog_clause_add_literal_s_copy(datalog_clause_t* clause,
 DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
 {
     //push clause literals onto stack in reverse order
-    for(int i = clause->literal_count; i > 0; i--){
+    for(int i = clause->literal_count-1; i >= 0; i--){
     printf("here\n");
         if(datalog_create_literal_s(clause->body_list[i]) != DATALOG_OK){
 #ifdef DATALOG_ERR

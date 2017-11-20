@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -230,49 +230,49 @@ libxml/xmlexports.h
 ansidecl.h
 -
 
-/home/alxhoff/git/siemens/Datalog-API/config.h
+/home/alxhoff/git/Datalog-API/config.h
 
-/home/alxhoff/git/siemens/Datalog-API/datalog_api.h
+/home/alxhoff/git/Datalog-API/datalog_api.h
 datalog.h
-/home/alxhoff/git/siemens/Datalog-API/datalog.h
+/home/alxhoff/git/Datalog-API/datalog.h
 datalog_api_types.h
-/home/alxhoff/git/siemens/Datalog-API/datalog_api_types.h
+/home/alxhoff/git/Datalog-API/datalog_api_types.h
 
-/home/alxhoff/git/siemens/Datalog-API/datalog_api_parser.h
+/home/alxhoff/git/Datalog-API/datalog_api_parser.h
 datalog_api.h
-/home/alxhoff/git/siemens/Datalog-API/datalog_api.h
+/home/alxhoff/git/Datalog-API/datalog_api.h
 datalog_parser.h
-/home/alxhoff/git/siemens/Datalog-API/datalog_parser.h
+/home/alxhoff/git/Datalog-API/datalog_parser.h
 
-/home/alxhoff/git/siemens/Datalog-API/datalog_api_types.h
+/home/alxhoff/git/Datalog-API/datalog_api_types.h
 
-/home/alxhoff/git/siemens/Datalog-API/datalog_cli.h
+/home/alxhoff/git/Datalog-API/datalog_cli.h
 datalog_api_types.h
-/home/alxhoff/git/siemens/Datalog-API/datalog_api_types.h
+/home/alxhoff/git/Datalog-API/datalog_api_types.h
 
-/home/alxhoff/git/siemens/Datalog-API/datalog_parser.h
+/home/alxhoff/git/Datalog-API/datalog_parser.h
 stdlib.h
 -
 stdint.h
 -
 libxml/parser.h
-/home/alxhoff/git/siemens/Datalog-API/libxml/parser.h
+/home/alxhoff/git/Datalog-API/libxml/parser.h
 datalog_api_types.h
-/home/alxhoff/git/siemens/Datalog-API/datalog_api_types.h
+/home/alxhoff/git/Datalog-API/datalog_api_types.h
 
-/home/alxhoff/git/siemens/Datalog-API/main.c
+/home/alxhoff/git/Datalog-API/main.c
 stdlib.h
 -
 string.h
 -
 config.h
-/home/alxhoff/git/siemens/Datalog-API/config.h
+/home/alxhoff/git/Datalog-API/config.h
 datalog_api.h
-/home/alxhoff/git/siemens/Datalog-API/datalog_api.h
+/home/alxhoff/git/Datalog-API/datalog_api.h
 datalog_parser.h
-/home/alxhoff/git/siemens/Datalog-API/datalog_parser.h
+/home/alxhoff/git/Datalog-API/datalog_parser.h
 datalog_api_parser.h
-/home/alxhoff/git/siemens/Datalog-API/datalog_api_parser.h
+/home/alxhoff/git/Datalog-API/datalog_api_parser.h
 datalog_cli.h
-/home/alxhoff/git/siemens/Datalog-API/datalog_cli.h
+/home/alxhoff/git/Datalog-API/datalog_cli.h
 
