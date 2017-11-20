@@ -51,7 +51,6 @@ DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc)
     return DATALOG_OK;
 }
 
-
 DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
 {
     DATALOG_ERR_t ret = DATALOG_OK;

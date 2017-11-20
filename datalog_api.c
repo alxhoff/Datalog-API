@@ -267,16 +267,16 @@ DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
     for(int i = 0; i < clause->literal_count; i++){
         ret = datalog_create_literal_s(clause->body_list[i]);
 #ifdef DATALOG_ERR
-        fprintf(stderr, "[DATALOG][API] Err: creating clause literal #%d: "
-            "%s\n", i, (ret == DATALOG_OK ? "SUCCSESS" : "FAIL"));
+        fprintf(stderr, "[DATALOG][API] Err: creating clause literal #%d:        %s\n"
+                , i, (ret == DATALOG_OK ? "SUCCSESS" : "FAIL"));
 #endif
         if(ret != DATALOG_OK) return DATALOG_LIT;
         
         ret = dl_addliteral(datalog_db);
 
 #ifdef PARSER_DEBUG_VERBOSE
-        fprintf(stderr, "[DATALOG][PARSER] Verbose: asserting clause literal #%d: "
-            "%s\n", i, (ret == 0 ? "SUCCSESS" : "FAIL"));
+        fprintf(stderr, "[DATALOG][API] Verbose: asserting clause literal #%d    %s\n"
+                , i, (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
         if(ret) return DATALOG_ASRT;
     }
@@ -284,7 +284,7 @@ DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
     ret = dl_makeclause(datalog_db);
 
 #ifdef PARSER_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG][PARSER] Verbose: asserting clause: %s\n",
+    fprintf(stderr, "[DATALOG][PARSER] Verbose: asserting clause:           %s\n",
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
     if(ret) return DATALOG_ASRT;
@@ -424,7 +424,7 @@ DATALOG_ERR_t datalog_query(char* predicate,
         char* arg1, char* arg2, DATALOG_LIT_t lit_type)  
 {
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG] DEBUG: query cc %s(%s, %s)\n", predicate, arg1, arg2); 
+    fprintf(stderr, "[DATALOG] DEBUG: query clause: \n%s(%s, %s)\n", predicate, arg1, arg2); 
 #endif
    
     DATALOG_ERR_t ret = DATALOG_OK;
@@ -583,7 +583,7 @@ DATALOG_ERR_t datalog_create_literal(char* predicate, char* arg1,
         char* arg2, DATALOG_LIT_t lit_type)
 {
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG] DEBUG: create literal %s(%s, %s)\n",
+    fprintf(stderr, "[DATALOG] DEBUG: create literal \n%s(%s, %s)\n",
             predicate, arg1, arg2); 
 #endif
 
@@ -670,7 +670,7 @@ DATALOG_ERR_t datalog_create_literal(char* predicate, char* arg1,
 DATALOG_ERR_t datalog_create_literal_s(datalog_literal_t* literal) 
 {
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG] DEBUG: create literal %s(%s, %s)\n",
+    fprintf(stderr, "[DATALOG] DEBUG: create literal \n%s(%s, %s)\n",
             literal->predicate,literal->arg1,literal->arg2); 
 #endif
 
