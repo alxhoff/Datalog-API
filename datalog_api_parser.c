@@ -32,7 +32,7 @@ DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
 
-    ret = datalog_assert_fact_list(doc);
+    //ret = datalog_assert_fact_list(doc);
 
     if(ret != DATALOG_OK) return DATALOG_ASRT;
 
@@ -66,7 +66,7 @@ DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
 #ifdef PARSER_DEBUG_VERBOSE
         fprintf(stderr, "[DATALOG][PARSER] Verbose: rule clause wrapped\n");
 #endif
-    //clause_tmp created correctly REMOVE
+        
         ret = datalog_create_and_assert_clause_s(clause_tmp);
         
         if(ret != DATALOG_OK){

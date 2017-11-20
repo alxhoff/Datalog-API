@@ -39,14 +39,14 @@
                 <literal>
                     <predicate>test_rule_body1</predicate>
                     <terms>
-                        <constant>test_rule_body1_arg1</constant>
+                        <variable>test_rule_body1_arg1</variable>
                         <variable>test_rule_body1_arg2</variable>
                     </terms>
                 </literal>
                 <literal>
                     <predicate>test_rule_body2</predicate>
                     <terms>
-                        <constant>test_rule_body2_arg1</constant>
+                        <variable>test_rule_body2_arg1</variable>
                         <constant>test_rule_body2_arg2</constant>
                     </terms>
                 </literal>
