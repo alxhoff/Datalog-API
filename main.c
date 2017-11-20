@@ -132,7 +132,6 @@ int main(void)
     dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
 
     ret = datalog_parser_assert_doc(doc);
-    //ret = datalog_assert_fact_list(doc);
    
     if(datalog_query( "test", "hello", "X", DL_CV) != DATALOG_OK)
         return -1;
