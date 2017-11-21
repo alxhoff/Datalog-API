@@ -209,6 +209,8 @@ ansidecl.h
 /home/alxhoff/git/Datalog-API/datalog_opcua_generator.c
 stdio.h
 -
+string.h
+-
 datalog_opcua_generator.h
 /home/alxhoff/git/Datalog-API/datalog_opcua_generator.h
 

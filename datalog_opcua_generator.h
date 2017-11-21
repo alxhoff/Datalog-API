@@ -14,10 +14,27 @@
 #define false 0
 #endif
 
+typedef enum{
+    DL_OPCUA_OK = 0,
+    DL_OPCUA_MEM,
+    DL_OPCUA_INDEX
+}DL_OPCUA_ERR_t;
+
 typedef struct alias_pair{
     char* name;
     int integer;
 }alias_pair_t;
+
+typedef enum{
+    DL_OPC_VARIABLE,
+    DL_OPC_METHOD,
+    DL_OPC_OBJ
+}DL_OPCUA_TYPE_t;
+
+typedef struct opcua_container{
+    void* next;
+    DL_OPCUA_TYPE_t next_type;
+}opcua_container_t;
 
 typedef struct opcua_reference opcua_reference_t;
 
@@ -26,30 +43,40 @@ struct opcua_reference{
     int ns;
     int i;
     bool is_forward;
-    
-    opcua_reference_t* next;
 };
 
-typedef struct opcua_node_attribute{
+typedef struct opcua_node_attributes{
     int parent_node_id;
     int i;
     int node_id;
     char* browse_name;
+}opcua_node_attributes_t;
+
+typedef struct opcua_method_attributes{
+    int method_declaration_id;
+}opcua_method_attributes_t;
+
+typedef struct opcua_variable_attributes{
+    char* data_type;
     int user_access_level;
     int access_level;
-    char* data_type;
-}opcua_node_attribute_t;
+    int array_dimensions;
+    int value_rank;
+}opcua_variable_attributes_t;
+
+typedef struct opcua_object_attributes{
+
+}opcua_object_attributes_t;
 
 typedef struct opcua_method opcua_method_t;
 
 struct opcua_method{
     xmlNodePtr node;
 
-    opcua_node_attribute_t* attributes;
+    opcua_node_attributes_t* attributes;
+    opcua_method_attributes_t* method_attributes;
     char* display_name;
     opcua_reference_t* reference_head;
-
-    opcua_method_t* next;
 };
 
 typedef struct opcua_variable opcua_variable_t;
@@ -57,23 +84,21 @@ typedef struct opcua_variable opcua_variable_t;
 struct opcua_variable{
     xmlNodePtr node;
 
-    opcua_node_attribute_t* attributes;
+    opcua_node_attributes_t* attributes;
+    opcua_variable_attributes_t* variable_attributes;
     char* display_name;
     opcua_reference_t* reference_head;
-
-    opcua_variable_t* next;
 };
 
-typedef struct opcua_UAObject opcua_UAObject_t;
+typedef struct opcua_object opcua_object_t;
 
-struct opcua_UAObject{
+struct opcua_object{
     xmlNodePtr node;
 
-    opcua_node_attribute_t* attributes;
+    opcua_node_attributes_t* attributes;
+    opcua_object_attributes_t* object_attributes;
     char* display_name;
     opcua_reference_t* reference_head;
-
-    opcua_UAObject_t* next;
 };
 
 //SERVER CONFIG
@@ -117,8 +142,6 @@ alias_pair_t alias_array[] = {
     {"TimeZoneDataType", 8912},
     {NULL, 0},
 };
-
-
 //END SERVER CONFIG
 
 void datalog_opcua_runtime(void);

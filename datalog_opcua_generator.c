@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "datalog_opcua_generator.h"
 
@@ -47,6 +48,91 @@ xmlDocPtr datalog_opcua_init_doc(void)
     }
 
     return doc;
+}
+
+opcua_node_attributes_t* datalog_opcua_create_attributes(void)
+{
+    opcua_node_attributes_t* ret = (opcua_node_attributes_t*)
+        calloc(1, sizeof(opcua_node_attributes_t));
+    if(ret == NULL) return NULL;
+    return ret;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_set_attribute_browse_name(opcua_node_attributes_t* attributes, 
+        char* browse_name)
+{
+    attributes->browse_name = (char*)malloc(sizeof(char) *  strlen(browse_name));
+    if(attributes->browse_name == NULL) return DL_OPCUA_MEM;
+    strcpy(attributes->browse_name, browse_name);
+    return DL_OPCUA_OK;
+}
+
+opcua_method_attributes_t* datalog_opcua_create_method_attributes(void)
+{
+    opcua_method_attributes_t* ret = (opcua_method_attributes_t*)
+        calloc(1, sizeof(opcua_method_attributes_t));
+    if(ret == NULL) return NULL;
+    return ret;
+}
+
+opcua_variable_attributes_t* datalog_opcua_create_variable_attributes(void)
+{
+    opcua_variable_attributes_t* ret = (opcua_variable_attributes_t*)
+        calloc(1, sizeof(opcua_variable_attributes_t));
+    if(ret == NULL) return NULL;
+    return ret;
+}
+
+opcua_object_attributes_t* datalog_opcua_create_object_attributes(void)
+{
+    opcua_object_attributes_t* ret = (opcua_object_attributes_t*)
+        calloc(1, sizeof(opcua_object_attributes_t));
+    if(ret == NULL) return NULL;
+    return ret;
+}
+
+opcua_method_t* datalog_opcua_create_method(void)
+{
+    opcua_method_t* ret = (opcua_method_t*)calloc(1, sizeof(opcua_method_t));
+    if(ret == NULL) return NULL;
+
+    ret->attributes = datalog_opcua_create_attributes();
+    if(ret->attributes == NULL) return NULL;
+
+    ret->method_attributes = datalog_opcua_create_method_attributes();
+    if(ret->method_attributes == NULL) return NULL;
+
+    return ret;
+}
+
+opcua_variable_t* datalog_opcua_create_variable(void)
+{
+    opcua_variable_t* ret = (opcua_variable_t*) 
+        calloc(1, sizeof(opcua_variable_t));
+    if(ret == NULL) return NULL;
+
+    ret->attributes = datalog_opcua_create_attributes();
+    if(ret->attributes == NULL) return NULL;
+
+    ret->variable_attributes = datalog_opcua_create_variable_attributes();
+    if(ret->variable_attributes == NULL) return NULL;
+
+    return ret;
+}
+
+opcua_object_t* datalog_opcua_create_object(void)
+{
+    opcua_object_t* ret = (opcua_object_t*)
+        calloc(1, sizeof(opcua_object_t));
+    if(ret == NULL) return NULL;
+
+    ret->attributes = datalog_opcua_create_attributes();
+    if(ret->attributes == NULL) return NULL;
+
+    ret->object_attributes = datalog_opcua_create_object_attributes();
+    if(ret->object_attributes == NULL) return NULL;
+
+    return ret;
 }
 
 void datalog_opcua_runtime(void)
