@@ -14,10 +14,17 @@
 #define false 0
 #endif
 
+#define XML_FILENAME        "test_doc.xml"
+#define XML_FILE_VERSION    "1.0"
+
+#define NAMESPACE_URI        "urn:UnifiedAutomation:CppDemoServer:BuildingAutomation"
+
 typedef enum{
     DL_OPCUA_OK = 0,
     DL_OPCUA_MEM,
-    DL_OPCUA_INDEX
+    DL_OPCUA_INVAL,
+    DL_OPCUA_INIT,
+    DL_OPCUA_ATTR,
 }DL_OPCUA_ERR_t;
 
 typedef struct alias_pair{
@@ -36,19 +43,29 @@ typedef struct opcua_container{
     DL_OPCUA_TYPE_t next_type;
 }opcua_container_t;
 
+typedef struct opcua_document{
+    xmlDocPtr document;
+    xmlNodePtr root_node;
+    char* filename;
+    char* version;
+}opcua_document_t;
+
+typedef struct opcua_ns_id{
+    int ns;
+    int i;
+}opcua_ns_id_t;
+
 typedef struct opcua_reference opcua_reference_t;
 
 struct opcua_reference{
     char* type;
-    int ns;
-    int i;
+    opcua_ns_id_t id;
     bool is_forward;
 };
 
 typedef struct opcua_node_attributes{
-    int parent_node_id;
-    int i;
-    int node_id;
+    opcua_ns_id_t parent_node_id;
+    opcua_ns_id_t node_id;
     char* browse_name;
 }opcua_node_attributes_t;
 

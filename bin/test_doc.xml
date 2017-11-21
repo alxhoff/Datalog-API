@@ -43,4 +43,9 @@
     <Alias Alias="EnumValueType">i=7594</Alias>
     <Alias Alias="TimeZoneDataType">i=8912</Alias>
   </Aliases>
+  <Extensions>
+    <Extension>
+      <ModelInfo Tool="UaModeler" Hash="T9MjgfInUChe45aJYm9rKw==" Version="1.4.0"/>
+    </Extension>
+  </Extensions>
 </UANodeSet>

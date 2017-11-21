@@ -3,41 +3,92 @@
 
 #include "datalog_opcua_generator.h"
 
-void datalog_opcua_save_deinit_doc(char* filename, xmlDocPtr doc)
-{
-    xmlSaveFormatFileEnc( filename, doc, "UTF-8", 1);
+opcua_document_t* opcua_document;
 
-    xmlFree(doc);
+DL_OPCUA_ERR_t datalog_opcua_set_display_name(void* object, DL_OPCUA_TYPE_t type, 
+        char* display_name)
+{
+    switch(type){
+    case DL_OPC_VARIABLE:
+        ((opcua_variable_t*)object)->display_name = 
+            (char*)realloc(((opcua_variable_t*)object)->display_name, 
+                    sizeof(char) * (strlen(display_name) + 1));
+        if(((opcua_variable_t*)object)->display_name == NULL) return DL_OPCUA_MEM;
+        strcpy(((opcua_variable_t*)object)->display_name, display_name);
+        break;
+    case DL_OPC_METHOD:
+        ((opcua_method_t*)object)->display_name = 
+            (char*)realloc(((opcua_method_t*)object)->display_name, 
+                    sizeof(char) * (strlen(display_name) + 1));
+        if(((opcua_method_t*)object)->display_name == NULL) return DL_OPCUA_MEM;
+        strcpy(((opcua_method_t*)object)->display_name, display_name);
+        break;
+    case DL_OPC_OBJ:
+        ((opcua_object_t*)object)->display_name = 
+            (char*)realloc(((opcua_object_t*)object)->display_name, 
+                    sizeof(char) * (strlen(display_name) + 1));
+        if(((opcua_object_t*)object)->display_name == NULL) return DL_OPCUA_MEM;
+        strcpy(((opcua_object_t*)object)->display_name, display_name);
+        break;
+    default:
+        break;
+    }
+    return DL_OPCUA_OK;
+}
+
+void datalog_opcua_save_deinit_doc(void)
+{
+    xmlSaveFormatFileEnc( opcua_document->filename, opcua_document->document, 
+            "UTF-8", 1);
+
+    xmlFree(opcua_document->document);
 
     xmlCleanupParser();
 
     xmlMemoryDump();
 }
 
-xmlDocPtr datalog_opcua_init_doc(void)
+opcua_document_t* datalog_opcua_create_document(char* filename, char* version)
 {
-    xmlDocPtr doc = NULL;
-    xmlNodePtr root_node = NULL, tmp_node = NULL,
-               tmp_parent = NULL, tmp_child = NULL;
+    opcua_document_t* ret = (opcua_document_t*)malloc(sizeof(opcua_document_t));
+    if(ret == NULL) return NULL;
+
+    ret->filename = (char*)malloc(sizeof(char) * (strlen(filename) + 1));
+    if(ret->filename == NULL) return NULL;
+    strcpy(ret->filename, filename);
+
+    ret->version = (char*)malloc(sizeof(char) * (strlen(version) + 1));
+    if(ret->version == NULL) return NULL;
+    strcpy(ret->version, version);
+
+    ret->document = xmlNewDoc(BAD_CAST version);
+    ret->root_node = xmlNewNode(NULL, BAD_CAST "UANodeSet");
+    xmlDocSetRootElement(ret->document, ret->root_node);
+
+    return ret;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
+{
+    xmlNodePtr tmp_node = NULL, tmp_parent = NULL, tmp_child = NULL;
     char buff[256];
     int i = 0;
 
     //create doc
-    doc = xmlNewDoc(BAD_CAST "1.0");
-    //root node
-    root_node = xmlNewNode(NULL, BAD_CAST "UANodeSet");
-    xmlDocSetRootElement(doc, root_node);
+    opcua_document = datalog_opcua_create_document(XML_FILENAME, 
+            XML_FILE_VERSION); 
 
     //DTD
-    xmlCreateIntSubset(doc, BAD_CAST "UANodeSet", NULL, BAD_CAST "dtdhere");
+    xmlCreateIntSubset(opcua_document->document, BAD_CAST "UANodeSet", 
+            NULL, BAD_CAST "dtdhere");
 
     //create namespace Uris
-    tmp_node = xmlNewChild(root_node, NULL, BAD_CAST "NamespaceUris", NULL);
-    xmlNewChild(tmp_node, NULL, BAD_CAST "Uri", 
-            BAD_CAST "urn:UnifiedAutomation:CppDemoServer:BuildingAutomation");
+    tmp_node = xmlNewChild(opcua_document->root_node, NULL, 
+            BAD_CAST "NamespaceUris", NULL);
+    xmlNewChild(tmp_node, NULL, BAD_CAST "Uri", BAD_CAST NAMESPACE_URI);
 
     //create aliases
-    tmp_parent = xmlNewChild(root_node, NULL, BAD_CAST "Aliases", NULL);
+    tmp_parent = xmlNewChild(opcua_document->root_node, NULL, BAD_CAST "Aliases", NULL);
     
     while(alias_array[i].integer != 0){
         sprintf(buff, "i=%d", alias_array[i].integer);
@@ -47,7 +98,77 @@ xmlDocPtr datalog_opcua_init_doc(void)
         i++;
     }
 
-    return doc;
+    //extension
+    tmp_parent = xmlNewChild(opcua_document->root_node, NULL, 
+            BAD_CAST "Extensions", NULL);
+    tmp_parent = xmlNewChild(tmp_parent, NULL, BAD_CAST "Extension", NULL);
+    tmp_child = xmlNewChild(tmp_parent, NULL, BAD_CAST "ModelInfo", NULL);
+    xmlNewProp(tmp_child, BAD_CAST "Tool", BAD_CAST "UaModeler");
+    xmlNewProp(tmp_child, BAD_CAST "Hash", BAD_CAST "T9MjgfInUChe45aJYm9rKw==");
+    xmlNewProp(tmp_child, BAD_CAST "Version", BAD_CAST "1.4.0");
+
+    return DL_OPCUA_INIT;
+}
+//CREATE OBJECT NODES
+DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr parent_node, 
+        opcua_node_attributes_t* attributes)
+{
+    char buffer[32];
+    //create general attributes
+    if(attributes->browse_name != NULL)
+        xmlNewProp(parent_node, BAD_CAST "BrowseName",
+                BAD_CAST attributes->browse_name);
+    if((attributes->node_id.i != 0) && (attributes->node_id.ns != 0)){
+        sprintf(buffer, "ns=%d;i=%d", attributes->node_id.ns, attributes->node_id.i);
+        xmlNewProp(parent_node, BAD_CAST "NodeId", BAD_CAST buffer); 
+    }
+    if((attributes->parent_node_id.i != 0) && (attributes->parent_node_id.ns != 0)){
+        sprintf(buffer, "ns=%d;i=%d", attributes->parent_node_id.ns,
+                attributes->parent_node_id.i);
+        xmlNewProp(parent_node, BAD_CAST "ParentNodeId", BAD_CAST buffer);
+    }
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_create_node_method(opcua_method_t* method)
+{
+    if(method == NULL) return DL_OPCUA_INVAL;
+    if(method->attributes == NULL) return DL_OPCUA_INVAL;
+    if(method->method_attributes == NULL) return DL_OPCUA_INVAL;
+
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+
+    method->node = xmlNewChild(opcua_document->root_node,
+            NULL, BAD_CAST "UAObject", NULL);
+
+    ret = datalog_opcua_create_node_attributes(method->node, method->attributes);
+
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+
+    return DL_OPCUA_OK;
+}
+//
+
+DL_OPCUA_ERR_t datalog_opcua_set_reference_type(opcua_reference_t* reference,
+        char* type)
+{
+    reference->type = (char*)realloc(reference->type, 
+        sizeof(char) * (strlen(type) + 1));
+    if(reference->type == NULL) return DL_OPCUA_MEM;
+
+    strcpy(reference->type, type);
+
+    return DL_OPCUA_OK;
+}
+
+opcua_reference_t* datalog_opcua_create_reference(void)
+{
+    opcua_reference_t* ret = (opcua_reference_t*)
+        calloc(1, sizeof(opcua_reference_t));
+    if(ret == NULL) return NULL;
+
+    return ret;
 }
 
 opcua_node_attributes_t* datalog_opcua_create_attributes(void)
@@ -73,6 +194,17 @@ opcua_method_attributes_t* datalog_opcua_create_method_attributes(void)
         calloc(1, sizeof(opcua_method_attributes_t));
     if(ret == NULL) return NULL;
     return ret;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_set_variable_data_type(opcua_variable_attributes_t* var,
+        char* data_type)
+{
+    var->data_type = 
+        (char*)realloc(var->data_type, sizeof(char) * (strlen(data_type) + 1));
+    if(var->data_type == NULL) return DL_OPCUA_MEM;
+    strcpy(var->data_type, data_type);
+
+    return DL_OPCUA_OK;
 }
 
 opcua_variable_attributes_t* datalog_opcua_create_variable_attributes(void)
@@ -139,10 +271,23 @@ void datalog_opcua_runtime(void)
 {
     printf("opcua runtime\n");
 
-    xmlDocPtr doc = datalog_opcua_init_doc();
+    DL_OPCUA_ERR_t ret  = datalog_opcua_init_doc();
 
-    if(doc == NULL) return;
+    if(ret != DL_OPCUA_OK) return;
 
-    datalog_opcua_save_deinit_doc("test_doc.xml", doc);
+//TEST CODE
+    opcua_method_t* test_method = datalog_opcua_create_method();
+
+    ret = datalog_opcua_set_display_name(test_method, DL_OPC_METHOD, 
+            "testDisplayName");
+
+    if(ret != DL_OPCUA_OK) return;
+
+    ret = datalog_opcua_create_node_method(test_method);
+
+    if(ret != DL_OPCUA_OK) return;
+//TEST CODE END
+
+    datalog_opcua_save_deinit_doc();
 }
 
