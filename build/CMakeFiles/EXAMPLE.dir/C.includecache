@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -251,6 +251,10 @@ datalog_api_types.h
 /home/alxhoff/git/Datalog-API/datalog_api_types.h
 
 /home/alxhoff/git/Datalog-API/datalog_opcua_generator.h
+libxml/parser.h
+/home/alxhoff/git/Datalog-API/libxml/parser.h
+libxml/tree.h
+/home/alxhoff/git/Datalog-API/libxml/tree.h
 
 /home/alxhoff/git/Datalog-API/datalog_parser.h
 stdlib.h

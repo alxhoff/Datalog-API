@@ -67,7 +67,7 @@ I wrote this quickly and dirtily, so excuse the mess.
 + ~~Integrate parser into API~~ Test parser wrapping
 + ~~Clauses with bodies~~
 + Check safe rules, "A clause is safe if every variable in its head occurs in some literal in its body"
-+ rule retraction
++ Rule retraction
 + ~~Asserting rules list, currently seg faults~~
 + Error checking on literal types
 + ~~Check that all methods are implemented for all objects, both with and without structs.~~

@@ -592,7 +592,8 @@ DATALOG_ERR_t datalog_clause_add_literal_s_copy(datalog_clause_t* clause,
 DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause);
 
 /**
-* @brief Asserts a clause that does not have a body
+* @brief Asserts a clause that has its head and body literals already 
+* pushed onto the stack
 *
 * Pops a literal off the stack to create and assert a clause.
 * Literal must be already on the stack. Ordered appropriatley.
