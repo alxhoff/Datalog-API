@@ -62,6 +62,8 @@ struct opcua_reference{
     char* type;
     opcua_ns_id_t id;
     bool is_forward;
+
+    opcua_reference_t* next;
 };
 
 typedef struct opcua_node_attributes{

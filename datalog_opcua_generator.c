@@ -317,6 +317,49 @@ opcua_reference_t* datalog_opcua_create_reference(void)
     return ret;
 }
 
+DL_OPCUA_ERR_t datalog_opcua_add_reference(void* object, 
+        DL_OPCUA_TYPE_t object_type, opcua_reference_t* reference)
+{
+    switch(object_type){
+        case DL_OPC_VARIABLE:
+            if(((opcua_variable_t*)object)->reference_head == NULL){
+                ((opcua_variable_t*)object)->reference_head = reference;
+                return DL_OPCUA_OK;
+            }else{
+                opcua_reference_t* ref_head = 
+                    ((opcua_variable_t*)object)->reference_head;
+                while(ref_head->next != NULL) ref_head = ref_head->next;
+                ref_head->next = reference;
+            }
+            break;
+        case DL_OPC_METHOD:
+            if(((opcua_method_t*)object)->reference_head == NULL){
+                ((opcua_method_t*)object)->reference_head = reference;
+                return DL_OPCUA_OK;
+            }else{
+                opcua_reference_t* ref_head = 
+                    ((opcua_method_t*)object)->reference_head;
+                while(ref_head->next != NULL) ref_head = ref_head->next;
+                ref_head->next = reference;
+            }
+            break;
+        case DL_OPC_OBJ:
+            if(((opcua_object_t*)object)->reference_head == NULL){
+                ((opcua_object_t*)object)->reference_head = reference;
+                return DL_OPCUA_OK;
+            }else{
+                opcua_reference_t* ref_head = 
+                    ((opcua_object_t*)object)->reference_head;
+                while(ref_head->next != NULL) ref_head = ref_head->next;
+                ref_head->next = reference;
+            }
+            break;
+        default:
+            break;
+    }
+    return DL_OPCUA_OK;
+}
+
 opcua_node_attributes_t* datalog_opcua_create_attributes(void)
 {
     opcua_node_attributes_t* ret = (opcua_node_attributes_t*)
@@ -444,6 +487,10 @@ void datalog_opcua_runtime(void)
     test_method->attributes->parent_node_id.i = 3;
     test_method->attributes->parent_node_id.ns = 4;
     test_method->method_attributes->method_declaration_id = 5;
+
+    opcua_reference_t* test_ref = datalog_opcua_create_reference();
+    
+    datalog_opcua_add_reference(test_ref, DL_OPC_METHOD, test_ref);
 
     ret = datalog_opcua_create_node_method(test_method);
 
