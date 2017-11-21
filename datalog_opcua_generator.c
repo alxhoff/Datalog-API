@@ -80,7 +80,7 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
 
     //DTD
     xmlCreateIntSubset(opcua_document->document, BAD_CAST "UANodeSet", 
-            NULL, BAD_CAST "dtdhere");
+            NULL, BAD_CAST "dtdIsHere");
 
     //create namespace Uris
     tmp_node = xmlNewChild(opcua_document->root_node, NULL, 
@@ -92,7 +92,6 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
     
     while(alias_array[i].integer != 0){
         sprintf(buff, "i=%d", alias_array[i].integer);
-        printf("Current pair: %s,%d\n", alias_array[i].name, alias_array[i].integer);
         tmp_child = xmlNewChild(tmp_parent, NULL, BAD_CAST "Alias", BAD_CAST buff);
         xmlNewProp(tmp_child, BAD_CAST "Alias",  BAD_CAST alias_array[i].name);
         i++;
@@ -107,7 +106,7 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
     xmlNewProp(tmp_child, BAD_CAST "Hash", BAD_CAST "T9MjgfInUChe45aJYm9rKw==");
     xmlNewProp(tmp_child, BAD_CAST "Version", BAD_CAST "1.4.0");
 
-    return DL_OPCUA_INIT;
+    return DL_OPCUA_OK;
 }
 //CREATE OBJECT NODES
 DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr parent_node, 

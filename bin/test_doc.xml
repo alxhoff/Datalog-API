@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE UANodeSet SYSTEM "dtdhere">
+<!DOCTYPE UANodeSet SYSTEM "dtdIsHere">
 <UANodeSet>
   <NamespaceUris>
     <Uri>urn:UnifiedAutomation:CppDemoServer:BuildingAutomation</Uri>
@@ -48,4 +48,5 @@
       <ModelInfo Tool="UaModeler" Hash="T9MjgfInUChe45aJYm9rKw==" Version="1.4.0"/>
     </Extension>
   </Extensions>
+  <UAObject/>
 </UANodeSet>
