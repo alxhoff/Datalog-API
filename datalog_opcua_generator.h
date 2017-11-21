@@ -53,6 +53,7 @@ typedef struct opcua_document{
 typedef struct opcua_ns_id{
     int ns;
     int i;
+    char* s;
 }opcua_ns_id_t;
 
 typedef struct opcua_reference opcua_reference_t;
