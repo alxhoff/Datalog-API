@@ -68,6 +68,7 @@ typedef struct opcua_node_attributes{
     opcua_ns_id_t parent_node_id;
     opcua_ns_id_t node_id;
     char* browse_name;
+    char* display_name;
 }opcua_node_attributes_t;
 
 typedef struct opcua_method_attributes{
@@ -93,7 +94,6 @@ struct opcua_method{
 
     opcua_node_attributes_t* attributes;
     opcua_method_attributes_t* method_attributes;
-    char* display_name;
     opcua_reference_t* reference_head;
 };
 
@@ -104,7 +104,8 @@ struct opcua_variable{
 
     opcua_node_attributes_t* attributes;
     opcua_variable_attributes_t* variable_attributes;
-    char* display_name;
+
+    char* description;
     opcua_reference_t* reference_head;
 };
 
@@ -115,7 +116,6 @@ struct opcua_object{
 
     opcua_node_attributes_t* attributes;
     opcua_object_attributes_t* object_attributes;
-    char* display_name;
     opcua_reference_t* reference_head;
 };
 

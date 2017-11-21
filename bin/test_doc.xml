@@ -48,5 +48,6 @@
       <ModelInfo Tool="UaModeler" Hash="T9MjgfInUChe45aJYm9rKw==" Version="1.4.0"/>
     </Extension>
   </Extensions>
-  <UAObject/>
+  <testNode foo="bar"/>
+  <UAObject BrowseName="testBrowseName" NodeId="ns=2;i=1" ParentNodeId="ns=4;i=3" MethodDeclarationId="i=5" DisplayName="testDisplayName"/>
 </UANodeSet>
