@@ -797,6 +797,17 @@ opcua_method_t* datalog_opcua_create_method(void)
     ret->method_attributes = datalog_opcua_create_method_attributes();
     if(ret->method_attributes == NULL) return NULL;
 
+    //set function pointers
+    ret->set_parent_id_ns = &self_set_method_parent_node_id_ns;
+    ret->set_parent_id_i = &self_set_method_parent_node_id_i;
+    ret->set_parent_id_s = &self_set_method_parent_node_id_s;
+    ret->set_node_id_ns = &self_set_method_node_id_ns;
+    ret->set_node_id_i = &self_set_method_node_id_i;
+    ret->set_node_id_s = &self_set_method_node_id_s;
+    ret->set_browse_name = &self_set_method_browse_name;
+    ret->set_display_name = &self_set_method_display_name;
+    ret->set_declaration_id = &self_set_method_declaration_id;
+
     return ret;
 }
 
@@ -812,6 +823,15 @@ opcua_variable_t* datalog_opcua_create_variable(void)
     ret->variable_attributes = datalog_opcua_create_variable_attributes();
     if(ret->variable_attributes == NULL) return NULL;
 
+    ret->set_parent_id_ns = &self_set_variable_parent_node_id_ns;
+    ret->set_parent_id_i = &self_set_variable_parent_node_id_i;
+    ret->set_parent_id_s = &self_set_variable_parent_node_id_s;
+    ret->set_node_id_ns = &self_set_variable_node_id_ns;
+    ret->set_node_id_i = &self_set_variable_node_id_i;
+    ret->set_node_id_s = &self_set_variable_node_id_s;
+    ret->set_browse_name = &self_set_variable_browse_name;
+    ret->set_display_name = &self_set_variable_display_name;
+
     return ret;
 }
 
@@ -826,6 +846,15 @@ opcua_object_t* datalog_opcua_create_object(void)
 
     ret->object_attributes = datalog_opcua_create_object_attributes();
     if(ret->object_attributes == NULL) return NULL;
+
+    ret->set_parent_id_ns = &self_set_object_parent_node_id_ns;
+    ret->set_parent_id_i = &self_set_object_parent_node_id_i;
+    ret->set_parent_id_s = &self_set_object_parent_node_id_s;
+    ret->set_node_id_ns = &self_set_object_node_id_ns;
+    ret->set_node_id_i = &self_set_object_node_id_i;
+    ret->set_node_id_s = &self_set_object_node_id_s;
+    ret->set_browse_name = &self_set_object_browse_name;
+    ret->set_display_name = &self_set_object_display_name;
 
     return ret;
 }
@@ -857,8 +886,10 @@ void datalog_opcua_runtime(void)
 
     if(ret != DL_OPCUA_OK) return;
     
-    test_method->attributes->node_id.i = 1;
-    test_method->attributes->node_id.ns = 2;
+    test_method->set_node_id_i(test_method, 1);
+    test_method->set_node_id_ns(test_method, 2);
+    test_method->set_node_id_s(test_method, "testS");
+    
     ret = datalog_opcua_set_id_s(&test_method->attributes->node_id, "testNodeId"); 
     ret = datalog_opcua_set_id_s(&test_method->attributes->parent_node_id, 
             "testParentNodeId"); 
@@ -870,7 +901,6 @@ void datalog_opcua_runtime(void)
     
     opcua_reference_t* test_ref = datalog_opcua_create_reference();
     
-    //test_ref->id.i = 6;
     test_ref->id.ns = 7;
     test_ref->is_forward = false;
 
@@ -888,7 +918,6 @@ void datalog_opcua_runtime(void)
     test_ref = datalog_opcua_create_reference();
 
     test_ref->id.i = 8;
-    //test_ref->id.ns = 9;
     test_ref->is_forward = true;
     
     datalog_opcua_add_reference(test_method, DL_OPC_METHOD, test_ref);
