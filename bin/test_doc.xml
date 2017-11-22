@@ -51,7 +51,9 @@
   <testNode foo="bar"/>
   <UAObject BrowseName="testBrowseName" NodeId="ns=2;i=1" ParentNodeId="ns=4;i=3" MethodDeclarationId="i=5" DisplayName="testDisplayName">
     <References>
-      <Reference IsForward="false">ns=7;i=6</Reference>
+      <Reference IsForward="false">ns=7</Reference>
+      <Reference IsForward="true">ns=9;i=8;s=testRefS</Reference>
+      <Reference IsForward="true">i=8</Reference>
     </References>
   </UAObject>
 </UANodeSet>

@@ -383,6 +383,15 @@ DL_OPCUA_ERR_t datalog_opcua_add_reference_attributes(xmlNodePtr reference_node,
         xmlNodeSetContent(reference_node, BAD_CAST buffer);
     }
 
+    if(reference->id.s != NULL){
+        char* node_value = (char*)xmlNodeGetContent(reference_node);
+        char second_buffer[strlen(node_value) + strlen(reference->id.s) + 4];
+        strcpy(buffer, node_value);
+        strcpy(buffer + strlen(node_value), ";s=");
+        strcpy(buffer + strlen(node_value) + 3, reference->id.s);
+        xmlNodeSetContent(reference_node, BAD_CAST buffer);
+    }
+
     if((reference->is_forward != true) || (reference->is_forward != false)){
         sprintf(buffer, "%s", ((reference->is_forward == 1) ? "true" : "false"));
         xmlNewProp(reference_node, BAD_CAST "IsForward", BAD_CAST buffer);
@@ -459,6 +468,19 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
     }
 
     return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_set_reference_id_s(opcua_reference_t* reference,
+        char* value)
+{
+    if(value != NULL){
+        reference->id.s = (char*)realloc(reference->id.s, 
+                sizeof(char) * (strlen(value) + 1));
+        if(reference->id.s == NULL) return DL_OPCUA_MEM;
+        strcpy(reference->id.s, value);
+        return DL_OPCUA_OK;
+    }
+    return DL_OPCUA_INVAL;
 }
 
 opcua_node_attributes_t* datalog_opcua_create_attributes(void)
@@ -589,14 +611,31 @@ void datalog_opcua_runtime(void)
     test_method->attributes->parent_node_id.ns = 4;
     test_method->method_attributes->method_declaration_id = 5;
 
+    ret = datalog_opcua_create_node_method(test_method);
+    
     opcua_reference_t* test_ref = datalog_opcua_create_reference();
     
-    test_ref->id.i = 6;
+    //test_ref->id.i = 6;
     test_ref->id.ns = 7;
     test_ref->is_forward = false;
-    
-    ret = datalog_opcua_create_node_method(test_method);
 
+    datalog_opcua_add_reference(test_method, DL_OPC_METHOD, test_ref);
+
+    test_ref = datalog_opcua_create_reference();
+
+    test_ref->id.i = 8;
+    test_ref->id.ns = 9;
+    datalog_opcua_set_reference_id_s(test_ref, "testRefS"); 
+    test_ref->is_forward = true;
+    
+    datalog_opcua_add_reference(test_method, DL_OPC_METHOD, test_ref);
+
+    test_ref = datalog_opcua_create_reference();
+
+    test_ref->id.i = 8;
+    //test_ref->id.ns = 9;
+    test_ref->is_forward = true;
+    
     datalog_opcua_add_reference(test_method, DL_OPC_METHOD, test_ref);
 
     ret = datalog_opcua_create_node_references(test_method, DL_OPC_METHOD);
