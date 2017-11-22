@@ -164,8 +164,49 @@ alias_pair_t alias_array[] = {
 };
 //END SERVER CONFIG
 
-void datalog_opcua_runtime(void);
+void datalog_opcua_save_deinit_doc(void);
+opcua_document_t* datalog_opcua_create_document(char* filename, char* version);
+DL_OPCUA_ERR_t datalog_opcua_init_doc(void);
+DL_OPCUA_ERR_t datalog_opcua_set_browse_name(void* object, DL_OPCUA_TYPE_t type,
+        char* browse_name);
+DL_OPCUA_ERR_t datalog_opcua_set_display_name(void* object, DL_OPCUA_TYPE_t type, 
+        char* display_name);
+DL_OPCUA_ERR_t datalog_opcua_set_variable_description(opcua_variable_t* variable,
+        char* description);
+DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr parent_node, 
+        opcua_node_attributes_t* attributes);
+DL_OPCUA_ERR_t datalog_opcua_create_node_method_attributes(opcua_method_t* method);
+DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* variable);
+DL_OPCUA_ERR_t datalog_opcua_create_node_object_attributes(opcua_object_t* object);
+DL_OPCUA_ERR_t datalog_opcua_create_node_method(opcua_method_t* method);
+DL_OPCUA_ERR_t datalog_opcua_create_node_variable(opcua_variable_t* variable);
+DL_OPCUA_ERR_t datalog_opcua_create_node_object(opcua_object_t* object);
+DL_OPCUA_ERR_t datalog_opcua_set_reference_type(opcua_reference_t* reference,
+        char* type);
+opcua_reference_t* datalog_opcua_create_reference(void);
+DL_OPCUA_ERR_t datalog_opcua_add_reference(void* object, 
+        DL_OPCUA_TYPE_t object_type, opcua_reference_t* reference);
+DL_OPCUA_ERR_t datalog_opcua_add_reference_attributes(xmlNodePtr reference_node,
+        opcua_reference_t* reference);
+DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object, 
+        DL_OPCUA_TYPE_t object_type);
+DL_OPCUA_ERR_t datalog_opcua_add_id_contents(xmlNodePtr node, opcua_ns_id_t* id);
 DL_OPCUA_ERR_t datalog_opcua_add_id_attribute(xmlNodePtr node, char* attribute,
         opcua_ns_id_t* id);
+DL_OPCUA_ERR_t datalog_opcua_set_id_s(opcua_ns_id_t* id, char* value);
+DL_OPCUA_ERR_t datalog_opcua_set_id_ns(opcua_ns_id_t* id, int ns);
+DL_OPCUA_ERR_t datalog_opcua_set_id_i(opcua_ns_id_t* id, int i);
+opcua_node_attributes_t* datalog_opcua_create_attributes(void);
+DL_OPCUA_ERR_t datalog_opcua_set_attribute_browse_name(opcua_node_attributes_t* attributes, 
+        char* browse_name);
+opcua_method_attributes_t* datalog_opcua_create_method_attributes(void);
+DL_OPCUA_ERR_t datalog_opcua_set_variable_data_type(opcua_variable_attributes_t* var,
+        char* data_type);
+opcua_variable_attributes_t* datalog_opcua_create_variable_attributes(void);
+opcua_object_attributes_t* datalog_opcua_create_object_attributes(void);
+opcua_method_t* datalog_opcua_create_method(void);
+opcua_variable_t* datalog_opcua_create_variable(void);
+opcua_object_t* datalog_opcua_create_object(void);
+void datalog_opcua_runtime(void);
 
 #endif
