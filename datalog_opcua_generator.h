@@ -94,9 +94,21 @@ typedef struct opcua_method opcua_method_t;
 struct opcua_method{
     xmlNodePtr node;
     xmlNodePtr references_node;
+
     opcua_node_attributes_t* attributes;
     opcua_method_attributes_t* method_attributes;
     opcua_reference_t* reference_head;
+    
+    //functions
+    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_method_t*,int);
+    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_method_t*,int);
+    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_method_t*,char*);
+    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_method_t*,int);
+    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_method_t*,int);
+    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_method_t*,char*);
+    DL_OPCUA_ERR_t (*set_browse_name)(opcua_method_t*,char*);
+    DL_OPCUA_ERR_t (*set_display_name)(opcua_method_t*,char*);
+    DL_OPCUA_ERR_t (*set_declaration_id)(opcua_method_t*,int);
 };
 
 typedef struct opcua_variable opcua_variable_t;
@@ -104,11 +116,27 @@ typedef struct opcua_variable opcua_variable_t;
 struct opcua_variable{
     xmlNodePtr node;
     xmlNodePtr references_node;
+    
     opcua_node_attributes_t* attributes;
     opcua_variable_attributes_t* variable_attributes;
-
     char* description;
     opcua_reference_t* reference_head;
+
+    //functions
+    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_variable_t*,int);
+    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_variable_t*,int);
+    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_variable_t*,char*);
+    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_variable_t*,int);
+    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_variable_t*,int);
+    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_variable_t*,char*);
+    DL_OPCUA_ERR_t (*set_data_type)(opcua_variable_t*,char*);
+    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_variable_t*,int);
+    DL_OPCUA_ERR_t (*set_access_level)(opcua_variable_t*,int);
+    DL_OPCUA_ERR_t (*set_array_dimensions)(opcua_variable_t*,int);
+    DL_OPCUA_ERR_t (*set_value_rank)(opcua_variable_t*,int);
+    DL_OPCUA_ERR_t (*set_browse_name)(opcua_variable_t*,char*);
+    DL_OPCUA_ERR_t (*set_display_name)(opcua_variable_t*,char*);
+    DL_OPCUA_ERR_t (*set_description)(opcua_variable_t*,char*);
 };
 
 typedef struct opcua_object opcua_object_t;
@@ -116,9 +144,20 @@ typedef struct opcua_object opcua_object_t;
 struct opcua_object{
     xmlNodePtr node;
     xmlNodePtr references_node;
+    
     opcua_node_attributes_t* attributes;
     opcua_object_attributes_t* object_attributes;
     opcua_reference_t* reference_head;
+
+    //functions
+    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_object_t*,int);
+    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_object_t*,int);
+    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_object_t*,char*);
+    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_object_t*,int);
+    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_object_t*,int);
+    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_object_t*,char*);
+    DL_OPCUA_ERR_t (*set_browse_name)(opcua_object_t*,char*);
+    DL_OPCUA_ERR_t (*set_display_name)(opcua_object_t*,char*);
 };
 
 //SERVER CONFIG

@@ -76,56 +76,49 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
 
 //SET FUNCTIONS
 //## VARIABLE
-DL_OPCUA_ERR_t set_variable_parent_node_id_ns(opcua_variable_t* self, int ns)
+DL_OPCUA_ERR_t self_set_variable_parent_node_id_ns(opcua_variable_t* self, int ns)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->parent_node_id, ns);
-    
     return ret;
 }
 
-DL_OPCUA_ERR_t set_variable_parent_node_id_i(opcua_variable_t* self, int i)
+DL_OPCUA_ERR_t self_set_variable_parent_node_id_i(opcua_variable_t* self, int i)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);
-    
     return ret;
 }
 
-DL_OPCUA_ERR_t set_variable_parent_node_id_s(opcua_variable_t* self, char* s)
+DL_OPCUA_ERR_t self_set_variable_parent_node_id_s(opcua_variable_t* self, char* s)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->parent_node_id, s);
-    
     return ret;
 }
 
-DL_OPCUA_ERR_t set_variable_node_id_ns(opcua_variable_t* self, int ns)
+DL_OPCUA_ERR_t self_set_variable_node_id_ns(opcua_variable_t* self, int ns)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->node_id, ns);
-    
     return ret;
 }
 
-DL_OPCUA_ERR_t set_variable_node_id_i(opcua_variable_t* self, int i)
+DL_OPCUA_ERR_t self_set_variable_node_id_i(opcua_variable_t* self, int i)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->node_id, i);
-    
     return ret;
 }
 
-DL_OPCUA_ERR_t set_variable_node_id_s(opcua_variable_t* self, char* s)
+DL_OPCUA_ERR_t self_set_variable_node_id_s(opcua_variable_t* self, char* s)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->node_id, s);
-    
     return ret;
 }
 
-DL_OPCUA_ERR_t selt_set_variable_data_type(opcua_variable_attributes_t* var,
+DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* var,
         char* data_type)
 {
-    var->data_type = 
-        (char*)realloc(var->data_type, sizeof(char) * (strlen(data_type) + 1));
-    if(var->data_type == NULL) return DL_OPCUA_MEM;
-    strcpy(var->data_type, data_type);
-
+    var->variable_attributes->data_type = 
+        (char*)realloc(var->variable_attributes->data_type, sizeof(char) * (strlen(data_type) + 1));
+    if(var->variable_attributes->data_type == NULL) return DL_OPCUA_MEM;
+    strcpy(var->variable_attributes->data_type, data_type);
     return DL_OPCUA_OK;
 }
 
@@ -182,42 +175,42 @@ DL_OPCUA_ERR_t self_set_variable_description(opcua_variable_t* variable,
 }
 
 //## METHOD
-DL_OPCUA_ERR_t set_method_parent_node_id_ns(opcua_method_t* self, int ns)
+DL_OPCUA_ERR_t self_set_method_parent_node_id_ns(opcua_method_t* self, int ns)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->parent_node_id, ns);
     
     return ret;
 }
 
-DL_OPCUA_ERR_t set_method_parent_node_id_i(opcua_method_t* self, int i)
+DL_OPCUA_ERR_t self_set_method_parent_node_id_i(opcua_method_t* self, int i)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);
     
     return ret;
 }
 
-DL_OPCUA_ERR_t set_method_parent_node_id_s(opcua_method_t* self, char* s)
+DL_OPCUA_ERR_t self_set_method_parent_node_id_s(opcua_method_t* self, char* s)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->parent_node_id, s);
     
     return ret;
 }
 
-DL_OPCUA_ERR_t set_method_node_id_ns(opcua_method_t* self, int ns)
+DL_OPCUA_ERR_t self_set_method_node_id_ns(opcua_method_t* self, int ns)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->node_id, ns);
     
     return ret;
 }
 
-DL_OPCUA_ERR_t set_method_node_id_i(opcua_method_t* self, int i)
+DL_OPCUA_ERR_t self_set_method_node_id_i(opcua_method_t* self, int i)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->node_id, i);
     
     return ret;
 }
 
-DL_OPCUA_ERR_t set_method_node_id_s(opcua_method_t* self, char* s)
+DL_OPCUA_ERR_t self_set_method_node_id_s(opcua_method_t* self, char* s)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->node_id, s);
     
@@ -246,42 +239,42 @@ DL_OPCUA_ERR_t self_set_method_display_name(opcua_method_t* self, char* display_
 }
 
 //## OBJECT
-DL_OPCUA_ERR_t set_object_parent_node_id_ns(opcua_object_t* self, int ns)
+DL_OPCUA_ERR_t self_set_object_parent_node_id_ns(opcua_object_t* self, int ns)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->parent_node_id, ns);
     
     return ret;
 }
 
-DL_OPCUA_ERR_t set_object_parent_node_id_i(opcua_object_t* self, int i)
+DL_OPCUA_ERR_t self_set_object_parent_node_id_i(opcua_object_t* self, int i)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);
     
     return ret;
 }
 
-DL_OPCUA_ERR_t set_object_parent_node_id_s(opcua_object_t* self, char* s)
+DL_OPCUA_ERR_t self_set_object_parent_node_id_s(opcua_object_t* self, char* s)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->parent_node_id, s);
     
     return ret;
 }
 
-DL_OPCUA_ERR_t set_object_node_id_ns(opcua_object_t* self, int ns)
+DL_OPCUA_ERR_t self_set_object_node_id_ns(opcua_object_t* self, int ns)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->node_id, ns);
     
     return ret;
 }
 
-DL_OPCUA_ERR_t set_object_node_id_i(opcua_object_t* self, int i)
+DL_OPCUA_ERR_t self_set_object_node_id_i(opcua_object_t* self, int i)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->node_id, i);
     
     return ret;
 }
 
-DL_OPCUA_ERR_t set_object_node_id_s(opcua_object_t* self, char* s)
+DL_OPCUA_ERR_t self_set_object_node_id_s(opcua_object_t* self, char* s)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->node_id, s);
     
