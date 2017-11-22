@@ -64,6 +64,12 @@ struct opcua_reference{
     bool is_forward;
 
     opcua_reference_t* next;
+
+    DL_OPCUA_ERR_t (*set_id_ns)(opcua_reference_t*,int);
+    DL_OPCUA_ERR_t (*set_id_i)(opcua_reference_t*,int);
+    DL_OPCUA_ERR_t (*set_id_s)(opcua_reference_t*,char*);
+    DL_OPCUA_ERR_t (*set_type)(opcua_reference_t*,char*);
+    DL_OPCUA_ERR_t (*set_is_forward)(opcua_reference_t*,bool);
 };
 
 typedef struct opcua_node_attributes{
