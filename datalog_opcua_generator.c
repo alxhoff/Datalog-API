@@ -54,12 +54,36 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
             BAD_CAST "NamespaceUris", NULL);
     xmlNewChild(tmp_node, NULL, BAD_CAST "Uri", BAD_CAST NAMESPACE_URI);
 
+    //ALIAS
     tmp_parent = xmlNewChild(opcua_document->root_node, NULL, BAD_CAST "Aliases", NULL);
-    
+
     while(alias_array[i].integer != 0){
         sprintf(buff, "i=%d", alias_array[i].integer);
         tmp_child = xmlNewChild(tmp_parent, NULL, BAD_CAST "Alias", BAD_CAST buff);
         xmlNewProp(tmp_child, BAD_CAST "Alias",  BAD_CAST alias_array[i].name);
+        i++;
+    }
+
+    //OBJECT TYPES
+    i = 0;
+    opcua_object_type_t* tmp_obj_type = datalog_opcua_create_object_type();
+    tmp_obj_type->set_browse_name(tmp_obj_type, "testObjectTypeBrowseName");
+    datalog_opcua_create_node_object_type(tmp_obj_type);
+
+    opcua_reference_t* tmp_ref = datalog_opcua_create_reference();
+    while(object_type_array[i].type != NULL){
+        datalog_opcua_clear_reference(tmp_ref);
+        
+        if(object_type_array[i].type != NULL) 
+            tmp_ref->set_type(tmp_ref, object_type_array[i].type);
+        tmp_ref->set_id_i(tmp_ref, object_type_array[i].id.i);
+        tmp_ref->set_id_ns(tmp_ref, object_type_array[i].id.ns);
+        if(object_type_array[i].id.s != NULL)
+            tmp_ref->set_id_s(tmp_ref, object_type_array[i].id.s);
+        tmp_ref->set_is_forward(tmp_ref, object_type_array[i].is_forward);
+
+        datalog_opcua_add_reference(tmp_obj_type->node, DL_OPC_OBJ_TYPE, tmp_ref);
+        
         i++;
     }
 
@@ -75,6 +99,58 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
 }
 
 //SET FUNCTIONS
+//## OBJECT TYPE
+DL_OPCUA_ERR_t self_set_object_type_parent_node_id_ns(opcua_object_type_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->parent_node_id, ns);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_object_type_parent_node_id_i(opcua_object_type_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_object_type_parent_node_id_s(opcua_object_type_t* self, char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->parent_node_id, s);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_object_type_node_id_ns(opcua_object_type_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->node_id, ns);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_object_type_node_id_i(opcua_object_type_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->node_id, i);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_object_type_node_id_s(opcua_object_type_t* self, char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->node_id, s);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_object_type_browse_name(opcua_object_type_t* self, 
+        char* browse_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self, DL_OPC_VARIABLE,
+            browse_name);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_object_type_display_name(opcua_object_type_t* self, char* display_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, DL_OPC_VARIABLE,
+            display_name);
+    return ret;
+}
+
 //## VARIABLE
 DL_OPCUA_ERR_t self_set_variable_parent_node_id_ns(opcua_variable_t* self, int ns)
 {
@@ -446,6 +522,16 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr parent_node,
     return DL_OPCUA_OK;
 }
 
+DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_attributes(
+        opcua_object_type_t* object_t)
+{
+    if(object_t->attributes->display_name != NULL)
+        xmlNewProp(object_t->node, BAD_CAST "DisplayName", 
+                BAD_CAST object_t->attributes->display_name);
+
+    return DL_OPCUA_OK;
+}
+
 DL_OPCUA_ERR_t datalog_opcua_create_node_method_attributes(opcua_method_t* method)
 {
     char buffer[32];
@@ -495,8 +581,6 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* v
 
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_attributes(opcua_object_t* object)
 {
-    char buffer[32];
-
     if(object->attributes->display_name != NULL)
         xmlNewProp(object->node, BAD_CAST "DisplayName", 
                 BAD_CAST object->attributes->display_name);
@@ -505,6 +589,26 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object_attributes(opcua_object_t* objec
 }
 
 //OBJECTS
+DL_OPCUA_ERR_t datalog_opcua_create_node_object_type(opcua_object_type_t* object)
+{
+    if(object == NULL) return DL_OPCUA_INVAL;
+    if(object->attributes == NULL) return DL_OPCUA_INVAL;
+    if(object->object_type_attributes == NULL) return DL_OPCUA_INVAL;
+
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+    
+    object->node = xmlNewChild(opcua_document->root_node,
+            NULL, BAD_CAST "UAObjectType", NULL);
+
+    ret = datalog_opcua_create_node_attributes(object->node, object->attributes);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+
+    ret = datalog_opcua_create_node_object_type_attributes(object);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+
+    return DL_OPCUA_OK;
+}
+
 DL_OPCUA_ERR_t datalog_opcua_create_node_method(opcua_method_t* method)
 {
     if(method == NULL) return DL_OPCUA_INVAL;
@@ -568,6 +672,18 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object(opcua_object_t* object)
 }
 
 //REFERENCE
+DL_OPCUA_ERR_t datalog_opcua_clear_reference(opcua_reference_t* ref)
+{
+    if(ref == NULL) return DL_OPCUA_INVAL;
+    ref->id.i = 0;
+    ref->id.ns = 0;
+    if(ref->id.s != NULL) free(ref->id.s);
+    ref->is_forward = -1;
+    if(ref->type != NULL) free(ref->type);
+
+    return DL_OPCUA_OK;
+}
+
 DL_OPCUA_ERR_t datalog_opcua_add_reference(void* object, 
         DL_OPCUA_TYPE_t object_type, opcua_reference_t* reference)
 {
@@ -601,6 +717,17 @@ DL_OPCUA_ERR_t datalog_opcua_add_reference(void* object,
             }else{
                 opcua_reference_t* ref_head = 
                     ((opcua_object_t*)object)->reference_head;
+                while(ref_head->next != NULL) ref_head = ref_head->next;
+                ref_head->next = reference;
+            }
+            break;
+        case DL_OPC_OBJ_TYPE:
+            if(((opcua_object_type_t*)object)->reference_head == NULL){
+                ((opcua_object_type_t*)object)->reference_head = reference;
+                return DL_OPCUA_OK;
+            }else{
+                opcua_reference_t* ref_head = 
+                    ((opcua_object_type_t*)object)->reference_head;
                 while(ref_head->next != NULL) ref_head = ref_head->next;
                 ref_head->next = reference;
             }
@@ -768,13 +895,12 @@ opcua_node_attributes_t* datalog_opcua_create_attributes(void)
     return ret;
 }
 
-DL_OPCUA_ERR_t datalog_opcua_set_attribute_browse_name(opcua_node_attributes_t* attributes, 
-        char* browse_name)
+opcua_object_type_attributes_t* datalog_opcua_create_object_type_attributes(void)
 {
-    attributes->browse_name = (char*)malloc(sizeof(char) *  strlen(browse_name));
-    if(attributes->browse_name == NULL) return DL_OPCUA_MEM;
-    strcpy(attributes->browse_name, browse_name);
-    return DL_OPCUA_OK;
+    opcua_object_type_attributes_t* ret = (opcua_object_type_attributes_t*)
+        calloc(1, sizeof(opcua_object_type_attributes_t));
+    if(ret == NULL) return NULL;
+    return ret;
 }
 
 opcua_method_attributes_t* datalog_opcua_create_method_attributes(void)
@@ -784,7 +910,6 @@ opcua_method_attributes_t* datalog_opcua_create_method_attributes(void)
     if(ret == NULL) return NULL;
     return ret;
 }
-
 
 opcua_variable_attributes_t* datalog_opcua_create_variable_attributes(void)
 {
@@ -803,6 +928,30 @@ opcua_object_attributes_t* datalog_opcua_create_object_attributes(void)
 }
 
 //STRUCT OBJECTS
+opcua_object_type_t* datalog_opcua_create_object_type(void)
+{
+    opcua_object_type_t* ret = (opcua_object_type_t*)
+        calloc(1, sizeof(opcua_object_type_t));
+
+    ret->attributes = datalog_opcua_create_attributes();
+    if(ret->attributes == NULL) return NULL;
+
+    ret->object_type_attributes = datalog_opcua_create_object_type_attributes();
+    if(ret->object_type_attributes == NULL) return NULL;
+
+    //set function pointers
+    ret->set_parent_id_ns = &self_set_object_type_parent_node_id_ns;
+    ret->set_parent_id_i = &self_set_object_type_parent_node_id_i;
+    ret->set_parent_id_s = &self_set_object_type_parent_node_id_s;
+    ret->set_node_id_ns = &self_set_object_type_node_id_ns;
+    ret->set_node_id_i = &self_set_object_type_node_id_i;
+    ret->set_node_id_s = &self_set_object_type_node_id_s;
+    ret->set_browse_name = &self_set_object_type_browse_name;
+    ret->set_display_name = &self_set_object_type_display_name;
+
+    return ret;
+}
+
 opcua_method_t* datalog_opcua_create_method(void)
 {
     opcua_method_t* ret = (opcua_method_t*)calloc(1, sizeof(opcua_method_t));
@@ -904,23 +1053,12 @@ void datalog_opcua_runtime(void)
     if(ret != DL_OPCUA_OK) return;
 
 //TEST CODE
-    xmlNodePtr tmp_node =
-        xmlNewChild(opcua_document->root_node, NULL, BAD_CAST "testNode", NULL);
-   
-    xmlNewProp(tmp_node, BAD_CAST "foo", BAD_CAST "bar");
-
     opcua_method_t* test_method = datalog_opcua_create_method();
 
-    ret = datalog_opcua_set_display_name(test_method, DL_OPC_METHOD, 
-            "testDisplayName");
+    test_method->set_display_name(test_method, "testDisplayName");
 
-    if(ret != DL_OPCUA_OK) return;
+    test_method->set_browse_name(test_method, "testBrowseName");
 
-    ret = datalog_opcua_set_browse_name(test_method, DL_OPC_METHOD, 
-            "testBrowseName");
-
-    if(ret != DL_OPCUA_OK) return;
-    
     test_method->set_node_id_i(test_method, 1);
     test_method->set_node_id_ns(test_method, 2);
     test_method->set_node_id_s(test_method, "testS");
@@ -945,6 +1083,7 @@ void datalog_opcua_runtime(void)
     test_ref->set_id_ns(test_ref, 8);
     test_ref->set_is_forward(test_ref, false);
     test_ref->set_id_s(test_ref, "testRefS"); 
+    test_ref->set_type(test_ref, "testType");
     
     datalog_opcua_add_reference(test_method, DL_OPC_METHOD, test_ref);
 
@@ -954,7 +1093,7 @@ void datalog_opcua_runtime(void)
     test_ref->set_is_forward(test_ref, true);
     
     datalog_opcua_add_reference(test_method, DL_OPC_METHOD, test_ref);
-
+//TODO OBJECT FUNCTION
     ret = datalog_opcua_create_node_references(test_method, DL_OPC_METHOD);
 
     if(ret != DL_OPCUA_OK) return;

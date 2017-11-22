@@ -27,16 +27,17 @@ typedef enum{
     DL_OPCUA_ATTR,
 }DL_OPCUA_ERR_t;
 
+typedef enum{
+    DL_OPC_VARIABLE,
+    DL_OPC_METHOD,
+    DL_OPC_OBJ,
+    DL_OPC_OBJ_TYPE
+}DL_OPCUA_TYPE_t;
+
 typedef struct alias_pair{
     char* name;
     int integer;
 }alias_pair_t;
-
-typedef enum{
-    DL_OPC_VARIABLE,
-    DL_OPC_METHOD,
-    DL_OPC_OBJ
-}DL_OPCUA_TYPE_t;
 
 typedef struct opcua_container{
     void* next;
@@ -79,6 +80,10 @@ typedef struct opcua_node_attributes{
     char* display_name;
 }opcua_node_attributes_t;
 
+typedef struct opcua_object_type_attributes{
+
+}opcua_object_type_attributes_t;
+
 typedef struct opcua_method_attributes{
     int method_declaration_id;
 }opcua_method_attributes_t;
@@ -94,6 +99,26 @@ typedef struct opcua_variable_attributes{
 typedef struct opcua_object_attributes{
 
 }opcua_object_attributes_t;
+
+typedef struct opcua_object_type opcua_object_type_t;
+
+struct opcua_object_type{
+    xmlNodePtr node;
+    xmlNodePtr references_node;
+
+    opcua_node_attributes_t* attributes;
+    opcua_object_type_attributes_t* object_type_attributes;
+    opcua_reference_t* reference_head;
+    
+    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_object_type_t*,int);
+    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_object_type_t*,int);
+    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_object_type_t*,char*);
+    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_object_type_t*,int);
+    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_object_type_t*,int);
+    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_object_type_t*,char*);
+    DL_OPCUA_ERR_t (*set_browse_name)(opcua_object_type_t*,char*);
+    DL_OPCUA_ERR_t (*set_display_name)(opcua_object_type_t*,char*);
+};
 
 typedef struct opcua_method opcua_method_t;
 
@@ -167,6 +192,20 @@ struct opcua_object{
 };
 
 //SERVER CONFIG
+opcua_reference_t object_type_array[] = {
+    {.type = "hello",
+        .id = {.i = 10,
+            .ns = 11},
+        .is_forward = false
+    },
+    {.type = "hello2",
+        .id = {.i = 12,
+            .ns = 13},
+        .is_forward = true
+    },
+    {.type = NULL}
+};
+
 alias_pair_t alias_array[] = {
     {"Boolean", 1},
     {"SByte", 2},
@@ -223,9 +262,11 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr parent_node,
 DL_OPCUA_ERR_t datalog_opcua_create_node_method_attributes(opcua_method_t* method);
 DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* variable);
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_attributes(opcua_object_t* object);
+DL_OPCUA_ERR_t datalog_opcua_create_node_object_type(opcua_object_type_t* object);
 DL_OPCUA_ERR_t datalog_opcua_create_node_method(opcua_method_t* method);
 DL_OPCUA_ERR_t datalog_opcua_create_node_variable(opcua_variable_t* variable);
 DL_OPCUA_ERR_t datalog_opcua_create_node_object(opcua_object_t* object);
+DL_OPCUA_ERR_t datalog_opcua_clear_reference(opcua_reference_t* ref);
 DL_OPCUA_ERR_t datalog_opcua_set_reference_type(opcua_reference_t* reference,
         char* type);
 opcua_reference_t* datalog_opcua_create_reference(void);
@@ -249,6 +290,7 @@ DL_OPCUA_ERR_t datalog_opcua_set_variable_data_type(opcua_variable_attributes_t*
         char* data_type);
 opcua_variable_attributes_t* datalog_opcua_create_variable_attributes(void);
 opcua_object_attributes_t* datalog_opcua_create_object_attributes(void);
+opcua_object_type_t* datalog_opcua_create_object_type(void);
 opcua_method_t* datalog_opcua_create_method(void);
 opcua_variable_t* datalog_opcua_create_variable(void);
 opcua_object_t* datalog_opcua_create_object(void);
