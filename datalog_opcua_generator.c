@@ -391,8 +391,8 @@ DL_OPCUA_ERR_t datalog_opcua_add_reference_attributes(xmlNodePtr reference_node,
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
-        DL_OPCUA_TYPE_t object_type, opcua_reference_t* reference)
+DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object, 
+        DL_OPCUA_TYPE_t object_type)
 {
     char buffer[32];
 
@@ -403,10 +403,17 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
                 = xmlNewChild(((opcua_variable_t*)object)->node,
                     NULL, BAD_CAST "References", NULL);
         if(((opcua_variable_t*)object)->references_node != NULL){
-            xmlNodePtr tmp_node = xmlNewChild(((opcua_variable_t*)object)->references_node,
-                    NULL, BAD_CAST "Reference", NULL);
-           
-            datalog_opcua_add_reference_attributes(tmp_node, reference);
+            if(((opcua_variable_t*)object)->reference_head != NULL){
+                opcua_reference_t* ref_head = ((opcua_variable_t*)object)->reference_head;
+                while(ref_head != NULL){
+                    xmlNodePtr tmp_node = 
+                        xmlNewChild(((opcua_variable_t*)object)->references_node,
+                        NULL, BAD_CAST "Reference", NULL);
+                
+                    datalog_opcua_add_reference_attributes(tmp_node, ref_head);
+                    ref_head = ref_head->next;
+                }
+            }else return DL_OPCUA_INVAL;
         }else return DL_OPCUA_INVAL;
             break;
         case DL_OPC_METHOD:
@@ -415,10 +422,17 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
                 = xmlNewChild(((opcua_method_t*)object)->node,
                     NULL, BAD_CAST "References", NULL);
         if(((opcua_method_t*)object)->references_node != NULL){
-            xmlNodePtr tmp_node = xmlNewChild(((opcua_method_t*)object)->references_node,
-                    NULL, BAD_CAST "Reference", NULL);
-           
-            datalog_opcua_add_reference_attributes(tmp_node, reference);
+            if(((opcua_method_t*)object)->reference_head != NULL){
+                opcua_reference_t* ref_head = ((opcua_method_t*)object)->reference_head;
+                while(ref_head != NULL){
+                    xmlNodePtr tmp_node = 
+                        xmlNewChild(((opcua_method_t*)object)->references_node,
+                        NULL, BAD_CAST "Reference", NULL);
+                
+                    datalog_opcua_add_reference_attributes(tmp_node, ref_head);
+                    ref_head = ref_head->next;
+                }
+            }else return DL_OPCUA_INVAL;
         }else return DL_OPCUA_INVAL;
             break;
         case DL_OPC_OBJ:
@@ -427,10 +441,17 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
                 = xmlNewChild(((opcua_object_t*)object)->node,
                     NULL, BAD_CAST "References", NULL);
         if(((opcua_object_t*)object)->references_node != NULL){
-            xmlNodePtr tmp_node = xmlNewChild(((opcua_object_t*)object)->references_node,
-                    NULL, BAD_CAST "Reference", NULL);
-           
-            datalog_opcua_add_reference_attributes(tmp_node, reference);
+            if(((opcua_object_t*)object)->reference_head != NULL){
+                opcua_reference_t* ref_head = ((opcua_object_t*)object)->reference_head;
+                while(ref_head != NULL){
+                    xmlNodePtr tmp_node = 
+                        xmlNewChild(((opcua_object_t*)object)->references_node,
+                        NULL, BAD_CAST "Reference", NULL);
+                
+                    datalog_opcua_add_reference_attributes(tmp_node, ref_head);
+                    ref_head = ref_head->next;
+                }
+            }else return DL_OPCUA_INVAL;
         }else return DL_OPCUA_INVAL;
             break;
         default:
@@ -573,10 +594,12 @@ void datalog_opcua_runtime(void)
     test_ref->id.i = 6;
     test_ref->id.ns = 7;
     test_ref->is_forward = false;
+    
+    ret = datalog_opcua_create_node_method(test_method);
 
     datalog_opcua_add_reference(test_method, DL_OPC_METHOD, test_ref);
 
-    ret = datalog_opcua_create_node_method(test_method);
+    ret = datalog_opcua_create_node_references(test_method, DL_OPC_METHOD);
 
     if(ret != DL_OPCUA_OK) return;
 //TEST CODE END

@@ -49,5 +49,9 @@
     </Extension>
   </Extensions>
   <testNode foo="bar"/>
-  <UAObject BrowseName="testBrowseName" NodeId="ns=2;i=1" ParentNodeId="ns=4;i=3" MethodDeclarationId="i=5" DisplayName="testDisplayName"/>
+  <UAObject BrowseName="testBrowseName" NodeId="ns=2;i=1" ParentNodeId="ns=4;i=3" MethodDeclarationId="i=5" DisplayName="testDisplayName">
+    <References>
+      <Reference IsForward="false">ns=7;i=6</Reference>
+    </References>
+  </UAObject>
 </UANodeSet>
