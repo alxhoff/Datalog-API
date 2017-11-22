@@ -314,6 +314,9 @@ opcua_reference_t* datalog_opcua_create_reference(void)
         calloc(1, sizeof(opcua_reference_t));
     if(ret == NULL) return NULL;
 
+    //undef state
+    ret->is_forward = -1;
+
     return ret;
 }
 
@@ -357,6 +360,83 @@ DL_OPCUA_ERR_t datalog_opcua_add_reference(void* object,
         default:
             break;
     }
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_add_reference_attributes(xmlNodePtr reference_node,
+        opcua_reference_t* reference)
+{
+    char buffer[32];
+
+    if(reference->type != NULL)
+        xmlNewProp(reference_node, BAD_CAST "ReferenceType",
+                BAD_CAST reference->type);
+    
+    if((reference->id.i) != 0 && (reference->id.ns == 0)){
+        sprintf(buffer, "i=%d", reference->id.i);                
+        xmlNodeSetContent(reference_node, BAD_CAST buffer);
+    }else if((reference->id.i) == 0 && (reference->id.ns != 0)){
+        sprintf(buffer, "ns=%d", reference->id.ns);
+        xmlNodeSetContent(reference_node, BAD_CAST buffer);
+    }else if((reference->id.i) != 0 && (reference->id.ns != 0)){
+        sprintf(buffer, "ns=%d;i=%d", reference->id.ns, reference->id.i);
+        xmlNodeSetContent(reference_node, BAD_CAST buffer);
+    }
+
+    if((reference->is_forward != true) || (reference->is_forward != false)){
+        sprintf(buffer, "%s", ((reference->is_forward == 1) ? "true" : "false"));
+        xmlNewProp(reference_node, BAD_CAST "IsForward", BAD_CAST buffer);
+    }
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
+        DL_OPCUA_TYPE_t object_type, opcua_reference_t* reference)
+{
+    char buffer[32];
+
+    switch(object_type){
+        case DL_OPC_VARIABLE:
+        if(((opcua_variable_t*)object)->references_node == NULL)
+            ((opcua_variable_t*)object)->references_node 
+                = xmlNewChild(((opcua_variable_t*)object)->node,
+                    NULL, BAD_CAST "References", NULL);
+        if(((opcua_variable_t*)object)->references_node != NULL){
+            xmlNodePtr tmp_node = xmlNewChild(((opcua_variable_t*)object)->references_node,
+                    NULL, BAD_CAST "Reference", NULL);
+           
+            datalog_opcua_add_reference_attributes(tmp_node, reference);
+        }else return DL_OPCUA_INVAL;
+            break;
+        case DL_OPC_METHOD:
+        if(((opcua_method_t*)object)->references_node == NULL)
+            ((opcua_method_t*)object)->references_node 
+                = xmlNewChild(((opcua_method_t*)object)->node,
+                    NULL, BAD_CAST "References", NULL);
+        if(((opcua_method_t*)object)->references_node != NULL){
+            xmlNodePtr tmp_node = xmlNewChild(((opcua_method_t*)object)->references_node,
+                    NULL, BAD_CAST "Reference", NULL);
+           
+            datalog_opcua_add_reference_attributes(tmp_node, reference);
+        }else return DL_OPCUA_INVAL;
+            break;
+        case DL_OPC_OBJ:
+        if(((opcua_object_t*)object)->references_node == NULL)
+            ((opcua_object_t*)object)->references_node 
+                = xmlNewChild(((opcua_object_t*)object)->node,
+                    NULL, BAD_CAST "References", NULL);
+        if(((opcua_object_t*)object)->references_node != NULL){
+            xmlNodePtr tmp_node = xmlNewChild(((opcua_object_t*)object)->references_node,
+                    NULL, BAD_CAST "Reference", NULL);
+           
+            datalog_opcua_add_reference_attributes(tmp_node, reference);
+        }else return DL_OPCUA_INVAL;
+            break;
+        default:
+            break;
+    }
+
     return DL_OPCUA_OK;
 }
 
@@ -490,7 +570,11 @@ void datalog_opcua_runtime(void)
 
     opcua_reference_t* test_ref = datalog_opcua_create_reference();
     
-    datalog_opcua_add_reference(test_ref, DL_OPC_METHOD, test_ref);
+    test_ref->id.i = 6;
+    test_ref->id.ns = 7;
+    test_ref->is_forward = false;
+
+    datalog_opcua_add_reference(test_method, DL_OPC_METHOD, test_ref);
 
     ret = datalog_opcua_create_node_method(test_method);
 
