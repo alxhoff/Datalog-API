@@ -5,7 +5,7 @@
 #include "libxml/tree.h"
 
 #ifndef bool
-#define bool unsigned char
+#define bool signed char
 #endif
 #ifndef true
 #define true 1
@@ -165,5 +165,7 @@ alias_pair_t alias_array[] = {
 //END SERVER CONFIG
 
 void datalog_opcua_runtime(void);
+DL_OPCUA_ERR_t datalog_opcua_add_id_attribute(xmlNodePtr node, char* attribute,
+        opcua_ns_id_t* id);
 
 #endif

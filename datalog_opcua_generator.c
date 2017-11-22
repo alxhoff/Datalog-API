@@ -159,15 +159,14 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr parent_node,
     if(attributes->browse_name != NULL)
         xmlNewProp(parent_node, BAD_CAST "BrowseName",
                 BAD_CAST attributes->browse_name);
-    if((attributes->node_id.i != 0) && (attributes->node_id.ns != 0)){
-        sprintf(buffer, "ns=%d;i=%d", attributes->node_id.ns, attributes->node_id.i);
-        xmlNewProp(parent_node, BAD_CAST "NodeId", BAD_CAST buffer); 
-    }
-    if((attributes->parent_node_id.i != 0) && (attributes->parent_node_id.ns != 0)){
-        sprintf(buffer, "ns=%d;i=%d", attributes->parent_node_id.ns,
-                attributes->parent_node_id.i);
-        xmlNewProp(parent_node, BAD_CAST "ParentNodeId", BAD_CAST buffer);
-    }
+//HERE
+    DL_OPCUA_ERR_t ret = datalog_opcua_add_id_attribute(parent_node, "ParentNodeId",
+        &attributes->parent_node_id);            
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+
+    ret = datalog_opcua_add_id_attribute(parent_node, "NodeId",
+        &attributes->node_id);            
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
 
     return DL_OPCUA_OK;
 }
@@ -363,6 +362,63 @@ DL_OPCUA_ERR_t datalog_opcua_add_reference(void* object,
     return DL_OPCUA_OK;
 }
 
+DL_OPCUA_ERR_t datalog_opcua_add_id_contents(xmlNodePtr node, opcua_ns_id_t* id)
+{
+    char buffer[32]; 
+
+    if((id->i) != 0 && (id->ns == 0)){
+        sprintf(buffer, "i=%d", id->i);                
+        xmlNodeSetContent(node, BAD_CAST buffer);
+    }else if((id->i) == 0 && (id->ns != 0)){
+        sprintf(buffer, "ns=%d", id->ns);
+        xmlNodeSetContent(node, BAD_CAST buffer);
+    }else if((id->i) != 0 && (id->ns != 0)){
+        sprintf(buffer, "ns=%d;i=%d", id->ns, id->i);
+        xmlNodeSetContent(node, BAD_CAST buffer);
+    }
+
+    if(id->s != NULL){
+        char* node_value = (char*)xmlNodeGetContent(node);
+        char second_buffer[strlen(node_value) + strlen(id->s) + 4];
+        strcpy(buffer, node_value);
+        strcpy(buffer + strlen(node_value), ";s=");
+        strcpy(buffer + strlen(node_value) + 3, id->s);
+        xmlNodeSetContent(node, BAD_CAST buffer);
+    }
+    
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_add_id_attribute(xmlNodePtr node, char* attribute,
+        opcua_ns_id_t* id)
+{
+    char buffer[32]; 
+
+    xmlNewProp(node, BAD_CAST attribute, NULL);
+
+    if((id->i) != 0 && (id->ns == 0)){
+        sprintf(buffer, "i=%d", id->i);                
+        xmlSetProp(node, BAD_CAST attribute, BAD_CAST buffer);
+    }else if((id->i) == 0 && (id->ns != 0)){
+        sprintf(buffer, "ns=%d", id->ns);
+        xmlSetProp(node, BAD_CAST attribute, BAD_CAST buffer);
+    }else if((id->i) != 0 && (id->ns != 0)){
+        sprintf(buffer, "ns=%d;i=%d", id->ns, id->i);
+        xmlSetProp(node, BAD_CAST attribute, BAD_CAST buffer);
+    }
+
+    if(id->s != NULL){
+        char* node_value = (char*)xmlGetProp(node, BAD_CAST attribute);
+        char second_buffer[strlen(node_value) + strlen(id->s) + 4];
+        strcpy(buffer, node_value);
+        strcpy(buffer + strlen(node_value), ";s=");
+        strcpy(buffer + strlen(node_value) + 3, id->s);
+        xmlSetProp(node, BAD_CAST attribute, BAD_CAST buffer);
+    }
+    
+    return DL_OPCUA_OK;
+}
+
 DL_OPCUA_ERR_t datalog_opcua_add_reference_attributes(xmlNodePtr reference_node,
         opcua_reference_t* reference)
 {
@@ -371,26 +427,9 @@ DL_OPCUA_ERR_t datalog_opcua_add_reference_attributes(xmlNodePtr reference_node,
     if(reference->type != NULL)
         xmlNewProp(reference_node, BAD_CAST "ReferenceType",
                 BAD_CAST reference->type);
-    
-    if((reference->id.i) != 0 && (reference->id.ns == 0)){
-        sprintf(buffer, "i=%d", reference->id.i);                
-        xmlNodeSetContent(reference_node, BAD_CAST buffer);
-    }else if((reference->id.i) == 0 && (reference->id.ns != 0)){
-        sprintf(buffer, "ns=%d", reference->id.ns);
-        xmlNodeSetContent(reference_node, BAD_CAST buffer);
-    }else if((reference->id.i) != 0 && (reference->id.ns != 0)){
-        sprintf(buffer, "ns=%d;i=%d", reference->id.ns, reference->id.i);
-        xmlNodeSetContent(reference_node, BAD_CAST buffer);
-    }
 
-    if(reference->id.s != NULL){
-        char* node_value = (char*)xmlNodeGetContent(reference_node);
-        char second_buffer[strlen(node_value) + strlen(reference->id.s) + 4];
-        strcpy(buffer, node_value);
-        strcpy(buffer + strlen(node_value), ";s=");
-        strcpy(buffer + strlen(node_value) + 3, reference->id.s);
-        xmlNodeSetContent(reference_node, BAD_CAST buffer);
-    }
+    DL_OPCUA_ERR_t ret = datalog_opcua_add_id_contents(reference_node, &reference->id);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
 
     if((reference->is_forward != true) || (reference->is_forward != false)){
         sprintf(buffer, "%s", ((reference->is_forward == 1) ? "true" : "false"));
@@ -470,14 +509,13 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t datalog_opcua_set_reference_id_s(opcua_reference_t* reference,
-        char* value)
+DL_OPCUA_ERR_t datalog_opcua_set_id_s(opcua_ns_id_t* id, char* value)
 {
     if(value != NULL){
-        reference->id.s = (char*)realloc(reference->id.s, 
+        id->s = (char*)realloc(id->s, 
                 sizeof(char) * (strlen(value) + 1));
-        if(reference->id.s == NULL) return DL_OPCUA_MEM;
-        strcpy(reference->id.s, value);
+        if(id->s == NULL) return DL_OPCUA_MEM;
+        strcpy(id->s, value);
         return DL_OPCUA_OK;
     }
     return DL_OPCUA_INVAL;
@@ -607,6 +645,9 @@ void datalog_opcua_runtime(void)
     
     test_method->attributes->node_id.i = 1;
     test_method->attributes->node_id.ns = 2;
+    ret = datalog_opcua_set_id_s(&test_method->attributes->node_id, "testNodeId"); 
+    ret = datalog_opcua_set_id_s(&test_method->attributes->parent_node_id, 
+            "testParentNodeId"); 
     test_method->attributes->parent_node_id.i = 3;
     test_method->attributes->parent_node_id.ns = 4;
     test_method->method_attributes->method_declaration_id = 5;
@@ -625,7 +666,7 @@ void datalog_opcua_runtime(void)
 
     test_ref->id.i = 8;
     test_ref->id.ns = 9;
-    datalog_opcua_set_reference_id_s(test_ref, "testRefS"); 
+    datalog_opcua_set_id_s(&test_ref->id, "testRefS"); 
     test_ref->is_forward = true;
     
     datalog_opcua_add_reference(test_method, DL_OPC_METHOD, test_ref);
