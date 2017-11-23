@@ -144,6 +144,7 @@ struct opcua_reference{
     DL_OPCUA_ERR_t (*set_id_s)(opcua_reference_t*,char*);
     DL_OPCUA_ERR_t (*set_type)(opcua_reference_t*,char*);
     DL_OPCUA_ERR_t (*set_is_forward)(opcua_reference_t*,bool);
+    DL_OPCUA_ERR_t (*add_reference)(opcua_reference_t*,void*,DL_OPCUA_TYPE_t);
 };
 
 /**
@@ -239,6 +240,7 @@ struct opcua_object_type{
     DL_OPCUA_ERR_t (*set_node_id_s)(opcua_object_type_t*,char*);
     DL_OPCUA_ERR_t (*set_browse_name)(opcua_object_type_t*,char*);
     DL_OPCUA_ERR_t (*set_display_name)(opcua_object_type_t*,char*);
+    DL_OPCUA_ERR_t (*create_references)(opcua_object_type_t*);
 };
 
 /**
@@ -269,6 +271,7 @@ struct opcua_method{
     DL_OPCUA_ERR_t (*set_browse_name)(opcua_method_t*,char*);
     DL_OPCUA_ERR_t (*set_display_name)(opcua_method_t*,char*);
     DL_OPCUA_ERR_t (*set_declaration_id)(opcua_method_t*,int);
+    DL_OPCUA_ERR_t (*create_references)(opcua_method_t*);
 };
 
 /**
@@ -305,6 +308,7 @@ struct opcua_variable{
     DL_OPCUA_ERR_t (*set_browse_name)(opcua_variable_t*,char*);
     DL_OPCUA_ERR_t (*set_display_name)(opcua_variable_t*,char*);
     DL_OPCUA_ERR_t (*set_description)(opcua_variable_t*,char*);
+    DL_OPCUA_ERR_t (*create_references)(opcua_variable_t*);
 };
 
 /**
@@ -334,6 +338,7 @@ struct opcua_object{
     DL_OPCUA_ERR_t (*set_node_id_s)(opcua_object_t*,char*);
     DL_OPCUA_ERR_t (*set_browse_name)(opcua_object_t*,char*);
     DL_OPCUA_ERR_t (*set_display_name)(opcua_object_t*,char*);
+    DL_OPCUA_ERR_t (*create_references)(opcua_object_t*);
 };
 
 //SERVER CONFIG
@@ -563,8 +568,8 @@ opcua_reference_t* datalog_opcua_create_reference(void);
 * @param 
 * @return 
 */
-DL_OPCUA_ERR_t datalog_opcua_add_reference(void* object, 
-        DL_OPCUA_TYPE_t object_type, opcua_reference_t* reference);
+DL_OPCUA_ERR_t datalog_opcua_add_reference(opcua_reference_t* reference,
+        void* object, DL_OPCUA_TYPE_t object_type);
 
 /**
 * @brief 
