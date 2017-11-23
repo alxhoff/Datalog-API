@@ -45,8 +45,8 @@
 #define NAMESPACE_URI       "urn:UnifiedAutomation:CppDemoServer:BuildingAutomation"
 
 /**
-* @enum 
-* @brief 
+* @enum DL_OPCUA_ERR_t
+* @brief Error messages 
 */
 typedef enum{
     DL_OPCUA_OK = 0,
@@ -57,8 +57,8 @@ typedef enum{
 }DL_OPCUA_ERR_t;
 
 /**
-* @enum 
-* @brief 
+* @enum DL_OPCUA_TYPE_t
+* @brief Types of XML node objects 
 */
 typedef enum{
     DL_OPC_VARIABLE,
@@ -437,6 +437,452 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void);
 * @param 
 * @return 
 */
+
+DL_OPCUA_ERR_t self_set_object_type_parent_node_id_ns(opcua_object_type_t* self, 
+    int ns);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+
+DL_OPCUA_ERR_t self_set_object_type_parent_node_id_i(opcua_object_type_t* self, int i);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+
+DL_OPCUA_ERR_t self_set_object_type_parent_node_id_s(opcua_object_type_t* self, 
+    char* s);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+
+DL_OPCUA_ERR_t self_set_object_type_node_id_ns(opcua_object_type_t* self, int ns);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+
+DL_OPCUA_ERR_t self_set_object_type_node_id_i(opcua_object_type_t* self, int i);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+
+DL_OPCUA_ERR_t self_set_object_type_node_id_s(opcua_object_type_t* self, char* s);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+
+DL_OPCUA_ERR_t self_set_object_type_browse_name(opcua_object_type_t* self, 
+        char* browse_name);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_object_type_display_name(opcua_object_type_t* self, char* display_name);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_parent_node_id_ns(opcua_variable_t* self, int ns);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_parent_node_id_i(opcua_variable_t* self, int i);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_parent_node_id_s(opcua_variable_t* self, char* s);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_node_id_ns(opcua_variable_t* self, int ns);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_node_id_i(opcua_variable_t* self, int i);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_node_id_s(opcua_variable_t* self, char* s);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* var, char* data_type);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_user_access_level(opcua_variable_t* self, int ual);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_access_level(opcua_variable_t* self, int al);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_array_dimensions(opcua_variable_t* self, int ad);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_value_rank(opcua_variable_t* self, int vr);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_browse_name(opcua_variable_t* self, 
+    char* browse_name);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_display_name(opcua_variable_t* self, 
+    char* display_name);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_variable_description(opcua_variable_t* variable,
+        char* description);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_method_parent_node_id_ns(opcua_method_t* self, int ns);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_method_parent_node_id_i(opcua_method_t* self, int i);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_method_parent_node_id_s(opcua_method_t* self, char* s);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_method_node_id_ns(opcua_method_t* self, int ns);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_method_node_id_i(opcua_method_t* self, int i);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_method_node_id_s(opcua_method_t* self, char* s);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_method_declaration_id(opcua_method_t* self, int id);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_method_browse_name(opcua_method_t* self, char* browse_name);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_method_display_name(opcua_method_t* self, char* display_name);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_object_parent_node_id_ns(opcua_object_t* self, int ns);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_object_parent_node_id_i(opcua_object_t* self, int i);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_object_parent_node_id_s(opcua_object_t* self, char* s);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_object_node_id_ns(opcua_object_t* self, int ns);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_object_node_id_i(opcua_object_t* self, int i);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_object_node_id_s(opcua_object_t* self, char* s);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_object_browse_name(opcua_object_t* self, char* browse_name);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_object_display_name(opcua_object_t* self, char* display_name);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_reference_type(opcua_reference_t* reference,
+        char* type);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_reference_id_ns(opcua_reference_t* self, int ns);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_reference_id_i(opcua_reference_t* self, int i);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_reference_id_s(opcua_reference_t* self, char* s);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_set_reference_is_forward(opcua_reference_t* self, bool val);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_create_node_object_type_references(opcua_object_type_t* object);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_create_node_method_references(opcua_method_t* method);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_create_node_variable_references(opcua_variable_t* variable);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t self_create_node_object_references(opcua_object_t* object);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
 DL_OPCUA_ERR_t datalog_opcua_set_browse_name(void* object, DL_OPCUA_TYPE_t type,
         char* browse_name);
 
@@ -457,8 +903,25 @@ DL_OPCUA_ERR_t datalog_opcua_set_display_name(void* object, DL_OPCUA_TYPE_t type
 * @param 
 * @return 
 */
-DL_OPCUA_ERR_t datalog_opcua_set_variable_description(opcua_variable_t* variable,
-        char* description);
+DL_OPCUA_ERR_t datalog_opcua_set_id_s(opcua_ns_id_t* id, char* value);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t datalog_opcua_set_id_ns(opcua_ns_id_t* id, int ns);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t datalog_opcua_set_id_i(opcua_ns_id_t* id, int i);
 
 /**
 * @brief 
@@ -469,6 +932,16 @@ DL_OPCUA_ERR_t datalog_opcua_set_variable_description(opcua_variable_t* variable
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr parent_node, 
         opcua_node_attributes_t* attributes);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_attributes(
+        opcua_object_type_t* object_t);
 
 /**
 * @brief 
@@ -549,25 +1022,6 @@ DL_OPCUA_ERR_t datalog_opcua_clear_reference(opcua_reference_t* ref);
 * @param 
 * @return 
 */
-DL_OPCUA_ERR_t datalog_opcua_set_reference_type(opcua_reference_t* reference,
-        char* type);
-
-/**
-* @brief 
-* 
-* @param 
-* @param 
-* @return 
-*/
-opcua_reference_t* datalog_opcua_create_reference(void);
-
-/**
-* @brief 
-* 
-* @param 
-* @param 
-* @return 
-*/
 DL_OPCUA_ERR_t datalog_opcua_add_reference(opcua_reference_t* reference,
         void* object, DL_OPCUA_TYPE_t object_type);
 
@@ -617,36 +1071,16 @@ DL_OPCUA_ERR_t datalog_opcua_add_id_attribute(xmlNodePtr node, char* attribute,
 * @param 
 * @return 
 */
-DL_OPCUA_ERR_t datalog_opcua_set_id_s(opcua_ns_id_t* id, char* value);
-
-/**
-* @brief 
-* 
-* @param 
-* @param 
-* @return 
-*/
-DL_OPCUA_ERR_t datalog_opcua_set_id_ns(opcua_ns_id_t* id, int ns);
-
-/**
-* @brief 
-* 
-* @param 
-* @param 
-* @return 
-*/
-DL_OPCUA_ERR_t datalog_opcua_set_id_i(opcua_ns_id_t* id, int i);
-
-/**
-* @brief 
-* 
-* @param 
-* @param 
-* @return 
-*/
 opcua_node_attributes_t* datalog_opcua_create_attributes(void);
-DL_OPCUA_ERR_t datalog_opcua_set_attribute_browse_name(opcua_node_attributes_t* attributes, 
-        char* browse_name);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+opcua_object_type_attributes_t* datalog_opcua_create_object_type_attributes(void);
 
 /**
 * @brief 
@@ -656,16 +1090,6 @@ DL_OPCUA_ERR_t datalog_opcua_set_attribute_browse_name(opcua_node_attributes_t* 
 * @return 
 */
 opcua_method_attributes_t* datalog_opcua_create_method_attributes(void);
-
-/**
-* @brief 
-* 
-* @param 
-* @param 
-* @return 
-*/
-DL_OPCUA_ERR_t datalog_opcua_set_variable_data_type(opcua_variable_attributes_t* var,
-        char* data_type);
 
 /**
 * @brief 
@@ -720,6 +1144,15 @@ opcua_variable_t* datalog_opcua_create_variable(void);
 * @return 
 */
 opcua_object_t* datalog_opcua_create_object(void);
+
+/**
+* @brief 
+* 
+* @param 
+* @param 
+* @return 
+*/
+opcua_reference_t* datalog_opcua_create_reference(void);
 
 /**
 * @brief 

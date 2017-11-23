@@ -170,7 +170,8 @@ DL_OPCUA_ERR_t self_set_object_type_browse_name(opcua_object_type_t* self,
     return ret;
 }
 
-DL_OPCUA_ERR_t self_set_object_type_display_name(opcua_object_type_t* self, char* display_name)
+DL_OPCUA_ERR_t self_set_object_type_display_name(opcua_object_type_t* self, 
+        char* display_name)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, DL_OPC_VARIABLE,
             display_name);
@@ -218,7 +219,8 @@ DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* var,
         char* data_type)
 {
     var->variable_attributes->data_type = 
-        (char*)realloc(var->variable_attributes->data_type, sizeof(char) * (strlen(data_type) + 1));
+        (char*)realloc(var->variable_attributes->data_type, 
+                sizeof(char) * (strlen(data_type) + 1));
     if(var->variable_attributes->data_type == NULL) return DL_OPCUA_MEM;
     strcpy(var->variable_attributes->data_type, data_type);
     return DL_OPCUA_OK;
@@ -252,14 +254,16 @@ DL_OPCUA_ERR_t self_set_variable_value_rank(opcua_variable_t* self, int vr)
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t self_set_variable_browse_name(opcua_variable_t* self, char* browse_name)
+DL_OPCUA_ERR_t self_set_variable_browse_name(opcua_variable_t* self, 
+    char* browse_name)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self, DL_OPC_VARIABLE,
             browse_name);
     return ret;
 }
 
-DL_OPCUA_ERR_t self_set_variable_display_name(opcua_variable_t* self, char* display_name)
+DL_OPCUA_ERR_t self_set_variable_display_name(opcua_variable_t* self, 
+        char* display_name)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, DL_OPC_VARIABLE,
             display_name);
@@ -482,21 +486,24 @@ DL_OPCUA_ERR_t datalog_opcua_set_browse_name(void* object, DL_OPCUA_TYPE_t type,
         ((opcua_variable_t*)object)->attributes->browse_name = 
             (char*)realloc(((opcua_variable_t*)object)->attributes->browse_name, 
                     sizeof(char) * (strlen(browse_name) + 1));
-        if(((opcua_variable_t*)object)->attributes->browse_name == NULL) return DL_OPCUA_MEM;
+        if(((opcua_variable_t*)object)->attributes->browse_name == NULL) 
+            return DL_OPCUA_MEM;
         strcpy(((opcua_variable_t*)object)->attributes->browse_name, browse_name);
         break;
     case DL_OPC_METHOD:
         ((opcua_method_t*)object)->attributes->browse_name = 
             (char*)realloc(((opcua_method_t*)object)->attributes->browse_name, 
                     sizeof(char) * (strlen(browse_name) + 1));
-        if(((opcua_method_t*)object)->attributes->browse_name == NULL) return DL_OPCUA_MEM;
+        if(((opcua_method_t*)object)->attributes->browse_name == NULL) 
+            return DL_OPCUA_MEM;
         strcpy(((opcua_method_t*)object)->attributes->browse_name, browse_name);
         break;
     case DL_OPC_OBJ:
         ((opcua_object_t*)object)->attributes->browse_name = 
             (char*)realloc(((opcua_object_t*)object)->attributes->browse_name, 
                     sizeof(char) * (strlen(browse_name) + 1));
-        if(((opcua_object_t*)object)->attributes->browse_name == NULL) return DL_OPCUA_MEM;
+        if(((opcua_object_t*)object)->attributes->browse_name == NULL) 
+            return DL_OPCUA_MEM;
         strcpy(((opcua_object_t*)object)->attributes->browse_name, browse_name);
         break;
     default:
@@ -514,21 +521,24 @@ DL_OPCUA_ERR_t datalog_opcua_set_display_name(void* object, DL_OPCUA_TYPE_t type
         ((opcua_variable_t*)object)->attributes->display_name = 
             (char*)realloc(((opcua_variable_t*)object)->attributes->display_name, 
                     sizeof(char) * (strlen(display_name) + 1));
-        if(((opcua_variable_t*)object)->attributes->display_name == NULL) return DL_OPCUA_MEM;
+        if(((opcua_variable_t*)object)->attributes->display_name == NULL) 
+            return DL_OPCUA_MEM;
         strcpy(((opcua_variable_t*)object)->attributes->display_name, display_name);
         break;
     case DL_OPC_METHOD:
         ((opcua_method_t*)object)->attributes->display_name = 
             (char*)realloc(((opcua_method_t*)object)->attributes->display_name, 
                     sizeof(char) * (strlen(display_name) + 1));
-        if(((opcua_method_t*)object)->attributes->display_name == NULL) return DL_OPCUA_MEM;
+        if(((opcua_method_t*)object)->attributes->display_name == NULL) 
+            return DL_OPCUA_MEM;
         strcpy(((opcua_method_t*)object)->attributes->display_name, display_name);
         break;
     case DL_OPC_OBJ:
         ((opcua_object_t*)object)->attributes->display_name = 
             (char*)realloc(((opcua_object_t*)object)->attributes->display_name, 
                     sizeof(char) * (strlen(display_name) + 1));
-        if(((opcua_object_t*)object)->attributes->display_name == NULL) return DL_OPCUA_MEM;
+        if(((opcua_object_t*)object)->attributes->display_name == NULL) 
+            return DL_OPCUA_MEM;
         strcpy(((opcua_object_t*)object)->attributes->display_name, display_name);
         break;
     default:
@@ -833,7 +843,8 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
                     NULL, BAD_CAST "References", NULL);
         if(((opcua_variable_t*)object)->references_node != NULL){
             if(((opcua_variable_t*)object)->reference_head != NULL){
-                opcua_reference_t* ref_head = ((opcua_variable_t*)object)->reference_head;
+                opcua_reference_t* ref_head = 
+                    ((opcua_variable_t*)object)->reference_head;
                 while(ref_head != NULL){
                     xmlNodePtr tmp_node = 
                         xmlNewChild(((opcua_variable_t*)object)->references_node,
@@ -887,7 +898,8 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
                     NULL, BAD_CAST "References", NULL);
         if(((opcua_object_type_t*)object)->references_node != NULL){
             if(((opcua_object_type_t*)object)->reference_head != NULL){
-                opcua_reference_t* ref_head = ((opcua_object_type_t*)object)->reference_head;
+                opcua_reference_t* ref_head = 
+                    ((opcua_object_type_t*)object)->reference_head;
                 while(ref_head != NULL){
                     xmlNodePtr tmp_node = 
                         xmlNewChild(((opcua_object_type_t*)object)->references_node,
@@ -1197,4 +1209,3 @@ void datalog_opcua_runtime(void)
 
     datalog_opcua_save_deinit_doc();
 }
-
