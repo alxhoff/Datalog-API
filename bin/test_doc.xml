@@ -43,7 +43,13 @@
     <Alias Alias="EnumValueType">i=7594</Alias>
     <Alias Alias="TimeZoneDataType">i=8912</Alias>
   </Aliases>
-  <UAObjectType BrowseName="testObjectTypeBrowseName" NodeId="s=testS"/>
+  <UAObjectType BrowseName="testObjectTypeBrowseName" NodeId="s=testS">
+    <References>
+      <Reference ReferenceType="hello" IsForward="false">ns=11;i=10</Reference>
+      <Reference ReferenceType="hello2" IsForward="true">ns=13;i=12</Reference>
+      <Reference ReferenceType="hello3">ns=13;s=testS</Reference>
+    </References>
+  </UAObjectType>
   <Extensions>
     <Extension>
       <ModelInfo Tool="UaModeler" Hash="T9MjgfInUChe45aJYm9rKw==" Version="1.4.0"/>

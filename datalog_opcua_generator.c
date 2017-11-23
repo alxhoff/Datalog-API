@@ -65,6 +65,7 @@ opcua_document_t* datalog_opcua_create_document(char* filename, char* version)
 
 DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
 {
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
     xmlNodePtr tmp_node = NULL, tmp_parent = NULL, tmp_child = NULL;
     char buff[256];
     int i = 0;
@@ -95,24 +96,24 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
     tmp_obj_type->set_node_id_s(tmp_obj_type, "testS");
     datalog_opcua_create_node_object_type(tmp_obj_type);
 
-    opcua_reference_t* tmp_ref = datalog_opcua_create_reference();
     i = 0;
+    opcua_reference_t* tmp_ref;
     while(object_type_array[i].type != NULL){
-        datalog_opcua_clear_reference(tmp_ref);
-//        if(object_type_array[i].type != NULL) 
-//            tmp_ref->set_type(tmp_ref, object_type_array[i].type);
-/*        
+        tmp_ref = datalog_opcua_create_reference();
         tmp_ref->set_id_i(tmp_ref, object_type_array[i].id.i);
         tmp_ref->set_id_ns(tmp_ref, object_type_array[i].id.ns);
+        tmp_ref->set_is_forward(tmp_ref, object_type_array[i].is_forward);
+        if(object_type_array[i].type != NULL) 
+            tmp_ref->set_type(tmp_ref, object_type_array[i].type);
         if(object_type_array[i].id.s != NULL)
             tmp_ref->set_id_s(tmp_ref, object_type_array[i].id.s);
-        tmp_ref->set_is_forward(tmp_ref, object_type_array[i].is_forward);
 
-        datalog_opcua_add_reference(tmp_obj_type->node, DL_OPC_OBJ_TYPE, tmp_ref);
-*/
-        
+        datalog_opcua_add_reference(tmp_obj_type, DL_OPC_OBJ_TYPE, tmp_ref);
+        printf("%d\n",i);        
         i++;
     }
+    ret = datalog_opcua_create_node_references(tmp_obj_type, DL_OPC_OBJ_TYPE);
+    
     tmp_parent = xmlNewChild(opcua_document->root_node, NULL, 
             BAD_CAST "Extensions", NULL);
     tmp_parent = xmlNewChild(tmp_parent, NULL, BAD_CAST "Extension", NULL);
@@ -791,6 +792,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
 
     switch(object_type){
         case DL_OPC_VARIABLE:
+            //TODO CHECK FOR EMPTY REF HEAD
         if(((opcua_variable_t*)object)->references_node == NULL)
             ((opcua_variable_t*)object)->references_node 
                 = xmlNewChild(((opcua_variable_t*)object)->node,
@@ -802,7 +804,6 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
                     xmlNodePtr tmp_node = 
                         xmlNewChild(((opcua_variable_t*)object)->references_node,
                         NULL, BAD_CAST "Reference", NULL);
-                
                     datalog_opcua_add_reference_attributes(tmp_node, ref_head);
                     ref_head = ref_head->next;
                 }
@@ -821,7 +822,6 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
                     xmlNodePtr tmp_node = 
                         xmlNewChild(((opcua_method_t*)object)->references_node,
                         NULL, BAD_CAST "Reference", NULL);
-                
                     datalog_opcua_add_reference_attributes(tmp_node, ref_head);
                     ref_head = ref_head->next;
                 }
@@ -840,13 +840,31 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
                     xmlNodePtr tmp_node = 
                         xmlNewChild(((opcua_object_t*)object)->references_node,
                         NULL, BAD_CAST "Reference", NULL);
-                
                     datalog_opcua_add_reference_attributes(tmp_node, ref_head);
                     ref_head = ref_head->next;
                 }
             }else return DL_OPCUA_INVAL;
         }else return DL_OPCUA_INVAL;
             break;
+        case DL_OPC_OBJ_TYPE:
+        if(((opcua_object_type_t*)object)->references_node == NULL)
+            ((opcua_object_type_t*)object)->references_node 
+                = xmlNewChild(((opcua_object_type_t*)object)->node,
+                    NULL, BAD_CAST "References", NULL);
+        if(((opcua_object_type_t*)object)->references_node != NULL){
+            if(((opcua_object_type_t*)object)->reference_head != NULL){
+                opcua_reference_t* ref_head = ((opcua_object_type_t*)object)->reference_head;
+                while(ref_head != NULL){
+                    xmlNodePtr tmp_node = 
+                        xmlNewChild(((opcua_object_type_t*)object)->references_node,
+                        NULL, BAD_CAST "Reference", NULL);
+                    datalog_opcua_add_reference_attributes(tmp_node, ref_head);
+                    ref_head = ref_head->next;
+                }
+            }else return DL_OPCUA_INVAL;
+        }else return DL_OPCUA_INVAL;
+            break;
+
         default:
             break;
     }

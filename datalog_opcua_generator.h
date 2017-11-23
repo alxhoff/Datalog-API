@@ -348,6 +348,11 @@ opcua_reference_t object_type_array[] = {
             .ns = 13},
         .is_forward = true
     },
+    {.type = "hello3",
+        .id = {.s = "testS",
+            .ns = 13},
+        .is_forward = -1 
+    },
     {.type = NULL}
 };
 
