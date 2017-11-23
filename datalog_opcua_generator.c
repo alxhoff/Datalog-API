@@ -38,6 +38,8 @@ void datalog_opcua_save_deinit_doc(void)
 
     xmlFree(opcua_document->document);
 
+    free(opcua_document);
+
     xmlCleanupParser();
 
     xmlMemoryDump();
@@ -215,7 +217,7 @@ DL_OPCUA_ERR_t self_set_variable_node_id_s(opcua_variable_t* self, char* s)
     return ret;
 }
 
-DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* var,
+DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self,
         char* data_type)
 {
     var->variable_attributes->data_type = 
@@ -270,7 +272,7 @@ DL_OPCUA_ERR_t self_set_variable_display_name(opcua_variable_t* self,
     return ret;
 }
 
-DL_OPCUA_ERR_t self_set_variable_description(opcua_variable_t* variable,
+DL_OPCUA_ERR_t self_set_variable_description(opcua_variable_t* self,
         char* description)
 {
     variable->description = (char*)realloc(variable->description,
@@ -402,8 +404,7 @@ DL_OPCUA_ERR_t self_set_object_display_name(opcua_object_t* self, char* display_
 }
 
 //## REFERENCE
-DL_OPCUA_ERR_t self_set_reference_type(opcua_reference_t* reference,
-        char* type)
+DL_OPCUA_ERR_t self_set_reference_type(opcua_reference_t* seld, char* type)
 {
     reference->type = (char*)realloc(reference->type, 
         sizeof(char) * (strlen(type) + 1));
@@ -573,20 +574,20 @@ DL_OPCUA_ERR_t datalog_opcua_set_id_i(opcua_ns_id_t* id, int i)
 
 //CREATE OBJECT NODES
 //ATTRIBUTES
-DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr parent_node, 
+DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr node, 
         opcua_node_attributes_t* attributes)
 {
     char buffer[32];
     
     if(attributes->browse_name != NULL)
-        xmlNewProp(parent_node, BAD_CAST "BrowseName",
+        xmlNewProp(node, BAD_CAST "BrowseName",
                 BAD_CAST attributes->browse_name);
     
-    DL_OPCUA_ERR_t ret = datalog_opcua_add_id_attribute(parent_node, "ParentNodeId",
+    DL_OPCUA_ERR_t ret = datalog_opcua_add_id_attribute(node, "ParentNodeId",
         &attributes->parent_node_id);            
     if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
 
-    ret = datalog_opcua_add_id_attribute(parent_node, "NodeId",
+    ret = datalog_opcua_add_id_attribute(node, "NodeId",
         &attributes->node_id);            
     if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
 
