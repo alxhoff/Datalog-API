@@ -449,7 +449,7 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void);
 * @brief Sets the parent node id ns value for object types
 * 
 * @param self pointer to object to be set
-* @param 
+* @param ns NS value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_type_parent_node_id_ns(opcua_object_type_t* self, 
@@ -459,7 +459,7 @@ DL_OPCUA_ERR_t self_set_object_type_parent_node_id_ns(opcua_object_type_t* self,
 * @brief Sets the parent node id i value for object type objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param i I value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 
@@ -469,7 +469,7 @@ DL_OPCUA_ERR_t self_set_object_type_parent_node_id_i(opcua_object_type_t* self, 
 * @brief Sets the parent node id s value for object type objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param s S string to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_type_parent_node_id_s(opcua_object_type_t* self, 
@@ -479,7 +479,7 @@ DL_OPCUA_ERR_t self_set_object_type_parent_node_id_s(opcua_object_type_t* self,
 * @brief Sets the node id ns value for object type objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param ns NS value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_type_node_id_ns(opcua_object_type_t* self, int ns);
@@ -488,7 +488,7 @@ DL_OPCUA_ERR_t self_set_object_type_node_id_ns(opcua_object_type_t* self, int ns
 * @brief Sets the node id i value for object type objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param i I value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_type_node_id_i(opcua_object_type_t* self, int i);
@@ -497,7 +497,7 @@ DL_OPCUA_ERR_t self_set_object_type_node_id_i(opcua_object_type_t* self, int i);
 * @brief Sets the node id s value for object type objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param s S string to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_type_node_id_s(opcua_object_type_t* self, char* s);
@@ -506,7 +506,7 @@ DL_OPCUA_ERR_t self_set_object_type_node_id_s(opcua_object_type_t* self, char* s
 * @brief Sets the browse name for object type objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param browse_name String representation of browse name
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_type_browse_name(opcua_object_type_t* self, 
@@ -516,7 +516,7 @@ DL_OPCUA_ERR_t self_set_object_type_browse_name(opcua_object_type_t* self,
 * @brief Sets the dislay name value for object type objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param display_name String representation of display name
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_type_display_name(opcua_object_type_t* self, char* display_name);
@@ -525,7 +525,7 @@ DL_OPCUA_ERR_t self_set_object_type_display_name(opcua_object_type_t* self, char
 * @brief Sets the parent node id ns value for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param ns NS value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_parent_node_id_ns(opcua_variable_t* self, int ns);
@@ -534,7 +534,7 @@ DL_OPCUA_ERR_t self_set_variable_parent_node_id_ns(opcua_variable_t* self, int n
 * @brief Sets the parent node id i value for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param i I value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_parent_node_id_i(opcua_variable_t* self, int i);
@@ -543,7 +543,7 @@ DL_OPCUA_ERR_t self_set_variable_parent_node_id_i(opcua_variable_t* self, int i)
 * @brief Sets the parent node id s value for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param s S string to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_parent_node_id_s(opcua_variable_t* self, char* s);
@@ -552,7 +552,7 @@ DL_OPCUA_ERR_t self_set_variable_parent_node_id_s(opcua_variable_t* self, char* 
 * @brief Sets the node id ns value for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param ns NS value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_node_id_ns(opcua_variable_t* self, int ns);
@@ -561,7 +561,7 @@ DL_OPCUA_ERR_t self_set_variable_node_id_ns(opcua_variable_t* self, int ns);
 * @brief Sets the node id i value for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param i I value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_node_id_i(opcua_variable_t* self, int i);
@@ -570,7 +570,7 @@ DL_OPCUA_ERR_t self_set_variable_node_id_i(opcua_variable_t* self, int i);
 * @brief Sets the node id s value for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param s S string to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_node_id_s(opcua_variable_t* self, char* s);
@@ -579,7 +579,7 @@ DL_OPCUA_ERR_t self_set_variable_node_id_s(opcua_variable_t* self, char* s);
 * @brief Sets the datatype value for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param data_type Data type string to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self, char* data_type);
@@ -588,7 +588,7 @@ DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self, char* data_ty
 * @brief Sets the user access level value for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param ual User access level value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_user_access_level(opcua_variable_t* self, int ual);
@@ -597,7 +597,7 @@ DL_OPCUA_ERR_t self_set_variable_user_access_level(opcua_variable_t* self, int u
 * @brief Sets the access level value for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param al Access level value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_access_level(opcua_variable_t* self, int al);
@@ -606,7 +606,7 @@ DL_OPCUA_ERR_t self_set_variable_access_level(opcua_variable_t* self, int al);
 * @brief Sets the array dimensions value for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param ad Array dimension value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_array_dimensions(opcua_variable_t* self, int ad);
@@ -615,7 +615,7 @@ DL_OPCUA_ERR_t self_set_variable_array_dimensions(opcua_variable_t* self, int ad
 * @brief Sets the value rank value for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param vr Value rank value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_value_rank(opcua_variable_t* self, int vr);
@@ -624,7 +624,7 @@ DL_OPCUA_ERR_t self_set_variable_value_rank(opcua_variable_t* self, int vr);
 * @brief Sets the browse name for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param browse_name String representation of browse name
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_browse_name(opcua_variable_t* self, 
@@ -634,8 +634,8 @@ DL_OPCUA_ERR_t self_set_variable_browse_name(opcua_variable_t* self,
 * @brief Sets the display name for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
-* @return 
+* @param display_name String representation of display name
+* @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_display_name(opcua_variable_t* self, 
     char* display_name);
@@ -644,7 +644,7 @@ DL_OPCUA_ERR_t self_set_variable_display_name(opcua_variable_t* self,
 * @brief Sets the description for variable objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param description Description string
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_variable_description(opcua_variable_t* self,
@@ -654,7 +654,7 @@ DL_OPCUA_ERR_t self_set_variable_description(opcua_variable_t* self,
 * @brief Sets the parent node id ns value for method objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param ns NS value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_method_parent_node_id_ns(opcua_method_t* self, int ns);
@@ -663,7 +663,7 @@ DL_OPCUA_ERR_t self_set_method_parent_node_id_ns(opcua_method_t* self, int ns);
 * @brief Sets the parent node id i value for method objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param i I value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_method_parent_node_id_i(opcua_method_t* self, int i);
@@ -672,7 +672,7 @@ DL_OPCUA_ERR_t self_set_method_parent_node_id_i(opcua_method_t* self, int i);
 * @brief Sets the parent node id s value for method objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param s S string to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_method_parent_node_id_s(opcua_method_t* self, char* s);
@@ -681,7 +681,7 @@ DL_OPCUA_ERR_t self_set_method_parent_node_id_s(opcua_method_t* self, char* s);
 * @brief Sets the node id ns value for method objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param ns NS value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_method_node_id_ns(opcua_method_t* self, int ns);
@@ -690,7 +690,7 @@ DL_OPCUA_ERR_t self_set_method_node_id_ns(opcua_method_t* self, int ns);
 * @brief Sets the node id i value for method objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param i I value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_method_node_id_i(opcua_method_t* self, int i);
@@ -699,16 +699,16 @@ DL_OPCUA_ERR_t self_set_method_node_id_i(opcua_method_t* self, int i);
 * @brief Sets the node id s value for method objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param s S string to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_method_node_id_s(opcua_method_t* self, char* s);
 
 /**
-* @brief Sets the method declaration value for method objects
+* @brief Sets the method declaration id value for method objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param id Declaration ID value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_method_declaration_id(opcua_method_t* self, int id);
@@ -717,7 +717,7 @@ DL_OPCUA_ERR_t self_set_method_declaration_id(opcua_method_t* self, int id);
 * @brief Sets the browse name value for method objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param browse_name String representation of browse name
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_method_browse_name(opcua_method_t* self, char* browse_name);
@@ -726,7 +726,7 @@ DL_OPCUA_ERR_t self_set_method_browse_name(opcua_method_t* self, char* browse_na
 * @brief Sets the display name value for method objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param display_name String representation of display name
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_method_display_name(opcua_method_t* self, char* display_name);
@@ -735,7 +735,7 @@ DL_OPCUA_ERR_t self_set_method_display_name(opcua_method_t* self, char* display_
 * @brief Sets the parent node id ns value for object objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param ns NS value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_parent_node_id_ns(opcua_object_t* self, int ns);
@@ -744,7 +744,7 @@ DL_OPCUA_ERR_t self_set_object_parent_node_id_ns(opcua_object_t* self, int ns);
 * @brief Sets the parent node id i value for object objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param I value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_parent_node_id_i(opcua_object_t* self, int i);
@@ -753,7 +753,7 @@ DL_OPCUA_ERR_t self_set_object_parent_node_id_i(opcua_object_t* self, int i);
 * @brief Sets the parent node id s value for object objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param S string to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_parent_node_id_s(opcua_object_t* self, char* s);
@@ -762,7 +762,7 @@ DL_OPCUA_ERR_t self_set_object_parent_node_id_s(opcua_object_t* self, char* s);
 * @brief Sets the node id ns value for object objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param ns NS value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_node_id_ns(opcua_object_t* self, int ns);
@@ -771,7 +771,7 @@ DL_OPCUA_ERR_t self_set_object_node_id_ns(opcua_object_t* self, int ns);
 * @brief Sets the node id i value for object objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param I value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_node_id_i(opcua_object_t* self, int i);
@@ -780,7 +780,7 @@ DL_OPCUA_ERR_t self_set_object_node_id_i(opcua_object_t* self, int i);
 * @brief Sets the node id s value for object objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param S string to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_node_id_s(opcua_object_t* self, char* s);
@@ -789,7 +789,7 @@ DL_OPCUA_ERR_t self_set_object_node_id_s(opcua_object_t* self, char* s);
 * @brief Sets the browse name value for object objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param browse_name String representation of browse name
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_browse_name(opcua_object_t* self, char* browse_name);
@@ -798,7 +798,7 @@ DL_OPCUA_ERR_t self_set_object_browse_name(opcua_object_t* self, char* browse_na
 * @brief Sets display name value for object objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param display_name String representation of display name
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_object_display_name(opcua_object_t* self, char* display_name);
@@ -807,7 +807,7 @@ DL_OPCUA_ERR_t self_set_object_display_name(opcua_object_t* self, char* display_
 * @brief Sets the reference type for reference objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param type String representation of reference type
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_reference_type(opcua_reference_t* self, char* type);
@@ -816,7 +816,7 @@ DL_OPCUA_ERR_t self_set_reference_type(opcua_reference_t* self, char* type);
 * @brief Sets the id ns value for reference objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param ns NS value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_reference_id_ns(opcua_reference_t* self, int ns);
@@ -825,7 +825,7 @@ DL_OPCUA_ERR_t self_set_reference_id_ns(opcua_reference_t* self, int ns);
 * @brief Sets the id i value for reference objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param i I value to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_reference_id_i(opcua_reference_t* self, int i);
@@ -834,7 +834,7 @@ DL_OPCUA_ERR_t self_set_reference_id_i(opcua_reference_t* self, int i);
 * @brief Sets the id s value for reference objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param s S string to be set
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_reference_id_s(opcua_reference_t* self, char* s);
@@ -843,7 +843,7 @@ DL_OPCUA_ERR_t self_set_reference_id_s(opcua_reference_t* self, char* s);
 * @brief Sets the is forward value for reference objects
 * 
 * @param self pointer to object to be set
-* @param 
+* @param val Boolean value
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_set_reference_is_forward(opcua_reference_t* self, bool val);
@@ -851,7 +851,7 @@ DL_OPCUA_ERR_t self_set_reference_is_forward(opcua_reference_t* self, bool val);
 /**
 * @brief Creates a reference node from the reference object
 * 
-* @param 
+* @param object Pointer to object type object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_create_node_object_type_references(opcua_object_type_t* object);
@@ -859,7 +859,7 @@ DL_OPCUA_ERR_t self_create_node_object_type_references(opcua_object_type_t* obje
 /**
 * @brief Creates a method node from the method object
 * 
-* @param 
+* @param method Pointer to method object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_create_node_method_references(opcua_method_t* method);
@@ -867,7 +867,7 @@ DL_OPCUA_ERR_t self_create_node_method_references(opcua_method_t* method);
 /**
 * @brief Creates a variable node from the variable object
 * 
-* @param 
+* @param variable Pointer to variable object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_create_node_variable_references(opcua_variable_t* variable);
@@ -875,7 +875,7 @@ DL_OPCUA_ERR_t self_create_node_variable_references(opcua_variable_t* variable);
 /**
 * @brief Creates an object node from the object object
 * 
-* @param 
+* @param object Pointer to object object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t self_create_node_object_references(opcua_object_t* object);
@@ -883,9 +883,9 @@ DL_OPCUA_ERR_t self_create_node_object_references(opcua_object_t* object);
 /**
 * @brief Generalised function to set the browse name of an object
 * 
-* @param 
-* @param 
-* @param 
+* @param object Pointer to object
+* @param type Object type
+* @param String representation of browse name
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_set_browse_name(void* object, DL_OPCUA_TYPE_t type,
@@ -894,8 +894,8 @@ DL_OPCUA_ERR_t datalog_opcua_set_browse_name(void* object, DL_OPCUA_TYPE_t type,
 /**
 * @brief Generalised function to set the display name of an object
 * 
-* @param 
-* @param 
+* @param object Pointer to object
+* @param type Object type
 * @param 
 * @return DL_OPCUA_ERR_t error message
 */
@@ -940,84 +940,88 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr node,
         opcua_node_attributes_t* attributes);
 
 /**
-* @brief 
+* @brief Creates node type specific attributes for a given XML node
 * 
-* @param 
+* @param object_t pointer to object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_attributes(
         opcua_object_type_t* object_t);
 
 /**
-* @brief 
+* @brief Creates node type specific attributes for a given XML node
 * 
-* @param 
+* @param method pointer to object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_method_attributes(opcua_method_t* method);
 
 /**
-* @brief 
+* @brief Creates node type specific attributes for a given XML node
 * 
-* @param 
+* @param variable pointer to object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* variable);
 
 /**
-* @brief 
+* @brief Creates node type specific attributes for a given XML node
 * 
-* @param 
+* @param object pointer to object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_attributes(opcua_object_t* object);
 
 /**
-* @brief 
+* @brief Creates a XML node from an object type object, also allocates object specific attributes
+* and general attributes.
 * 
-* @param 
+* @param object Pointer to object type object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_type(opcua_object_type_t* object);
 
 /**
-* @brief 
+* @brief Creates a XML node from a method object, also allocates object specific attributes
+* and general attributes.
 * 
-* @param 
+* @param method Pointer to method object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_method(opcua_method_t* method);
 
 /**
-* @brief 
+* @brief Creates a XML node from a  variable, also allocates object specific attributes
+* and general attributes.
 * 
-* @param 
+* @param variable Pointer to variable object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_variable(opcua_variable_t* variable);
 
 /**
-* @brief 
+* @brief Creates a XML node from an object object, also allocates object specific attributes
+* and general attributes.
 * 
-* @param 
+* @param object Pointer to object object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_object(opcua_object_t* object);
 
 /**
-* @brief 
+* @brief Clears a reference object
 * 
-* @param 
+* @param ref Pointer to reference object
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_clear_reference(opcua_reference_t* ref);
 
 /**
-* @brief 
+* @brief Adds a reference object to a node object
 * 
-* @param 
-* @param 
-* @param 
+* @param reference Reference object to be added
+* @param object Node object that the reference object should be added to
+* @param type Object type
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_add_reference(opcua_reference_t* reference,
@@ -1037,7 +1041,7 @@ DL_OPCUA_ERR_t datalog_opcua_add_reference_attributes(xmlNodePtr reference_node,
 * @brief 
 * 
 * @param 
-* @param 
+* @param type Object type
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object, 
