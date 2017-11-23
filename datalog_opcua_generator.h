@@ -42,7 +42,7 @@
 #define XML_FILENAME        "test_doc.xml"
 #define XML_FILE_VERSION    "1.0"
 
-#define NAMESPACE_URI        "urn:UnifiedAutomation:CppDemoServer:BuildingAutomation"
+#define NAMESPACE_URI       "urn:UnifiedAutomation:CppDemoServer:BuildingAutomation"
 
 /**
 * @enum 

@@ -90,17 +90,18 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
     }
 
     //OBJECT TYPES
-    i = 0;
     opcua_object_type_t* tmp_obj_type = datalog_opcua_create_object_type();
     tmp_obj_type->set_browse_name(tmp_obj_type, "testObjectTypeBrowseName");
+    tmp_obj_type->set_node_id_s(tmp_obj_type, "testS");
     datalog_opcua_create_node_object_type(tmp_obj_type);
 
     opcua_reference_t* tmp_ref = datalog_opcua_create_reference();
+    i = 0;
     while(object_type_array[i].type != NULL){
         datalog_opcua_clear_reference(tmp_ref);
-        
-        if(object_type_array[i].type != NULL) 
-            tmp_ref->set_type(tmp_ref, object_type_array[i].type);
+//        if(object_type_array[i].type != NULL) 
+//            tmp_ref->set_type(tmp_ref, object_type_array[i].type);
+/*        
         tmp_ref->set_id_i(tmp_ref, object_type_array[i].id.i);
         tmp_ref->set_id_ns(tmp_ref, object_type_array[i].id.ns);
         if(object_type_array[i].id.s != NULL)
@@ -108,10 +109,10 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
         tmp_ref->set_is_forward(tmp_ref, object_type_array[i].is_forward);
 
         datalog_opcua_add_reference(tmp_obj_type->node, DL_OPC_OBJ_TYPE, tmp_ref);
+*/
         
         i++;
     }
-
     tmp_parent = xmlNewChild(opcua_document->root_node, NULL, 
             BAD_CAST "Extensions", NULL);
     tmp_parent = xmlNewChild(tmp_parent, NULL, BAD_CAST "Extension", NULL);
@@ -871,11 +872,16 @@ DL_OPCUA_ERR_t datalog_opcua_add_id_contents(xmlNodePtr node, opcua_ns_id_t* id)
 
     if(id->s != NULL){
         char* node_value = (char*)xmlNodeGetContent(node);
-        char second_buffer[strlen(node_value) + strlen(id->s) + 4];
-        strcpy(buffer, node_value);
-        strcpy(buffer + strlen(node_value), ";s=");
-        strcpy(buffer + strlen(node_value) + 3, id->s);
-        xmlNodeSetContent(node, BAD_CAST buffer);
+        if(node_value == NULL){
+            sprintf(buffer, "s=%s", id->s);
+            xmlNodeSetContent(node, BAD_CAST buffer);
+        }else{
+            char second_buffer[strlen(node_value) + strlen(id->s) + 4];
+            strcpy(second_buffer, node_value);
+            strcpy(second_buffer + strlen(node_value), ";s=");
+            strcpy(second_buffer + strlen(node_value) + 3, id->s);
+            xmlNodeSetContent(node, BAD_CAST second_buffer);
+        }
     }
     
     return DL_OPCUA_OK;
@@ -886,26 +892,34 @@ DL_OPCUA_ERR_t datalog_opcua_add_id_attribute(xmlNodePtr node, char* attribute,
 {
     char buffer[32]; 
 
-    xmlNewProp(node, BAD_CAST attribute, NULL);
+    xmlAttrPtr tmp_attr = NULL; 
 
     if((id->i) != 0 && (id->ns == 0)){
+        tmp_attr = xmlNewProp(node, BAD_CAST attribute, NULL);
         sprintf(buffer, "i=%d", id->i);                
         xmlSetProp(node, BAD_CAST attribute, BAD_CAST buffer);
     }else if((id->i) == 0 && (id->ns != 0)){
+        tmp_attr = xmlNewProp(node, BAD_CAST attribute, NULL);
         sprintf(buffer, "ns=%d", id->ns);
         xmlSetProp(node, BAD_CAST attribute, BAD_CAST buffer);
     }else if((id->i) != 0 && (id->ns != 0)){
+        tmp_attr = xmlNewProp(node, BAD_CAST attribute, NULL);
         sprintf(buffer, "ns=%d;i=%d", id->ns, id->i);
         xmlSetProp(node, BAD_CAST attribute, BAD_CAST buffer);
     }
 
     if(id->s != NULL){
-        char* node_value = (char*)xmlGetProp(node, BAD_CAST attribute);
-        char second_buffer[strlen(node_value) + strlen(id->s) + 4];
-        strcpy(buffer, node_value);
-        strcpy(buffer + strlen(node_value), ";s=");
-        strcpy(buffer + strlen(node_value) + 3, id->s);
-        xmlSetProp(node, BAD_CAST attribute, BAD_CAST buffer);
+        if(tmp_attr == NULL){
+            sprintf(buffer, "s=%s", id->s);
+            tmp_attr = xmlNewProp(node, BAD_CAST attribute, BAD_CAST buffer);
+        }else{
+            char* node_value = (char*)xmlGetProp(node, BAD_CAST attribute);
+            char second_buffer[strlen(node_value) + strlen(id->s) + 4];
+            strcpy(buffer, node_value);
+            strcpy(buffer + strlen(node_value), ";s=");
+            strcpy(buffer + strlen(node_value) + 3, id->s);
+            xmlSetProp(node, BAD_CAST attribute, BAD_CAST buffer);
+        }
     }
     
     return DL_OPCUA_OK;
