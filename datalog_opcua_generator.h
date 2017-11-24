@@ -862,6 +862,82 @@ DL_OPCUA_ERR_t self_set_reference_id_s(opcua_reference_t* self, char* s);
 DL_OPCUA_ERR_t self_set_reference_is_forward(opcua_reference_t* self, bool val);
 
 /**
+* @brief Sets the parent node id ns value for attribute objects
+* 
+* @param self pointer to object to be set
+* @param ns NS value to be set
+* @return DL_OPCUA_ERR_t error message
+*/
+DL_OPCUA_ERR_t self_set_attribute_parent_node_id_ns(
+        opcua_node_attributes_t* self, int ns);
+
+/**
+* @brief Sets the parent node id i value for attribute objects
+* 
+* @param self pointer to object to be set
+* @param I value to be set
+* @return DL_OPCUA_ERR_t error message
+*/
+DL_OPCUA_ERR_t self_set_attribute_parent_node_id_i(opcua_node_attributes_t* self, int i);
+
+/**
+* @brief Sets the parent node id s value for attribute objects
+* 
+* @param self pointer to object to be set
+* @param S string to be set
+* @return DL_OPCUA_ERR_t error message
+*/
+DL_OPCUA_ERR_t self_set_attribute_parent_node_id_s(opcua_node_attributes_t* self, 
+        char* s);
+
+/**
+* @brief Sets the node id ns value for attribute objects
+* 
+* @param self pointer to object to be set
+* @param ns NS value to be set
+* @return DL_OPCUA_ERR_t error message
+*/
+DL_OPCUA_ERR_t self_set_attribute_node_id_ns(opcua_node_attributes_t* self, int ns);
+
+/**
+* @brief Sets the node id i value for attribute objects
+* 
+* @param self pointer to object to be set
+* @param I value to be set
+* @return DL_OPCUA_ERR_t error message
+*/
+DL_OPCUA_ERR_t self_set_attribute_node_id_i(opcua_node_attributes_t* self, int i);
+
+/**
+* @brief Sets the node id s value for attribute objects
+* 
+* @param self pointer to object to be set
+* @param S string to be set
+* @return DL_OPCUA_ERR_t error message
+*/
+DL_OPCUA_ERR_t self_set_attribute_node_id_s(opcua_node_attributes_t* self, char* s);
+
+/**
+* @brief Sets the browse name value for attribute objects
+* 
+* @param self pointer to object to be set
+* @param browse_name String representation of browse name
+* @return DL_OPCUA_ERR_t error message
+*/
+DL_OPCUA_ERR_t self_set_attribute_browse_name(opcua_node_attributes_t* self, 
+        char* browse_name);
+
+/**
+* @brief Sets display name value for attribute objects
+* 
+* @param self pointer to object to be set
+* @param display_name String representation of display name
+* @return DL_OPCUA_ERR_t error message
+*/
+DL_OPCUA_ERR_t self_set_attribute_display_name(opcua_node_attributes_t* self, 
+        char* display_name);
+
+/**
 * @brief Creates a reference node from the reference object
 * 
 * @param object Pointer to object type object
