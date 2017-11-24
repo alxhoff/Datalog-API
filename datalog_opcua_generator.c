@@ -65,44 +65,6 @@ opcua_document_t* datalog_opcua_create_document(char* filename, char* version)
     return ret;
 }
 
-DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_from_array(
-        opcua_reference_t* array, opcua_node_attributes_t* attributes)
-{
-    int i = 0;
-    opcua_reference_t* tmp_ref;
-    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
-    
-    opcua_object_type_t* tmp_obj_type = datalog_opcua_create_object_type();
-    if(attributes->browse_name != NULL)
-        tmp_obj_type->set_browse_name(tmp_obj_type, attributes->browse_name);
-    if(attributes->display_name != NULL)
-        tmp_obj_type->set_node_id_s(tmp_obj_type, attributes->display_name);
-    if(tmp_obj_type->attributes != NULL){
-    memcpy(&tmp_obj_type->attributes->node_id,
-            &attributes->node_id, sizeof(opcua_ns_id_t));
-        memcpy(&tmp_obj_type->attributes->parent_node_id, 
-                &attributes->parent_node_id, sizeof(opcua_ns_id_t));
-    }
-    datalog_opcua_create_node_object_type(tmp_obj_type);
-
-    while(array[i].type != NULL){
-        tmp_ref = datalog_opcua_create_reference();
-        tmp_ref->set_id_i(tmp_ref, array[i].id.i);
-        tmp_ref->set_id_ns(tmp_ref, array[i].id.ns);
-        tmp_ref->set_is_forward(tmp_ref, array[i].is_forward);
-        if(array[i].type != NULL) 
-            tmp_ref->set_type(tmp_ref, array[i].type);
-        if(array[i].id.s != NULL)
-            tmp_ref->set_id_s(tmp_ref, array[i].id.s);
-
-        datalog_opcua_add_reference(tmp_ref, tmp_obj_type, DL_OPC_OBJ_TYPE);
-        i++;
-    }
-    ret = datalog_opcua_create_node_references(tmp_obj_type, DL_OPC_OBJ_TYPE);
-
-    return DL_OPCUA_OK;
-}
-
 DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
 {
     DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
@@ -745,6 +707,44 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object_attributes(opcua_object_t* objec
 }
 
 //OBJECTS
+DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_from_array(
+        opcua_reference_t* array, opcua_node_attributes_t* attributes)
+{
+    int i = 0;
+    opcua_reference_t* tmp_ref;
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+    
+    opcua_object_type_t* tmp_obj_type = datalog_opcua_create_object_type();
+    if(attributes->browse_name != NULL)
+        tmp_obj_type->set_browse_name(tmp_obj_type, attributes->browse_name);
+    if(attributes->display_name != NULL)
+        tmp_obj_type->set_node_id_s(tmp_obj_type, attributes->display_name);
+    if(tmp_obj_type->attributes != NULL){
+    memcpy(&tmp_obj_type->attributes->node_id,
+            &attributes->node_id, sizeof(opcua_ns_id_t));
+        memcpy(&tmp_obj_type->attributes->parent_node_id, 
+                &attributes->parent_node_id, sizeof(opcua_ns_id_t));
+    }
+    datalog_opcua_create_node_object_type(tmp_obj_type);
+
+    while(array[i].type != NULL){
+        tmp_ref = datalog_opcua_create_reference();
+        tmp_ref->set_id_i(tmp_ref, array[i].id.i);
+        tmp_ref->set_id_ns(tmp_ref, array[i].id.ns);
+        tmp_ref->set_is_forward(tmp_ref, array[i].is_forward);
+        if(array[i].type != NULL) 
+            tmp_ref->set_type(tmp_ref, array[i].type);
+        if(array[i].id.s != NULL)
+            tmp_ref->set_id_s(tmp_ref, array[i].id.s);
+
+        datalog_opcua_add_reference(tmp_ref, tmp_obj_type, DL_OPC_OBJ_TYPE);
+        i++;
+    }
+    ret = datalog_opcua_create_node_references(tmp_obj_type, DL_OPC_OBJ_TYPE);
+
+    return DL_OPCUA_OK;
+}
+
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_type(opcua_object_type_t* object)
 {
     if(object == NULL) return DL_OPCUA_INVAL;

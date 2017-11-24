@@ -986,6 +986,17 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* v
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_attributes(opcua_object_t* object);
 
 /**
+* @brief Creates a <UAObjectType> node and populates it from an array
+* 
+* @param array Pointer to array storing initialisation references
+* @param attributes Pointer to attributes object that stores the
+* <UAObjectType> nodes initialisation attribute values
+* @return DL_OPCUA_ERR_t error message
+*/
+DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_from_array(
+        opcua_reference_t* array, opcua_node_attributes_t* attributes);
+
+/**
 * @brief Creates a XML node from an object type object, also allocates object specific attributes
 * and general attributes.
 * 
