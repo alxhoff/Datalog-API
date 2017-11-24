@@ -260,6 +260,8 @@ struct opcua_object_type{
     DL_OPCUA_ERR_t (*set_browse_name)(opcua_object_type_t*,char*);  /**< */
     DL_OPCUA_ERR_t (*set_display_name)(opcua_object_type_t*,char*); /**< */
     DL_OPCUA_ERR_t (*create_references)(opcua_object_type_t*);      /**< */
+    DL_OPCUA_ERR_t (*add_reference)(opcua_object_type_t*, 
+                                    opcua_reference_t*);
 };
 
 /**
@@ -292,6 +294,8 @@ struct opcua_method{
     DL_OPCUA_ERR_t (*set_display_name)(opcua_method_t*,char*);  /**< */
     DL_OPCUA_ERR_t (*set_declaration_id)(opcua_method_t*,int);  /**< */
     DL_OPCUA_ERR_t (*create_references)(opcua_method_t*);       /**< */
+    DL_OPCUA_ERR_t (*add_reference)(opcua_method_t*, 
+                                    opcua_reference_t*);
 };
 
 /**
@@ -321,15 +325,17 @@ struct opcua_variable{
     DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_variable_t*,int);        /**< */
     DL_OPCUA_ERR_t (*set_node_id_i)(opcua_variable_t*,int);         /**< */
     DL_OPCUA_ERR_t (*set_node_id_s)(opcua_variable_t*,char*);       /**< */
+    DL_OPCUA_ERR_t (*set_browse_name)(opcua_variable_t*,char*);     /**< */
+    DL_OPCUA_ERR_t (*set_display_name)(opcua_variable_t*,char*);    /**< */
     DL_OPCUA_ERR_t (*set_data_type)(opcua_variable_t*,char*);       /**< */
     DL_OPCUA_ERR_t (*set_user_access_level)(opcua_variable_t*,int); /**< */
     DL_OPCUA_ERR_t (*set_access_level)(opcua_variable_t*,int);      /**< */
     DL_OPCUA_ERR_t (*set_array_dimensions)(opcua_variable_t*,int);  /**< */
     DL_OPCUA_ERR_t (*set_value_rank)(opcua_variable_t*,int);        /**< */
-    DL_OPCUA_ERR_t (*set_browse_name)(opcua_variable_t*,char*);     /**< */
-    DL_OPCUA_ERR_t (*set_display_name)(opcua_variable_t*,char*);    /**< */
     DL_OPCUA_ERR_t (*set_description)(opcua_variable_t*,char*);     /**< */
     DL_OPCUA_ERR_t (*create_references)(opcua_variable_t*);         /**< */
+    DL_OPCUA_ERR_t (*add_reference)(opcua_variable_t*, 
+                                    opcua_reference_t*);
 };
 
 /**
@@ -361,6 +367,8 @@ struct opcua_object{
     DL_OPCUA_ERR_t (*set_browse_name)(opcua_object_t*,char*);   /**< */
     DL_OPCUA_ERR_t (*set_display_name)(opcua_object_t*,char*);  /**< */
     DL_OPCUA_ERR_t (*create_references)(opcua_object_t*);       /**< */
+    DL_OPCUA_ERR_t (*add_reference)(opcua_object_t*, 
+                                    opcua_reference_t*);
 };
 
 //SERVER CONFIG

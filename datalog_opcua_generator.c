@@ -518,6 +518,39 @@ DL_OPCUA_ERR_t self_create_node_object_references(
     return ret;
 }
 
+//SELF ADD REF 
+DL_OPCUA_ERR_t self_add_ref_object_type(opcua_object_type_t* object_t, 
+        opcua_reference_t* reference)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+    ret = datalog_opcua_add_reference(reference, object_t, DL_OPC_OBJ_TYPE);
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_add_ref_method(opcua_method_t* method,
+        opcua_reference_t* reference)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+    ret = datalog_opcua_add_reference(reference, method, DL_OPC_METHOD);
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_add_ref_variable(opcua_variable_t* variable,
+        opcua_reference_t* reference)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+    ret = datalog_opcua_add_reference(reference, variable, DL_OPC_VARIABLE);
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_add_ref_object(opcua_object_t* object,
+        opcua_reference_t* reference)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+    ret = datalog_opcua_add_reference(reference, object, DL_OPC_OBJ);
+    return DL_OPCUA_OK;
+}
+
 //## GENERALISED FUNCTIONS
 DL_OPCUA_ERR_t datalog_opcua_set_browse_name(void* object, DL_OPCUA_TYPE_t type,
         char* browse_name)
@@ -1173,6 +1206,7 @@ opcua_object_type_t* datalog_opcua_create_object_type(void)
     ret->set_browse_name = &self_set_object_type_browse_name;
     ret->set_display_name = &self_set_object_type_display_name;
     ret->create_references = &self_create_node_object_type_references;
+    ret->add_reference = &self_add_ref_object_type;
 
     return ret;
 }
@@ -1199,6 +1233,7 @@ opcua_method_t* datalog_opcua_create_method(void)
     ret->set_display_name = &self_set_method_display_name;
     ret->set_declaration_id = &self_set_method_declaration_id;
     ret->create_references = &self_create_node_method_references;
+    ret->add_reference = &self_add_ref_method;
 
     return ret;
 }
@@ -1230,6 +1265,7 @@ opcua_variable_t* datalog_opcua_create_variable(void)
     ret->set_value_rank = &self_set_variable_value_rank;
     ret->set_description = &self_set_variable_description;
     ret->create_references = &self_create_node_variable_references;
+    ret->add_reference = &self_add_ref_variable;
 
     return ret;
 }
@@ -1255,6 +1291,7 @@ opcua_object_t* datalog_opcua_create_object(void)
     ret->set_browse_name = &self_set_object_browse_name;
     ret->set_display_name = &self_set_object_display_name;
     ret->create_references = &self_create_node_object_references;
+    ret->add_reference = &self_add_ref_object;
 
     return ret;
 }
@@ -1300,6 +1337,7 @@ void datalog_opcua_runtime(void)
             tmp_attribs);
 
     //variable
+    //TODO object function
     opcua_variable_t* tmp_variable = datalog_opcua_create_variable();
 
     tmp_variable->set_parent_id_i(tmp_variable, 1001);
@@ -1318,13 +1356,13 @@ void datalog_opcua_runtime(void)
     test_ref->set_type(test_ref, "HasSubtype");
     test_ref->set_is_forward(test_ref, false);
     test_ref->set_id_i(test_ref, 58);
-    test_ref->add_reference(test_ref, tmp_variable, DL_OPC_VARIABLE);
+    tmp_variable->add_reference(tmp_variable, test_ref);
 
     test_ref = datalog_opcua_create_reference();
     test_ref->set_type(test_ref, "HasComponent");
     test_ref->set_id_i(test_ref, 6001);
     test_ref->set_id_ns(test_ref, 1);
-    test_ref->add_reference(test_ref, tmp_variable, DL_OPC_VARIABLE);
+    tmp_variable->add_reference(tmp_variable, test_ref);
 
     tmp_variable->create_references(tmp_variable);
 
@@ -1344,14 +1382,14 @@ void datalog_opcua_runtime(void)
     test_ref = datalog_opcua_create_reference();
     test_ref->set_id_i(test_ref, 78);
     test_ref->set_type(test_ref, "HasModellingRule");
-    test_ref->add_reference(test_ref, test_method, DL_OPC_METHOD);
+    test_method->add_reference(test_method, test_ref);
 
     test_ref = datalog_opcua_create_reference();
     test_ref->set_id_i(test_ref, 1001);
     test_ref->set_id_ns(test_ref, 1);
     test_ref->set_is_forward(test_ref, false);
     test_ref->set_type(test_ref, "HasComponent");
-    test_ref->add_reference(test_ref, test_method, DL_OPC_METHOD);
+    test_method->add_reference(test_method, test_ref);
 
     test_method->create_references(test_method);
 
@@ -1371,13 +1409,13 @@ void datalog_opcua_runtime(void)
     test_ref->set_id_ns(test_ref, 1);
     test_ref->set_id_i(test_ref, 6010);
     test_ref->set_type(test_ref, "HasComponent");
-    test_ref->add_reference(test_ref, test_object, DL_OPC_OBJ);
+    test_object->add_reference(test_object, test_ref);
 
     test_ref = datalog_opcua_create_reference();
     test_ref->set_id_i(test_ref, 6014);
     test_ref->set_id_ns(test_ref, 1);
     test_ref->set_type(test_ref, "HasProperty");
-    test_ref->add_reference(test_ref, test_object, DL_OPC_OBJ);
+    test_object->add_reference(test_object, test_ref);
 
     test_object->create_references(test_object);
 
