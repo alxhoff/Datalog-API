@@ -349,26 +349,26 @@ typedef struct opcua_object opcua_object_t;
 * @brief Object representing a <UAObject> node
 */
 struct opcua_object{
-    xmlNodePtr node;                                /**< */
-    xmlNodePtr references_node;                     /**< */
-    xmlNodePtr display_name_node;                       /**< */
+    xmlNodePtr node;                                /**< Pointer to <UAObject> node*/
+    xmlNodePtr references_node;                     /**< Pointer to <References> node, this is the parent for <Reference> items*/
+    xmlNodePtr display_name_node;                   /**< Pointer to <DisplayName> node*/
     
-    opcua_node_attributes_t* attributes;            /**< */
-    opcua_object_attributes_t* object_attributes;   /**< */
-    opcua_reference_t* reference_head;              /**< */
+    opcua_node_attributes_t* attributes;            /**< <UAObject>'s general attributes*/
+    opcua_object_attributes_t* object_attributes;   /**< <UAObject>'s type specific attributes*/
+    opcua_reference_t* reference_head;              /**< Pointer to the head of the object's references linked list*/
 
     //functions
-    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_object_t*,int);    /**< */
-    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_object_t*,int);     /**< */
-    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_object_t*,char*);   /**< */
-    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_object_t*,int);      /**< */
-    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_object_t*,int);       /**< */
-    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_object_t*,char*);     /**< */
-    DL_OPCUA_ERR_t (*set_browse_name)(opcua_object_t*,char*);   /**< */
-    DL_OPCUA_ERR_t (*set_display_name)(opcua_object_t*,char*);  /**< */
-    DL_OPCUA_ERR_t (*create_references)(opcua_object_t*);       /**< */
+    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_object_t*,int);    /**< Sets the ParentNodeId attribute's ns property*/
+    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_object_t*,int);     /**< Sets the ParentNodeId attribute's i property*/
+    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_object_t*,char*);   /**< Sets the ParentNodeId attribute's s property*/
+    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_object_t*,int);      /**< Sets the NodeId attribute's ns property*/
+    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_object_t*,int);       /**< Sets the NodeId attribute's i property*/
+    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_object_t*,char*);     /**< Sets the NodeId attribute's s property*/
+    DL_OPCUA_ERR_t (*set_browse_name)(opcua_object_t*,char*);   /**< Sets the BrowseName attribute's property*/
+    DL_OPCUA_ERR_t (*set_display_name)(opcua_object_t*,char*);  /**< Sets the DisplayName node's contents*/
+    DL_OPCUA_ERR_t (*create_references)(opcua_object_t*);       /**< Creates <Reference> nodes for each reference in the object's references linked list*/
     DL_OPCUA_ERR_t (*add_reference)(opcua_object_t*, 
-                                    opcua_reference_t*);
+                                    opcua_reference_t*);        /**< Adds a reference object to the object's references linked list*/
 };
 
 //SERVER CONFIG

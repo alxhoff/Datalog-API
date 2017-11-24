@@ -1337,7 +1337,6 @@ void datalog_opcua_runtime(void)
             tmp_attribs);
 
     //variable
-    //TODO object function
     opcua_variable_t* tmp_variable = datalog_opcua_create_variable();
 
     tmp_variable->set_parent_id_i(tmp_variable, 1001);
@@ -1351,7 +1350,6 @@ void datalog_opcua_runtime(void)
     tmp_variable->set_data_type(tmp_variable, "Double");
     
     datalog_opcua_create_node_variable(tmp_variable); 
-    //TODO make create an object function 
     opcua_reference_t* test_ref = datalog_opcua_create_reference();
     test_ref->set_type(test_ref, "HasSubtype");
     test_ref->set_is_forward(test_ref, false);
