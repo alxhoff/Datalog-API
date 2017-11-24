@@ -545,6 +545,14 @@ DL_OPCUA_ERR_t datalog_opcua_set_browse_name(void* object, DL_OPCUA_TYPE_t type,
             return DL_OPCUA_MEM;
         strcpy(((opcua_object_t*)object)->attributes->browse_name, browse_name);
         break;
+    case DL_OPC_ATTR:
+        ((opcua_node_attributes_t*)object)->browse_name = 
+            (char*)realloc(((opcua_node_attributes_t*)object)->browse_name, 
+                    sizeof(char) * (strlen(browse_name) + 1));
+        if(((opcua_node_attributes_t*)object)->browse_name == NULL) 
+            return DL_OPCUA_MEM;
+        strcpy(((opcua_node_attributes_t*)object)->browse_name, browse_name);
+        break;
     default:
         break;
     }
@@ -643,8 +651,12 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr node,
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_attributes(
         opcua_object_type_t* object_t)
 {
-    if(object_t->attributes->display_name != NULL)
-        xmlNewProp(object_t->node, BAD_CAST "DisplayName", 
+    if(object_t->display_name_node == NULL){
+        if(object_t->attributes->display_name != NULL)
+            object_t->display_name_node = xmlNewChild(object_t->node, NULL,
+                BAD_CAST "DisplayName", BAD_CAST object_t->attributes->display_name);
+    }else
+        xmlNodeSetContent(object_t->display_name_node, 
                 BAD_CAST object_t->attributes->display_name);
 
     return DL_OPCUA_OK;
@@ -666,6 +678,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_method_attributes(opcua_method_t* metho
     }else
         xmlNodeSetContent(method->display_name_node, 
                 BAD_CAST method->attributes->display_name);
+    
     return DL_OPCUA_OK;
 }
 
@@ -693,8 +706,12 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* v
         xmlNewProp(variable->node, BAD_CAST "ValueRank", BAD_CAST buffer);
     }
     
-    if(variable->attributes->display_name != NULL)
-        xmlNewProp(variable->node, BAD_CAST "DisplayName", 
+    if(variable->display_name_node == NULL){
+        if(variable->attributes->display_name != NULL)
+            variable->display_name_node = xmlNewChild(variable->node, NULL,
+                BAD_CAST "DisplayName", BAD_CAST variable->attributes->display_name);
+    }else
+        xmlNodeSetContent(variable->display_name_node, 
                 BAD_CAST variable->attributes->display_name);
 
     return DL_OPCUA_OK;
@@ -702,8 +719,12 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* v
 
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_attributes(opcua_object_t* object)
 {
-    if(object->attributes->display_name != NULL)
-        xmlNewProp(object->node, BAD_CAST "DisplayName", 
+    if(object->display_name_node == NULL){
+        if(object->attributes->display_name != NULL)
+            object->display_name_node = xmlNewChild(object->node, NULL,
+                BAD_CAST "DisplayName", BAD_CAST object->attributes->display_name);
+    }else
+        xmlNodeSetContent(object->display_name_node, 
                 BAD_CAST object->attributes->display_name);
     
     return DL_OPCUA_OK;
@@ -721,10 +742,10 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_from_array(
     if(attributes->browse_name != NULL)
         tmp_obj_type->set_browse_name(tmp_obj_type, attributes->browse_name);
     if(attributes->display_name != NULL)
-        tmp_obj_type->set_node_id_s(tmp_obj_type, attributes->display_name);
+        tmp_obj_type->set_display_name(tmp_obj_type, attributes->display_name);
     if(tmp_obj_type->attributes != NULL){
-    memcpy(&tmp_obj_type->attributes->node_id,
-            &attributes->node_id, sizeof(opcua_ns_id_t));
+        memcpy(&tmp_obj_type->attributes->node_id,
+                &attributes->node_id, sizeof(opcua_ns_id_t));
         memcpy(&tmp_obj_type->attributes->parent_node_id, 
                 &attributes->parent_node_id, sizeof(opcua_ns_id_t));
     }
@@ -742,7 +763,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_from_array(
 
         datalog_opcua_add_reference(tmp_ref, tmp_obj_type, DL_OPC_OBJ_TYPE);
         i++;
-    }
+   }
     ret = datalog_opcua_create_node_references(tmp_obj_type, DL_OPC_OBJ_TYPE);
 
     return DL_OPCUA_OK;
@@ -777,7 +798,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_method(opcua_method_t* method)
     DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
 
     method->node = xmlNewChild(opcua_document->root_node,
-            NULL, BAD_CAST "UAObject", NULL);
+            NULL, BAD_CAST "UAMethod", NULL);
 
     ret = datalog_opcua_create_node_attributes(method->node, method->attributes);
     if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
@@ -1271,10 +1292,6 @@ void datalog_opcua_runtime(void)
 
     opcua_method_t* test_method = datalog_opcua_create_method();
 
-    test_method->set_display_name(test_method, "testDisplayName");
-
-    test_method->set_browse_name(test_method, "testBrowseName");
-
     test_method->set_node_id_i(test_method, 1);
     test_method->set_node_id_ns(test_method, 2);
     test_method->set_node_id_s(test_method, "testS");
@@ -1282,7 +1299,7 @@ void datalog_opcua_runtime(void)
     test_method->set_parent_id_ns(test_method, 4);
     test_method->set_parent_id_s(test_method, "testParentS");
     test_method->set_browse_name(test_method, "testBrowseName");
-    test_method->set_display_name(test_method, "testDisplayName");
+    test_method->set_display_name(test_method, "testDisplayNameChange");
     test_method->set_declaration_id(test_method, 5);
 
     ret = datalog_opcua_create_node_method(test_method);
