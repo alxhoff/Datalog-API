@@ -365,20 +365,44 @@ struct opcua_object{
 
 //SERVER CONFIG
 opcua_reference_t object_type_array[] = {
-    {.type = "hello",
-        .id = {.i = 10,
-            .ns = 11},
+    {.type = "HasSubtype",
+        .id = {.i = 58},
         .is_forward = false
     },
-    {.type = "hello2",
-        .id = {.i = 12,
-            .ns = 13},
-        .is_forward = true
+    {.type = "HasComponent",
+        .id = {.i = 6001,
+            .ns = 1},
+        .is_forward = -1
     },
-    {.type = "hello3",
-        .id = {.s = "testS",
-            .ns = 13},
-        .is_forward = -1 
+    {.type = "HasComponent",
+        .id = {.i = 7001,
+            .ns = 1},
+        .is_forward = -1
+    },
+    {.type = "HasComponent",
+        .id = {.i = 6002,
+            .ns = 1},
+        .is_forward = -1
+    },
+    {.type = "HasComponent",
+        .id = {.i = 5001,
+            .ns = 1},
+        .is_forward = -1
+    },
+    {.type = "HasComponent",
+        .id = {.i = 7006,
+            .ns = 1},
+        .is_forward = -1
+    },
+    {.type = "HasComponent",
+        .id = {.i = 6037,
+            .ns = 1},
+        .is_forward = -1
+    },
+    {.type = "HasComponent",
+        .id = {.i = 6035,
+            .ns = 1},
+        .is_forward = -1
     },
     {.type = NULL}
 };
