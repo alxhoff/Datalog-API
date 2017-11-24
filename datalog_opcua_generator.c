@@ -65,6 +65,44 @@ opcua_document_t* datalog_opcua_create_document(char* filename, char* version)
     return ret;
 }
 
+DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_from_array(
+        opcua_reference_t* array, opcua_node_attributes_t* attributes)
+{
+    int i = 0;
+    opcua_reference_t* tmp_ref;
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+    
+    opcua_object_type_t* tmp_obj_type = datalog_opcua_create_object_type();
+    if(attributes->browse_name != NULL)
+        tmp_obj_type->set_browse_name(tmp_obj_type, attributes->browse_name);
+    if(attributes->display_name != NULL)
+        tmp_obj_type->set_node_id_s(tmp_obj_type, attributes->display_name);
+    if(tmp_obj_type->attributes != NULL){
+    memcpy(&tmp_obj_type->attributes->node_id,
+            &attributes->node_id, sizeof(opcua_ns_id_t));
+        memcpy(&tmp_obj_type->attributes->parent_node_id, 
+                &attributes->parent_node_id, sizeof(opcua_ns_id_t));
+    }
+    datalog_opcua_create_node_object_type(tmp_obj_type);
+
+    while(array[i].type != NULL){
+        tmp_ref = datalog_opcua_create_reference();
+        tmp_ref->set_id_i(tmp_ref, array[i].id.i);
+        tmp_ref->set_id_ns(tmp_ref, array[i].id.ns);
+        tmp_ref->set_is_forward(tmp_ref, array[i].is_forward);
+        if(array[i].type != NULL) 
+            tmp_ref->set_type(tmp_ref, array[i].type);
+        if(array[i].id.s != NULL)
+            tmp_ref->set_id_s(tmp_ref, array[i].id.s);
+
+        datalog_opcua_add_reference(tmp_ref, tmp_obj_type, DL_OPC_OBJ_TYPE);
+        i++;
+    }
+    ret = datalog_opcua_create_node_references(tmp_obj_type, DL_OPC_OBJ_TYPE);
+
+    return DL_OPCUA_OK;
+}
+
 DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
 {
     DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
@@ -91,29 +129,6 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
         xmlNewProp(tmp_child, BAD_CAST "Alias",  BAD_CAST alias_array[i].name);
         i++;
     }
-
-    //OBJECT TYPES
-    opcua_object_type_t* tmp_obj_type = datalog_opcua_create_object_type();
-    tmp_obj_type->set_browse_name(tmp_obj_type, "testObjectTypeBrowseName");
-    tmp_obj_type->set_node_id_s(tmp_obj_type, "testS");
-    datalog_opcua_create_node_object_type(tmp_obj_type);
-
-    i = 0;
-    opcua_reference_t* tmp_ref;
-    while(object_type_array[i].type != NULL){
-        tmp_ref = datalog_opcua_create_reference();
-        tmp_ref->set_id_i(tmp_ref, object_type_array[i].id.i);
-        tmp_ref->set_id_ns(tmp_ref, object_type_array[i].id.ns);
-        tmp_ref->set_is_forward(tmp_ref, object_type_array[i].is_forward);
-        if(object_type_array[i].type != NULL) 
-            tmp_ref->set_type(tmp_ref, object_type_array[i].type);
-        if(object_type_array[i].id.s != NULL)
-            tmp_ref->set_id_s(tmp_ref, object_type_array[i].id.s);
-
-        datalog_opcua_add_reference(tmp_ref, tmp_obj_type, DL_OPC_OBJ_TYPE);
-        i++;
-    }
-    ret = datalog_opcua_create_node_references(tmp_obj_type, DL_OPC_OBJ_TYPE);
     
     tmp_parent = xmlNewChild(opcua_document->root_node, NULL, 
             BAD_CAST "Extensions", NULL);
@@ -443,6 +458,67 @@ DL_OPCUA_ERR_t self_set_reference_is_forward(opcua_reference_t* self, bool val)
     return DL_OPCUA_OK;
 }
 
+//##ATTRIBUTE
+DL_OPCUA_ERR_t self_set_attribute_parent_node_id_ns(
+        opcua_node_attributes_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->parent_node_id, ns);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_attribute_parent_node_id_i(opcua_node_attributes_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->parent_node_id, i);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_attribute_parent_node_id_s(opcua_node_attributes_t* self, 
+        char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->parent_node_id, s);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_attribute_node_id_ns(opcua_node_attributes_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->node_id, ns);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_attribute_node_id_i(opcua_node_attributes_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->node_id, i);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_attribute_node_id_s(opcua_node_attributes_t* self, char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->node_id, s);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_attribute_browse_name(opcua_node_attributes_t* self, 
+        char* browse_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self, DL_OPC_ATTR,
+            browse_name);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_attribute_display_name(opcua_node_attributes_t* self, 
+        char* display_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, DL_OPC_ATTR,
+            display_name);
+    return ret;
+}
+
 //CREATE REFERENCES
 DL_OPCUA_ERR_t self_create_node_object_type_references(
         opcua_object_type_t* object)
@@ -541,6 +617,14 @@ DL_OPCUA_ERR_t datalog_opcua_set_display_name(void* object, DL_OPCUA_TYPE_t type
         if(((opcua_object_t*)object)->attributes->display_name == NULL) 
             return DL_OPCUA_MEM;
         strcpy(((opcua_object_t*)object)->attributes->display_name, display_name);
+        break;
+    case DL_OPC_ATTR:
+        ((opcua_node_attributes_t*)object)->display_name = 
+            (char*)realloc(((opcua_node_attributes_t*)object)->display_name, 
+                    sizeof(char) * (strlen(display_name) + 1));
+        if(((opcua_node_attributes_t*)object)->display_name == NULL) 
+            return DL_OPCUA_MEM;
+        strcpy(((opcua_node_attributes_t*)object)->display_name, display_name);
         break;
     default:
         break;
@@ -996,6 +1080,16 @@ opcua_node_attributes_t* datalog_opcua_create_attributes(void)
     opcua_node_attributes_t* ret = (opcua_node_attributes_t*)
         calloc(1, sizeof(opcua_node_attributes_t));
     if(ret == NULL) return NULL;
+
+    ret->set_parent_id_ns = &self_set_attribute_parent_node_id_ns;
+    ret->set_parent_id_i = &self_set_attribute_parent_node_id_i;
+    ret->set_parent_id_s = &self_set_attribute_parent_node_id_s;
+    ret->set_node_id_ns = &self_set_attribute_node_id_ns;
+    ret->set_node_id_i = &self_set_attribute_node_id_i;
+    ret->set_node_id_s = &self_set_attribute_node_id_s;
+    ret->set_browse_name = &self_set_attribute_browse_name;
+    ret->set_display_name = &self_set_attribute_display_name;
+    
     return ret;
 }
 
@@ -1162,6 +1256,14 @@ void datalog_opcua_runtime(void)
     if(ret != DL_OPCUA_OK) return;
 
 //TEST CODE
+    opcua_node_attributes_t* tmp_attribs = datalog_opcua_create_attributes();
+
+    tmp_attribs->set_parent_id_ns(tmp_attribs, 12);
+    tmp_attribs->set_node_id_ns(tmp_attribs, 11);
+
+    datalog_opcua_create_node_object_type_from_array(object_type_array, 
+            tmp_attribs);
+
     opcua_method_t* test_method = datalog_opcua_create_method();
 
     test_method->set_display_name(test_method, "testDisplayName");

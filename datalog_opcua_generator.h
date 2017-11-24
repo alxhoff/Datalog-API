@@ -64,7 +64,8 @@ typedef enum{
     DL_OPC_VARIABLE,        /**< <UAVariable>*/
     DL_OPC_METHOD,          /**< <UAMethod>*/
     DL_OPC_OBJ,             /**< <UAObject>*/
-    DL_OPC_OBJ_TYPE         /**< <UAObjectType>*/
+    DL_OPC_OBJ_TYPE,        /**< <UAObjectType>*/
+    DL_OPC_ATTR
 }DL_OPCUA_TYPE_t;
 
 /**
@@ -153,6 +154,8 @@ struct opcua_reference{
 * @typedef opcua_node_attributes_t
 * @brief Typdef for opcua_node_attributes
 */
+typedef struct opcua_node_attributes opcua_node_attributes_t;
+
 /**
 * @struct opcua_node_attributes
 * @brief Object representing a the attributes represented within a node
@@ -161,12 +164,21 @@ struct opcua_reference{
 * have attributes within the tag head. These attributes are represented by
 * this object.
 */
-typedef struct opcua_node_attributes{
+struct opcua_node_attributes{
     opcua_ns_id_t parent_node_id;   /**< */
     opcua_ns_id_t node_id;          /**< */
     char* browse_name;              /**< */
     char* display_name;             /**< */
-}opcua_node_attributes_t;
+
+    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_node_attributes_t*,int);   /**< */
+    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_node_attributes_t*,int);    /**< */
+    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_node_attributes_t*,char*);  /**< */
+    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_node_attributes_t*,int);     /**< */
+    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_node_attributes_t*,int);      /**< */
+    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_node_attributes_t*,char*);    /**< */
+    DL_OPCUA_ERR_t (*set_browse_name)(opcua_node_attributes_t*,char*);  /**< */
+    DL_OPCUA_ERR_t (*set_display_name)(opcua_node_attributes_t*,char*); /**< */
+};
 
 /**
 * @typedef opcua_object_type_attributes_t
