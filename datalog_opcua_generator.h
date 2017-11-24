@@ -245,6 +245,7 @@ typedef struct opcua_object_type opcua_object_type_t;
 struct opcua_object_type{
     xmlNodePtr node;                                        /**< */
     xmlNodePtr references_node;                             /**< */
+    xmlNodePtr display_name_node;                       /**< */
 
     opcua_node_attributes_t* attributes;                    /**< */
     opcua_object_type_attributes_t* object_type_attributes; /**< */
@@ -274,6 +275,7 @@ typedef struct opcua_method opcua_method_t;
 struct opcua_method{
     xmlNodePtr node;                                /**< */
     xmlNodePtr references_node;                     /**< */
+    xmlNodePtr display_name_node;                       /**< */
 
     opcua_node_attributes_t* attributes;            /**< */
     opcua_method_attributes_t* method_attributes;   /**< */
@@ -305,7 +307,8 @@ typedef struct opcua_variable opcua_variable_t;
 struct opcua_variable{
     xmlNodePtr node;                                    /**< */
     xmlNodePtr references_node;                         /**< */
-    
+    xmlNodePtr display_name_node;                       /**< */
+        
     opcua_node_attributes_t* attributes;                /**< */
     opcua_variable_attributes_t* variable_attributes;   /**< */
     char* description;                                  /**< */
@@ -342,6 +345,7 @@ typedef struct opcua_object opcua_object_t;
 struct opcua_object{
     xmlNodePtr node;                                /**< */
     xmlNodePtr references_node;                     /**< */
+    xmlNodePtr display_name_node;                       /**< */
     
     opcua_node_attributes_t* attributes;            /**< */
     opcua_object_attributes_t* object_attributes;   /**< */

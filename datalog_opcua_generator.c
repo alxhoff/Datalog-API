@@ -659,10 +659,13 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_method_attributes(opcua_method_t* metho
         xmlNewProp(method->node, BAD_CAST "MethodDeclarationId", BAD_CAST buffer);
     }
 
-    if(method->attributes->display_name != NULL)
-        xmlNewProp(method->node, BAD_CAST "DisplayName", 
+    if(method->display_name_node == NULL){
+        if(method->attributes->display_name != NULL)
+            method->display_name_node = xmlNewChild(method->node, NULL,
+                BAD_CAST "DisplayName", BAD_CAST method->attributes->display_name);
+    }else
+        xmlNodeSetContent(method->display_name_node, 
                 BAD_CAST method->attributes->display_name);
-
     return DL_OPCUA_OK;
 }
 
@@ -1258,8 +1261,10 @@ void datalog_opcua_runtime(void)
 //TEST CODE
     opcua_node_attributes_t* tmp_attribs = datalog_opcua_create_attributes();
 
-    tmp_attribs->set_parent_id_ns(tmp_attribs, 12);
-    tmp_attribs->set_node_id_ns(tmp_attribs, 11);
+    tmp_attribs->set_node_id_ns(tmp_attribs, 1);
+    tmp_attribs->set_node_id_i(tmp_attribs, 1001);
+    tmp_attribs->set_browse_name(tmp_attribs, "1:ControllerTypeXml");
+    tmp_attribs->set_display_name(tmp_attribs, "ControllerTypeXml");
 
     datalog_opcua_create_node_object_type_from_array(object_type_array, 
             tmp_attribs);

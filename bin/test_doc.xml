@@ -48,14 +48,15 @@
       <ModelInfo Tool="UaModeler" Hash="T9MjgfInUChe45aJYm9rKw==" Version="1.4.0"/>
     </Extension>
   </Extensions>
-  <UAObjectType ParentNodeId="ns=12" NodeId="ns=11">
+  <UAObjectType NodeId="ns=1;i=1001">
     <References>
       <Reference ReferenceType="hello" IsForward="false">ns=11;i=10</Reference>
       <Reference ReferenceType="hello2" IsForward="true">ns=13;i=12</Reference>
       <Reference ReferenceType="hello3">ns=13;s=testS</Reference>
     </References>
   </UAObjectType>
-  <UAObject BrowseName="testBrowseName" ParentNodeId="ns=4;i=3;s=testParentS" NodeId="ns=2;i=1;s=testS" MethodDeclarationId="i=5" DisplayName="testDisplayName">
+  <UAObject BrowseName="testBrowseName" ParentNodeId="ns=4;i=3;s=testParentS" NodeId="ns=2;i=1;s=testS" MethodDeclarationId="i=5">
+    <DisplayName>testDisplayName</DisplayName>
     <References>
       <Reference>i=6</Reference>
       <Reference ReferenceType="testType" IsForward="false">ns=8;i=7;s=testRefS</Reference>
