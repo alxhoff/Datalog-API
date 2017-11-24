@@ -5,7 +5,7 @@
  * @website     http://alexhoffman.info
  * @copyright   GNU GPL v3
  * @brief       OPCUA Server XML Generator
- *  
+ *
 @verbatim
    ----------------------------------------------------------------------
     Copyright (C) Alexander Hoffman, 2017
@@ -1395,6 +1395,7 @@ void datalog_opcua_runtime(void)
     opcua_object_t* test_object = datalog_opcua_create_object();
 
     test_object->set_node_id_i(test_object, 5001);
+    test_object->set_node_id_s(test_object, "TESTS");
     test_object->set_node_id_ns(test_object, 1);
     test_object->set_parent_id_i(test_object, 1001);
     test_object->set_parent_id_ns(test_object, 1);
