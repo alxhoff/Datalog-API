@@ -220,11 +220,11 @@ DL_OPCUA_ERR_t self_set_variable_node_id_s(opcua_variable_t* self, char* s)
 DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self,
         char* data_type)
 {
-    var->variable_attributes->data_type = 
-        (char*)realloc(var->variable_attributes->data_type, 
+    self->variable_attributes->data_type = 
+        (char*)realloc(self->variable_attributes->data_type, 
                 sizeof(char) * (strlen(data_type) + 1));
-    if(var->variable_attributes->data_type == NULL) return DL_OPCUA_MEM;
-    strcpy(var->variable_attributes->data_type, data_type);
+    if(self->variable_attributes->data_type == NULL) return DL_OPCUA_MEM;
+    strcpy(self->variable_attributes->data_type, data_type);
     return DL_OPCUA_OK;
 }
 
@@ -275,10 +275,10 @@ DL_OPCUA_ERR_t self_set_variable_display_name(opcua_variable_t* self,
 DL_OPCUA_ERR_t self_set_variable_description(opcua_variable_t* self,
         char* description)
 {
-    variable->description = (char*)realloc(variable->description,
+    self->description = (char*)realloc(self->description,
             sizeof(char) * (strlen(description) + 1));
-    if(variable->description == NULL) return DL_OPCUA_MEM;
-    strcpy(variable->description, description);
+    if(self->description == NULL) return DL_OPCUA_MEM;
+    strcpy(self->description, description);
     return DL_OPCUA_OK;
 }
 
@@ -404,13 +404,13 @@ DL_OPCUA_ERR_t self_set_object_display_name(opcua_object_t* self, char* display_
 }
 
 //## REFERENCE
-DL_OPCUA_ERR_t self_set_reference_type(opcua_reference_t* seld, char* type)
+DL_OPCUA_ERR_t self_set_reference_type(opcua_reference_t* self, char* type)
 {
-    reference->type = (char*)realloc(reference->type, 
+    self->type = (char*)realloc(self->type, 
         sizeof(char) * (strlen(type) + 1));
-    if(reference->type == NULL) return DL_OPCUA_MEM;
+    if(self->type == NULL) return DL_OPCUA_MEM;
 
-    strcpy(reference->type, type);
+    strcpy(self->type, type);
 
     return DL_OPCUA_OK;
 }
