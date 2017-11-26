@@ -887,6 +887,73 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object(opcua_object_t* object)
 }
 
 //REFERENCE
+opcua_reference_t* datalog_opcua_find_reference(void* object,
+        DL_OPCUA_TYPE_t type, opcua_ns_id_t* ID)
+{
+    opcua_reference_t *ref_head;
+
+    switch(type){
+    case DL_OPC_OBJ_TYPE:
+        ref_head = ((opcua_object_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_VARIABLE:
+        ref_head = ((opcua_variable_t*)object)->reference_head;
+        break;
+    case DL_OPC_METHOD:
+        ref_head = ((opcua_method_t*)object)->reference_head;
+        break;
+    case DL_OPC_OBJ:
+        ref_head = ((opcua_object_t*)object)->reference_head;
+        break;
+    default:
+        break;
+    }
+    
+    while(!memcmp(&ref_head->id, ID, sizeof(opcua_ns_id_t))){
+        if(ref_head == NULL) return NULL;
+        ref_head = ref_head->next;
+    }
+
+    return ref_head;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_free_reference_list(void** object, 
+        DL_OPCUA_TYPE_t type)
+{
+    opcua_reference_t **ref_head, *next;
+
+    switch(type){
+    case DL_OPC_OBJ_TYPE:
+        ref_head = &(*(opcua_object_type_t**)object)->reference_head;
+        break;
+    case DL_OPC_VARIABLE:
+        ref_head = &(*(opcua_variable_t**)object)->reference_head;
+        break;
+    case DL_OPC_METHOD:
+        ref_head = &(*(opcua_method_t**)object)->reference_head;
+        break;
+    case DL_OPC_OBJ:
+        ref_head = &(*(opcua_object_t**)object)->reference_head;
+        break;
+    default:
+        break;
+    }
+    while((*ref_head) != NULL){
+        next = (*ref_head)->next;
+        free(*ref_head);
+        (*ref_head) = next;
+    }
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_free_reference(opcua_reference_t** ref)
+{
+    free(*ref);
+    *ref = NULL;
+    return DL_OPCUA_OK;
+}
+
 DL_OPCUA_ERR_t datalog_opcua_clear_reference(opcua_reference_t* ref)
 {
     if(ref == NULL) return DL_OPCUA_INVAL;
@@ -1311,6 +1378,7 @@ opcua_reference_t* datalog_opcua_create_reference(void)
     ret->set_type = &self_set_reference_type;
     ret->set_is_forward = &self_set_reference_is_forward;
     ret->add_reference = &datalog_opcua_add_reference;
+    ret->free_reference = &datalog_opcua_free_reference;
 
     return ret;
 }
@@ -1415,6 +1483,9 @@ void datalog_opcua_runtime(void)
     test_ref->set_id_ns(test_ref, 1);
     test_ref->set_type(test_ref, "HasProperty");
     test_object->add_reference(test_object, test_ref);
+
+    //ref list free test
+    datalog_opcua_free_reference_list((void**)&test_object, DL_OPC_OBJ);
 
     test_object->create_references(test_object);
 

@@ -167,6 +167,7 @@ struct opcua_reference{
     DL_OPCUA_ERR_t (*add_reference)(opcua_reference_t*,void*,   /**< Adds the reference to the linked list of
                                                                     an object*/
         DL_OPCUA_TYPE_t);
+    DL_OPCUA_ERR_t (*free_reference)(opcua_reference_t**);       /**< Frees the reference object from memory*/
 };
 
 /**
@@ -1216,6 +1217,36 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable(opcua_variable_t* variable);
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_object(opcua_object_t* object);
+
+/**
+* @brief Searches and object's reference list for a reference with the specified
+* ID information
+* 
+* @param object Pointer to object object
+* @param type Type of object passed to function
+* @param ID ID information that the returned reference should contain
+* @return opcua_reference_t* Pointer to the matching reference object
+*/
+opcua_reference_t* datalog_opcua_find_reference(void* object,
+        DL_OPCUA_TYPE_t type, opcua_ns_id_t* ID);
+
+/**
+* @brief Frees all the references in an objects reference list 
+* 
+* @param object Pointer to object object
+* @param type Type of object passed to function
+* @return DL_OPCUA_ERR_t error message
+*/
+DL_OPCUA_ERR_t datalog_opcua_free_reference_list(void** object, 
+        DL_OPCUA_TYPE_t type);
+
+/**
+* @brief Frees a reference object
+* 
+* @param ref Pointer to the reference object pointer that is to be freed 
+* @return DL_OPCUA_ERR_t error message
+*/
+DL_OPCUA_ERR_t datalog_opcua_free_reference(opcua_reference_t** ref);
 
 /**
 * @brief Clears a reference object
