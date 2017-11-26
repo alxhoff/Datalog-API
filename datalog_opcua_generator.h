@@ -1219,6 +1219,30 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable(opcua_variable_t* variable);
 DL_OPCUA_ERR_t datalog_opcua_create_node_object(opcua_object_t* object);
 
 /**
+* @brief Searches for and returns the first reference found with a matching
+* i value
+*
+* @param object Pointer to object object
+* @param type Type of object passed to function
+* @param i ID i value that is to be searched for
+* @return opcua_reference_t* Pointer to the matching reference object
+*/
+opcua_reference_t* datalog_opcua_find_reference_i(void* object,
+        DL_OPCUA_TYPE_t type, int i);
+
+/**
+* @brief Searches for and returns the first reference found with a matching
+* s string
+* 
+* @param object Pointer to object object
+* @param type Type of object passed to function
+* @param ID s string that is to be searched for
+* @return opcua_reference_t* Pointer to the matching reference object
+*/
+opcua_reference_t* datalog_opcua_find_reference_s(void* object,
+        DL_OPCUA_TYPE_t type, char* s);
+
+/**
 * @brief Searches and object's reference list for a reference with the specified
 * ID information
 * 

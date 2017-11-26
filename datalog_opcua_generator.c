@@ -887,6 +887,66 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object(opcua_object_t* object)
 }
 
 //REFERENCE
+opcua_reference_t* datalog_opcua_find_reference_i(void* object,
+        DL_OPCUA_TYPE_t type, int i)
+{
+    opcua_reference_t *ref_head;
+    
+    switch(type){
+    case DL_OPC_OBJ_TYPE:
+        ref_head = ((opcua_object_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_VARIABLE:
+        ref_head = ((opcua_variable_t*)object)->reference_head;
+        break;
+    case DL_OPC_METHOD:
+        ref_head = ((opcua_method_t*)object)->reference_head;
+        break;
+    case DL_OPC_OBJ:
+        ref_head = ((opcua_object_t*)object)->reference_head;
+        break;
+    default:
+        break;
+    }
+    
+    while(ref_head->id.i != i){
+        if(ref_head == NULL) return NULL;
+        ref_head = ref_head->next;
+    }
+
+    return ref_head;
+}
+
+opcua_reference_t* datalog_opcua_find_reference_s(void* object,
+        DL_OPCUA_TYPE_t type, char* s)
+{
+    opcua_reference_t *ref_head;
+    
+    switch(type){
+    case DL_OPC_OBJ_TYPE:
+        ref_head = ((opcua_object_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_VARIABLE:
+        ref_head = ((opcua_variable_t*)object)->reference_head;
+        break;
+    case DL_OPC_METHOD:
+        ref_head = ((opcua_method_t*)object)->reference_head;
+        break;
+    case DL_OPC_OBJ:
+        ref_head = ((opcua_object_t*)object)->reference_head;
+        break;
+    default:
+        break;
+    }
+    
+    while(strcmp(ref_head->id.s, s)){
+        if(ref_head == NULL) return NULL;
+        ref_head = ref_head->next;
+    }
+    
+    return ref_head;
+}
+
 opcua_reference_t* datalog_opcua_find_reference(void* object,
         DL_OPCUA_TYPE_t type, opcua_ns_id_t* ID)
 {
@@ -909,7 +969,7 @@ opcua_reference_t* datalog_opcua_find_reference(void* object,
         break;
     }
     
-    while(!memcmp(&ref_head->id, ID, sizeof(opcua_ns_id_t))){
+    while(memcmp(&ref_head->id, ID, sizeof(opcua_ns_id_t))){
         if(ref_head == NULL) return NULL;
         ref_head = ref_head->next;
     }
@@ -1485,7 +1545,9 @@ void datalog_opcua_runtime(void)
     test_object->add_reference(test_object, test_ref);
 
     //ref list free test
-    datalog_opcua_free_reference_list((void**)&test_object, DL_OPC_OBJ);
+    opcua_ns_id_t test_ID = {.ns = 1, .i = 6014}; 
+    opcua_reference_t* search_test = datalog_opcua_find_reference(test_object,
+            DL_OPC_OBJ, &test_ID);
 
     test_object->create_references(test_object);
 
