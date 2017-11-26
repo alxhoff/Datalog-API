@@ -939,12 +939,48 @@ opcua_reference_t* datalog_opcua_find_reference_s(void* object,
         break;
     }
    
-    while(strcmp(((ref_head->id.s == NULL) ? "xxx" : ref_head->id.s), s)){
+    while(ref_head != NULL){
+        if(!strcmp(((ref_head->id.s == NULL) ? "" : ref_head->id.s), s))
+            return ref_head;
+
         if(ref_head == NULL) return NULL;
         ref_head = ref_head->next;
     }
     
-    return ref_head;
+    return NULL;
+}
+
+opcua_reference_t* datalog_opcua_find_reference_type(void* object,
+        DL_OPCUA_TYPE_t type, char* type_string)
+{
+    opcua_reference_t *ref_head;
+    
+    switch(type){
+    case DL_OPC_OBJ_TYPE:
+        ref_head = ((opcua_object_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_VARIABLE:
+        ref_head = ((opcua_variable_t*)object)->reference_head;
+        break;
+    case DL_OPC_METHOD:
+        ref_head = ((opcua_method_t*)object)->reference_head;
+        break;
+    case DL_OPC_OBJ:
+        ref_head = ((opcua_object_t*)object)->reference_head;
+        break;
+    default:
+        break;
+    }
+   
+    while(ref_head != NULL){
+        if(!strcmp(((ref_head->type == NULL) ? "" : ref_head->type), type_string))
+            return ref_head;
+
+        if(ref_head == NULL) return NULL;
+        ref_head = ref_head->next;
+    }
+    
+    return NULL;
 }
 
 opcua_reference_t* datalog_opcua_find_reference(void* object,
@@ -1541,13 +1577,12 @@ void datalog_opcua_runtime(void)
     test_ref = datalog_opcua_create_reference();
     test_ref->set_id_i(test_ref, 6014);
     test_ref->set_id_ns(test_ref, 1);
-    test_ref->set_id_s(test_ref, "HasProperty");
     test_ref->set_type(test_ref, "HasProperty");
     test_object->add_reference(test_object, test_ref);
 
     //ref list free test
-    opcua_reference_t* search_test = datalog_opcua_find_reference_s(test_object,
-            DL_OPC_OBJ, "HasProperty");
+    opcua_reference_t* search_test = datalog_opcua_find_reference_type(test_object,
+            DL_OPC_OBJ, "fail");
 
     test_object->create_references(test_object);
 

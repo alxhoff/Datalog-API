@@ -1243,6 +1243,18 @@ opcua_reference_t* datalog_opcua_find_reference_s(void* object,
         DL_OPCUA_TYPE_t type, char* s);
 
 /**
+* @brief Searches for and returns the first reference found with a matching
+* type string
+* 
+* @param object Pointer to object object
+* @param type Type of object passed to function
+* @param type_string Type string that is to be searched for
+* @return opcua_reference_t* Pointer to the matching reference object
+*/
+opcua_reference_t* datalog_opcua_find_reference_type(void* object,
+        DL_OPCUA_TYPE_t type, char* type_string);
+
+/**
 * @brief Searches and object's reference list for a reference with the specified
 * ID information
 * 
