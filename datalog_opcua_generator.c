@@ -938,8 +938,8 @@ opcua_reference_t* datalog_opcua_find_reference_s(void* object,
     default:
         break;
     }
-    
-    while(strcmp(ref_head->id.s, s)){
+   
+    while(strcmp(((ref_head->id.s == NULL) ? "xxx" : ref_head->id.s), s)){
         if(ref_head == NULL) return NULL;
         ref_head = ref_head->next;
     }
@@ -1541,13 +1541,13 @@ void datalog_opcua_runtime(void)
     test_ref = datalog_opcua_create_reference();
     test_ref->set_id_i(test_ref, 6014);
     test_ref->set_id_ns(test_ref, 1);
+    test_ref->set_id_s(test_ref, "HasProperty");
     test_ref->set_type(test_ref, "HasProperty");
     test_object->add_reference(test_object, test_ref);
 
     //ref list free test
-    opcua_ns_id_t test_ID = {.ns = 1, .i = 6014}; 
-    opcua_reference_t* search_test = datalog_opcua_find_reference(test_object,
-            DL_OPC_OBJ, &test_ID);
+    opcua_reference_t* search_test = datalog_opcua_find_reference_s(test_object,
+            DL_OPC_OBJ, "HasProperty");
 
     test_object->create_references(test_object);
 
