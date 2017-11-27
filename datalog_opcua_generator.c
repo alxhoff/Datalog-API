@@ -75,6 +75,7 @@ DL_OPCUA_ERR_t datalog_opcua_init_doc(void)
     opcua_document = datalog_opcua_create_document(XML_FILENAME, 
             XML_FILE_VERSION); 
 
+
     xmlCreateIntSubset(opcua_document->document, BAD_CAST "UANodeSet", 
             NULL, BAD_CAST "dtdIsHere");
 
@@ -157,6 +158,16 @@ DL_OPCUA_ERR_t self_set_object_type_display_name(opcua_object_type_t* self,
     return ret;
 }
 
+DL_OPCUA_ERR_t self_set_object_type_description(opcua_object_type_t* self,
+        char* description)
+{
+    self->attributes->description = (char*)realloc(self->attributes->description,
+            sizeof(char) * (strlen(description) + 1));
+    if(self->attributes->description == NULL) return DL_OPCUA_MEM;
+    strcpy(self->attributes->description, description);
+    return DL_OPCUA_OK;
+}
+
 //## VARIABLE
 DL_OPCUA_ERR_t self_set_variable_parent_node_id_ns(opcua_variable_t* self, int ns)
 {
@@ -204,18 +215,18 @@ DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self,
     strcpy(self->variable_attributes->data_type, data_type);
     return DL_OPCUA_OK;
 }
-
+//TODO
 DL_OPCUA_ERR_t self_set_variable_user_access_level(opcua_variable_t* self, int ual)
 {
     if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
-    self->variable_attributes->user_access_level = ual;
+    self->attributes->user_access_level = ual;
     return DL_OPCUA_OK;
 }
 
 DL_OPCUA_ERR_t self_set_variable_access_level(opcua_variable_t* self, int al)
 {
     if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
-    self->variable_attributes->access_level = al;
+    self->attributes->access_level = al;
     return DL_OPCUA_OK;
 }
 
@@ -252,10 +263,10 @@ DL_OPCUA_ERR_t self_set_variable_display_name(opcua_variable_t* self,
 DL_OPCUA_ERR_t self_set_variable_description(opcua_variable_t* self,
         char* description)
 {
-    self->description = (char*)realloc(self->description,
+    self->attributes->description = (char*)realloc(self->attributes->description,
             sizeof(char) * (strlen(description) + 1));
-    if(self->description == NULL) return DL_OPCUA_MEM;
-    strcpy(self->description, description);
+    if(self->attributes->description == NULL) return DL_OPCUA_MEM;
+    strcpy(self->attributes->description, description);
     return DL_OPCUA_OK;
 }
 
@@ -323,6 +334,16 @@ DL_OPCUA_ERR_t self_set_method_display_name(opcua_method_t* self, char* display_
     return ret;
 }
 
+DL_OPCUA_ERR_t self_set_method_description(opcua_method_t* self,
+        char* description)
+{
+    self->attributes->description = (char*)realloc(self->attributes->description,
+            sizeof(char) * (strlen(description) + 1));
+    if(self->attributes->description == NULL) return DL_OPCUA_MEM;
+    strcpy(self->attributes->description, description);
+    return DL_OPCUA_OK;
+}
+
 //## OBJECT
 DL_OPCUA_ERR_t self_set_object_parent_node_id_ns(opcua_object_t* self, int ns)
 {
@@ -378,6 +399,16 @@ DL_OPCUA_ERR_t self_set_object_display_name(opcua_object_t* self, char* display_
     DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, DL_OPC_OBJ,
             display_name);
     return ret;
+}
+
+DL_OPCUA_ERR_t self_set_object_description(opcua_object_t* self,
+        char* description)
+{
+    self->attributes->description = (char*)realloc(self->attributes->description,
+            sizeof(char) * (strlen(description) + 1));
+    if(self->attributes->description == NULL) return DL_OPCUA_MEM;
+    strcpy(self->attributes->description, description);
+    return DL_OPCUA_OK;
 }
 
 //## REFERENCE
@@ -479,6 +510,16 @@ DL_OPCUA_ERR_t self_set_attribute_display_name(opcua_node_attributes_t* self,
     DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, DL_OPC_ATTR,
             display_name);
     return ret;
+}
+
+DL_OPCUA_ERR_t self_set_attribute_description(opcua_node_attributes_t* self,
+        char* description)
+{
+    self->description = (char*)realloc(self->description,
+            sizeof(char) * (strlen(description) + 1));
+    if(self->description == NULL) return DL_OPCUA_MEM;
+    strcpy(self->description, description);
+    return DL_OPCUA_OK;
 }
 
 //CREATE REFERENCES
@@ -724,12 +765,12 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* v
     if(variable->variable_attributes->data_type != NULL)
         xmlNewProp(variable->node, BAD_CAST "DataType",
                 BAD_CAST variable->variable_attributes->data_type);
-    if(variable->variable_attributes->user_access_level != 0){
-        sprintf(buffer, "%d", variable->variable_attributes->user_access_level);
+    if(variable->attributes->user_access_level != 0){
+        sprintf(buffer, "%d", variable->attributes->user_access_level);
         xmlNewProp(variable->node, BAD_CAST "UserAccessLevel", BAD_CAST buffer);
-    }
-    if(variable->variable_attributes->access_level != 0){
-        sprintf(buffer, "%d", variable->variable_attributes->access_level);
+    }//TODO
+    if(variable->attributes->access_level != 0){
+        sprintf(buffer, "%d", variable->attributes->access_level);
         xmlNewProp(variable->node, BAD_CAST "AccessLevel", BAD_CAST buffer);
     }
     if(variable->variable_attributes->array_dimensions != 0){
@@ -1225,6 +1266,20 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
     return DL_OPCUA_OK;
 }
 
+//FREE
+DL_OPCUA_ERR_t datalog_opcua_free_variable(opcua_variable_t** variable)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+
+    ret = datalog_opcua_free_reference_list((void**)variable, DL_OPC_VARIABLE);
+    free((*variable)->variable_attributes);
+    free((*variable)->attributes);
+
+    free(*variable); 
+
+    return DL_OPCUA_OK;
+}
+
 //ID
 DL_OPCUA_ERR_t datalog_opcua_add_id_contents(xmlNodePtr node, opcua_ns_id_t* id)
 {
@@ -1311,7 +1366,8 @@ opcua_node_attributes_t* datalog_opcua_create_attributes(void)
     ret->set_node_id_s = &self_set_attribute_node_id_s;
     ret->set_browse_name = &self_set_attribute_browse_name;
     ret->set_display_name = &self_set_attribute_display_name;
-    
+    ret->set_description = &self_set_attribute_description;
+
     return ret;
 }
 
@@ -1368,6 +1424,7 @@ opcua_object_type_t* datalog_opcua_create_object_type(void)
     ret->set_node_id_s = &self_set_object_type_node_id_s;
     ret->set_browse_name = &self_set_object_type_browse_name;
     ret->set_display_name = &self_set_object_type_display_name;
+    ret->set_description = &self_set_object_type_description;
     ret->create_references = &self_create_node_object_type_references;
     ret->add_reference = &self_add_ref_object_type;
 
@@ -1395,6 +1452,7 @@ opcua_method_t* datalog_opcua_create_method(void)
     ret->set_browse_name = &self_set_method_browse_name;
     ret->set_display_name = &self_set_method_display_name;
     ret->set_declaration_id = &self_set_method_declaration_id;
+    ret->set_description = &self_set_method_description;
     ret->create_references = &self_create_node_method_references;
     ret->add_reference = &self_add_ref_method;
 
@@ -1453,6 +1511,7 @@ opcua_object_t* datalog_opcua_create_object(void)
     ret->set_node_id_s = &self_set_object_node_id_s;
     ret->set_browse_name = &self_set_object_browse_name;
     ret->set_display_name = &self_set_object_display_name;
+    ret->set_description = &self_set_object_description;
     ret->create_references = &self_create_node_object_references;
     ret->add_reference = &self_add_ref_object;
 
@@ -1512,7 +1571,8 @@ void datalog_opcua_runtime(void)
     tmp_variable->set_user_access_level(tmp_variable, 3);
     tmp_variable->set_access_level(tmp_variable, 3);
     tmp_variable->set_data_type(tmp_variable, "Double");
-    
+    tmp_variable->set_description(tmp_variable, "test description of the variable node");
+
     datalog_opcua_create_node_variable(tmp_variable); 
     opcua_reference_t* test_ref = datalog_opcua_create_reference();
     test_ref->set_type(test_ref, "HasSubtype");
@@ -1527,6 +1587,8 @@ void datalog_opcua_runtime(void)
     tmp_variable->add_reference(tmp_variable, test_ref);
 
     tmp_variable->create_references(tmp_variable);
+
+    datalog_opcua_free_variable(&tmp_variable);
 
     //method
     opcua_method_t* test_method = datalog_opcua_create_method();
@@ -1579,10 +1641,6 @@ void datalog_opcua_runtime(void)
     test_ref->set_id_ns(test_ref, 1);
     test_ref->set_type(test_ref, "HasProperty");
     test_object->add_reference(test_object, test_ref);
-
-    //ref list free test
-    opcua_reference_t* search_test = datalog_opcua_find_reference_type(test_object,
-            DL_OPC_OBJ, "fail");
 
     test_object->create_references(test_object);
 
