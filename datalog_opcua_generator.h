@@ -1301,6 +1301,9 @@ DL_OPCUA_ERR_t datalog_opcua_set_id_ns(opcua_node_id_t* id, int ns);
 */
 DL_OPCUA_ERR_t datalog_opcua_set_id_i(opcua_node_id_t* id, int i);
 
+DL_OPCUA_ERR_t datalog_opcua_set_description(opcua_node_attributes_t* attribute,
+        char* description);
+
 /**
 * @brief Creates node attributes for a given XML node
 * 
