@@ -1822,6 +1822,15 @@ opcua_object_attributes_t* datalog_opcua_create_object_attributes(void)
     return ret;
 }
 
+//VAR TYPE
+opcua_variable_type_attributes_t* datalog_opcua_create_variable_type_attributes(void)
+{
+
+}
+//REF TYPE
+//DAT TYPE
+//VIEW
+
 //STRUCT OBJECTS
 opcua_object_type_t* datalog_opcua_create_object_type(void)
 {
@@ -1935,6 +1944,32 @@ opcua_object_t* datalog_opcua_create_object(void)
     ret->add_reference = &self_add_ref_object;
 
     return ret;
+}
+
+//VARIABLE TYPE
+opcua_variable_type_t* datalog_opcua_create_variable_type(void)
+{
+    opcua_variable_type_t* ret = (opcua_variable_type_t*)
+        calloc(1, sizeof(opcua_variable_type_t));
+    if(ret == NULL) return NULL;
+
+    ret->attributes = datalog_opcua_create_attributes();
+    if(ret->attributes == NULL) return NULL;
+}
+//REFERENCE TYPE
+opcua_reference_type_t* datalog_opcua_create_reference_type(void)
+{
+
+}
+//DATA TYPE
+opcua_data_type_t* datalog_opcua_create_data_type(void)
+{
+
+}
+//VIEW
+opcua_view_t* datalog_opcua_create_view(void)
+{
+
 }
 
 opcua_reference_t* datalog_opcua_create_reference(void)
