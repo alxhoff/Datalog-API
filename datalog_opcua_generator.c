@@ -165,6 +165,14 @@ DL_OPCUA_ERR_t self_set_object_type_description(opcua_object_type_t* self,
     return ret;
 }
 
+DL_OPCUA_ERR_t self_set_object_type_is_abstract(opcua_object_type_t* self, 
+        bool abstract)
+{
+    if(self->object_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->object_type_attributes->is_abstract = abstract;
+    return DL_OPCUA_OK;
+}
+
 //## VARIABLE
 DL_OPCUA_ERR_t self_set_variable_parent_node_id_ns(opcua_variable_t* self, int ns)
 {
@@ -239,6 +247,22 @@ DL_OPCUA_ERR_t self_set_variable_access_level(opcua_variable_t* self, int al)
     return DL_OPCUA_OK;
 }
 
+DL_OPCUA_ERR_t self_set_variable_value(opcua_variable_t* self)
+{
+//TODO
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self, opcua_node_id_t* ID)
+{
+    if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
+    if(ID == NULL) return DL_OPCUA_INVAL;
+    if(self->variable_attributes->data_type == NULL)
+        self->variable_attributes->data_type = (opcua_node_id_t*)calloc(1, sizeof(opcua_node_id_t));
+    memcpy(self->variable_attributes->data_type, ID, sizeof(opcua_node_id_t));
+    return DL_OPCUA_OK;
+}
+
 DL_OPCUA_ERR_t self_set_variable_array_dimensions(opcua_variable_t* self, int ad)
 {
     if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
@@ -246,28 +270,17 @@ DL_OPCUA_ERR_t self_set_variable_array_dimensions(opcua_variable_t* self, int ad
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t self_set_variable_is_abstract(opcua_variable_t* self, bool abstract)
-{
-    if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
-    self->variable_attributes->is_abstract = abstract;
-    return DL_OPCUA_OK;
-}
-
-DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self,
-        char* data_type)
-{
-    self->variable_attributes->data_type = 
-        (char*)realloc(self->variable_attributes->data_type, 
-                sizeof(char) * (strlen(data_type) + 1));
-    if(self->variable_attributes->data_type == NULL) return DL_OPCUA_MEM;
-    strcpy(self->variable_attributes->data_type, data_type);
-    return DL_OPCUA_OK;
-}
-
 DL_OPCUA_ERR_t self_set_variable_value_rank(opcua_variable_t* self, int vr)
 {
     if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
     self->variable_attributes->value_rank = vr;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_variable_is_abstract(opcua_variable_t* self, bool abstract)
+{
+    if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
+    self->variable_attributes->is_abstract = abstract;
     return DL_OPCUA_OK;
 }
 
@@ -360,42 +373,36 @@ DL_OPCUA_ERR_t self_set_method_access_level(opcua_method_t* self, int al)
 DL_OPCUA_ERR_t self_set_object_parent_node_id_ns(opcua_object_t* self, int ns)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->parent_node_id, ns);
-    
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_object_parent_node_id_i(opcua_object_t* self, int i)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);
-    
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_object_parent_node_id_s(opcua_object_t* self, char* s)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->parent_node_id, s);
-    
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_object_node_id_ns(opcua_object_t* self, int ns)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->node_id, ns);
-    
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_object_node_id_i(opcua_object_t* self, int i)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->node_id, i);
-    
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_object_node_id_s(opcua_object_t* self, char* s)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->node_id, s);
-    
     return ret;
 }
 
@@ -434,46 +441,48 @@ DL_OPCUA_ERR_t self_set_object_access_level(opcua_object_t* self, int al)
     return DL_OPCUA_OK;
 }
 
+DL_OPCUA_ERR_t self_set_object_event_notifier(opcua_object_t* self, 
+        unsigned char event_notifier)
+{
+    if(self->object_attributes == NULL) return DL_OPCUA_INVAL;
+    self->object_attributes->event_notifier = event_notifier;
+    return DL_OPCUA_OK;
+}
+
 //## VARIABLE TYPE
 DL_OPCUA_ERR_t self_set_variable_type_parent_node_id_ns(opcua_variable_type_t* self, int ns)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->parent_node_id, ns);
-    
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_variable_type_parent_node_id_i(opcua_variable_type_t* self, int i)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);
-    
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_variable_type_parent_node_id_s(opcua_variable_type_t* self, char* s)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->parent_node_id, s);
-    
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_variable_type_node_id_ns(opcua_variable_type_t* self, int ns)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->node_id, ns);
-    
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_variable_type_node_id_i(opcua_variable_type_t* self, int i)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->node_id, i);
-    
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_variable_type_node_id_s(opcua_variable_type_t* self, char* s)
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->node_id, s);
-    
     return ret;
 }
 
@@ -509,6 +518,43 @@ DL_OPCUA_ERR_t self_set_variable_type_access_level(opcua_variable_type_t* self, 
 {
     if(self->variable_type_attributes == NULL) return DL_OPCUA_INVAL;
     self->attributes->access_level = al;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_value(opcua_variable_type_t* self)
+{
+//TODO
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_data_type(opcua_variable_type_t* self, opcua_node_id_t* ID)
+{
+    if(self->variable_type_attributes == NULL) return DL_OPCUA_INVAL;
+    if(ID == NULL) return DL_OPCUA_INVAL;
+    if(self->variable_type_attributes->data_type == NULL)
+        self->variable_type_attributes->data_type = (opcua_node_id_t*)calloc(1, sizeof(opcua_node_id_t));
+    memcpy(self->variable_type_attributes->data_type, ID, sizeof(opcua_node_id_t));
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_array_dimensions(opcua_variable_type_t* self, int ad)
+{
+    if(self->variable_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->variable_type_attributes->array_dimensions = ad;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_value_rank(opcua_variable_type_t* self, int vr)
+{
+    if(self->variable_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->variable_type_attributes->value_rank = vr;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_is_abstract(opcua_variable_type_t* self, bool abstract)
+{
+    if(self->variable_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->variable_type_attributes->is_abstract = abstract;
     return DL_OPCUA_OK;
 }
 
@@ -592,6 +638,33 @@ DL_OPCUA_ERR_t self_set_reference_type_access_level(opcua_reference_type_t* self
     return DL_OPCUA_OK;
 }
 
+DL_OPCUA_ERR_t self_set_reference_type_is_abstract(opcua_reference_type_t* self, bool abstract)
+{
+    if(self->reference_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->reference_type_attributes->is_abstract = abstract;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_reference_type_symmetric(opcua_reference_type_t* self, bool symmetric)
+{
+    if(self->reference_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->reference_type_attributes->symmetric = symmetric;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_reference_type_inverse_name(opcua_reference_type_t* self, 
+        char* inverse_name)
+{
+    if(self->reference_type_attributes == NULL) return DL_OPCUA_INVAL;
+    if(inverse_name == NULL) return DL_OPCUA_INVAL;
+    self->reference_type_attributes->inverse_name = 
+        (char*)realloc(self->reference_type_attributes->inverse_name, 
+                sizeof(char) * (strlen(inverse_name) + 1));
+    if(self->reference_type_attributes == NULL) return DL_OPCUA_MEM;
+    strcpy(self->reference_type_attributes->inverse_name, inverse_name);
+    return DL_OPCUA_OK;
+}
+
 //## DATA TYPE
 DL_OPCUA_ERR_t self_set_data_type_parent_node_id_ns(opcua_data_type_t* self, int ns)
 {
@@ -672,6 +745,13 @@ DL_OPCUA_ERR_t self_set_data_type_access_level(opcua_data_type_t* self, int al)
     return DL_OPCUA_OK;
 }
 
+DL_OPCUA_ERR_t self_set_data_type_is_abstract(opcua_data_type_t* self, bool abstract)
+{
+    if(self->data_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->data_type_attributes->is_abstract = abstract;
+    return DL_OPCUA_OK;
+}
+
 //## VIEW
 DL_OPCUA_ERR_t self_set_view_parent_node_id_ns(opcua_view_t* self, int ns)
 {
@@ -747,6 +827,21 @@ DL_OPCUA_ERR_t self_set_view_access_level(opcua_view_t* self, int al)
 {
     if(self->view_attributes == NULL) return DL_OPCUA_INVAL;
     self->attributes->access_level = al;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_view_contains_no_loops(opcua_view_t* self, bool val)
+{
+    if(self->view_attributes == NULL) return DL_OPCUA_INVAL;
+    self->view_attributes->contains_no_loops = val;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_view_event_notifier(opcua_view_t* self, 
+        unsigned char mask)
+{
+    if(self->view_attributes == NULL) return DL_OPCUA_INVAL;
+    self->view_attributes->event_notifier = mask;
     return DL_OPCUA_OK;
 }
 
@@ -988,6 +1083,32 @@ DL_OPCUA_ERR_t datalog_opcua_set_id_i(opcua_node_id_t* id, int i)
 {
     id->i = i;
     return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_set_id_o(opcua_node_id_t* id, char* o)
+{
+
+    if(o != NULL){
+        id->o = (char*)realloc(id->o, 
+                sizeof(char) * (strlen(o) + 1));
+        if(id->o == NULL) return DL_OPCUA_MEM;
+        strcpy(id->o, o);
+        return DL_OPCUA_OK;
+    }
+    return DL_OPCUA_INVAL;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_set_id_g(opcua_node_id_t* id, char* g)
+{
+
+    if(g != NULL){
+        id->g = (char*)realloc(id->g, 
+                sizeof(char) * (strlen(g) + 1));
+        if(id->g == NULL) return DL_OPCUA_MEM;
+        strcpy(id->g, g);
+        return DL_OPCUA_OK;
+    }
+    return DL_OPCUA_INVAL;
 }
 
 DL_OPCUA_ERR_t datalog_opcua_set_description(opcua_node_attributes_t* attribute,
@@ -1868,7 +1989,6 @@ void datalog_opcua_runtime(void)
     tmp_variable->set_display_name(tmp_variable, "PowerConsumption");
     tmp_variable->set_user_access_level(tmp_variable, 3);
     tmp_variable->set_access_level(tmp_variable, 3);
-    tmp_variable->set_data_type(tmp_variable, "Double");
     tmp_variable->set_description(tmp_variable, "test description of the variable node");
 
     datalog_opcua_create_node_variable(tmp_variable); 
