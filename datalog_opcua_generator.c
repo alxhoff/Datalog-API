@@ -225,17 +225,6 @@ DL_OPCUA_ERR_t self_set_variable_description(opcua_variable_t* self,
     return ret;
 }
 
-DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self,
-        char* data_type)
-{
-    self->variable_attributes->data_type = 
-        (char*)realloc(self->variable_attributes->data_type, 
-                sizeof(char) * (strlen(data_type) + 1));
-    if(self->variable_attributes->data_type == NULL) return DL_OPCUA_MEM;
-    strcpy(self->variable_attributes->data_type, data_type);
-    return DL_OPCUA_OK;
-}
-
 DL_OPCUA_ERR_t self_set_variable_user_access_level(opcua_variable_t* self, int ual)
 {
     if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
@@ -254,6 +243,24 @@ DL_OPCUA_ERR_t self_set_variable_array_dimensions(opcua_variable_t* self, int ad
 {
     if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
     self->variable_attributes->array_dimensions = ad;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_variable_is_abstract(opcua_variable_t* self, bool abstract)
+{
+    if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
+    self->variable_attributes->is_abstract = abstract;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self,
+        char* data_type)
+{
+    self->variable_attributes->data_type = 
+        (char*)realloc(self->variable_attributes->data_type, 
+                sizeof(char) * (strlen(data_type) + 1));
+    if(self->variable_attributes->data_type == NULL) return DL_OPCUA_MEM;
+    strcpy(self->variable_attributes->data_type, data_type);
     return DL_OPCUA_OK;
 }
 
@@ -335,6 +342,20 @@ DL_OPCUA_ERR_t self_set_method_description(opcua_method_t* self,
     return ret;
 }
 
+DL_OPCUA_ERR_t self_set_method_user_access_level(opcua_method_t* self, int ual)
+{
+    if(self->method_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->user_access_level = ual;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_method_access_level(opcua_method_t* self, int al)
+{
+    if(self->method_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->access_level = al;
+    return DL_OPCUA_OK;
+}
+
 //## OBJECT
 DL_OPCUA_ERR_t self_set_object_parent_node_id_ns(opcua_object_t* self, int ns)
 {
@@ -399,6 +420,20 @@ DL_OPCUA_ERR_t self_set_object_description(opcua_object_t* self,
     return ret;
 }
 
+DL_OPCUA_ERR_t self_set_object_user_access_level(opcua_object_t* self, int ual)
+{
+    if(self->object_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->user_access_level = ual;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_object_access_level(opcua_object_t* self, int al)
+{
+    if(self->object_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->access_level = al;
+    return DL_OPCUA_OK;
+}
+
 //## VARIABLE TYPE
 DL_OPCUA_ERR_t self_set_variable_type_parent_node_id_ns(opcua_variable_type_t* self, int ns)
 {
@@ -461,6 +496,20 @@ DL_OPCUA_ERR_t self_set_variable_type_description(opcua_variable_type_t* self,
 {
     DL_OPCUA_ERR_t ret = datalog_opcua_set_description(self->attributes, description);
     return ret;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_user_access_level(opcua_variable_type_t* self, int ual)
+{
+    if(self->variable_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->user_access_level = ual;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_access_level(opcua_variable_type_t* self, int al)
+{
+    if(self->variable_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->access_level = al;
+    return DL_OPCUA_OK;
 }
 
 //## REFERENCE TYPE
@@ -529,6 +578,20 @@ DL_OPCUA_ERR_t self_set_reference_type_description(opcua_reference_type_t* self,
     return ret;
 }
 
+DL_OPCUA_ERR_t self_set_reference_type_user_access_level(opcua_reference_type_t* self, int ual)
+{
+    if(self->reference_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->user_access_level = ual;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_reference_type_access_level(opcua_reference_type_t* self, int al)
+{
+    if(self->reference_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->access_level = al;
+    return DL_OPCUA_OK;
+}
+
 //## DATA TYPE
 DL_OPCUA_ERR_t self_set_data_type_parent_node_id_ns(opcua_data_type_t* self, int ns)
 {
@@ -595,6 +658,20 @@ DL_OPCUA_ERR_t self_set_data_type_description(opcua_data_type_t* self,
     return ret;
 }
 
+DL_OPCUA_ERR_t self_set_data_type_user_access_level(opcua_data_type_t* self, int ual)
+{
+    if(self->data_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->user_access_level = ual;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_data_type_access_level(opcua_data_type_t* self, int al)
+{
+    if(self->data_type_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->access_level = al;
+    return DL_OPCUA_OK;
+}
+
 //## VIEW
 DL_OPCUA_ERR_t self_set_view_parent_node_id_ns(opcua_view_t* self, int ns)
 {
@@ -659,6 +736,19 @@ DL_OPCUA_ERR_t self_set_view_description(opcua_view_t* self,
     return ret;
 }
 
+DL_OPCUA_ERR_t self_set_view_user_access_level(opcua_view_t* self, int ual)
+{
+    if(self->view_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->user_access_level = ual;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_view_access_level(opcua_view_t* self, int al)
+{
+    if(self->view_attributes == NULL) return DL_OPCUA_INVAL;
+    self->attributes->access_level = al;
+    return DL_OPCUA_OK;
+}
 
 //## REFERENCE
 DL_OPCUA_ERR_t self_set_reference_type(opcua_reference_t* self, char* type)
@@ -762,10 +852,20 @@ DL_OPCUA_ERR_t self_set_attribute_display_name(opcua_node_attributes_t* self,
 DL_OPCUA_ERR_t self_set_attribute_description(opcua_node_attributes_t* self,
         char* description)
 {
-    self->description = (char*)realloc(self->description,
-            sizeof(char) * (strlen(description) + 1));
-    if(self->description == NULL) return DL_OPCUA_MEM;
-    strcpy(self->description, description);
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_description(self, description);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_attribute_user_access_level(opcua_node_attributes_t* self, 
+        int ual)
+{
+    self->user_access_level = ual;
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t self_set_attribute_access_level(opcua_node_attributes_t* self, int al)
+{
+    self->access_level = al;
     return DL_OPCUA_OK;
 }
 
