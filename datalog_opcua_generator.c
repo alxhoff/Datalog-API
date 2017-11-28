@@ -145,7 +145,7 @@ DL_OPCUA_ERR_t self_set_object_type_node_id_s(opcua_object_type_t* self, char* s
 DL_OPCUA_ERR_t self_set_object_type_browse_name(opcua_object_type_t* self, 
         char* browse_name)
 {
-    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self, DL_OPC_VARIABLE,
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self->attributes,
             browse_name);
     return ret;
 }
@@ -153,7 +153,7 @@ DL_OPCUA_ERR_t self_set_object_type_browse_name(opcua_object_type_t* self,
 DL_OPCUA_ERR_t self_set_object_type_display_name(opcua_object_type_t* self, 
         char* display_name)
 {
-    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, DL_OPC_VARIABLE,
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self->attributes,
             display_name);
     return ret;
 }
@@ -215,7 +215,7 @@ DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self,
     strcpy(self->variable_attributes->data_type, data_type);
     return DL_OPCUA_OK;
 }
-//TODO
+
 DL_OPCUA_ERR_t self_set_variable_user_access_level(opcua_variable_t* self, int ual)
 {
     if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
@@ -247,7 +247,7 @@ DL_OPCUA_ERR_t self_set_variable_value_rank(opcua_variable_t* self, int vr)
 DL_OPCUA_ERR_t self_set_variable_browse_name(opcua_variable_t* self, 
     char* browse_name)
 {
-    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self, DL_OPC_VARIABLE,
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self->attributes,
             browse_name);
     return ret;
 }
@@ -255,7 +255,7 @@ DL_OPCUA_ERR_t self_set_variable_browse_name(opcua_variable_t* self,
 DL_OPCUA_ERR_t self_set_variable_display_name(opcua_variable_t* self, 
         char* display_name)
 {
-    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, DL_OPC_VARIABLE,
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self->attributes,
             display_name);
     return ret;
 }
@@ -322,14 +322,14 @@ DL_OPCUA_ERR_t self_set_method_declaration_id(opcua_method_t* self, int id)
 
 DL_OPCUA_ERR_t self_set_method_browse_name(opcua_method_t* self, char* browse_name)
 {
-    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self, DL_OPC_METHOD,
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self->attributes,
             browse_name);
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_method_display_name(opcua_method_t* self, char* display_name)
 {
-    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, DL_OPC_METHOD,
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self->attributes,
             display_name);
     return ret;
 }
@@ -389,14 +389,14 @@ DL_OPCUA_ERR_t self_set_object_node_id_s(opcua_object_t* self, char* s)
 
 DL_OPCUA_ERR_t self_set_object_browse_name(opcua_object_t* self, char* browse_name)
 {
-    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self, DL_OPC_OBJ,
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self->attributes,
             browse_name);
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_object_display_name(opcua_object_t* self, char* display_name)
 {
-    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, DL_OPC_OBJ,
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self->attributes,
             display_name);
     return ret;
 }
@@ -410,6 +410,279 @@ DL_OPCUA_ERR_t self_set_object_description(opcua_object_t* self,
     strcpy(self->attributes->description, description);
     return DL_OPCUA_OK;
 }
+
+//## VARIABLE TYPE
+DL_OPCUA_ERR_t self_set_variable_type_parent_node_id_ns(opcua_variable_type_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->parent_node_id, ns);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_parent_node_id_i(opcua_variable_type_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_parent_node_id_s(opcua_variable_type_t* self, char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->parent_node_id, s);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_node_id_ns(opcua_variable_type_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->node_id, ns);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_node_id_i(opcua_variable_type_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->node_id, i);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_node_id_s(opcua_variable_type_t* self, char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->node_id, s);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_browse_name(opcua_variable_type_t* self, char* browse_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self->attributes,
+            browse_name);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_display_name(opcua_variable_type_t* self, char* display_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self->attributes,
+            display_name);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_variable_type_description(opcua_variable_type_t* self,
+        char* description)
+{
+    self->attributes->description = (char*)realloc(self->attributes->description,
+            sizeof(char) * (strlen(description) + 1));
+    if(self->attributes->description == NULL) return DL_OPCUA_MEM;
+    strcpy(self->attributes->description, description);
+    return DL_OPCUA_OK;
+}
+
+//## REFERENCE TYPE
+DL_OPCUA_ERR_t self_set_reference_type_parent_node_id_ns(opcua_reference_type_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->parent_node_id, ns);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_reference_type_parent_node_id_i(opcua_reference_type_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_reference_type_parent_node_id_s(opcua_reference_type_t* self, char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->parent_node_id, s);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_reference_type_node_id_ns(opcua_reference_type_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->node_id, ns);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_reference_type_node_id_i(opcua_reference_type_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->node_id, i);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_reference_type_node_id_s(opcua_reference_type_t* self, char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->node_id, s);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_reference_type_browse_name(opcua_reference_type_t* self, 
+        char* browse_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self->attributes,
+            browse_name);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_reference_type_display_name(opcua_reference_type_t* self, 
+        char* display_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self->attributes,
+            display_name);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_reference_type_description(opcua_reference_type_t* self,
+        char* description)
+{
+    self->attributes->description = (char*)realloc(self->attributes->description,
+            sizeof(char) * (strlen(description) + 1));
+    if(self->attributes->description == NULL) return DL_OPCUA_MEM;
+    strcpy(self->attributes->description, description);
+    return DL_OPCUA_OK;
+}
+
+//## DATA TYPE
+DL_OPCUA_ERR_t self_set_data_type_parent_node_id_ns(opcua_data_type_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->parent_node_id, ns);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_data_type_parent_node_id_i(opcua_data_type_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_data_type_parent_node_id_s(opcua_data_type_t* self, char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->parent_node_id, s);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_data_type_node_id_ns(opcua_data_type_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->node_id, ns);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_data_type_node_id_i(opcua_data_type_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->node_id, i);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_data_type_node_id_s(opcua_data_type_t* self, char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->node_id, s);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_data_type_browse_name(opcua_data_type_t* self, 
+        char* browse_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self->attributes,
+            browse_name);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_data_type_display_name(opcua_data_type_t* self, 
+        char* display_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self->attributes,
+            display_name);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_data_type_description(opcua_data_type_t* self,
+        char* description)
+{
+    self->attributes->description = (char*)realloc(self->attributes->description,
+            sizeof(char) * (strlen(description) + 1));
+    if(self->attributes->description == NULL) return DL_OPCUA_MEM;
+    strcpy(self->attributes->description, description);
+    return DL_OPCUA_OK;
+}
+
+//## VIEW
+DL_OPCUA_ERR_t self_set_view_parent_node_id_ns(opcua_view_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->parent_node_id, ns);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_view_parent_node_id_i(opcua_view_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_view_parent_node_id_s(opcua_view_t* self, char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->parent_node_id, s);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_view_node_id_ns(opcua_view_t* self, int ns)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_ns(&self->attributes->node_id, ns);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_view_node_id_i(opcua_view_t* self, int i)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_i(&self->attributes->node_id, i);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_view_node_id_s(opcua_view_t* self, char* s)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_id_s(&self->attributes->node_id, s);
+    
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_view_browse_name(opcua_view_t* self, char* browse_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self->attributes,
+            browse_name);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_view_display_name(opcua_view_t* self, char* display_name)
+{
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self->attributes,
+            display_name);
+    return ret;
+}
+
+DL_OPCUA_ERR_t self_set_view_description(opcua_view_t* self,
+        char* description)
+{
+    self->attributes->description = (char*)realloc(self->attributes->description,
+            sizeof(char) * (strlen(description) + 1));
+    if(self->attributes->description == NULL) return DL_OPCUA_MEM;
+    strcpy(self->attributes->description, description);
+    return DL_OPCUA_OK;
+}
+
 
 //## REFERENCE
 DL_OPCUA_ERR_t self_set_reference_type(opcua_reference_t* self, char* type)
@@ -499,16 +772,14 @@ DL_OPCUA_ERR_t self_set_attribute_node_id_s(opcua_node_attributes_t* self, char*
 DL_OPCUA_ERR_t self_set_attribute_browse_name(opcua_node_attributes_t* self, 
         char* browse_name)
 {
-    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self, DL_OPC_ATTR,
-            browse_name);
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_browse_name(self, browse_name);
     return ret;
 }
 
 DL_OPCUA_ERR_t self_set_attribute_display_name(opcua_node_attributes_t* self, 
         char* display_name)
 {
-    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, DL_OPC_ATTR,
-            display_name);
+    DL_OPCUA_ERR_t ret = datalog_opcua_set_display_name(self, display_name);
     return ret;
 }
 
@@ -593,92 +864,33 @@ DL_OPCUA_ERR_t self_add_ref_object(opcua_object_t* object,
 }
 
 //## GENERALISED FUNCTIONS
-DL_OPCUA_ERR_t datalog_opcua_set_browse_name(void* object, DL_OPCUA_TYPE_t type,
+DL_OPCUA_ERR_t datalog_opcua_set_browse_name(opcua_node_attributes_t* attribute, 
         char* browse_name)
 {
-    switch(type){
-    case DL_OPC_VARIABLE:
-        ((opcua_variable_t*)object)->attributes->browse_name = 
-            (char*)realloc(((opcua_variable_t*)object)->attributes->browse_name, 
-                    sizeof(char) * (strlen(browse_name) + 1));
-        if(((opcua_variable_t*)object)->attributes->browse_name == NULL) 
-            return DL_OPCUA_MEM;
-        strcpy(((opcua_variable_t*)object)->attributes->browse_name, browse_name);
-        break;
-    case DL_OPC_METHOD:
-        ((opcua_method_t*)object)->attributes->browse_name = 
-            (char*)realloc(((opcua_method_t*)object)->attributes->browse_name, 
-                    sizeof(char) * (strlen(browse_name) + 1));
-        if(((opcua_method_t*)object)->attributes->browse_name == NULL) 
-            return DL_OPCUA_MEM;
-        strcpy(((opcua_method_t*)object)->attributes->browse_name, browse_name);
-        break;
-    case DL_OPC_OBJ:
-        ((opcua_object_t*)object)->attributes->browse_name = 
-            (char*)realloc(((opcua_object_t*)object)->attributes->browse_name, 
-                    sizeof(char) * (strlen(browse_name) + 1));
-        if(((opcua_object_t*)object)->attributes->browse_name == NULL) 
-            return DL_OPCUA_MEM;
-        strcpy(((opcua_object_t*)object)->attributes->browse_name, browse_name);
-        break;
-    case DL_OPC_ATTR:
-        ((opcua_node_attributes_t*)object)->browse_name = 
-            (char*)realloc(((opcua_node_attributes_t*)object)->browse_name, 
-                    sizeof(char) * (strlen(browse_name) + 1));
-        if(((opcua_node_attributes_t*)object)->browse_name == NULL) 
-            return DL_OPCUA_MEM;
-        strcpy(((opcua_node_attributes_t*)object)->browse_name, browse_name);
-        break;
-    default:
-        break;
-    }
+    attribute->browse_name = 
+        (char*)realloc(attribute->browse_name, 
+                sizeof(char) * (strlen(browse_name) + 1));
+    if(attribute->browse_name == NULL) 
+        return DL_OPCUA_MEM;
+    strcpy(attribute->browse_name, browse_name);
 
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t datalog_opcua_set_display_name(void* object, DL_OPCUA_TYPE_t type, 
+DL_OPCUA_ERR_t datalog_opcua_set_display_name(opcua_node_attributes_t* attribute, 
         char* display_name)
 {
-    switch(type){
-    case DL_OPC_VARIABLE:
-        ((opcua_variable_t*)object)->attributes->display_name = 
-            (char*)realloc(((opcua_variable_t*)object)->attributes->display_name, 
-                    sizeof(char) * (strlen(display_name) + 1));
-        if(((opcua_variable_t*)object)->attributes->display_name == NULL) 
-            return DL_OPCUA_MEM;
-        strcpy(((opcua_variable_t*)object)->attributes->display_name, display_name);
-        break;
-    case DL_OPC_METHOD:
-        ((opcua_method_t*)object)->attributes->display_name = 
-            (char*)realloc(((opcua_method_t*)object)->attributes->display_name, 
-                    sizeof(char) * (strlen(display_name) + 1));
-        if(((opcua_method_t*)object)->attributes->display_name == NULL) 
-            return DL_OPCUA_MEM;
-        strcpy(((opcua_method_t*)object)->attributes->display_name, display_name);
-        break;
-    case DL_OPC_OBJ:
-        ((opcua_object_t*)object)->attributes->display_name = 
-            (char*)realloc(((opcua_object_t*)object)->attributes->display_name, 
-                    sizeof(char) * (strlen(display_name) + 1));
-        if(((opcua_object_t*)object)->attributes->display_name == NULL) 
-            return DL_OPCUA_MEM;
-        strcpy(((opcua_object_t*)object)->attributes->display_name, display_name);
-        break;
-    case DL_OPC_ATTR:
-        ((opcua_node_attributes_t*)object)->display_name = 
-            (char*)realloc(((opcua_node_attributes_t*)object)->display_name, 
-                    sizeof(char) * (strlen(display_name) + 1));
-        if(((opcua_node_attributes_t*)object)->display_name == NULL) 
-            return DL_OPCUA_MEM;
-        strcpy(((opcua_node_attributes_t*)object)->display_name, display_name);
-        break;
-    default:
-        break;
-    }
+    attribute->display_name = 
+        (char*)realloc(attribute->display_name, 
+                sizeof(char) * (strlen(display_name) + 1));
+    if(attribute->display_name == NULL) 
+        return DL_OPCUA_MEM;
+    strcpy(attribute->display_name, display_name);
+    
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t datalog_opcua_set_id_s(opcua_ns_id_t* id, char* value)
+DL_OPCUA_ERR_t datalog_opcua_set_id_s(opcua_node_id_t* id, char* value)
 {
     if(value != NULL){
         id->s = (char*)realloc(id->s, 
@@ -690,13 +902,13 @@ DL_OPCUA_ERR_t datalog_opcua_set_id_s(opcua_ns_id_t* id, char* value)
     return DL_OPCUA_INVAL;
 }
 
-DL_OPCUA_ERR_t datalog_opcua_set_id_ns(opcua_ns_id_t* id, int ns)
+DL_OPCUA_ERR_t datalog_opcua_set_id_ns(opcua_node_id_t* id, int ns)
 {
     id->ns = ns;
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t datalog_opcua_set_id_i(opcua_ns_id_t* id, int i)
+DL_OPCUA_ERR_t datalog_opcua_set_id_i(opcua_node_id_t* id, int i)
 {
     id->i = i;
     return DL_OPCUA_OK;
@@ -821,9 +1033,9 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_from_array(
         tmp_obj_type->set_display_name(tmp_obj_type, attributes->display_name);
     if(tmp_obj_type->attributes != NULL){
         memcpy(&tmp_obj_type->attributes->node_id,
-                &attributes->node_id, sizeof(opcua_ns_id_t));
+                &attributes->node_id, sizeof(opcua_node_id_t));
         memcpy(&tmp_obj_type->attributes->parent_node_id, 
-                &attributes->parent_node_id, sizeof(opcua_ns_id_t));
+                &attributes->parent_node_id, sizeof(opcua_node_id_t));
     }
     datalog_opcua_create_node_object_type(tmp_obj_type);
 
@@ -1025,7 +1237,7 @@ opcua_reference_t* datalog_opcua_find_reference_type(void* object,
 }
 
 opcua_reference_t* datalog_opcua_find_reference(void* object,
-        DL_OPCUA_TYPE_t type, opcua_ns_id_t* ID)
+        DL_OPCUA_TYPE_t type, opcua_node_id_t* ID)
 {
     opcua_reference_t *ref_head;
 
@@ -1046,7 +1258,7 @@ opcua_reference_t* datalog_opcua_find_reference(void* object,
         break;
     }
     
-    while(memcmp(&ref_head->id, ID, sizeof(opcua_ns_id_t))){
+    while(memcmp(&ref_head->id, ID, sizeof(opcua_node_id_t))){
         if(ref_head == NULL) return NULL;
         ref_head = ref_head->next;
     }
@@ -1281,7 +1493,7 @@ DL_OPCUA_ERR_t datalog_opcua_free_variable(opcua_variable_t** variable)
 }
 
 //ID
-DL_OPCUA_ERR_t datalog_opcua_add_id_contents(xmlNodePtr node, opcua_ns_id_t* id)
+DL_OPCUA_ERR_t datalog_opcua_add_id_contents(xmlNodePtr node, opcua_node_id_t* id)
 {
     char buffer[32]; 
 
@@ -1314,7 +1526,7 @@ DL_OPCUA_ERR_t datalog_opcua_add_id_contents(xmlNodePtr node, opcua_ns_id_t* id)
 }
 
 DL_OPCUA_ERR_t datalog_opcua_add_id_attribute(xmlNodePtr node, char* attribute,
-        opcua_ns_id_t* id)
+        opcua_node_id_t* id)
 {
     char buffer[32]; 
 
