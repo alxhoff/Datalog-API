@@ -2111,15 +2111,122 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
 }
 
 //FREE
+DL_OPCUA_ERR_t datalog_opcua_free_attribiute(opcua_node_attributes_t* attribute)
+{
+    if(attribute->browse_name != NULL) free(attribute->browse_name);
+    if(attribute->display_name != NULL) free(attribute->display_name);
+    if(attribute->description != NULL) free(attribute->description);
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_free_object_type(opcua_object_type_t** object_type)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+
+    ret = datalog_opcua_free_reference_list((void**)object_type, DL_OPC_OBJ_TYPE);
+    free((*object_type)->object_type_attributes);
+    free((*object_type)->attributes);
+    if((*object_type)->attributes != NULL) 
+        datalog_opcua_free_attribiute((*object_type)->attributes);
+    free(*object_type); 
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_free_method(opcua_method_t** method)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+
+    ret = datalog_opcua_free_reference_list((void**)method, DL_OPC_METHOD);
+    free((*method)->method_attributes);
+    free((*method)->attributes);
+    if((*method)->attributes != NULL) 
+        datalog_opcua_free_attribiute((*method)->attributes);
+    free(*method); 
+
+    return DL_OPCUA_OK;
+}
+
 DL_OPCUA_ERR_t datalog_opcua_free_variable(opcua_variable_t** variable)
 {
     DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
 
     ret = datalog_opcua_free_reference_list((void**)variable, DL_OPC_VARIABLE);
     free((*variable)->variable_attributes);
+    if((*variable)->attributes != NULL) 
+        datalog_opcua_free_attribiute((*variable)->attributes);
     free((*variable)->attributes);
-
     free(*variable); 
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_free_object(opcua_object_t** object)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+
+    ret = datalog_opcua_free_reference_list((void**)object, DL_OPC_OBJ);
+    free((*object)->object_attributes);
+    free((*object)->attributes);
+    if((*object)->attributes != NULL) 
+        datalog_opcua_free_attribiute((*object)->attributes);
+    free(*object); 
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_free_variable_type(opcua_variable_type_t** variable_type)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+
+    ret = datalog_opcua_free_reference_list((void**)variable_type, DL_OPC_VAR_TYPE);
+    free((*variable_type)->variable_type_attributes);
+    free((*variable_type)->attributes);
+    if((*variable_type)->attributes != NULL) 
+        datalog_opcua_free_attribiute((*variable_type)->attributes);
+    free(*variable_type); 
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_free_reference_type(opcua_reference_type_t** reference_type)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+
+    ret = datalog_opcua_free_reference_list((void**)reference_type, DL_OPC_REF_TYPE);
+    free((*reference_type)->reference_type_attributes);
+    free((*reference_type)->attributes);
+    if((*reference_type)->attributes != NULL) 
+        datalog_opcua_free_attribiute((*reference_type)->attributes);
+    free(*reference_type); 
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_free_data_type(opcua_data_type_t** data_type)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+
+    ret = datalog_opcua_free_reference_list((void**)data_type, DL_OPC_DATA_TYPE);
+    free((*data_type)->data_type_attributes);
+    free((*data_type)->attributes);
+    if((*data_type)->attributes != NULL) 
+        datalog_opcua_free_attribiute((*data_type)->attributes);
+    free(*data_type); 
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_free_view(opcua_view_t** view)
+{
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+
+    ret = datalog_opcua_free_reference_list((void**)view, DL_OPC_VIEW);
+    free((*view)->view_attributes);
+    free((*view)->attributes);
+    if((*view)->attributes != NULL) 
+        datalog_opcua_free_attribiute((*view)->attributes);
+    free(*view); 
 
     return DL_OPCUA_OK;
 }
@@ -2329,6 +2436,8 @@ opcua_object_type_t* datalog_opcua_create_object_type(void)
     ret->create_node = &datalog_opcua_create_node_object_type;
     ret->set_is_abstract = &self_set_object_type_is_abstract;
 
+    ret->free_object_type = &datalog_opcua_free_object_type;
+
     return ret;
 }
 
@@ -2356,6 +2465,8 @@ opcua_method_t* datalog_opcua_create_method(void)
     ret->add_reference = &self_add_ref_method;
     ret->create_node = &datalog_opcua_create_node_method;
     ret->set_declaration_id = &self_set_method_declaration_id;
+
+    ret->free_method = &datalog_opcua_free_method;
 
     return ret;
 }
@@ -2394,6 +2505,8 @@ opcua_variable_t* datalog_opcua_create_variable(void)
     ret->set_value_rank = &self_set_variable_value_rank;
     ret->set_is_abstract = &self_set_variable_is_abstract;
 
+    ret->free_variable = &datalog_opcua_free_variable;
+
     return ret;
 }
 
@@ -2424,6 +2537,8 @@ opcua_object_t* datalog_opcua_create_object(void)
     ret->add_reference = &self_add_ref_object;
     ret->create_node = &datalog_opcua_create_node_object;
     ret->set_event_notifier = &self_set_object_event_notifier;
+
+    ret->free_object = &datalog_opcua_free_object;
 
     return ret;
 }
@@ -2463,6 +2578,8 @@ opcua_variable_type_t* datalog_opcua_create_variable_type(void)
     ret->set_value_rank = &self_set_variable_type_value_rank;
     ret->set_is_abstract = &self_set_variable_type_is_abstract;
 
+    ret->free_variable_type = &datalog_opcua_free_variable_type;
+
     return ret;
 }
 //REFERENCE TYPE
@@ -2499,6 +2616,8 @@ opcua_reference_type_t* datalog_opcua_create_reference_type(void)
     ret->set_symmetric = &self_set_reference_type_symmetric;
     ret->set_inverse_name = &self_set_reference_type_inverse_name;
 
+    ret->free_reference_type = &datalog_opcua_free_reference_type;
+
     return ret;
 
 }
@@ -2532,6 +2651,8 @@ opcua_data_type_t* datalog_opcua_create_data_type(void)
     ret->add_reference = &self_add_ref_data_type;
     ret->create_node = &datalog_opcua_create_node_data_type;
     ret->set_is_abstract = &self_set_data_type_is_abstract;
+
+    ret->free_data_type = &datalog_opcua_free_data_type;
 
     return ret;
 
@@ -2567,6 +2688,8 @@ opcua_view_t* datalog_opcua_create_view(void)
     ret->create_node = &datalog_opcua_create_node_view;
     ret->set_contains_no_loops = &self_set_view_contains_no_loops;
     ret->set_event_notifier = &self_set_view_event_notifier;
+
+    ret->free_view = &datalog_opcua_free_view;
 
     return ret;
 }
@@ -2649,7 +2772,7 @@ void datalog_opcua_runtime(void)
 
     test_variable->create_references(test_variable);
 
-    datalog_opcua_free_variable(&test_variable);
+    test_variable->free_variable(&test_variable);
 
     //method
     opcua_method_t* test_method = datalog_opcua_create_method();

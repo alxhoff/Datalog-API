@@ -375,6 +375,8 @@ struct opcua_object_type{
                                                                             references linked list*/
     DL_OPCUA_ERR_t (*create_node)(opcua_object_type_t*);                                                                                    
     DL_OPCUA_ERR_t (*set_is_abstract)(opcua_object_type_t*,bool);       //TODO
+    
+    DL_OPCUA_ERR_t (*free_object_type)(opcua_object_type_t**);
 };
 
 /**
@@ -414,6 +416,8 @@ struct opcua_method{
                                                                         references linked list*/
     DL_OPCUA_ERR_t (*create_node)(opcua_method_t*);                                                                                    
     DL_OPCUA_ERR_t (*set_declaration_id)(opcua_method_t*,int);      /**< Sets the method's declaration ID attribute*/
+    
+    DL_OPCUA_ERR_t (*free_method)(opcua_method_t**);
 };
 
 /**
@@ -453,9 +457,9 @@ struct opcua_variable{
                                                                             references linked list*/
     DL_OPCUA_ERR_t (*create_node)(opcua_variable_t*);                                                                                    
     DL_OPCUA_ERR_t (*set_value)(opcua_variable_t*,void*);               //TODO
-    DL_OPCUA_ERR_t (*set_data_type)(opcua_variable_t*,opcua_node_id_t*);           /**< Sets the variable's data type attribute*/
+    DL_OPCUA_ERR_t (*set_data_type)(opcua_variable_t*,opcua_node_id_t*);/**< Sets the variable's data type attribute*/
     DL_OPCUA_ERR_t (*set_array_dimensions)(opcua_variable_t*,int);      /**< Sets the variable's array dimensions attribute*/
-    DL_OPCUA_ERR_t (*set_value_rank)(opcua_variable_t*,int32_t);            /**< Sets the variable's value rank attribute*/
+    DL_OPCUA_ERR_t (*set_value_rank)(opcua_variable_t*,int32_t);        /**< Sets the variable's value rank attribute*/
     DL_OPCUA_ERR_t (*set_is_abstract)(opcua_variable_t*,bool);          //TODO
     
     DL_OPCUA_ERR_t (*free_variable)(opcua_variable_t**);
@@ -497,7 +501,10 @@ struct opcua_object{
                                     opcua_reference_t*);                /**< Adds a reference object to the object's references 
                                                                                 linked list*/
     DL_OPCUA_ERR_t (*create_node)(opcua_object_t*);                                                                                    
-    DL_OPCUA_ERR_t (*set_event_notifier)(opcua_object_t*, unsigned char); //TODO
+    DL_OPCUA_ERR_t (*set_event_notifier)(opcua_object_t*, 
+                                            unsigned char);             //TODO
+    
+    DL_OPCUA_ERR_t (*free_object)(opcua_object_t**);
 };
 
 typedef struct opcua_variable_type opcua_variable_type_t;
@@ -522,7 +529,7 @@ struct opcua_variable_type{
     DL_OPCUA_ERR_t (*set_description)(opcua_variable_type_t*,char*);            /**< Sets the variable type's description attribute*/
     DL_OPCUA_ERR_t (*set_user_access_level)(opcua_variable_type_t*,int);        /**< Sets the variable type's user access level attribute*/
     DL_OPCUA_ERR_t (*set_access_level)(opcua_variable_type_t*,int);             /**< Sets the variable type's access level attribute*/
-    DL_OPCUA_ERR_t (*create_references)(opcua_variable_type_t*);                 /**< Creates <Reference> nodes for each reference in the 
+    DL_OPCUA_ERR_t (*create_references)(opcua_variable_type_t*);                /**< Creates <Reference> nodes for each reference in the 
                                                                                     variable type's references linked list*/
     DL_OPCUA_ERR_t (*add_reference)(opcua_variable_type_t*, 
                                     opcua_reference_t*);                        /**< Adds a reference variable_type to the variable type's 
@@ -533,6 +540,8 @@ struct opcua_variable_type{
     DL_OPCUA_ERR_t (*set_array_dimensions)(opcua_variable_type_t*,uint32_t);    //TODO
     DL_OPCUA_ERR_t (*set_value_rank)(opcua_variable_type_t*,int32_t);           //TODO
     DL_OPCUA_ERR_t (*set_is_abstract)(opcua_variable_type_t*,bool);             //TODO
+    
+    DL_OPCUA_ERR_t (*free_variable_type)(opcua_variable_type_t**);
 };
 
 typedef struct opcua_reference_type opcua_reference_type_t;
@@ -566,6 +575,8 @@ struct opcua_reference_type{
     DL_OPCUA_ERR_t (*set_is_abstract)(opcua_reference_type_t*,bool);        //TODO
     DL_OPCUA_ERR_t (*set_symmetric)(opcua_reference_type_t*,bool);          //TODO
     DL_OPCUA_ERR_t (*set_inverse_name)(opcua_reference_type_t*,char*);      //TODO
+    
+    DL_OPCUA_ERR_t (*free_reference_type)(opcua_reference_type_t**);
 };
 
 struct opcua_data_type{
@@ -595,6 +606,8 @@ struct opcua_data_type{
                                                                             linked list*/
     DL_OPCUA_ERR_t (*create_node)(opcua_data_type_t*);                                                                                    
     DL_OPCUA_ERR_t (*set_is_abstract)(opcua_data_type_t*,bool);
+    
+    DL_OPCUA_ERR_t (*free_data_type)(opcua_data_type_t**);
 };
 
 typedef struct opcua_view opcua_view_t;
@@ -625,7 +638,10 @@ struct opcua_view{
                                     opcua_reference_t*);        /**< Adds a reference object to the view's references linked list*/
     DL_OPCUA_ERR_t (*create_node)(opcua_view_t*);                                                                                    
     DL_OPCUA_ERR_t (*set_contains_no_loops)(opcua_view_t*,bool);
-    DL_OPCUA_ERR_t (*set_event_notifier)(opcua_view_t*,unsigned char);
+    DL_OPCUA_ERR_t (*set_event_notifier)(opcua_view_t*,
+                                            unsigned char);
+    
+    DL_OPCUA_ERR_t (*free_view)(opcua_view_t**);
 };
 
 //SERVER CONFIG
