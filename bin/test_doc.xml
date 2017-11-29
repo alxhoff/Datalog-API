@@ -84,14 +84,26 @@
   </UAObject>
   <UAVariableType ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1" BrowseName="1:Start" UserAccessLevel="12" AccessLevel="10" DataType="ns=51;i=52;s=test node id" ArrayDimensions="11" ValueRank="1111" IsAbstract="true">
     <DisplayName>Start</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty">ns=1;i=6014</Reference>
+    </References>
   </UAVariableType>
   <UAReferenceType ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1" BrowseName="1:Start" UserAccessLevel="12" AccessLevel="10" IsAbstract="true" Symmetric="false" InverseName="inverse name test">
     <DisplayName>Start</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty">ns=1;i=6014</Reference>
+    </References>
   </UAReferenceType>
   <UADataType ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1" BrowseName="1:Start" UserAccessLevel="12" AccessLevel="10" IsAbstract="true">
     <DisplayName>Start</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty">ns=1;i=6014</Reference>
+    </References>
   </UADataType>
   <UAView ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1" BrowseName="1:Start" UserAccessLevel="12" AccessLevel="10" IsAbstract="false" EventNotifier="0x3C">
     <DisplayName>Start</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty">ns=1;i=6014</Reference>
+    </References>
   </UAView>
 </UANodeSet>

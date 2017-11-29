@@ -2728,7 +2728,7 @@ void datalog_opcua_runtime(void)
 
     ret = test_variable_type->create_node(test_variable_type);
 
-//    test_variable_type->add_reference(test_variable_type, test_ref);
+    test_variable_type->add_reference(test_variable_type, test_ref);
     test_variable_type->create_references(test_variable_type);
     
     //reference type
@@ -2747,7 +2747,11 @@ void datalog_opcua_runtime(void)
     test_reference_type->set_symmetric(test_reference_type, false);
     test_reference_type->set_inverse_name(test_reference_type, "inverse name test");
 
-    test_reference_type->create_node(test_reference_type);
+    ret = test_reference_type->create_node(test_reference_type);
+
+    test_reference_type->add_reference(test_reference_type, test_ref);
+    test_reference_type->create_references(test_reference_type);
+    
     //data type
     opcua_data_type_t* test_data_type = datalog_opcua_create_data_type(); 
    
@@ -2763,6 +2767,10 @@ void datalog_opcua_runtime(void)
     test_data_type->set_is_abstract(test_data_type, true);
 
     ret = test_data_type->create_node(test_data_type);
+
+    test_data_type->add_reference(test_data_type, test_ref);
+    test_data_type->create_references(test_data_type);
+    
     //view
     opcua_view_t* test_view = datalog_opcua_create_view();
     
@@ -2779,6 +2787,9 @@ void datalog_opcua_runtime(void)
     test_view->set_event_notifier(test_view, 60);
 
     ret = test_view->create_node(test_view);
+
+    test_view->add_reference(test_view, test_ref);
+    test_view->create_references(test_view);
 
 //TEST CODE END
 
