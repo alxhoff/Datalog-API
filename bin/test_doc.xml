@@ -48,7 +48,7 @@
       <ModelInfo Tool="UaModeler" Hash="T9MjgfInUChe45aJYm9rKw==" Version="1.4.0"/>
     </Extension>
   </Extensions>
-  <UAObjectType BrowseName="1:ControllerTypeXml" NodeId="ns=1;i=1001">
+  <UAObjectType NodeId="ns=1;i=1001" BrowseName="1:ControllerTypeXml">
     <DisplayName>ControllerTypeXml</DisplayName>
     <References>
       <Reference ReferenceType="HasSubtype" IsForward="false">i=58</Reference>
@@ -61,25 +61,29 @@
       <Reference ReferenceType="HasComponent">ns=1;i=6035</Reference>
     </References>
   </UAObjectType>
-  <UAVariable BrowseName="1:PowerConsumption" ParentNodeId="ns=1;i=1001" NodeId="ns=1;i=6001" UserAccessLevel="3" AccessLevel="3">
+  <UAVariable ParentNodeId="ns=1;i=1001" NodeId="ns=1;i=6001" BrowseName="1:PowerConsumption" UserAccessLevel="3" AccessLevel="3">
     <DisplayName>PowerConsumption</DisplayName>
     <References>
       <Reference ReferenceType="HasSubtype" IsForward="false">i=58</Reference>
       <Reference ReferenceType="HasComponent">ns=1;i=6001</Reference>
     </References>
   </UAVariable>
-  <UAMethod BrowseName="1:Start" ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1">
+  <UAMethod ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1" BrowseName="1:Start">
     <DisplayName>Start</DisplayName>
     <References>
       <Reference ReferenceType="HasModellingRule">i=78</Reference>
       <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=1001</Reference>
     </References>
   </UAMethod>
-  <UAObject BrowseName="1:StateCondition" ParentNodeId="ns=1;i=1001" NodeId="ns=1;i=5001;s=TESTS">
+  <UAObject ParentNodeId="ns=1;i=1001" NodeId="ns=1;i=5001;s=TESTS" BrowseName="1:StateCondition" EventNotifier="FF">
     <DisplayName>StateCondition</DisplayName>
     <References>
       <Reference ReferenceType="HasComponent">ns=1;i=6010</Reference>
       <Reference ReferenceType="HasProperty">ns=1;i=6014</Reference>
     </References>
   </UAObject>
+  <UAVariableType AccessLevel="10"/>
+  <UAReferenceType/>
+  <UADataType/>
+  <UAView/>
 </UANodeSet>

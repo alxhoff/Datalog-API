@@ -2232,6 +2232,8 @@ opcua_object_type_attributes_t* datalog_opcua_create_object_type_attributes(void
     opcua_object_type_attributes_t* ret = (opcua_object_type_attributes_t*)
         calloc(1, sizeof(opcua_object_type_attributes_t));
     if(ret == NULL) return NULL;
+
+
     return ret;
 }
 
@@ -2307,7 +2309,8 @@ opcua_object_type_t* datalog_opcua_create_object_type(void)
     ret->object_type_attributes = datalog_opcua_create_object_type_attributes();
     if(ret->object_type_attributes == NULL) return NULL;
 
-    //set function pointers
+    ret->object_type_attributes->is_abstract = -1;
+
     ret->set_parent_id_ns = &self_set_object_type_parent_node_id_ns;
     ret->set_parent_id_i = &self_set_object_type_parent_node_id_i;
     ret->set_parent_id_s = &self_set_object_type_parent_node_id_s;
@@ -2319,6 +2322,7 @@ opcua_object_type_t* datalog_opcua_create_object_type(void)
     ret->set_description = &self_set_object_type_description;
     ret->create_references = &self_create_node_object_type_references;
     ret->add_reference = &self_add_ref_object_type;
+    ret->create_node = &datalog_opcua_create_node_object_type;
     ret->set_is_abstract = &self_set_object_type_is_abstract;
 
     return ret;
@@ -2335,7 +2339,6 @@ opcua_method_t* datalog_opcua_create_method(void)
     ret->method_attributes = datalog_opcua_create_method_attributes();
     if(ret->method_attributes == NULL) return NULL;
 
-    //set function pointers
     ret->set_parent_id_ns = &self_set_method_parent_node_id_ns;
     ret->set_parent_id_i = &self_set_method_parent_node_id_i;
     ret->set_parent_id_s = &self_set_method_parent_node_id_s;
@@ -2347,6 +2350,7 @@ opcua_method_t* datalog_opcua_create_method(void)
     ret->set_description = &self_set_method_description;
     ret->create_references = &self_create_node_method_references;
     ret->add_reference = &self_add_ref_method;
+    ret->create_node = &datalog_opcua_create_node_method;
     ret->set_declaration_id = &self_set_method_declaration_id;
 
     return ret;
@@ -2364,6 +2368,8 @@ opcua_variable_t* datalog_opcua_create_variable(void)
     ret->variable_attributes = datalog_opcua_create_variable_attributes();
     if(ret->variable_attributes == NULL) return NULL;
 
+    ret->variable_attributes->is_abstract = -1;
+
     ret->set_parent_id_ns = &self_set_variable_parent_node_id_ns;
     ret->set_parent_id_i = &self_set_variable_parent_node_id_i;
     ret->set_parent_id_s = &self_set_variable_parent_node_id_s;
@@ -2377,6 +2383,7 @@ opcua_variable_t* datalog_opcua_create_variable(void)
     ret->set_access_level = &self_set_variable_access_level;
     ret->create_references = &self_create_node_variable_references;
     ret->add_reference = &self_add_ref_variable;
+    ret->create_node = &datalog_opcua_create_node_variable;
     ret->set_value = &self_set_variable_value;
     ret->set_data_type = &self_set_variable_data_type;
     ret->set_array_dimensions = &self_set_variable_array_dimensions;
@@ -2398,6 +2405,8 @@ opcua_object_t* datalog_opcua_create_object(void)
     ret->object_attributes = datalog_opcua_create_object_attributes();
     if(ret->object_attributes == NULL) return NULL;
 
+    ret->object_attributes->event_notifier = -1;
+
     ret->set_parent_id_ns = &self_set_object_parent_node_id_ns;
     ret->set_parent_id_i = &self_set_object_parent_node_id_i;
     ret->set_parent_id_s = &self_set_object_parent_node_id_s;
@@ -2409,6 +2418,7 @@ opcua_object_t* datalog_opcua_create_object(void)
     ret->set_description = &self_set_object_description;
     ret->create_references = &self_create_node_object_references;
     ret->add_reference = &self_add_ref_object;
+    ret->create_node = &datalog_opcua_create_node_object;
     ret->set_event_notifier = &self_set_object_event_notifier;
 
     return ret;
@@ -2427,6 +2437,7 @@ opcua_variable_type_t* datalog_opcua_create_variable_type(void)
     ret->variable_type_attributes = datalog_opcua_create_variable_type_attributes();
     if(ret->variable_type_attributes == NULL) return NULL;
 
+    ret->variable_type_attributes->is_abstract = -1;
 
     ret->set_parent_id_ns = &self_set_variable_type_parent_node_id_ns;
     ret->set_parent_id_i = &self_set_variable_type_parent_node_id_i;
@@ -2441,6 +2452,7 @@ opcua_variable_type_t* datalog_opcua_create_variable_type(void)
     ret->set_access_level = &self_set_variable_type_access_level;
     ret->create_references = &self_create_node_variable_type_references;
     ret->add_reference = &self_add_ref_variable_type;
+    ret->create_node = &datalog_opcua_create_node_variable_type;
     ret->set_value = &self_set_variable_type_value;
     ret->set_data_type = &self_set_variable_type_data_type;
     ret->set_array_dimensions = &self_set_variable_type_array_dimensions;
@@ -2462,6 +2474,8 @@ opcua_reference_type_t* datalog_opcua_create_reference_type(void)
     ret->reference_type_attributes = datalog_opcua_create_reference_type_attributes();
     if(ret->reference_type_attributes == NULL) return NULL;
 
+    ret->reference_type_attributes->is_abstract = -1;
+    ret->reference_type_attributes->symmetric = -1;
 
     ret->set_parent_id_ns = &self_set_reference_type_parent_node_id_ns;
     ret->set_parent_id_i = &self_set_reference_type_parent_node_id_i;
@@ -2476,6 +2490,7 @@ opcua_reference_type_t* datalog_opcua_create_reference_type(void)
     ret->set_access_level = &self_set_reference_type_access_level;
     ret->create_references = &self_create_node_reference_type_references;
     ret->add_reference = &self_add_ref_reference_type;
+    ret->create_node = &datalog_opcua_create_node_reference_type;
     ret->set_is_abstract = &self_set_reference_type_is_abstract;
     ret->set_symmetric = &self_set_reference_type_symmetric;
     ret->set_inverse_name = &self_set_reference_type_inverse_name;
@@ -2496,6 +2511,7 @@ opcua_data_type_t* datalog_opcua_create_data_type(void)
     ret->data_type_attributes = datalog_opcua_create_data_type_attributes();
     if(ret->data_type_attributes == NULL) return NULL;
 
+    ret->data_type_attributes->is_abstract = -1;
 
     ret->set_parent_id_ns = &self_set_data_type_parent_node_id_ns;
     ret->set_parent_id_i = &self_set_data_type_parent_node_id_i;
@@ -2510,6 +2526,7 @@ opcua_data_type_t* datalog_opcua_create_data_type(void)
     ret->set_access_level = &self_set_data_type_access_level;
     ret->create_references = &self_create_node_data_type_references;
     ret->add_reference = &self_add_ref_data_type;
+    ret->create_node = &datalog_opcua_create_node_data_type;
     ret->set_is_abstract = &self_set_data_type_is_abstract;
 
     return ret;
@@ -2528,6 +2545,7 @@ opcua_view_t* datalog_opcua_create_view(void)
     ret->view_attributes = datalog_opcua_create_view_attributes();
     if(ret->view_attributes == NULL) return NULL;
 
+    ret->view_attributes->contains_no_loops = -1;
 
     ret->set_parent_id_ns = &self_set_view_parent_node_id_ns;
     ret->set_parent_id_i = &self_set_view_parent_node_id_i;
@@ -2542,6 +2560,7 @@ opcua_view_t* datalog_opcua_create_view(void)
     ret->set_access_level = &self_set_view_access_level;
     ret->create_references = &self_create_node_view_references;
     ret->add_reference = &self_add_ref_view;
+    ret->create_node = &datalog_opcua_create_node_view;
     ret->set_contains_no_loops = &self_set_view_contains_no_loops;
     ret->set_event_notifier = &self_set_view_event_notifier;
 
@@ -2579,45 +2598,45 @@ void datalog_opcua_runtime(void)
 
 //TEST CODE
     //object type
-    opcua_node_attributes_t* tmp_attribs = datalog_opcua_create_attributes();
+    opcua_node_attributes_t* test_attributes = datalog_opcua_create_attributes();
 
-    tmp_attribs->set_node_id_ns(tmp_attribs, 1);
-    tmp_attribs->set_node_id_i(tmp_attribs, 1001);
-    tmp_attribs->set_browse_name(tmp_attribs, "1:ControllerTypeXml");
-    tmp_attribs->set_display_name(tmp_attribs, "ControllerTypeXml");
+    test_attributes->set_node_id_ns(test_attributes, 1);
+    test_attributes->set_node_id_i(test_attributes, 1001);
+    test_attributes->set_browse_name(test_attributes, "1:ControllerTypeXml");
+    test_attributes->set_display_name(test_attributes, "ControllerTypeXml");
 
     datalog_opcua_create_node_object_type_from_array(object_type_array, 
-            tmp_attribs);
+            test_attributes);
 
     //variable
-    opcua_variable_t* tmp_variable = datalog_opcua_create_variable();
+    opcua_variable_t* test_variable = datalog_opcua_create_variable();
 
-    tmp_variable->set_parent_id_i(tmp_variable, 1001);
-    tmp_variable->set_parent_id_ns(tmp_variable, 1);
-    tmp_variable->set_node_id_i(tmp_variable, 6001);
-    tmp_variable->set_node_id_ns(tmp_variable, 1);
-    tmp_variable->set_browse_name(tmp_variable, "1:PowerConsumption");
-    tmp_variable->set_display_name(tmp_variable, "PowerConsumption");
-    tmp_variable->set_user_access_level(tmp_variable, 3);
-    tmp_variable->set_access_level(tmp_variable, 3);
-    tmp_variable->set_description(tmp_variable, "test description of the variable node");
+    test_variable->set_parent_id_i(test_variable, 1001);
+    test_variable->set_parent_id_ns(test_variable, 1);
+    test_variable->set_node_id_i(test_variable, 6001);
+    test_variable->set_node_id_ns(test_variable, 1);
+    test_variable->set_browse_name(test_variable, "1:PowerConsumption");
+    test_variable->set_display_name(test_variable, "PowerConsumption");
+    test_variable->set_user_access_level(test_variable, 3);
+    test_variable->set_access_level(test_variable, 3);
+    test_variable->set_description(test_variable, "test description of the variable nod:e");
 
-    datalog_opcua_create_node_variable(tmp_variable); 
+    datalog_opcua_create_node_variable(test_variable); 
     opcua_reference_t* test_ref = datalog_opcua_create_reference();
     test_ref->set_type(test_ref, "HasSubtype");
     test_ref->set_is_forward(test_ref, false);
     test_ref->set_id_i(test_ref, 58);
-    tmp_variable->add_reference(tmp_variable, test_ref);
+    test_variable->add_reference(test_variable, test_ref);
 
     test_ref = datalog_opcua_create_reference();
     test_ref->set_type(test_ref, "HasComponent");
     test_ref->set_id_i(test_ref, 6001);
     test_ref->set_id_ns(test_ref, 1);
-    tmp_variable->add_reference(tmp_variable, test_ref);
+    test_variable->add_reference(test_variable, test_ref);
 
-    tmp_variable->create_references(tmp_variable);
+    test_variable->create_references(test_variable);
 
-    datalog_opcua_free_variable(&tmp_variable);
+    datalog_opcua_free_variable(&test_variable);
 
     //method
     opcua_method_t* test_method = datalog_opcua_create_method();
@@ -2674,6 +2693,26 @@ void datalog_opcua_runtime(void)
     test_object->create_references(test_object);
 
     if(ret != DL_OPCUA_OK) return;
+
+    //variable type
+    opcua_variable_type_t* test_variable_type = datalog_opcua_create_variable_type(); 
+
+    test_variable_type->set_access_level(test_variable_type, 10);
+
+    ret = test_variable_type->create_node(test_variable_type);
+    //reference type
+    opcua_reference_type_t* test_reference_type = datalog_opcua_create_reference_type();  
+    
+    test_reference_type->create_node(test_reference_type);
+    //data type
+    opcua_data_type_t* test_data_type = datalog_opcua_create_data_type(); 
+    
+    ret = test_data_type->create_node(test_data_type);
+    //view
+    opcua_view_t* test_view = datalog_opcua_create_view();
+
+    ret = test_view->create_node(test_view);
+
 //TEST CODE END
 
     datalog_opcua_save_deinit_doc();
