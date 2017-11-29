@@ -61,7 +61,7 @@
       <Reference ReferenceType="HasComponent">ns=1;i=6035</Reference>
     </References>
   </UAObjectType>
-  <UAVariable BrowseName="1:PowerConsumption" ParentNodeId="ns=1;i=1001" NodeId="ns=1;i=6001" DataType="Double" UserAccessLevel="3" AccessLevel="3">
+  <UAVariable BrowseName="1:PowerConsumption" ParentNodeId="ns=1;i=1001" NodeId="ns=1;i=6001" UserAccessLevel="3" AccessLevel="3">
     <DisplayName>PowerConsumption</DisplayName>
     <References>
       <Reference ReferenceType="HasSubtype" IsForward="false">i=58</Reference>

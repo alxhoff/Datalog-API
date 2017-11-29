@@ -247,7 +247,7 @@ DL_OPCUA_ERR_t self_set_variable_access_level(opcua_variable_t* self, int al)
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t self_set_variable_value(opcua_variable_t* self)
+DL_OPCUA_ERR_t self_set_variable_value(opcua_variable_t* self, void* value)
 {
 //TODO
     return DL_OPCUA_OK;
@@ -521,7 +521,7 @@ DL_OPCUA_ERR_t self_set_variable_type_access_level(opcua_variable_type_t* self, 
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t self_set_variable_type_value(opcua_variable_type_t* self)
+DL_OPCUA_ERR_t self_set_variable_type_value(opcua_variable_type_t* self, void* value)
 {
 //TODO
     return DL_OPCUA_OK;
@@ -537,7 +537,7 @@ DL_OPCUA_ERR_t self_set_variable_type_data_type(opcua_variable_type_t* self, opc
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t self_set_variable_type_array_dimensions(opcua_variable_type_t* self, int ad)
+DL_OPCUA_ERR_t self_set_variable_type_array_dimensions(opcua_variable_type_t* self, uint32_t ad)
 {
     if(self->variable_type_attributes == NULL) return DL_OPCUA_INVAL;
     self->variable_type_attributes->array_dimensions = ad;
@@ -2085,6 +2085,7 @@ opcua_object_type_t* datalog_opcua_create_object_type(void)
     ret->set_description = &self_set_object_type_description;
     ret->create_references = &self_create_node_object_type_references;
     ret->add_reference = &self_add_ref_object_type;
+    ret->set_is_abstract = &self_set_object_type_is_abstract;
 
     return ret;
 }
@@ -2109,10 +2110,10 @@ opcua_method_t* datalog_opcua_create_method(void)
     ret->set_node_id_s = &self_set_method_node_id_s;
     ret->set_browse_name = &self_set_method_browse_name;
     ret->set_display_name = &self_set_method_display_name;
-    ret->set_declaration_id = &self_set_method_declaration_id;
     ret->set_description = &self_set_method_description;
     ret->create_references = &self_create_node_method_references;
     ret->add_reference = &self_add_ref_method;
+    ret->set_declaration_id = &self_set_method_declaration_id;
 
     return ret;
 }
@@ -2137,14 +2138,16 @@ opcua_variable_t* datalog_opcua_create_variable(void)
     ret->set_node_id_s = &self_set_variable_node_id_s;
     ret->set_browse_name = &self_set_variable_browse_name;
     ret->set_display_name = &self_set_variable_display_name;
-    ret->set_data_type = &self_set_variable_data_type;
+    ret->set_description = &self_set_variable_description;
     ret->set_user_access_level = &self_set_variable_user_access_level;
     ret->set_access_level = &self_set_variable_access_level;
-    ret->set_array_dimensions = &self_set_variable_array_dimensions;
-    ret->set_value_rank = &self_set_variable_value_rank;
-    ret->set_description = &self_set_variable_description;
     ret->create_references = &self_create_node_variable_references;
     ret->add_reference = &self_add_ref_variable;
+    ret->set_value = &self_set_variable_value;
+    ret->set_data_type = &self_set_variable_data_type;
+    ret->set_array_dimensions = &self_set_variable_array_dimensions;
+    ret->set_value_rank = &self_set_variable_value_rank;
+    ret->set_is_abstract = &self_set_variable_is_abstract;
 
     return ret;
 }
@@ -2172,6 +2175,7 @@ opcua_object_t* datalog_opcua_create_object(void)
     ret->set_description = &self_set_object_description;
     ret->create_references = &self_create_node_object_references;
     ret->add_reference = &self_add_ref_object;
+    ret->set_event_notifier = &self_set_object_event_notifier;
 
     return ret;
 }
@@ -2203,6 +2207,11 @@ opcua_variable_type_t* datalog_opcua_create_variable_type(void)
     ret->set_access_level = &self_set_variable_type_access_level;
     ret->create_references = &self_create_node_variable_type_references;
     ret->add_reference = &self_add_ref_variable_type;
+    ret->set_value = &self_set_variable_type_value;
+    ret->set_data_type = &self_set_variable_type_data_type;
+    ret->set_array_dimensions = &self_set_variable_type_array_dimensions;
+    ret->set_value_rank = &self_set_variable_type_value_rank;
+    ret->set_is_abstract = &self_set_variable_type_is_abstract;
 
     return ret;
 }
@@ -2233,6 +2242,9 @@ opcua_reference_type_t* datalog_opcua_create_reference_type(void)
     ret->set_access_level = &self_set_reference_type_access_level;
     ret->create_references = &self_create_node_reference_type_references;
     ret->add_reference = &self_add_ref_reference_type;
+    ret->set_is_abstract = &self_set_reference_type_is_abstract;
+    ret->set_symmetric = &self_set_reference_type_symmetric;
+    ret->set_inverse_name = &self_set_reference_type_inverse_name;
 
     return ret;
 
@@ -2264,6 +2276,7 @@ opcua_data_type_t* datalog_opcua_create_data_type(void)
     ret->set_access_level = &self_set_data_type_access_level;
     ret->create_references = &self_create_node_data_type_references;
     ret->add_reference = &self_add_ref_data_type;
+    ret->set_is_abstract = &self_set_data_type_is_abstract;
 
     return ret;
 
@@ -2295,6 +2308,8 @@ opcua_view_t* datalog_opcua_create_view(void)
     ret->set_access_level = &self_set_view_access_level;
     ret->create_references = &self_create_node_view_references;
     ret->add_reference = &self_add_ref_view;
+    ret->set_contains_no_loops = &self_set_view_contains_no_loops;
+    ret->set_event_notifier = &self_set_view_event_notifier;
 
     return ret;
 }

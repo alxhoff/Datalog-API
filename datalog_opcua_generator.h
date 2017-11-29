@@ -385,7 +385,6 @@ struct opcua_method{
     opcua_method_attributes_t* method_attributes;   /**< Pointer to the method's specific attributes*/
     opcua_reference_t* reference_head;              /**< Pointer to the head of the object's reference linked list*/
     
-    //functions
     DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_method_t*,int);        /**< Sets the method's parent ID ns attribute*/
     DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_method_t*,int);         /**< Sets the method's parent ID i attribute*/
     DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_method_t*,char*);       /**< Sets the method's parent s attribute*/
@@ -424,7 +423,6 @@ struct opcua_variable{
     opcua_variable_attributes_t* variable_attributes;   /**< Pointer to the variable's specific attributes*/
     opcua_reference_t* reference_head;                  /**< Pointer to the head of the object's reference linked list*/
 
-    //functions
     DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_variable_t*,int);          /**< Sets the variable's parent ID ns attribute*/
     DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_variable_t*,int);           /**< Sets the variable's parent ID i attribute*/
     DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_variable_t*,char*);         /**< Sets the variable's parent ID s attribute*/
@@ -470,7 +468,6 @@ struct opcua_object{
     opcua_object_attributes_t* object_attributes;   /**< <UAObject>'s type specific attributes*/
     opcua_reference_t* reference_head;              /**< Pointer to the head of the object's references linked list*/
 
-    //functions
     DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_object_t*,int);            /**< Sets the ParentNodeId attribute's ns property*/
     DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_object_t*,int);             /**< Sets the ParentNodeId attribute's i property*/
     DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_object_t*,char*);           /**< Sets the ParentNodeId attribute's s property*/
@@ -487,10 +484,9 @@ struct opcua_object{
     DL_OPCUA_ERR_t (*add_reference)(opcua_object_t*, 
                                     opcua_reference_t*);                /**< Adds a reference object to the object's references 
                                                                                 linked list*/
-    DL_OPCUA_ERR_t (*set_event_notifier)(opcua_object_t, unsigned char); //TODO
+    DL_OPCUA_ERR_t (*set_event_notifier)(opcua_object_t*, unsigned char); //TODO
 };
 
-//NEW WORK
 typedef struct opcua_variable_type opcua_variable_type_t;
 
 struct opcua_variable_type{
