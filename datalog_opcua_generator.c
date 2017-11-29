@@ -268,7 +268,7 @@ DL_OPCUA_ERR_t self_set_variable_array_dimensions(opcua_variable_t* self, int ad
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t self_set_variable_value_rank(opcua_variable_t* self, int vr)
+DL_OPCUA_ERR_t self_set_variable_value_rank(opcua_variable_t* self, int32_t vr)
 {
     if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
     self->variable_attributes->value_rank = vr;
@@ -540,7 +540,7 @@ DL_OPCUA_ERR_t self_set_variable_type_array_dimensions(opcua_variable_type_t* se
     return DL_OPCUA_OK;
 }
 
-DL_OPCUA_ERR_t self_set_variable_type_value_rank(opcua_variable_type_t* self, int vr)
+DL_OPCUA_ERR_t self_set_variable_type_value_rank(opcua_variable_type_t* self, int32_t vr)
 {
     if(self->variable_type_attributes == NULL) return DL_OPCUA_INVAL;
     self->variable_type_attributes->value_rank = vr;
@@ -1150,7 +1150,6 @@ DL_OPCUA_ERR_t datalog_opcua_set_id_i(opcua_node_id_t* id, int i)
 
 DL_OPCUA_ERR_t datalog_opcua_set_id_o(opcua_node_id_t* id, char* o)
 {
-
     if(o != NULL){
         id->o = (char*)realloc(id->o, 
                 sizeof(char) * (strlen(o) + 1));
@@ -1163,7 +1162,6 @@ DL_OPCUA_ERR_t datalog_opcua_set_id_o(opcua_node_id_t* id, char* o)
 
 DL_OPCUA_ERR_t datalog_opcua_set_id_g(opcua_node_id_t* id, char* g)
 {
-
     if(g != NULL){
         id->g = (char*)realloc(id->g, 
                 sizeof(char) * (strlen(g) + 1));
@@ -1267,7 +1265,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* v
         xmlNewProp(variable->node, BAD_CAST "ArrayDimensions", BAD_CAST buffer);
     }
     if(variable->variable_attributes->value_rank != 0){
-        sprintf(buffer, "%d", variable->variable_attributes->array_dimensions);
+        sprintf(buffer, "%d", variable->variable_attributes->value_rank);
         xmlNewProp(variable->node, BAD_CAST "ValueRank", BAD_CAST buffer);
     }
     
@@ -1287,7 +1285,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object_attributes(opcua_object_t* objec
     DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
 
     if(object->object_attributes->event_notifier != 0){
-        sprintf(buffer, "%02X", object->object_attributes->event_notifier);
+        sprintf(buffer, "0x%02X", object->object_attributes->event_notifier);
         xmlNewProp(object->node, BAD_CAST "EventNotifier", BAD_CAST buffer);
     }
         
@@ -1310,7 +1308,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable_type_attributes(
         xmlNewProp(variable_type->node, BAD_CAST "ArrayDimensions", BAD_CAST buffer);
     }
     if(variable_type->variable_type_attributes->value_rank != 0){
-        sprintf(buffer, "%d", variable_type->variable_type_attributes->array_dimensions);
+        sprintf(buffer, "%d", variable_type->variable_type_attributes->value_rank);
         xmlNewProp(variable_type->node, BAD_CAST "ValueRank", BAD_CAST buffer);
     }
     
@@ -1373,7 +1371,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_view_attributes(
     }
     
     if(view->view_attributes->event_notifier != 0){
-        sprintf(buffer, "%02X", view->view_attributes->event_notifier);
+        sprintf(buffer, "0x%02X", view->view_attributes->event_notifier);
         xmlNewProp(view->node, BAD_CAST "EventNotifier", BAD_CAST buffer);
     }
         
@@ -1948,7 +1946,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
 
     switch(object_type){
         case DL_OPC_VARIABLE:
-            //TODO CHECK FOR EMPTY REF HEAD
+        if(((opcua_variable_t*)object)->reference_head == NULL) break;
         if(((opcua_variable_t*)object)->references_node == NULL)
             ((opcua_variable_t*)object)->references_node 
                 = xmlNewChild(((opcua_variable_t*)object)->node,
@@ -1968,6 +1966,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
         }else return DL_OPCUA_INVAL;
             break;
         case DL_OPC_METHOD:
+        if(((opcua_method_t*)object)->reference_head == NULL) break;
         if(((opcua_method_t*)object)->references_node == NULL)
             ((opcua_method_t*)object)->references_node 
                 = xmlNewChild(((opcua_method_t*)object)->node,
@@ -1986,6 +1985,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
         }else return DL_OPCUA_INVAL;
             break;
         case DL_OPC_OBJ:
+        if(((opcua_object_t*)object)->reference_head == NULL) break;
         if(((opcua_object_t*)object)->references_node == NULL)
             ((opcua_object_t*)object)->references_node 
                 = xmlNewChild(((opcua_object_t*)object)->node,
@@ -2004,6 +2004,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
         }else return DL_OPCUA_INVAL;
             break;
         case DL_OPC_OBJ_TYPE:
+        if(((opcua_object_type_t*)object)->reference_head == NULL) break;
         if(((opcua_object_type_t*)object)->references_node == NULL)
             ((opcua_object_type_t*)object)->references_node 
                 = xmlNewChild(((opcua_object_type_t*)object)->node,
@@ -2023,6 +2024,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
         }else return DL_OPCUA_INVAL;
             break;
         case DL_OPC_VAR_TYPE:
+        if(((opcua_variable_type_t*)object)->reference_head == NULL) break;
         if(((opcua_variable_type_t*)object)->references_node == NULL)
             ((opcua_variable_type_t*)object)->references_node 
                 = xmlNewChild(((opcua_variable_type_t*)object)->node,
@@ -2040,25 +2042,9 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
                 }
             }else return DL_OPCUA_INVAL;
         }else return DL_OPCUA_INVAL;
-        if(((opcua_object_type_t*)object)->references_node == NULL)
-            ((opcua_object_type_t*)object)->references_node 
-                = xmlNewChild(((opcua_object_type_t*)object)->node,
-                    NULL, BAD_CAST "References", NULL);
-        if(((opcua_object_type_t*)object)->references_node != NULL){
-            if(((opcua_object_type_t*)object)->reference_head != NULL){
-                opcua_reference_t* ref_head = 
-                    ((opcua_object_type_t*)object)->reference_head;
-                while(ref_head != NULL){
-                    xmlNodePtr tmp_node = 
-                        xmlNewChild(((opcua_object_type_t*)object)->references_node,
-                        NULL, BAD_CAST "Reference", NULL);
-                    datalog_opcua_add_reference_attributes(tmp_node, ref_head);
-                    ref_head = ref_head->next;
-                }
-            }else return DL_OPCUA_INVAL;
-        }else return DL_OPCUA_INVAL;
             break;
         case DL_OPC_REF_TYPE:
+        if(((opcua_reference_type_t*)object)->reference_head == NULL) break;
         if(((opcua_reference_type_t*)object)->references_node == NULL)
             ((opcua_reference_type_t*)object)->references_node 
                 = xmlNewChild(((opcua_reference_type_t*)object)->node,
@@ -2078,6 +2064,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
         }else return DL_OPCUA_INVAL;
             break;
         case DL_OPC_DATA_TYPE:
+        if(((opcua_data_type_t*)object)->reference_head == NULL) break;
         if(((opcua_data_type_t*)object)->references_node == NULL)
             ((opcua_data_type_t*)object)->references_node 
                 = xmlNewChild(((opcua_data_type_t*)object)->node,
@@ -2097,6 +2084,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object,
         }else return DL_OPCUA_INVAL;
             break;
         case DL_OPC_VIEW:
+        if(((opcua_view_t*)object)->reference_head == NULL) break;
         if(((opcua_view_t*)object)->references_node == NULL)
             ((opcua_view_t*)object)->references_node 
                 = xmlNewChild(((opcua_view_t*)object)->node,
@@ -2220,6 +2208,8 @@ opcua_node_attributes_t* datalog_opcua_create_attributes(void)
     ret->set_node_id_ns = &self_set_attribute_node_id_ns;
     ret->set_node_id_i = &self_set_attribute_node_id_i;
     ret->set_node_id_s = &self_set_attribute_node_id_s;
+    ret->set_user_access_level = &self_set_attribute_user_access_level;
+    ret->set_access_level = &self_set_attribute_access_level;
     ret->set_browse_name = &self_set_attribute_browse_name;
     ret->set_display_name = &self_set_attribute_display_name;
     ret->set_description = &self_set_attribute_description;
@@ -2298,6 +2288,20 @@ opcua_view_attributes_t* datalog_opcua_create_view_attributes(void)
 }
 
 //STRUCT OBJECTS
+opcua_node_id_t* datalog_opcua_create_node_id(void)
+{
+    opcua_node_id_t* ret = (opcua_node_id_t*)calloc(1, sizeof(opcua_node_id_t));
+    if(ret == NULL) return NULL;
+
+    ret->set_ns = &datalog_opcua_set_id_ns;
+    ret->set_i = &datalog_opcua_set_id_i;
+    ret->set_s = &datalog_opcua_set_id_s;
+    ret->set_o = &datalog_opcua_set_id_o;
+    ret->set_g = &datalog_opcua_set_id_g;
+
+    return ret;
+}
+
 opcua_object_type_t* datalog_opcua_create_object_type(void)
 {
     opcua_object_type_t* ret = (opcua_object_type_t*)
@@ -2597,6 +2601,11 @@ void datalog_opcua_runtime(void)
     if(ret != DL_OPCUA_OK) return;
 
 //TEST CODE
+    opcua_node_id_t* test_node_id = datalog_opcua_create_node_id();
+    test_node_id->set_ns(test_node_id, 51);
+    test_node_id->set_i(test_node_id, 52);
+    test_node_id->set_s(test_node_id, "test node id");
+
     //object type
     opcua_node_attributes_t* test_attributes = datalog_opcua_create_attributes();
 
@@ -2620,6 +2629,10 @@ void datalog_opcua_runtime(void)
     test_variable->set_user_access_level(test_variable, 3);
     test_variable->set_access_level(test_variable, 3);
     test_variable->set_description(test_variable, "test description of the variable nod:e");
+    test_variable->set_value_rank(test_variable, 1111);
+    test_variable->set_array_dimensions(test_variable, 11);
+    test_variable->set_is_abstract(test_variable, true);
+    test_variable->set_data_type(test_variable, test_node_id);
 
     datalog_opcua_create_node_variable(test_variable); 
     opcua_reference_t* test_ref = datalog_opcua_create_reference();
@@ -2648,6 +2661,7 @@ void datalog_opcua_runtime(void)
     test_method->set_parent_id_s(test_method, "testParentS");
     test_method->set_browse_name(test_method, "1:Start");
     test_method->set_display_name(test_method, "Start");
+    test_method->set_declaration_id(test_method, 666);
 
     ret = datalog_opcua_create_node_method(test_method);
     
@@ -2675,6 +2689,7 @@ void datalog_opcua_runtime(void)
     test_object->set_parent_id_ns(test_object, 1);
     test_object->set_browse_name(test_object, "1:StateCondition");
     test_object->set_display_name(test_object, "StateCondition");
+    test_object->set_event_notifier(test_object, 10);
 
     ret = datalog_opcua_create_node_object(test_object);
 
@@ -2697,19 +2712,71 @@ void datalog_opcua_runtime(void)
     //variable type
     opcua_variable_type_t* test_variable_type = datalog_opcua_create_variable_type(); 
 
+    test_variable_type->set_node_id_i(test_variable_type, 1);
+    test_variable_type->set_node_id_ns(test_variable_type, 7001);
+    test_variable_type->set_parent_id_i(test_variable_type, 1001);
+    test_variable_type->set_parent_id_ns(test_variable_type, 1);
+    test_variable_type->set_parent_id_s(test_variable_type, "testParentS");
+    test_variable_type->set_browse_name(test_variable_type, "1:Start");
+    test_variable_type->set_display_name(test_variable_type, "Start");
     test_variable_type->set_access_level(test_variable_type, 10);
+    test_variable_type->set_user_access_level(test_variable_type, 12);
+    test_variable_type->set_value_rank(test_variable_type, 1111);
+    test_variable_type->set_array_dimensions(test_variable_type, 11);
+    test_variable_type->set_is_abstract(test_variable_type, true);
+    test_variable_type->set_data_type(test_variable_type, test_node_id);
 
     ret = test_variable_type->create_node(test_variable_type);
+
+//    test_variable_type->add_reference(test_variable_type, test_ref);
+    test_variable_type->create_references(test_variable_type);
+    
     //reference type
     opcua_reference_type_t* test_reference_type = datalog_opcua_create_reference_type();  
-    
+   
+    test_reference_type->set_node_id_i(test_reference_type, 1);
+    test_reference_type->set_node_id_ns(test_reference_type, 7001);
+    test_reference_type->set_parent_id_i(test_reference_type, 1001);
+    test_reference_type->set_parent_id_ns(test_reference_type, 1);
+    test_reference_type->set_parent_id_s(test_reference_type, "testParentS");
+    test_reference_type->set_browse_name(test_reference_type, "1:Start");
+    test_reference_type->set_display_name(test_reference_type, "Start");
+    test_reference_type->set_access_level(test_reference_type, 10);
+    test_reference_type->set_user_access_level(test_reference_type, 12);
+    test_reference_type->set_is_abstract(test_reference_type, true);
+    test_reference_type->set_symmetric(test_reference_type, false);
+    test_reference_type->set_inverse_name(test_reference_type, "inverse name test");
+
     test_reference_type->create_node(test_reference_type);
     //data type
     opcua_data_type_t* test_data_type = datalog_opcua_create_data_type(); 
-    
+   
+    test_data_type->set_node_id_i(test_data_type, 1);
+    test_data_type->set_node_id_ns(test_data_type, 7001);
+    test_data_type->set_parent_id_i(test_data_type, 1001);
+    test_data_type->set_parent_id_ns(test_data_type, 1);
+    test_data_type->set_parent_id_s(test_data_type, "testParentS");
+    test_data_type->set_browse_name(test_data_type, "1:Start");
+    test_data_type->set_display_name(test_data_type, "Start");
+    test_data_type->set_access_level(test_data_type, 10);
+    test_data_type->set_user_access_level(test_data_type, 12);
+    test_data_type->set_is_abstract(test_data_type, true);
+
     ret = test_data_type->create_node(test_data_type);
     //view
     opcua_view_t* test_view = datalog_opcua_create_view();
+    
+    test_view->set_node_id_i(test_view, 1);
+    test_view->set_node_id_ns(test_view, 7001);
+    test_view->set_parent_id_i(test_view, 1001);
+    test_view->set_parent_id_ns(test_view, 1);
+    test_view->set_parent_id_s(test_view, "testParentS");
+    test_view->set_browse_name(test_view, "1:Start");
+    test_view->set_display_name(test_view, "Start");
+    test_view->set_access_level(test_view, 10);
+    test_view->set_user_access_level(test_view, 12);
+    test_view->set_contains_no_loops(test_view, false);
+    test_view->set_event_notifier(test_view, 60);
 
     ret = test_view->create_node(test_view);
 

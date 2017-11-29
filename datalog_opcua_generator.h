@@ -133,18 +133,26 @@ typedef struct opcua_document{
 * @typedef opcua_node_id_t
 * @brief Typdef for opcua_node_id
 */
+typedef struct opcua_node_id opcua_node_id_t;
+
 /**
 * @struct opcua_node_id
 * @brief Stores the attribute values for ID's such as ParentNodeId and
 * NodeId
 */
-typedef struct opcua_node_id{
+struct opcua_node_id{
     int ns;         /**< NamespaceIndex*/
     int i;          /**< numeric identifier*/
     char* s;        /**< string identifier*/
     char* o;        /**< opaque identifier*/
     char* g;        /**< GUID identifier*/ 
-}opcua_node_id_t;
+
+    DL_OPCUA_ERR_t (*set_ns)(opcua_node_id_t*,int);
+    DL_OPCUA_ERR_t (*set_i)(opcua_node_id_t*,int);
+    DL_OPCUA_ERR_t (*set_s)(opcua_node_id_t*,char*);
+    DL_OPCUA_ERR_t (*set_o)(opcua_node_id_t*,char*);
+    DL_OPCUA_ERR_t (*set_g)(opcua_node_id_t*,char*);
+};
 
 /**
 * @typedef opcua_reference_t
@@ -212,6 +220,8 @@ struct opcua_node_attributes{
                                                                             attribute*/
     DL_OPCUA_ERR_t (*set_node_id_s)(opcua_node_attributes_t*,char*);    /**< Sets the node's node ID s
                                                                             attribute*/
+    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_node_attributes_t*,int);                                                                        
+    DL_OPCUA_ERR_t (*set_access_level)(opcua_node_attributes_t*,int);                                                                        
     DL_OPCUA_ERR_t (*set_browse_name)(opcua_node_attributes_t*,char*);  /**< Sets the node's browse name
                                                                             attribute*/
     DL_OPCUA_ERR_t (*set_display_name)(opcua_node_attributes_t*,char*); /**< Sets the node's display name
@@ -445,7 +455,7 @@ struct opcua_variable{
     DL_OPCUA_ERR_t (*set_value)(opcua_variable_t*,void*);               //TODO
     DL_OPCUA_ERR_t (*set_data_type)(opcua_variable_t*,opcua_node_id_t*);           /**< Sets the variable's data type attribute*/
     DL_OPCUA_ERR_t (*set_array_dimensions)(opcua_variable_t*,int);      /**< Sets the variable's array dimensions attribute*/
-    DL_OPCUA_ERR_t (*set_value_rank)(opcua_variable_t*,int);            /**< Sets the variable's value rank attribute*/
+    DL_OPCUA_ERR_t (*set_value_rank)(opcua_variable_t*,int32_t);            /**< Sets the variable's value rank attribute*/
     DL_OPCUA_ERR_t (*set_is_abstract)(opcua_variable_t*,bool);          //TODO
     
     DL_OPCUA_ERR_t (*free_variable)(opcua_variable_t**);
@@ -914,7 +924,7 @@ DL_OPCUA_ERR_t self_set_variable_array_dimensions(opcua_variable_t* self, int ad
 * @param vr Value rank value to be set
 * @return DL_OPCUA_ERR_t error message
 */
-DL_OPCUA_ERR_t self_set_variable_value_rank(opcua_variable_t* self, int vr);
+DL_OPCUA_ERR_t self_set_variable_value_rank(opcua_variable_t* self, int32_t vr);
 
 /**
 * @brief Sets the browse name for variable objects

@@ -61,29 +61,37 @@
       <Reference ReferenceType="HasComponent">ns=1;i=6035</Reference>
     </References>
   </UAObjectType>
-  <UAVariable ParentNodeId="ns=1;i=1001" NodeId="ns=1;i=6001" BrowseName="1:PowerConsumption" UserAccessLevel="3" AccessLevel="3">
+  <UAVariable ParentNodeId="ns=1;i=1001" NodeId="ns=1;i=6001" BrowseName="1:PowerConsumption" UserAccessLevel="3" AccessLevel="3" DataType="ns=51;i=52;s=test node id" ArrayDimensions="11" ValueRank="1111" IsAbstract="true">
     <DisplayName>PowerConsumption</DisplayName>
     <References>
       <Reference ReferenceType="HasSubtype" IsForward="false">i=58</Reference>
       <Reference ReferenceType="HasComponent">ns=1;i=6001</Reference>
     </References>
   </UAVariable>
-  <UAMethod ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1" BrowseName="1:Start">
+  <UAMethod ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1" BrowseName="1:Start" MethodDeclarationId="i=666">
     <DisplayName>Start</DisplayName>
     <References>
       <Reference ReferenceType="HasModellingRule">i=78</Reference>
       <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=1001</Reference>
     </References>
   </UAMethod>
-  <UAObject ParentNodeId="ns=1;i=1001" NodeId="ns=1;i=5001;s=TESTS" BrowseName="1:StateCondition" EventNotifier="FF">
+  <UAObject ParentNodeId="ns=1;i=1001" NodeId="ns=1;i=5001;s=TESTS" BrowseName="1:StateCondition" EventNotifier="0x0A">
     <DisplayName>StateCondition</DisplayName>
     <References>
       <Reference ReferenceType="HasComponent">ns=1;i=6010</Reference>
       <Reference ReferenceType="HasProperty">ns=1;i=6014</Reference>
     </References>
   </UAObject>
-  <UAVariableType AccessLevel="10"/>
-  <UAReferenceType/>
-  <UADataType/>
-  <UAView/>
+  <UAVariableType ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1" BrowseName="1:Start" UserAccessLevel="12" AccessLevel="10" DataType="ns=51;i=52;s=test node id" ArrayDimensions="11" ValueRank="1111" IsAbstract="true">
+    <DisplayName>Start</DisplayName>
+  </UAVariableType>
+  <UAReferenceType ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1" BrowseName="1:Start" UserAccessLevel="12" AccessLevel="10" IsAbstract="true" Symmetric="false" InverseName="inverse name test">
+    <DisplayName>Start</DisplayName>
+  </UAReferenceType>
+  <UADataType ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1" BrowseName="1:Start" UserAccessLevel="12" AccessLevel="10" IsAbstract="true">
+    <DisplayName>Start</DisplayName>
+  </UADataType>
+  <UAView ParentNodeId="ns=1;i=1001;s=testParentS" NodeId="ns=7001;i=1" BrowseName="1:Start" UserAccessLevel="12" AccessLevel="10" IsAbstract="false" EventNotifier="0x3C">
+    <DisplayName>Start</DisplayName>
+  </UAView>
 </UANodeSet>
