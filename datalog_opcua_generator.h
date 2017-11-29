@@ -255,7 +255,7 @@ typedef struct opcua_data_type opcua_data_type_t;
 */
 typedef struct opcua_variable_attributes{
     void* value;
-    opcua_node_id_t* data_type;     /**< Variable's "DataType" attribute*/ 
+    opcua_node_id_t data_type;     /**< Variable's "DataType" attribute*/ 
     uint32_t array_dimensions;      /**< Variable's "ArrayDimensions" attribute*/
     int32_t value_rank;             /**< Variable's "ValueRank" attribute*/
     bool is_abstract;               /**< */ 
@@ -283,7 +283,7 @@ typedef struct opcua_object_attributes{
 */
 typedef struct opcua_variable_type_attributes{
     void* value;
-    opcua_node_id_t* data_type;
+    opcua_node_id_t data_type;
     uint32_t array_dimensions;
     int32_t value_rank;
     bool is_abstract;
@@ -1343,7 +1343,7 @@ DL_OPCUA_ERR_t datalog_opcua_set_description(opcua_node_attributes_t* attribute,
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr node, 
-        opcua_node_attributes_t* attributes);
+        xmlNodePtr display_name_node, opcua_node_attributes_t* attributes);
 
 /**
 * @brief Creates node type specific attributes for a given XML node

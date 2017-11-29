@@ -257,9 +257,7 @@ DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self, opcua_node_id
 {
     if(self->variable_attributes == NULL) return DL_OPCUA_INVAL;
     if(ID == NULL) return DL_OPCUA_INVAL;
-    if(self->variable_attributes->data_type == NULL)
-        self->variable_attributes->data_type = (opcua_node_id_t*)calloc(1, sizeof(opcua_node_id_t));
-    memcpy(self->variable_attributes->data_type, ID, sizeof(opcua_node_id_t));
+    memcpy(&self->variable_attributes->data_type, ID, sizeof(opcua_node_id_t));
     return DL_OPCUA_OK;
 }
 
@@ -531,9 +529,7 @@ DL_OPCUA_ERR_t self_set_variable_type_data_type(opcua_variable_type_t* self, opc
 {
     if(self->variable_type_attributes == NULL) return DL_OPCUA_INVAL;
     if(ID == NULL) return DL_OPCUA_INVAL;
-    if(self->variable_type_attributes->data_type == NULL)
-        self->variable_type_attributes->data_type = (opcua_node_id_t*)calloc(1, sizeof(opcua_node_id_t));
-    memcpy(self->variable_type_attributes->data_type, ID, sizeof(opcua_node_id_t));
+    memcpy(&self->variable_type_attributes->data_type, ID, sizeof(opcua_node_id_t));
     return DL_OPCUA_OK;
 }
 
@@ -1191,13 +1187,9 @@ DL_OPCUA_ERR_t datalog_opcua_set_description(opcua_node_attributes_t* attribute,
 //CREATE OBJECT NODES
 //ATTRIBUTES
 DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr node, 
-        opcua_node_attributes_t* attributes)
+        xmlNodePtr display_name_node, opcua_node_attributes_t* attributes)
 {
     char buffer[32];
-    
-    if(attributes->browse_name != NULL)
-        xmlNewProp(node, BAD_CAST "BrowseName",
-                BAD_CAST attributes->browse_name);
     
     DL_OPCUA_ERR_t ret = datalog_opcua_add_id_attribute(node, "ParentNodeId",
         &attributes->parent_node_id);            
@@ -1206,6 +1198,28 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr node,
     ret = datalog_opcua_add_id_attribute(node, "NodeId",
         &attributes->node_id);            
     if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+    
+    if(attributes->browse_name != NULL)
+        xmlNewProp(node, BAD_CAST "BrowseName",
+                BAD_CAST attributes->browse_name);
+    
+    if(display_name_node == NULL){
+        if(attributes->display_name != NULL)
+            display_name_node = xmlNewChild(node, NULL,
+                BAD_CAST "DisplayName", BAD_CAST attributes->display_name);
+    }else
+        xmlNodeSetContent(display_name_node, 
+                BAD_CAST attributes->display_name);
+    
+    if(attributes->user_access_level != 0){
+        sprintf(buffer, "%d", attributes->user_access_level);
+        xmlNewProp(node, BAD_CAST "UserAccessLevel", BAD_CAST buffer);
+    }
+    
+    if(attributes->access_level != 0){
+        sprintf(buffer, "%d", attributes->access_level);
+        xmlNewProp(node, BAD_CAST "AccessLevel", BAD_CAST buffer);
+    }
 
     return DL_OPCUA_OK;
 }
@@ -1213,14 +1227,16 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr node,
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_attributes(
         opcua_object_type_t* object_t)
 {
-    if(object_t->display_name_node == NULL){
-        if(object_t->attributes->display_name != NULL)
-            object_t->display_name_node = xmlNewChild(object_t->node, NULL,
-                BAD_CAST "DisplayName", BAD_CAST object_t->attributes->display_name);
-    }else
-        xmlNodeSetContent(object_t->display_name_node, 
-                BAD_CAST object_t->attributes->display_name);
+    char buffer[32];
 
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+
+    if(object_t->object_type_attributes->is_abstract != -1){
+        sprintf(buffer, "%s", 
+            (object_t->object_type_attributes->is_abstract == true ? "true" : "false"));
+        xmlNewProp(object_t->node, BAD_CAST "IsAbstract", BAD_CAST buffer);
+    }
+    
     return DL_OPCUA_OK;
 }
 
@@ -1233,14 +1249,6 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_method_attributes(opcua_method_t* metho
         xmlNewProp(method->node, BAD_CAST "MethodDeclarationId", BAD_CAST buffer);
     }
 
-    if(method->display_name_node == NULL){
-        if(method->attributes->display_name != NULL)
-            method->display_name_node = xmlNewChild(method->node, NULL,
-                BAD_CAST "DisplayName", BAD_CAST method->attributes->display_name);
-    }else
-        xmlNodeSetContent(method->display_name_node, 
-                BAD_CAST method->attributes->display_name);
-    
     return DL_OPCUA_OK;
 }
 
@@ -1248,17 +1256,12 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* v
 {
     char buffer[32];
 
-    if(variable->variable_attributes->data_type != NULL)
-        xmlNewProp(variable->node, BAD_CAST "DataType",
-                BAD_CAST variable->variable_attributes->data_type);
-    if(variable->attributes->user_access_level != 0){
-        sprintf(buffer, "%d", variable->attributes->user_access_level);
-        xmlNewProp(variable->node, BAD_CAST "UserAccessLevel", BAD_CAST buffer);
-    }//TODO
-    if(variable->attributes->access_level != 0){
-        sprintf(buffer, "%d", variable->attributes->access_level);
-        xmlNewProp(variable->node, BAD_CAST "AccessLevel", BAD_CAST buffer);
-    }
+    //TODO value
+
+    DL_OPCUA_ERR_t ret = datalog_opcua_add_id_attribute(variable->node, "DataType",
+            &variable->variable_attributes->data_type);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+
     if(variable->variable_attributes->array_dimensions != 0){
         sprintf(buffer, "%d", variable->variable_attributes->array_dimensions);
         xmlNewProp(variable->node, BAD_CAST "ArrayDimensions", BAD_CAST buffer);
@@ -1268,27 +1271,112 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* v
         xmlNewProp(variable->node, BAD_CAST "ValueRank", BAD_CAST buffer);
     }
     
-    if(variable->display_name_node == NULL){
-        if(variable->attributes->display_name != NULL)
-            variable->display_name_node = xmlNewChild(variable->node, NULL,
-                BAD_CAST "DisplayName", BAD_CAST variable->attributes->display_name);
-    }else
-        xmlNodeSetContent(variable->display_name_node, 
-                BAD_CAST variable->attributes->display_name);
+    if(variable->variable_attributes->is_abstract != -1){
+        sprintf(buffer, "%s", 
+            (variable->variable_attributes->is_abstract == true ? "true" : "false"));
+        xmlNewProp(variable->node, BAD_CAST "IsAbstract", BAD_CAST buffer);
+    }
 
     return DL_OPCUA_OK;
 }
 
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_attributes(opcua_object_t* object)
 {
-    if(object->display_name_node == NULL){
-        if(object->attributes->display_name != NULL)
-            object->display_name_node = xmlNewChild(object->node, NULL,
-                BAD_CAST "DisplayName", BAD_CAST object->attributes->display_name);
-    }else
-        xmlNodeSetContent(object->display_name_node, 
-                BAD_CAST object->attributes->display_name);
+    char buffer[32]; 
     
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+
+    if(object->object_attributes->event_notifier != 0){
+        sprintf(buffer, "%02X", object->object_attributes->event_notifier);
+        xmlNewProp(object->node, BAD_CAST "EventNotifier", BAD_CAST buffer);
+    }
+        
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_create_node_variable_type_attributes(
+        opcua_variable_type_t* variable_type)
+{
+    char buffer[32];
+
+    //TODO value
+    
+    DL_OPCUA_ERR_t ret = datalog_opcua_add_id_attribute(variable_type->node, "DataType",
+            &variable_type->variable_type_attributes->data_type);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+
+    if(variable_type->variable_type_attributes->array_dimensions != 0){
+        sprintf(buffer, "%d", variable_type->variable_type_attributes->array_dimensions);
+        xmlNewProp(variable_type->node, BAD_CAST "ArrayDimensions", BAD_CAST buffer);
+    }
+    if(variable_type->variable_type_attributes->value_rank != 0){
+        sprintf(buffer, "%d", variable_type->variable_type_attributes->array_dimensions);
+        xmlNewProp(variable_type->node, BAD_CAST "ValueRank", BAD_CAST buffer);
+    }
+    
+    if(variable_type->variable_type_attributes->is_abstract != -1){
+        sprintf(buffer, "%s", 
+            (variable_type->variable_type_attributes->is_abstract == true ? "true" : "false"));
+        xmlNewProp(variable_type->node, BAD_CAST "IsAbstract", BAD_CAST buffer);
+    }
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_create_node_reference_type_attributes(
+        opcua_reference_type_t* reference_type)
+{
+    char buffer[32];
+
+    if(reference_type->reference_type_attributes->is_abstract != -1){
+        sprintf(buffer, "%s", 
+            (reference_type->reference_type_attributes->is_abstract == true ? "true" : "false"));
+        xmlNewProp(reference_type->node, BAD_CAST "IsAbstract", BAD_CAST buffer);
+    }
+    
+    if(reference_type->reference_type_attributes->symmetric != -1){
+        sprintf(buffer, "%s", 
+            (reference_type->reference_type_attributes->symmetric == true ? "true" : "false"));
+        xmlNewProp(reference_type->node, BAD_CAST "Symmetric", BAD_CAST buffer);
+    }
+ 
+    if(reference_type->reference_type_attributes->inverse_name != NULL)
+        xmlSetProp(reference_type->node, BAD_CAST "InverseName", 
+                BAD_CAST reference_type->reference_type_attributes->inverse_name);
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_create_node_data_type_attributes(
+        opcua_data_type_t* data_type)
+{
+    char buffer[32];
+
+    if(data_type->data_type_attributes->is_abstract != -1){
+        sprintf(buffer, "%s", 
+            (data_type->data_type_attributes->is_abstract == true ? "true" : "false"));
+        xmlNewProp(data_type->node, BAD_CAST "IsAbstract", BAD_CAST buffer);
+    }
+    
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_create_node_view_attributes(
+        opcua_view_t* view)
+{
+    char buffer[32];
+
+    if(view->view_attributes->contains_no_loops != -1){
+        sprintf(buffer, "%s", 
+            (view->view_attributes->contains_no_loops == true ? "true" : "false"));
+        xmlNewProp(view->node, BAD_CAST "IsAbstract", BAD_CAST buffer);
+    }
+    
+    if(view->view_attributes->event_notifier != 0){
+        sprintf(buffer, "%02X", view->view_attributes->event_notifier);
+        xmlNewProp(view->node, BAD_CAST "EventNotifier", BAD_CAST buffer);
+    }
+        
     return DL_OPCUA_OK;
 }
 
@@ -1342,7 +1430,8 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object_type(opcua_object_type_t* object
     object->node = xmlNewChild(opcua_document->root_node,
             NULL, BAD_CAST "UAObjectType", NULL);
 
-    ret = datalog_opcua_create_node_attributes(object->node, object->attributes);
+    ret = datalog_opcua_create_node_attributes(object->node, object->display_name_node,
+            object->attributes);
     if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
 
     ret = datalog_opcua_create_node_object_type_attributes(object);
@@ -1362,7 +1451,8 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_method(opcua_method_t* method)
     method->node = xmlNewChild(opcua_document->root_node,
             NULL, BAD_CAST "UAMethod", NULL);
 
-    ret = datalog_opcua_create_node_attributes(method->node, method->attributes);
+    ret = datalog_opcua_create_node_attributes(method->node, method->display_name_node,
+            method->attributes);
     if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
 
     ret = datalog_opcua_create_node_method_attributes(method);
@@ -1382,7 +1472,7 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_variable(opcua_variable_t* variable)
     variable->node = xmlNewChild(opcua_document->root_node,
             NULL, BAD_CAST "UAVariable", NULL);
 
-    ret = datalog_opcua_create_node_attributes(variable->node, 
+    ret = datalog_opcua_create_node_attributes(variable->node, variable->display_name_node,
             variable->attributes);
     if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
     
@@ -1403,11 +1493,95 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object(opcua_object_t* object)
     object->node = xmlNewChild(opcua_document->root_node,
             NULL, BAD_CAST "UAObject", NULL);
 
-    ret = datalog_opcua_create_node_attributes(object->node, 
+    ret = datalog_opcua_create_node_attributes(object->node, object->display_name_node, 
             object->attributes);
     if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
     
     ret = datalog_opcua_create_node_object_attributes(object);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_create_node_variable_type(opcua_variable_type_t* variable_type)
+{
+    if(variable_type == NULL) return DL_OPCUA_INVAL;
+    if(variable_type->attributes == NULL) return DL_OPCUA_INVAL;
+    if(variable_type->variable_type_attributes == NULL) return DL_OPCUA_INVAL;
+
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+    
+    variable_type->node = xmlNewChild(opcua_document->root_node,
+            NULL, BAD_CAST "UAVariableType", NULL);
+
+    ret = datalog_opcua_create_node_attributes(variable_type->node, variable_type->display_name_node, 
+            variable_type->attributes);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+    
+    ret = datalog_opcua_create_node_variable_type_attributes(variable_type);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_create_node_reference_type(opcua_reference_type_t* reference_type)
+{
+    if(reference_type == NULL) return DL_OPCUA_INVAL;
+    if(reference_type->attributes == NULL) return DL_OPCUA_INVAL;
+    if(reference_type->reference_type_attributes == NULL) return DL_OPCUA_INVAL;
+
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+    
+    reference_type->node = xmlNewChild(opcua_document->root_node,
+            NULL, BAD_CAST "UAReferenceType", NULL);
+
+    ret = datalog_opcua_create_node_attributes(reference_type->node, reference_type->display_name_node, 
+            reference_type->attributes);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+    
+    ret = datalog_opcua_create_node_reference_type_attributes(reference_type);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_create_node_data_type(opcua_data_type_t* data_type)
+{
+    if(data_type == NULL) return DL_OPCUA_INVAL;
+    if(data_type->attributes == NULL) return DL_OPCUA_INVAL;
+    if(data_type->data_type_attributes == NULL) return DL_OPCUA_INVAL;
+
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+    
+    data_type->node = xmlNewChild(opcua_document->root_node,
+            NULL, BAD_CAST "UADataType", NULL);
+
+    ret = datalog_opcua_create_node_attributes(data_type->node, data_type->display_name_node, 
+            data_type->attributes);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+    
+    ret = datalog_opcua_create_node_data_type_attributes(data_type);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+
+    return DL_OPCUA_OK;
+}
+
+DL_OPCUA_ERR_t datalog_opcua_create_node_view(opcua_view_t* view)
+{
+    if(view == NULL) return DL_OPCUA_INVAL;
+    if(view->attributes == NULL) return DL_OPCUA_INVAL;
+    if(view->view_attributes == NULL) return DL_OPCUA_INVAL;
+
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;
+    
+    view->node = xmlNewChild(opcua_document->root_node,
+            NULL, BAD_CAST "UAView", NULL);
+
+    ret = datalog_opcua_create_node_attributes(view->node, view->display_name_node,
+            view->attributes);
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
+    
+    ret = datalog_opcua_create_node_view_attributes(view);
     if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;
 
     return DL_OPCUA_OK;
@@ -1431,6 +1605,18 @@ opcua_reference_t* datalog_opcua_find_reference_i(void* object,
         break;
     case DL_OPC_OBJ:
         ref_head = ((opcua_object_t*)object)->reference_head;
+        break;
+    case DL_OPC_VAR_TYPE:
+        ref_head = ((opcua_variable_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_REF_TYPE:
+        ref_head = ((opcua_reference_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_DATA_TYPE:
+        ref_head = ((opcua_data_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_VIEW:
+        ref_head = ((opcua_view_t*)object)->reference_head;
         break;
     default:
         break;
@@ -1461,6 +1647,18 @@ opcua_reference_t* datalog_opcua_find_reference_s(void* object,
         break;
     case DL_OPC_OBJ:
         ref_head = ((opcua_object_t*)object)->reference_head;
+        break;
+    case DL_OPC_VAR_TYPE:
+        ref_head = ((opcua_variable_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_REF_TYPE:
+        ref_head = ((opcua_reference_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_DATA_TYPE:
+        ref_head = ((opcua_data_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_VIEW:
+        ref_head = ((opcua_view_t*)object)->reference_head;
         break;
     default:
         break;
@@ -1495,6 +1693,18 @@ opcua_reference_t* datalog_opcua_find_reference_type(void* object,
     case DL_OPC_OBJ:
         ref_head = ((opcua_object_t*)object)->reference_head;
         break;
+    case DL_OPC_VAR_TYPE:
+        ref_head = ((opcua_variable_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_REF_TYPE:
+        ref_head = ((opcua_reference_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_DATA_TYPE:
+        ref_head = ((opcua_data_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_VIEW:
+        ref_head = ((opcua_view_t*)object)->reference_head;
+        break;
     default:
         break;
     }
@@ -1528,6 +1738,18 @@ opcua_reference_t* datalog_opcua_find_reference(void* object,
     case DL_OPC_OBJ:
         ref_head = ((opcua_object_t*)object)->reference_head;
         break;
+    case DL_OPC_VAR_TYPE:
+        ref_head = ((opcua_variable_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_REF_TYPE:
+        ref_head = ((opcua_reference_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_DATA_TYPE:
+        ref_head = ((opcua_data_type_t*)object)->reference_head;
+        break;
+    case DL_OPC_VIEW:
+        ref_head = ((opcua_view_t*)object)->reference_head;
+        break;
     default:
         break;
     }
@@ -1557,6 +1779,18 @@ DL_OPCUA_ERR_t datalog_opcua_free_reference_list(void** object,
         break;
     case DL_OPC_OBJ:
         ref_head = &(*(opcua_object_t**)object)->reference_head;
+        break;
+    case DL_OPC_VAR_TYPE:
+        ref_head = &(*(opcua_variable_type_t**)object)->reference_head;
+        break;
+    case DL_OPC_REF_TYPE:
+        ref_head = &(*(opcua_reference_type_t**)object)->reference_head;
+        break;
+    case DL_OPC_DATA_TYPE:
+        ref_head = &(*(opcua_data_type_t**)object)->reference_head;
+        break;
+    case DL_OPC_VIEW:
+        ref_head = &(*(opcua_view_t**)object)->reference_head;
         break;
     default:
         break;
