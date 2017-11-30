@@ -1,9 +1,9 @@
 #documentation 
-    *.html
-    *.tex
-    *.png
-    *.css
-    *.js
+*.html
+*.tex
+*.png
+*.css
+*.js
 
 
 # Prerequisites
