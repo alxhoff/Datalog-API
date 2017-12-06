@@ -64,7 +64,6 @@ struct datalog_literal{
     char* predicate; /**< Literal's precidate string represenation*/
     int term_count;
     datalog_term_t* term_head;      /**< String representation of the literals first arg*/
-    DATALOG_LIT_t lit_type; /** Type of literal */
 
     int (*add_term)(datalog_literal_t*, char*, DATALOG_TERM_t);
     int (*print)(datalog_literal_t*);

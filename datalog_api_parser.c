@@ -28,6 +28,7 @@
 
 #include "datalog_api_parser.h"
 
+/*
 DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
@@ -50,7 +51,9 @@ DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc)
 
     return DATALOG_OK;
 }
+*/
 
+/*
 DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
@@ -66,7 +69,7 @@ DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
         fprintf(stderr, "[DATALOG][PARSER] Verbose: rule clause wrapped\n");
 #endif
         
-        ret = datalog_create_and_assert_clause_s(clause_tmp);
+        ret = clause_tmp->assert(clause_tmp);
         
         if(ret != DATALOG_OK){
 #ifdef DATALOG_ERR
@@ -83,7 +86,9 @@ DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
     }
     return DATALOG_OK;
 }
+*/
 
+/*
 DATALOG_ERR_t datalog_assert_fact_list(dl_parser_return_doc_t* doc)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
@@ -95,7 +100,7 @@ DATALOG_ERR_t datalog_assert_fact_list(dl_parser_return_doc_t* doc)
         
         lit_tmp = datalog_wrap_fact(dl_p_fact_tmp);
 
-        ret = datalog_create_and_assert_literal_s(lit_tmp);
+        ret = lit_tmp->assert(lit_tmp);
 
         if(ret != DATALOG_OK){
 
@@ -109,6 +114,8 @@ DATALOG_ERR_t datalog_assert_fact_list(dl_parser_return_doc_t* doc)
 
     return DATALOG_OK;
 }
+*/
+
 /*
 // wrap data types
 datalog_literal_t* datalog_wrap_literal(dl_parser_literal_t* literal)
@@ -161,6 +168,8 @@ datalog_literal_t* datalog_wrap_literal(dl_parser_literal_t* literal)
     return ret;
 }
 */
+
+/*
 datalog_clause_t* datalog_wrap_rule(dl_parser_rule_t* rule)
 {
     datalog_clause_t* ret =
@@ -210,7 +219,9 @@ datalog_clause_t* datalog_wrap_rule(dl_parser_rule_t* rule)
 
     return ret;
 }
+*/
 
+/*
 datalog_literal_t* datalog_wrap_fact(dl_parser_fact_t* fact)
 {
     datalog_literal_t* ret = datalog_wrap_literal(fact->literal); 
@@ -224,3 +235,4 @@ datalog_literal_t* datalog_wrap_fact(dl_parser_fact_t* fact)
   
     return ret;
 }
+*/

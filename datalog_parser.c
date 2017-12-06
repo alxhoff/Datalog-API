@@ -59,10 +59,23 @@ void dl_parser_print_metadata(dl_parser_doc_t* doc)
     printf("*==========================================* \n");
 }
 
-void dl_parser_print_literal(dl_parser_literal_t* literal)
+void dl_parser_print_literal(dl_parser_literal_t* lit)
 {
-    printf("%s(%s,%s)", literal->predicate, literal->arg1,
-            literal->arg2);
+    printf("!!========LITERAL========!!\n");
+    printf("  Predicate: %s\n", (lit->predicate != NULL) ? lit->predicate : "NULL");
+    if(lit->term_head == NULL){
+        printf("  No terms\n");
+        goto print_literal_return;
+    }
+    
+    dl_parser_term_t* term_head = lit->term_head;
+    
+    for(int i = 0; i<lit->term_count; i++){
+        printf("  Term #%d: %s\n", i, term_head->value); 
+        term_head = term_head->next;
+    }
+
+print_literal_return: printf("!!=======/LITERAL========!!\n");
 }
 
 void dl_parser_print_clause_body(dl_parser_clause_body_t* clause_body)
@@ -185,66 +198,26 @@ DL_PARSER_ERR_t dl_parser_terms(dl_parser_doc_t* doc, xmlNode* terms_node,
 {
     xmlChar* contents;
     xmlNode* tmp; 
-    DL_PARSER_ARG_TYPE_t arg1_type = 0; 
-    
+    char* temp_str; 
     tmp = terms_node->xmlChildrenNode;
 
     while(tmp != NULL){
-
         if(!xmlStrcmp(tmp->name, (const xmlChar*) "constant")){
             contents = xmlNodeListGetString(doc->document, tmp->xmlChildrenNode, 1);
-            if(!arg1_type){
-                literal->arg1 = (char*)malloc(sizeof(char) * strlen((const char*)contents));
-                strcpy(literal->arg1, (const char*)contents);
-                arg1_type = DL_PARSER_CONST;
+            temp_str = (char*)malloc(sizeof(char) * strlen((const char*)contents));
+            strcpy(temp_str, (const char*)contents);
 #ifdef PARSER_DEBUG_VERBOSE
             fprintf(stderr, "[DATALOG][PARSER] Verbose: constant found for arg1 in process"
-                    " literal, value is \"%s\"\n", literal->arg1);
+                    " literal, value is \"%s\"\n", temp_str);
 #endif
-            }else if(arg1_type == DL_PARSER_CONST){
-                literal->arg2 = (char*)malloc(sizeof(char) * strlen((const char*)contents));
-                strcpy(literal->arg2, (const char*)contents);
-                literal->lit_type = DL_CC;
-#ifdef PARSER_DEBUG_VERBOSE
-            fprintf(stderr, "[DATALOG][PARSER] Verbose: constant found for arg2 in process"
-                    " literal, value is \"%s\"\n", literal->arg2);
-#endif
-            }else if(arg1_type == DL_PARSER_VAR){
-                literal->arg2 = (char*)malloc(sizeof(char) * strlen((const char*)contents));
-                strcpy(literal->arg2, (const char*)contents);
-                literal->lit_type = DL_VC;
-#ifdef PARSER_DEBUG_VERBOSE
-            fprintf(stderr, "[DATALOG][PARSER] Verbose: constant found for arg2 in process"
-                    " literal, value is \"%s\"\n", literal->arg2);
-#endif
-            }
         }else if(!xmlStrcmp(tmp->name, (const xmlChar*) "variable")){
             contents = xmlNodeListGetString(doc->document, tmp->xmlChildrenNode, 1);
-            if(!arg1_type){
-                literal->arg1 = (char*)malloc(sizeof(char) * strlen((const char*)contents));
-                strcpy(literal->arg1, (const char*)contents);
-                arg1_type = DL_PARSER_VAR;
+            temp_str = (char*)malloc(sizeof(char) * strlen((const char*)contents));
+            strcpy(temp_str, (const char*)contents);
 #ifdef PARSER_DEBUG_VERBOSE
             fprintf(stderr, "[DATALOG][PARSER] Verbose: variable found for arg1 in process"
-                    " literal, value is \"%s\"\n", literal->arg1);
+                    " literal, value is \"%s\"\n", temp_str);
 #endif
-            }else if(arg1_type == DL_PARSER_CONST){
-                literal->arg2 = (char*)malloc(sizeof(char) * strlen((const char*)contents));
-                strcpy(literal->arg2, (const char*)contents);
-                literal->lit_type = DL_CV;
-#ifdef PARSER_DEBUG_VERBOSE
-            fprintf(stderr, "[DATALOG][PARSER] Verbose: variable found for arg2 in process"
-                    " literal, value is \"%s\"\n", literal->arg2);
-#endif
-            }else if(arg1_type == DL_PARSER_VAR){
-                literal->arg2 = (char*)malloc(sizeof(char) * strlen((const char*)contents));
-                strcpy(literal->arg2, (const char*)contents);
-                literal->lit_type = DL_VV;
-#ifdef PARSER_DEBUG_VERBOSE
-            fprintf(stderr, "[DATALOG][PARSER] Verbose: variable found for arg2 in process"
-                    " literal, value is \"%s\"\n", literal->arg2);
-#endif
-            }
         }
         tmp = tmp->next;
     }
@@ -333,8 +306,8 @@ dl_parser_clause_body_t* dl_parser_body_get_literal_nodes(dl_parser_doc_t* doc,
             temp_literal = dl_parser_process_literal(doc, node);
 
 #ifdef PARSER_DEBUG 
-            fprintf(stderr, "[DATALOG][PARSER] Debug: literal found in body \"%s(%s, %s)\"\n"
-                    , temp_literal->predicate, temp_literal->arg1, temp_literal->arg2);
+            fprintf(stderr, "[DATALOG][PARSER] Debug: literal found in body \"%s\"\n"
+                    , temp_literal->predicate);
 #endif
             
             ret->literals = (dl_parser_literal_t**)realloc(ret->literals,

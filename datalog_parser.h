@@ -53,6 +53,19 @@ typedef enum{
     DL_PARSER_VAR = 2      /*!< variable*/
 }DL_PARSER_ARG_TYPE_t;
 
+typedef enum{
+    DL_PARSE_TERM_C = 0x00,
+    DL_PARSE_TERM_V = 0x01,
+}DL_PARSER_TERM_t;
+
+typedef struct dl_parser_term dl_parser_term_t;
+
+struct dl_parser_term{
+    char* value;
+    DL_PARSER_TERM_t type;
+    dl_parser_term_t* next;
+};
+
 /**
 * @typedef dl_parser_literal_t
 * @brief Typdef for struct dl_parser_literal
@@ -65,10 +78,8 @@ typedef struct dl_parser_literal dl_parser_literal_t;
 */
 struct dl_parser_literal{
     char* predicate;    /*!< string literal of the literal's predicate */
-    char* arg1;         /*!< string literal of the literal's arg1 */
-    char* arg2;         /*!< string literal of the literal's arg2 */
-
-    DATALOG_LIT_t lit_type; /*!< literal's type */
+    int term_count;
+    dl_parser_term_t* term_head;
 
     dl_parser_literal_t* next; /*!< next literal in a linked list */
 };
