@@ -170,14 +170,12 @@ datalog_literal_t* datalog_clause_get_literal_index(datalog_clause_t* clause,
     return ret;
 }
 
-
-/*
-DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
+DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause)
 {
     DATALOG_ERR_t ret = 0;
     
     //create head on the stack
-    if(datalog_create_literal_s(clause->head) != DATALOG_OK){
+    if(datalog_literal_create(clause->head) != DATALOG_OK){
 #ifdef DATALOG_ERR
             fprintf(stderr, "[DATALOG][API] Err: failed to assert clause head \n");
 #endif
@@ -199,7 +197,7 @@ DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
         
     //Create clause literals 
     for(int i = 0; i < clause->literal_count; i++){
-        ret = datalog_create_literal_s(clause->body_list[i]);
+        ret = datalog_literal_create(clause->body_list[i]);
 #ifdef DATALOG_ERR
         fprintf(stderr, "[DATALOG][API] Err: creating clause literal #%d:        %s\n"
                 , i, (ret == DATALOG_OK ? "SUCCSESS" : "FAIL"));
@@ -225,7 +223,7 @@ DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
 
     return DATALOG_OK;
 }
-*/
+
 
 DATALOG_ERR_t datalog_assert_clause(int literal_count)
 {

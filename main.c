@@ -132,6 +132,7 @@ int main(void)
     datalog_clause_add_literal(test_clause, test_lit_3);
     datalog_clause_add_literal(test_clause, test_lit_3);
     datalog_clause_print(test_clause);
+    datalog_clause_create_and_assert(test_clause);
 /*
 
     datalog_literal_t* test_lit = datalog_init_literal("test", "hello", "world", DL_CC);

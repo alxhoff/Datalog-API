@@ -530,6 +530,7 @@ datalog_clause_t* datalog_clause_init(datalog_literal_t* lit);
 */
 DATALOG_ERR_t datalog_clause_add_literal(datalog_clause_t* clause, 
         datalog_literal_t* lit);
+DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause);
 
 /**
 * @brief Initialises a clause structure, the clause's head literal
