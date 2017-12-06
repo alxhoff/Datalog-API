@@ -68,7 +68,7 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
     ret_struct->answer_pairs[0]->arg2 = tmp2;
 
 #ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG][API] VERBOSE: first constant pair: (%s, %s)\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: index 0 constant pair: (%s, %s)\n", 
             tmp1, tmp2);
 #endif
     while(tmp1 != NULL){

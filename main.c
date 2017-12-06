@@ -137,6 +137,7 @@ int main(void)
     datalog_literal_add_term(test_lit_3, "world", DL_TERM_C);
     datalog_clause_print(test_clause);
     datalog_clause_create_and_retract(test_clause);
+    datalog_query_ask(test_query);
 
 /*
 
