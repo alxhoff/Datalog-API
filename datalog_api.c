@@ -32,7 +32,7 @@
 datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
 {
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG][API] DEBUG: processing query answers\n"); 
+    fprintf(stderr, "[DATALOG][API]   DEBUG: processing query answers\n"); 
 #endif
     //alloc return struct
     datalog_query_answer_t* ret_struct = (datalog_query_answer_t*)
@@ -178,20 +178,16 @@ DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause)
     //create head on the stack
     if(datalog_literal_create(clause->head) != DATALOG_OK){
 #ifdef DATALOG_ERR
-            fprintf(stderr, "[DATALOG][API] Err: failed to assert clause head \n");
+            fprintf(stderr, "[DATALOG][API]   ERROR: failed to assert clause head \n");
 #endif
         return DATALOG_LIT;
     }
-#ifdef DATALOG_DEBUG_VERBOSE
-        fprintf(stderr, "[DATALOG][API] Verbose: create and assert clause, "
-                "head literal created\n");
-#endif
 
     ret = dl_pushhead(datalog_db);
 
     if(ret){
 #ifdef DATALOG_ERR
-        fprintf(stderr, "[DATALOG][API] Err: asserting clause head failed\n");
+        fprintf(stderr, "[DATALOG][API]   ERROR: asserting clause head failed\n");
 #endif
         return DATALOG_ASRT;
     }
@@ -200,7 +196,7 @@ DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause)
     for(int i = 0; i < clause->literal_count; i++){
         ret = datalog_literal_create(clause->body_list[i]);
 #ifdef DATALOG_ERR
-        fprintf(stderr, "[DATALOG][API] Err: creating clause literal #%d:        %s\n"
+        fprintf(stderr, "[DATALOG][API]   ERROR: creating clause literal #%d:         %s\n"
                 , i, (ret == DATALOG_OK ? "SUCCSESS" : "FAIL"));
 #endif
         if(ret != DATALOG_OK) return DATALOG_LIT;
@@ -208,7 +204,7 @@ DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause)
         ret = dl_addliteral(datalog_db);
 
 #ifdef DATALOG_DEBUG_VERBOSE
-        fprintf(stderr, "[DATALOG][API] Verbose: adding clause literal #%d    %s\n"
+        fprintf(stderr, "[DATALOG][API] VERBOSE: adding clause literal #%d            %s\n"
                 , i, (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
         if(ret) return DATALOG_ASRT;
@@ -217,7 +213,7 @@ DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause)
     ret = dl_makeclause(datalog_db);
 
 #ifdef DATALOG_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG][API] Verbose: making clause:           %s\n",
+    fprintf(stderr, "[DATALOG][API] VERBOSE: making clause:                      %s\n",
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
     if(ret) return DATALOG_ASRT;
@@ -233,7 +229,7 @@ DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause)
     
     ret = dl_assert(datalog_db);
 #ifdef DATALOG_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG][API] Verbose: asserting clause:           %s\n",
+    fprintf(stderr, "[DATALOG][API] VERBOSE: asserting clause:                   %s\n",
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 
@@ -299,7 +295,7 @@ DATALOG_ERR_t datalog_clause_assert(int literal_count)
 void datalog_print_answers(datalog_query_answer_t* a)
 {
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG][API] DEBUG: printing query answers\n"); 
+    fprintf(stderr, "[DATALOG][API]   DEBUG: printing query answers\n"); 
 #endif
     printf("!!-----------DATALOG ANSWERS-----------!!\n");
     printf(" Predicate: %s\n", a->predic);
@@ -332,7 +328,7 @@ DATALOG_ERR_t datalog_query_print(datalog_query_t* query)
 DATALOG_ERR_t datalog_query_ask(datalog_query_t* query)  
 {
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG][API] DEBUG: query clause for predicate: %s\n", query->literal->predicate); 
+    fprintf(stderr, "[DATALOG][API]   DEBUG: query clause for predicate: %s\n", query->literal->predicate); 
 #endif
 
     DATALOG_ERR_t ret = DATALOG_OK;
@@ -542,12 +538,12 @@ DATALOG_ERR_t datalog_engine_db_init(void)
    
 #ifdef DATALOG_ERR
     if(datalog_db == NULL){
-        fprintf(stderr, "[DATALOG][API] ERR: dl_open() failed\n");
+        fprintf(stderr, "[DATALOG][API]   ERROR: dl_open() failed\n");
         return DATALOG_MEM;
     }
 #ifdef DATALOG_DEBUG
     if(datalog_db != NULL)
-        fprintf(stderr, "[DATALOG][API] DEBUG: database opened \n");
+        fprintf(stderr, "[DATALOG][API]   DEBUG: database opened \n");
 #endif
 #endif
 
@@ -559,7 +555,7 @@ DATALOG_ERR_t datalog_engine_db_deinit(void)
     dl_close(datalog_db);
 
 #ifdef DATALOG_DEBUG
-    printf("[DATALOG][API] DEBUG: database closed\n");
+    printf("[DATALOG][API]   DEBUG: database closed\n");
 #endif
 
     return DATALOG_OK;

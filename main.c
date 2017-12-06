@@ -111,14 +111,20 @@ int main(void)
 
     if(ret != DATALOG_OK) return -1;
 
-    datalog_literal_t* test_lit = datalog_literal_init("testPredicate");
-    datalog_literal_add_term(test_lit, "test term 1", DL_TERM_C);
-    datalog_literal_add_term(test_lit, "test term 2", DL_TERM_C);
+    datalog_literal_t* test_lit = datalog_literal_init("test");
+    datalog_literal_add_term(test_lit, "hello", DL_TERM_C);
+    datalog_literal_add_term(test_lit, "world", DL_TERM_C);
     datalog_literal_print(test_lit);
     datalog_literal_create_and_assert(test_lit);
+    
+    datalog_literal_t* test_lit_4 = datalog_literal_init("test");
+    datalog_literal_add_term(test_lit_4, "hello", DL_TERM_C);
+    datalog_literal_add_term(test_lit_4, "world", DL_TERM_C);
+    datalog_literal_print(test_lit_4);
+    datalog_literal_create_and_assert(test_lit_4);
 
-    datalog_literal_t* test_lit_2 = datalog_literal_init("testPredicate");
-    datalog_literal_add_term(test_lit_2, "test term 1", DL_TERM_C);
+    datalog_literal_t* test_lit_2 = datalog_literal_init("test");
+    datalog_literal_add_term(test_lit_2, "hello", DL_TERM_C);
     datalog_literal_add_term(test_lit_2, "X", DL_TERM_V);
 
     datalog_query_t* test_query = datalog_query_init(test_lit_2);
