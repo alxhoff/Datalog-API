@@ -114,11 +114,16 @@ int main(void)
     datalog_literal_t* test_lit = datalog_literal_init("testPredicate");
     datalog_literal_add_term(test_lit, "test term 1", DL_TERM_C);
     datalog_literal_add_term(test_lit, "test term 2", DL_TERM_C);
-    datalog_literal_add_term(test_lit, "test term 3", DL_TERM_C);
-    datalog_literal_add_term(test_lit, "test term 4", DL_TERM_C);
-    datalog_literal_add_term(test_lit, "test term 5", DL_TERM_C);
     datalog_literal_print(test_lit);
-    datalog_literal_assert(test_lit);
+    datalog_literal_create_and_assert(test_lit);
+
+    datalog_literal_t* test_lit_2 = datalog_literal_init("testPredicate");
+    datalog_literal_add_term(test_lit_2, "test term 1", DL_TERM_C);
+    datalog_literal_add_term(test_lit_2, "X", DL_TERM_V);
+
+    datalog_query_t* test_query = datalog_query_init(test_lit_2);
+    datalog_query_print(test_query);
+    datalog_query_ask(test_query);
 /*
 
     datalog_literal_t* test_lit = datalog_init_literal("test", "hello", "world", DL_CC);

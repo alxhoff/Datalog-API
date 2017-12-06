@@ -360,41 +360,13 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a);
 void datalog_print_answers(datalog_query_answer_t* a);
 
 /**
-* @brief Initialises a datalog query struct from the given arguements 
-*
-* @param predicate string literal of the literal's predicate
-* @param arg1 string literal for the literal's first term
-* @param arg2 string literal for the literal's second term
-* @param lit_type specifies the types of arguments to be created in the
-* literal. 
-* @return datalog_query_t* pointer to created query object. NULL on error 
-*/
-datalog_query_t* datalog_query_init(char* predicate, char* arg1, char* arg2,
-        DATALOG_LIT_t lit_type);
-
-/**
 * @brief Initialises a datalog query struct from a literal struct
 *
 * @param lit pointer to literal struct to be used in the query object
 * @return datalog_query_t* pointer to created query object. NULL on error 
 */
-datalog_query_t* datalog_query_init_s(datalog_literal_t* lit);
-
-/**
-* @brief Issues a query 
-*
-* The datalog database is queried using the predicate and args passed
-* to the function.
-* 
-* @param predicate string literal of the literal's predicate
-* @param arg1 string literal for the literal's first term
-* @param arg2 string literal for the literal's second term
-* @param lit_type specifies the types of arguments to be created in the
-* literal. 
-* @return DATALOG_ERR_t error message
-*/
-DATALOG_ERR_t datalog_query(char* predicate, char* const1, 
-        char* const2, DATALOG_LIT_t lit_type);
+datalog_query_t* datalog_query_init(datalog_literal_t* lit);
+DATALOG_ERR_t datalog_query_print(datalog_query_t* query);
 
 /**
 * @brief Issues a query and saves the answer 
@@ -406,7 +378,7 @@ DATALOG_ERR_t datalog_query(char* predicate, char* const1,
 * and a pointer to where the answer should be stored.
 * @return DATALOG_ERR_t error message 
 */
-DATALOG_ERR_t datalog_query_s(datalog_query_t* query);
+DATALOG_ERR_t datalog_query_ask(datalog_query_t* query);
 
 DATALOG_ERR_t datalog_literal_add_term(datalog_literal_t* lit, char* value, 
         DATALOG_TERM_t type);
@@ -425,7 +397,8 @@ DATALOG_ERR_t datalog_literal_add_term(datalog_literal_t* lit, char* value,
 datalog_literal_t* datalog_literal_init(char* predicate);
 
 DATALOG_ERR_t datalog_literal_print(datalog_literal_t* lit);
-DATALOG_ERR_t datalog_literal_assert(datalog_literal_t* lit);
+DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit);
+DATALOG_ERR_t datalog_literal_create_and_assert(datalog_literal_t* lit);
 
 //TODO lit type error checking. can all types be directly asserted?
 //
