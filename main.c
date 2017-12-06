@@ -122,8 +122,16 @@ int main(void)
     datalog_literal_add_term(test_lit_2, "X", DL_TERM_V);
 
     datalog_query_t* test_query = datalog_query_init(test_lit_2);
-    datalog_query_print(test_query);
     datalog_query_ask(test_query);
+    datalog_query_print(test_query);
+    
+    datalog_clause_t* test_clause = datalog_clause_init(test_lit);
+    datalog_literal_t* test_lit_3 = datalog_literal_init("hello");
+    datalog_literal_add_term(test_lit_3, "world", DL_TERM_C);
+    datalog_literal_add_term(test_lit_3, "yo", DL_TERM_C);
+    datalog_clause_add_literal(test_clause, test_lit_3);
+    datalog_clause_add_literal(test_clause, test_lit_3);
+    datalog_clause_print(test_clause);
 /*
 
     datalog_literal_t* test_lit = datalog_init_literal("test", "hello", "world", DL_CC);

@@ -102,36 +102,26 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
     return ret_struct;
 }
 
-/*
-DATALOG_ERR_t datalog_print_clause(datalog_clause_t* clause)
+DATALOG_ERR_t datalog_clause_print(datalog_clause_t* clause)
 {
     if(clause == NULL){
         fprintf(stderr, "Clause is NULL, cannot print");
         return DATALOG_MEM;
     }
 
-    printf("%s(%s, %s) :- ", clause->head->predicate,
-            clause->head->arg1, clause->head->arg2);
+    printf("!!=========CLAUSE========!!\n");
+    if(clause->head != NULL) datalog_literal_print(clause->head);
     for(int i = 0; i < clause->literal_count; i++){
-        if(i != (clause->literal_count - 1))
-            printf("%s(%s, %s), ", clause->body_list[i]->predicate,
-                    clause->body_list[i]->arg1, 
-                    clause->body_list[i]->arg2);
-        else
-            printf("%s(%s, %s) ", clause->body_list[i]->predicate,
-                    clause->body_list[i]->arg1, 
-                    clause->body_list[i]->arg2);
+        printf("!!====Body Literal #%d====!!\n", i);
+        if(clause->body_list[i] != NULL) 
+            datalog_literal_print(clause->body_list[i]);
     }
-
-    printf("\n");
+    printf("!!========/CLAUSE========!!\n");
 
     return DATALOG_OK;
 }
-*/
 
-/*
-datalog_clause_t* datalog_init_clause(char* head_predicate,
-        char* head_arg1, char* head_arg2, DATALOG_LIT_t head_lit_type)
+datalog_clause_t* datalog_clause_init(datalog_literal_t* lit)
 {
     datalog_clause_t* ret_clause = 
         (datalog_clause_t*)malloc(sizeof(datalog_clause_t));
@@ -142,107 +132,44 @@ datalog_clause_t* datalog_init_clause(char* head_predicate,
 
     //body literal array
     ret_clause->body_list = 
-        (datalog_literal_t**)malloc(sizeof(datalog_literal_t*));
+        (datalog_literal_t**)calloc(1, sizeof(datalog_literal_t*));
 
     //head literal
     ret_clause->head = 
         (datalog_literal_t*)malloc(sizeof(datalog_literal_t));   
+    if(ret_clause->head == NULL) return NULL;
 
-    ret_clause->head->lit_type = head_lit_type;
-
-    ret_clause->head->predicate = 
-        (char*)malloc(sizeof(char) * strlen(head_predicate));
-    if(ret_clause->head->predicate == NULL) return NULL;
-    strcpy(ret_clause->head->predicate, head_predicate);
-
-    ret_clause->head->arg1 = 
-        (char*)malloc(sizeof(char) * strlen(head_arg1));
-    if(ret_clause->head->arg1 == NULL) return NULL;
-    strcpy(ret_clause->head->arg1, head_arg1);
+    memcpy(ret_clause->head, lit, sizeof(datalog_literal_t));
     
-    ret_clause->head->arg2 = 
-        (char*)malloc(sizeof(char) * strlen(head_arg2));
-    if(ret_clause->head->arg2 == NULL) return NULL;
-    strcpy(ret_clause->head->arg2, head_arg2);
-
     return ret_clause;
 }
-*/
 
-/*
-DATALOG_ERR_t datalog_clause_add_literal(datalog_clause_t* clause,
-        char* predicate, char* arg1, char* arg2, DATALOG_LIT_t lit_type)
+DATALOG_ERR_t datalog_clause_add_literal(datalog_clause_t* clause, 
+        datalog_literal_t* lit)
 {
     clause->body_list = (datalog_literal_t**)realloc(clause->body_list,
             sizeof(datalog_literal_t*)*(clause->literal_count + 1)); 
-    
-    if(clause->body_list[clause->literal_count] != NULL)
-        clause->body_list[clause->literal_count] = 
-            (datalog_literal_t*)malloc(sizeof(datalog_literal_t));
-    else
-        return DATALOG_MEM;
+    if(clause->body_list == NULL) return DATALOG_MEM;
 
-    clause->body_list[clause->literal_count]->lit_type = lit_type;
+    clause->body_list[clause->literal_count] = 
+        (datalog_literal_t*)malloc(sizeof(datalog_literal_t));
+    if(clause->body_list[clause->literal_count] == NULL) return DATALOG_MEM;
 
-    clause->body_list[clause->literal_count]->predicate = 
-        (char*)malloc(sizeof(char) * strlen(predicate));
-    if(clause->body_list[clause->literal_count]->predicate == NULL)
-        return DATALOG_MEM;
-    strcpy(clause->body_list[clause->literal_count]->predicate, predicate);
-    
-    clause->body_list[clause->literal_count]->arg1 = 
-        (char*)malloc(sizeof(char) * strlen(arg1));
-    if(clause->body_list[clause->literal_count]->arg1 == NULL)
-        return DATALOG_MEM;
-    strcpy(clause->body_list[clause->literal_count]->arg1, arg1);
-     
-    clause->body_list[clause->literal_count]->arg2 = 
-        (char*)malloc(sizeof(char) * strlen(arg2));
-    if(clause->body_list[clause->literal_count]->arg2 == NULL)
-        return DATALOG_MEM;
-    strcpy(clause->body_list[clause->literal_count]->arg2, arg2);
+    memcpy(clause->body_list[clause->literal_count], lit, sizeof(datalog_literal_t));
 
     clause->literal_count++;
 
     return DATALOG_OK;
 }
-*/
 
-DATALOG_ERR_t datalog_clause_add_literal_s(datalog_clause_t* clause,
-        datalog_literal_t* literal) 
+datalog_literal_t* datalog_clause_get_literal_index(datalog_clause_t* clause,
+        int index)
 {
-    clause->body_list = (datalog_literal_t**)realloc(clause->body_list,
-            sizeof(datalog_literal_t*)*(clause->literal_count + 1)); 
-    
-    if(clause->body_list[clause->literal_count] != NULL)
-        clause->body_list[clause->literal_count] = literal;
-    else
-        return DATALOG_MEM;
-    
-    clause->literal_count++;
-
-    return DATALOG_OK;
+    if(clause->body_list[index] == NULL) return NULL;
+    datalog_literal_t* ret = clause->body_list[index];
+    return ret;
 }
 
-DATALOG_ERR_t datalog_clause_add_literal_s_copy(datalog_clause_t* clause,
-        datalog_literal_t* literal) 
-{
-    clause->body_list = (datalog_literal_t**)realloc(clause->body_list,
-            sizeof(datalog_literal_t*)*(clause->literal_count + 1)); 
-    
-    if(clause->body_list[clause->literal_count] != NULL)
-        clause->body_list[clause->literal_count] = 
-            (datalog_literal_t*)malloc(sizeof(datalog_literal_t));
-    else
-        return DATALOG_MEM;
-    
-    memcpy(clause->body_list[clause->literal_count],
-            literal, sizeof(datalog_literal_t));
-
-    clause->literal_count++;
-
-    return DATALOG_OK;
-}
 
 /*
 DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
@@ -420,42 +347,41 @@ datalog_query_t* datalog_query_init(datalog_literal_t* lit)
 
 DATALOG_ERR_t datalog_query_print(datalog_query_t* query)
 {
-    printf("!!=========Query=========!!\n");
+    printf("!!=========QUERY=========!!\n");
     datalog_literal_print(query->literal);
     //TODO print answers
+    printf("!!========/QUERY=========!!\n");
     return DATALOG_OK;
 }
 
 DATALOG_ERR_t datalog_query_ask(datalog_query_t* query)  
 {
-
-    
 #ifdef DATALOG_DEBUG 
     fprintf(stderr, "[DATALOG] DEBUG: query clause for predicate: %s\n", query->literal->predicate); 
 #endif
-   
+
     DATALOG_ERR_t ret = DATALOG_OK;
 
     ret = datalog_literal_create(query->literal);
-  
+
 #ifdef DATALOG_DEBUG_VERBOSE 
     fprintf(stderr, "[DATALOG] VERBOSE: query literal created:              %s\n", 
-        (ret == DATALOG_OK ? "SUCCSESS" : "FAIL"));
+            (ret == DATALOG_OK ? "SUCCSESS" : "FAIL"));
 #endif
 
     dl_answers_t a;
-    
+
     ret = dl_ask(datalog_db, &a);
 
 #ifdef DATALOG_DEBUG_VERBOSE 
     fprintf(stderr, "[DATALOG] VERBOSE: query sent:                         %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
+            (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 #ifdef DATALOG_DEBUG 
     fprintf(stderr, "[DATALOG] VERBOSE: query resulted in answer:           %s\n", 
-        (a != NULL ? "SUCCSESS" : "FAIL"));
+            (a != NULL ? "SUCCSESS" : "FAIL"));
 #endif
-  
+
     if(a != NULL){
         datalog_query_answer_t* processed = 
             datalog_process_answer(a);
@@ -463,48 +389,6 @@ DATALOG_ERR_t datalog_query_ask(datalog_query_t* query)
 
     return DATALOG_OK;
 }
-
-/*
-DATALOG_ERR_t datalog_query_s(datalog_query_t* query)
-{
-#ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG] DEBUG: asserting query %s(%s, %s)\n", 
-            query->literal->predicate, query->literal->arg1, query->literal->arg2); 
-#endif
-   
-    DATALOG_ERR_t ret = DATALOG_OK;
-
-    ret = datalog_create_literal_s(query->literal);
-  
-#ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: query literal created:              %s\n", 
-        (ret == DATALOG_OK ? "SUCCSESS" : "FAIL"));
-#endif
-
-    dl_answers_t a;
-    
-    ret = dl_ask(datalog_db, &a);
-
-#ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: query sent:                         %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
-#endif
-#ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG] VERBOSE: query resulted in answer:           %s\n", 
-        (a != NULL ? "SUCCSESS" : "FAIL"));
-#endif
-  
-    query->answer = (dl_answers_t*)calloc(1, sizeof(dl_answers_t));
-    
-    if(a!= NULL){
-        memcpy(query->answer, &a, sizeof(dl_answers_t));
-  
-        query->processed_answer = datalog_process_answer(a); 
-    }
-
-    return DATALOG_OK;
-}
-*/
 
 datalog_term_t* datalog_literal_get_term_index(datalog_literal_t* lit,
         int index)
@@ -575,7 +459,7 @@ DATALOG_ERR_t datalog_literal_print(datalog_literal_t* lit)
         term_head = term_head->next;
     }
 
-print_literal_return: printf("!!========LITERAL========!!\n");
+print_literal_return: printf("!!=======/LITERAL========!!\n");
     return DATALOG_OK;
 }
 

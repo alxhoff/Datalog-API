@@ -499,7 +499,8 @@ int datalog_add_var_const(DATALOG_LIT_t lit_type, int index);
 * @param clause pointer to the clause object to be printed
 * @return DATALOG_ERR_t 
 */
-DATALOG_ERR_t datalog_print_clause(datalog_clause_t* clause);
+DATALOG_ERR_t datalog_clause_print(datalog_clause_t* clause);
+
 /**
 * @brief Initialises a clause structure, populating the head literal
 * with the arguments parsed to the function.
@@ -511,22 +512,7 @@ DATALOG_ERR_t datalog_print_clause(datalog_clause_t* clause);
 * literal. 
 * @return datalog_clause_t* pointer to the clause struct created 
 */
-datalog_clause_t* datalog_init_clause(char* head_predicate,
-        char* head_arg1, char* head_arg2, DATALOG_LIT_t head_lit_type);
-
-/**
-* @brief Initialises a clause structure, initialising the clause's
-* head literal with the values passed to the funciton.
-*
-* @param head_predicate string literal of the literal's predicate
-* @param head_arg1 string literal for the literal's first term
-* @param head_arg2 string literal for the literal's second term
-* @param head_lit_type specifies the types of arguments to be created in the
-* literal. 
-* @return DATALOG_ERR_t error message
-*/
-DATALOG_ERR_t datalog_clause_add_literal(datalog_clause_t* clause,
-        char* predicate, char* arg1, char* arg2, DATALOG_LIT_t lit_type);
+datalog_clause_t* datalog_clause_init(datalog_literal_t* lit);
 
 /**
 * @brief Initialises a clause structure, but instead of creating a copy
@@ -538,12 +524,12 @@ DATALOG_ERR_t datalog_clause_add_literal(datalog_clause_t* clause,
 *
 * @param clause pointer to the clause object to which the literal shall
 * be added
-* @param literal pointer to the literal object that will be copied in as
+* @param lit pointer to the literal object that will be copied in as
 * the clause's head literal
 * @return DATALOG_ERR_t error message
 */
-DATALOG_ERR_t datalog_clause_add_literal_s(datalog_clause_t* clause,
-        datalog_literal_t* literal);
+DATALOG_ERR_t datalog_clause_add_literal(datalog_clause_t* clause, 
+        datalog_literal_t* lit);
 
 /**
 * @brief Initialises a clause structure, the clause's head literal
