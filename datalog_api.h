@@ -288,10 +288,10 @@ struct datalog_query_answers{
 };
 
 /**
-* @typedef datalog_query_answer_t
+* @typedef datalog_query_processed_answers_t
 * @brief Typdef for datalog_query_answer
 */
-typedef struct datalog_query_answer datalog_query_answer_t;
+typedef struct datalog_query_answer datalog_query_processed_answers_t;
 
 /**
 * @struct datalog_query_answer
@@ -317,7 +317,7 @@ typedef struct datalog_query datalog_query_t;
 struct datalog_query{
    datalog_literal_t* literal;
    dl_answers_t* answer;
-   datalog_query_answer_t* processed_answer;
+   datalog_query_processed_answers_t* processed_answer;
 };
 
 /**
@@ -350,7 +350,7 @@ extern dl_db_t datalog_db;
 * @param a The queries returned answers
 * @return Pointer to an API query answer struct
 */
-datalog_query_answer_t* datalog_process_answer(dl_answers_t a);
+datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a);
 
 /**
 * @brief Prints a visual representation of a query answer struct
@@ -358,7 +358,7 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a);
 * @param a API datalog query answers struct to be printed 
 * @return void
 */
-void datalog_print_answers(datalog_query_answer_t* a);
+void datalog_print_answers(datalog_query_processed_answers_t* a);
 
 /**
 * @brief Initialises a datalog query struct from a literal struct

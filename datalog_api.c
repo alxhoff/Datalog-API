@@ -29,14 +29,14 @@
 
 #include "datalog_api.h"
 
-datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
+datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a)
 {
 #ifdef DATALOG_DEBUG 
     fprintf(stderr, "[DATALOG][API]   DEBUG: processing query answers\n"); 
 #endif
     //alloc return struct
-    datalog_query_answer_t* ret_struct = (datalog_query_answer_t*)
-        malloc(sizeof(datalog_query_answer_t));
+    datalog_query_processed_answers_t* ret_struct = (datalog_query_processed_answers_t*)
+        malloc(sizeof(datalog_query_processed_answers_t));
 
     if(ret_struct == NULL) return NULL;
 
@@ -314,7 +314,7 @@ DATALOG_ERR_t datalog_clause_assert(int literal_count)
 }
 
 
-void datalog_print_answers(datalog_query_answer_t* a)
+void datalog_print_answers(datalog_query_processed_answers_t* a)
 {
 #ifdef DATALOG_DEBUG 
     fprintf(stderr, "[DATALOG][API]   DEBUG: printing query answers\n"); 
@@ -325,6 +325,7 @@ void datalog_print_answers(datalog_query_answer_t* a)
     for(int i=0; i<a->answer_count; i++){
         tmp = (char*)realloc(tmp, sizeof(char) * (strlen(a->predic) + 2));
         if(tmp == NULL) return;
+        strcpy(tmp, a->predic);
         strcpy(tmp + strlen(a->predic), "(");
         for(int j=0; j<a->answer_term_count; j++){
             prev_size = strlen(tmp);
@@ -341,8 +342,10 @@ void datalog_print_answers(datalog_query_answer_t* a)
                 strcpy(tmp + prev_size + 1, a->answers[i]->term_list[j]);
             }
         }
+        prev_size = strlen(tmp);
         tmp = (char*)realloc(tmp, sizeof(char) * (sizeof(tmp) + 2));
-        strcpy(tmp + sizeof(tmp), ")");
+        strcpy(tmp + prev_size, ")");
+        printf("  %s\n",tmp);
     }
     printf("!!====/QUERY ANSWERS=====!!\n");
 }
@@ -397,8 +400,7 @@ DATALOG_ERR_t datalog_query_ask(datalog_query_t* query)
 #endif
 
     if(a != NULL){
-        datalog_query_answer_t* processed = 
-            datalog_process_answer(a);
+        query->processed_answer = datalog_process_answer(a);
     }
 
     return DATALOG_OK;

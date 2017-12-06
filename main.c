@@ -130,7 +130,7 @@ int main(void)
     datalog_query_t* test_query = datalog_query_init(test_lit_2);
     datalog_query_ask(test_query);
     datalog_query_print(test_query);
-    
+/*    
     datalog_clause_t* test_clause = datalog_clause_init(test_lit);
     datalog_literal_t* test_lit_3 = datalog_literal_init("test");
     datalog_literal_add_term(test_lit_3, "hello", DL_TERM_C);
@@ -138,7 +138,10 @@ int main(void)
     datalog_clause_print(test_clause);
     datalog_clause_create_and_retract(test_clause);
     datalog_query_ask(test_query);
-
+  */  
+    datalog_print_answers(test_query->processed_answer); 
+    
+    
 /*
 
     datalog_literal_t* test_lit = datalog_init_literal("test", "hello", "world", DL_CC);
