@@ -48,13 +48,36 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
 #endif
    
     //alloc list pointer
-    ret_struct->answer_pairs = (datalog_query_answer_pair_t**)
-        malloc(sizeof(datalog_query_answer_pair_t*));
+    ret_struct->answers = (datalog_query_answers_t**)
+        malloc(sizeof(datalog_query_answers_t*));
+    if(ret_struct->answers == NULL) return NULL;
 
-    //alloc first list item
-    ret_struct->answer_pairs[0] = (datalog_query_answer_pair_t*)
-        malloc(sizeof(datalog_query_answer_pair_t));
-
+    int answer_term_count = dl_getpredarity(a);
+    int answer_count = 0;
+    size_t ans_length;
+    int i = 0;
+    char* tmp = dl_getconst(a, answer_count, 0);
+    while(tmp != NULL){
+        ret_struct->answers[answer_count] = (datalog_query_answers_t*)
+            calloc(1, sizeof(datalog_query_answers_t));
+        ret_struct->answers[answer_count]->term_list = (char**)
+            calloc(answer_term_count, sizeof(char*));
+        for(i = 0; i < answer_term_count; i++){
+            tmp = dl_getconst(a, answer_count, i);
+            ans_length = dl_getconstlen(a, answer_count, i);
+            if(tmp == NULL) break;
+            ret_struct->answers[answer_count]->term_list[i] = (char*)
+                malloc(sizeof(char) * ans_length);
+            if(ret_struct->answers[answer_count]->term_list[i] == NULL) 
+                return NULL;
+            strcpy(ret_struct->answers[answer_count]->term_list[i], tmp);
+            printf("Term: %s\n", tmp);
+        }
+        answer_count++;
+    }
+    ret_struct->answer_term_count = answer_term_count;
+    ret_struct->answer_count = answer_count - 1;
+/*
     int index = 0;
     int arg1_len;
     //get first term
@@ -63,9 +86,6 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
     //get second term
     char* tmp2 = tmp1 + arg1_len + 1;
 
-
-    ret_struct->answer_pairs[0]->arg1 = tmp1;
-    ret_struct->answer_pairs[0]->arg2 = tmp2;
 
 #ifdef DATALOG_DEBUG_VERBOSE 
     fprintf(stderr, "[DATALOG][API] VERBOSE: index 0 constant pair: (%s, %s)\n", 
@@ -84,21 +104,22 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
     fprintf(stderr, "[DATALOG][API] VERBOSE: index %d constant pair: (%s, %s)\n", 
             index, tmp1, tmp2);
 #endif
-        ret_struct->answer_pairs = (datalog_query_answer_pair_t**)
-            realloc((ret_struct->answer_pairs),
-                    sizeof(datalog_query_answer_pair_t*) * (index + 1));
+        ret_struct->answers = (datalog_query_answers_t**)
+            realloc((ret_struct->answers),
+                    sizeof(datalog_query_answers_t*) * (index + 1));
 
-        ret_struct->answer_pairs[index] = (datalog_query_answer_pair_t*)
-            malloc(sizeof(datalog_query_answer_pair_t));
+        ret_struct->answers[index] = (datalog_query_answers_t*)
+            malloc(sizeof(datalog_query_answers_t));
 
-        ret_struct->answer_pairs[index]->arg1 = tmp1;
-        ret_struct->answer_pairs[index]->arg2 = tmp2;
+//        ret_struct->answers[index]->arg1 = tmp1;
+//        ret_struct->answers[index]->arg2 = tmp2;
     }
     ret_struct->argc = index;
 #ifdef DATALOG_DEBUG_VERBOSE 
     fprintf(stderr, "[DATALOG][API] VERBOSE: found \"%d\" answers\n", 
             ret_struct->argc);
 #endif
+*/
     return ret_struct;
 }
 
@@ -292,18 +313,40 @@ DATALOG_ERR_t datalog_clause_assert(int literal_count)
     return DATALOG_OK;
 }
 
+
 void datalog_print_answers(datalog_query_answer_t* a)
 {
 #ifdef DATALOG_DEBUG 
     fprintf(stderr, "[DATALOG][API]   DEBUG: printing query answers\n"); 
 #endif
-    printf("!!-----------DATALOG ANSWERS-----------!!\n");
-    printf(" Predicate: %s\n", a->predic);
-    printf(" Answer contains \"%d\" answers\n", a->argc);
-    for(int i = 0; i < a->argc; i++)
-        printf("Answer #%d: %s( %s, %s)\n", i, a->predic,
-                a->answer_pairs[i]->arg1, a->answer_pairs[i]->arg2);
+    char* tmp;
+    size_t prev_size;
+    printf("!!=====QUERY ANSWERS=====!!\n");
+    for(int i=0; i<a->answer_count; i++){
+        tmp = (char*)realloc(tmp, sizeof(char) * (strlen(a->predic) + 2));
+        if(tmp == NULL) return;
+        strcpy(tmp + strlen(a->predic), "(");
+        for(int j=0; j<a->answer_term_count; j++){
+            prev_size = strlen(tmp);
+            if(j == 0){ 
+                tmp = (char*)realloc(tmp, 
+                        sizeof(char) * (prev_size + strlen(a->answers[i]->term_list[j]) + 1));
+                if(tmp == NULL) return;
+                strcpy(tmp + prev_size, a->answers[i]->term_list[j]);
+            }else{ 
+                tmp = (char*)realloc(tmp, 
+                        sizeof(char) * (prev_size + strlen(a->answers[i]->term_list[j]) + 2));
+                if(tmp == NULL) return;
+                strcpy(tmp + prev_size, ",");
+                strcpy(tmp + prev_size + 1, a->answers[i]->term_list[j]);
+            }
+        }
+        tmp = (char*)realloc(tmp, sizeof(char) * (sizeof(tmp) + 2));
+        strcpy(tmp + sizeof(tmp), ")");
+    }
+    printf("!!====/QUERY ANSWERS=====!!\n");
 }
+
 
 datalog_query_t* datalog_query_init(datalog_literal_t* lit)
 {

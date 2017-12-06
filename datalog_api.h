@@ -299,7 +299,8 @@ typedef struct datalog_query_answer datalog_query_answer_t;
 */
 struct datalog_query_answer{
     char* predic;
-    int argc;
+    int answer_term_count;
+    int answer_count;
     datalog_query_answers_t** answers;
 };
 

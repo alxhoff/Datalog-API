@@ -1,1 +1,1 @@
-/usr/bin/cc  -fPIC -g  -shared -Wl,-soname,libDATALOG_API.so -o libDATALOG_API.so CMakeFiles/DATALOG_API.dir/datalog_api.c.o 
+/usr/bin/cc -fPIC -g  -shared -Wl,-soname,libDATALOG_API.so -o libDATALOG_API.so CMakeFiles/DATALOG_API.dir/datalog_api.c.o 
