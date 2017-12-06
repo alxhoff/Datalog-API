@@ -1,77 +1,94 @@
-<?xml version"1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
-    elementFormDefault="qualified">
     <!-- Types -->
     <xs:simpleType name="yearType">
         <xs:restriction base="xs:integer">
-            <xs:minInvlusive value="2017"/>
+            <xs:minInclusive value="2017"/>
         </xs:restriction>
     </xs:simpleType>
+    
     <xs:simpleType name="emailType">
         <xs:restriction base="xs:string">
-            <xs:minInvlusive value="([a-z]*)@([a-z]*)"/>
         </xs:restriction>
     </xs:simpleType>
 
     <!-- doc elements types-->
     
-    <xs:element name="variable" type="xs:string"/>
-    <xs:element name="constant" type="xs:string"/>
+    <xs:complexType name="variableOrConstant">
+        <xs:choice minOccurs="2" maxOccurs="2">
+            <xs:element minOccurs="0" name="variable" type="xs:string"/>
+            <xs:element minOccurs="0" name="constant" type="xs:string"/>
+        </xs:choice>
+    </xs:complexType>
 
-    <xs:complexType name="literal">
+    <xs:complexType name="DLliteral">
         <xs:sequence>
             <xs:element name="predicate"/>
-            <xs:element name="terms">
-                <xs:complexType>
-                    <xs:element ref="variable|constant"/>
-                    <xs:element ref="variable|constant"/>
-                </xs:complexType>
-            <xs:element>
+            <xs:element name="terms" type="variableOrConstant"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="fact">
-        <xs:element name="head">
-            <xs:element name="literal" type="literal"/>
-    </xs:element>
+    <xs:complexType name="DLhead">
+        <xs:sequence>
+            <xs:element name="literal" type="DLliteral" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="rule">
-        <xs:element name="head" type="literal"/>
-        <xs:element name="body">
-            <xs:complexType>
-                <xs:element name="literal" type="literal"/>
-                <xs:element name="literal" type="literal"/>
-            </xs:complexType>
-        </xs:element>
+    <xs:complexType name="DLfact">
+        <xs:sequence>
+            <xs:element name="head" type="DLhead" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="DLrule">
+        <xs:sequence>
+            <xs:element name="head" type="DLhead"/>
+            <xs:element name="body">
+                <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="literal" type="DLliteral"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
     </xs:complexType>
     
     <!-- Main doc elements -->
+    
     <xs:element name="metadata">
         <xs:complexType>
-            <xs:element name="description" type="xs:string"/>
-            <xs:element name="author" type="xs:string"/>
-            <xs:element name="device">
-                <xs:complexType>
-                    <xs:element name="name" type="xs:string"/>
-                    <xs:element name="type" type="xs:string"/>
-                    <xs:element name="manufacturer" type="xs:string"/>
-                    <xs:element name="contact" type="emailType"/>
-                    <xs:element name="model" type="xs:string"/>
-                    <xs:element name="serial" type="xs:string"/>
-                    <xs:element name="year" type="yearType"/>
-                </xs:complexType>
-            </xs:element>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="author" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="device" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                            <xs:element name="type" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                            <xs:element name="manufacturer" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                            <xs:element name="contact" type="emailType" minOccurs="0" maxOccurs="1"/>
+                            <xs:element name="model" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                            <xs:element name="serial" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                            <xs:element name="year" type="yearType" minOccurs="0" maxOccurs="1"/>
+                        </xs:choice>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="mappings">
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="fact" type="DLfact" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="rule" type="DLrule" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:choice>
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="mappings">
-        <xs:element name="fact" type="fact" minOccurs="0" maxOccurs="unbounded"/>
-        <xs:element name="rule" type="rule" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:element>
-
     <!-- Doc structure -->
+    
     <xs:element name="datalog">
         <xs:complexType>
             <xs:sequence>
@@ -80,5 +97,5 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-
+   
 </xs:schema>

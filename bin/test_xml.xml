@@ -64,21 +64,5 @@
             </head>
         </fact>
     </mappings>
-    <script>
-        <literal>
-            <predicate>script_test_1</predicate>
-            <terms>
-                <constant>script_test_1_arg1</constant>
-                <variable>script_test_1_arg2</variable>
-            </terms>
-        </literal>
-        <literal>
-            <predicate>script_test_2</predicate>
-            <terms>
-                <constant>script_test_2_arg1</constant>
-                <constant>script_test_2_arg2</constant>
-            </terms>
-        </literal>
-    </script>
 </datalog>
 
