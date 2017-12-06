@@ -102,6 +102,7 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
     return ret_struct;
 }
 
+/*
 DATALOG_ERR_t datalog_print_clause(datalog_clause_t* clause)
 {
     if(clause == NULL){
@@ -126,7 +127,9 @@ DATALOG_ERR_t datalog_print_clause(datalog_clause_t* clause)
 
     return DATALOG_OK;
 }
+*/
 
+/*
 datalog_clause_t* datalog_init_clause(char* head_predicate,
         char* head_arg1, char* head_arg2, DATALOG_LIT_t head_lit_type)
 {
@@ -164,7 +167,9 @@ datalog_clause_t* datalog_init_clause(char* head_predicate,
 
     return ret_clause;
 }
+*/
 
+/*
 DATALOG_ERR_t datalog_clause_add_literal(datalog_clause_t* clause,
         char* predicate, char* arg1, char* arg2, DATALOG_LIT_t lit_type)
 {
@@ -201,6 +206,7 @@ DATALOG_ERR_t datalog_clause_add_literal(datalog_clause_t* clause,
 
     return DATALOG_OK;
 }
+*/
 
 DATALOG_ERR_t datalog_clause_add_literal_s(datalog_clause_t* clause,
         datalog_literal_t* literal) 
@@ -238,6 +244,7 @@ DATALOG_ERR_t datalog_clause_add_literal_s_copy(datalog_clause_t* clause,
     return DATALOG_OK;
 }
 
+/*
 DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
 {
     DATALOG_ERR_t ret = 0;
@@ -291,6 +298,7 @@ DATALOG_ERR_t datalog_create_and_assert_clause_s(datalog_clause_t* clause)
 
     return DATALOG_OK;
 }
+*/
 
 DATALOG_ERR_t datalog_assert_clause(int literal_count)
 {
@@ -332,6 +340,7 @@ DATALOG_ERR_t datalog_assert_clause(int literal_count)
     return DATALOG_OK;
 }
 
+/*
 DATALOG_ERR_t datalog_create_and_retract_clause_s(datalog_clause_t* clause)
 {
     //create head on the stack
@@ -352,6 +361,7 @@ DATALOG_ERR_t datalog_create_and_retract_clause_s(datalog_clause_t* clause)
     }
     return DATALOG_OK;
 }
+*/
 
 DATALOG_ERR_t datalog_retract_clause(void)
 {
@@ -397,6 +407,7 @@ void datalog_print_answers(datalog_query_answer_t* a)
                 a->answer_pairs[i]->arg1, a->answer_pairs[i]->arg2);
 }
 
+/*
 datalog_query_t* datalog_query_init(char* predicate, char* arg1, char* arg2,
         DATALOG_LIT_t lit_type)
 {
@@ -404,10 +415,11 @@ datalog_query_t* datalog_query_init(char* predicate, char* arg1, char* arg2,
 
     if(query == NULL) return NULL;
 
-    query->literal = datalog_init_literal(predicate, arg1, arg2, lit_type); 
+    query->literal = datalog_init_literal_2(predicate, arg1, arg2, lit_type); 
 
     return query;
 }
+*/
 
 datalog_query_t* datalog_query_init_s(datalog_literal_t* lit)
 {
@@ -420,6 +432,7 @@ datalog_query_t* datalog_query_init_s(datalog_literal_t* lit)
     return query;
 }
 
+/*
 DATALOG_ERR_t datalog_query(char* predicate, 
         char* arg1, char* arg2, DATALOG_LIT_t lit_type)  
 {
@@ -456,7 +469,9 @@ DATALOG_ERR_t datalog_query(char* predicate,
 
     return DATALOG_OK;
 }
+*/
 
+/*
 DATALOG_ERR_t datalog_query_s(datalog_query_t* query)
 {
 #ifdef DATALOG_DEBUG 
@@ -496,7 +511,9 @@ DATALOG_ERR_t datalog_query_s(datalog_query_t* query)
 
     return DATALOG_OK;
 }
+*/
 
+/*
 DATALOG_ERR_t datalog_update_and_assert_literal(datalog_literal_t* lit,
         char* predicate, char* arg1, char* arg2, DATALOG_LIT_t lit_type)
 {
@@ -505,7 +522,9 @@ DATALOG_ERR_t datalog_update_and_assert_literal(datalog_literal_t* lit,
     if(datalog_create_and_assert_literal_s(lit) != DATALOG_OK) 
         return DATALOG_ASRT;
 }
+*/
 
+/*
 DATALOG_ERR_t datalog_update_literal(datalog_literal_t* lit,
         char* predicate, char* arg1, char* arg2, DATALOG_LIT_t lit_type)
 {
@@ -551,8 +570,78 @@ DATALOG_ERR_t datalog_update_literal(datalog_literal_t* lit,
 
     return DATALOG_OK;
 }
+*/
 
-datalog_literal_t* datalog_init_literal(char* predicate, char* arg1,
+datalog_term_t* datalog_literal_get_term_index(datalog_literal_t* lit,
+        int index)
+{
+    datalog_term_t* term_head = lit->term_head;
+    if(index == 0) return term_head;
+    for(int i=0; i<index; i++){
+        if(term_head->next != NULL) term_head = term_head->next;
+        else return NULL;
+    }
+    return term_head;
+}
+
+datalog_term_t* datalog_literal_get_last_term(datalog_literal_t* lit)
+{
+    if(lit->term_head == NULL) return NULL;
+    datalog_term_t* term_head = lit->term_head;
+    while(term_head->next != NULL) term_head = term_head->next;
+    return term_head;
+}
+
+DATALOG_ERR_t datalog_literal_add_term(datalog_literal_t* lit, char* value, 
+        DATALOG_TERM_t type)
+{
+    datalog_term_t* term = (datalog_term_t*)calloc(1, sizeof(datalog_term_t));
+    if(term == NULL) return DATALOG_MEM;
+    term->type = type;
+    term->value = (char*)malloc(sizeof(char) * (strlen(value) + 1));
+    if(term->value == NULL){
+        free(term);
+        return DATALOG_MEM;
+    }
+    strcpy(term->value, value);
+    datalog_term_t* list_tail = datalog_literal_get_last_term(lit);
+    if(list_tail == NULL) return DATALOG_TERM;
+    list_tail->next = term;
+    return DATALOG_OK;
+}
+
+datalog_literal_t* datalog_literal_init(char* predicate)
+{
+    datalog_literal_t* lit = 
+        (datalog_literal_t*)calloc(1, sizeof(datalog_literal_t));
+    if(lit == NULL) return NULL;
+    lit->predicate = (char*)malloc(sizeof(char) * (strlen(predicate) + 1));
+    if(lit->predicate == NULL){
+        free(lit);
+        return NULL;
+    }
+    strcpy(lit->predicate, predicate);
+    return lit;
+}
+
+DATALOG_ERR_t datalog_literal_print(datalog_literal_t* lit)
+{
+    printf("!!========LITERAL========!!\n");
+    printf("  Predicate: %s\n", (lit->predicate != NULL) ? lit->predicate : "NULL");
+    if(lit->term_head == NULL){
+        printf("  No terms\n");
+        goto print_literal_return;
+    }
+    datalog_term_t* term_head = lit->term_head;
+    int i=0;
+    do printf("  Term #%d: %s\n", i++, term_head->value); while(term_head->next != NULL);
+
+print_literal_return: printf("!!========LITERAL========!!\n");
+    return DATALOG_OK;
+}
+
+/*
+datalog_literal_t* datalog_init_literal_2(char* predicate, char* arg1,
         char* arg2, DATALOG_LIT_t lit_type)
 {
     datalog_literal_t* lit = 
@@ -570,7 +659,9 @@ datalog_literal_t* datalog_init_literal(char* predicate, char* arg1,
 
     return lit;
 }
+*/
 
+/*
 DATALOG_ERR_t datalog_create_and_assert_literal_s(datalog_literal_t* lit)
 {
     if(datalog_create_literal_s(lit) != DATALOG_OK) return DATALOG_LIT;
@@ -578,7 +669,9 @@ DATALOG_ERR_t datalog_create_and_assert_literal_s(datalog_literal_t* lit)
 
     return DATALOG_OK;
 }
+*/
 
+/*
 DATALOG_ERR_t datalog_create_literal(char* predicate, char* arg1, 
         char* arg2, DATALOG_LIT_t lit_type)
 {
@@ -666,7 +759,9 @@ DATALOG_ERR_t datalog_create_literal(char* predicate, char* arg1,
 
    return DATALOG_OK;
 }
+*/
 
+/*
 DATALOG_ERR_t datalog_create_literal_s(datalog_literal_t* literal) 
 {
 #ifdef DATALOG_DEBUG 
@@ -752,7 +847,7 @@ DATALOG_ERR_t datalog_create_literal_s(datalog_literal_t* literal)
 
    return DATALOG_OK;
 }
-
+*/
 
 DATALOG_ERR_t datalog_push_string(char* string)
 {

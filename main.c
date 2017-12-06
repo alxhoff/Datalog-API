@@ -29,11 +29,11 @@
 #include "config.h"
 
 #include "datalog_api.h"
-#include "datalog_parser.h"
+/*#include "datalog_parser.h"
 #include "datalog_api_parser.h"
 #include "datalog_cli.h"
 #include "datalog_opcua_generator.h"
-
+*/
 
 #define clear() printf("\033[H\033[J")
 
@@ -80,7 +80,7 @@ void datalog_command_line_splash(void)
     printf("*==========================================* \n");
     printf(" \n");
 }
-
+/*
 void datalog_command_line_run(void)
 {
     DATALOG_CLI_ERR_t ret = DATALOG_CLI_OK;
@@ -102,7 +102,7 @@ datalog_cli_restart:
     }else
         goto datalog_cli_restart;
 }
-
+*/
 int main(void)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
@@ -110,7 +110,11 @@ int main(void)
     ret =  datalog_engine_db_init();
 
     if(ret != DATALOG_OK) return -1;
- 
+
+    datalog_literal_t* test_lit = datalog_literal_init("testPredicate");
+    datalog_literal_print(test_lit);
+/*
+
     datalog_literal_t* test_lit = datalog_init_literal("test", "hello", "world", DL_CC);
 
     if(test_lit == NULL) return -1;
@@ -141,7 +145,7 @@ int main(void)
     datalog_opcua_runtime();
 
     datalog_command_line_run();
-
+*/
     ret = datalog_engine_db_deinit();
 
     if(ret != DATALOG_OK) return -1;

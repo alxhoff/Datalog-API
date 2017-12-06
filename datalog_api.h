@@ -268,7 +268,8 @@ typedef enum{
     DATALOG_MEM,
     DATALOG_LIT,
     DATALOG_QUE,
-    DATALOG_TYPE
+    DATALOG_TYPE,
+    DATALOG_TERM,
 }DATALOG_ERR_t;
 
 /**
@@ -418,8 +419,9 @@ DATALOG_ERR_t datalog_query_s(datalog_query_t* query);
 * @param arg2 string literal for the literal's second term
 * @return datalog_literal_t* pointer to created literal object. NULL on error 
 */
-datalog_literal_t* datalog_init_literal(char* predicate, char* arg1,
-        char* arg2, DATALOG_LIT_t lit_type);
+datalog_literal_t* datalog_literal_init(char* predicate);
+
+DATALOG_ERR_t datalog_literal_print(datalog_literal_t* lit);
 
 //TODO lit type error checking. can all types be directly asserted?
 //

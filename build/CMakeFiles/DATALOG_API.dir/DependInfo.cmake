@@ -5,9 +5,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
   "/home/alxhoff/git/Datalog-API/datalog_api.c" "/home/alxhoff/git/Datalog-API/build/CMakeFiles/DATALOG_API.dir/datalog_api.c.o"
-  "/home/alxhoff/git/Datalog-API/datalog_api_parser.c" "/home/alxhoff/git/Datalog-API/build/CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o"
-  "/home/alxhoff/git/Datalog-API/datalog_cli.c" "/home/alxhoff/git/Datalog-API/build/CMakeFiles/DATALOG_API.dir/datalog_cli.c.o"
-  "/home/alxhoff/git/Datalog-API/datalog_cli_asserter.c" "/home/alxhoff/git/Datalog-API/build/CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

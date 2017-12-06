@@ -37,6 +37,19 @@ typedef enum{
     DL_VC   /*!< variaben constant */
 } DATALOG_LIT_t;
 
+typedef enum{
+    DL_TERM_C,
+    DL_TERM_V,
+} DATALOG_TERM_t;
+
+typedef struct datalog_term datalog_term_t;
+
+struct datalog_term{
+    char* value;
+    DATALOG_TERM_t type;
+    datalog_term_t* next;
+};
+
 /**
 * @typedef datalog_literal_t
 * @brief Typdef for datalog_literal
@@ -49,8 +62,7 @@ typedef struct datalog_literal datalog_literal_t;
 */
 struct datalog_literal{
     char* predicate; /**< Literal's precidate string represenation*/
-    char* arg1;      /**< String representation of the literals first arg*/
-    char* arg2;      /**< String representation of the literals second arg*/
+    datalog_term_t* term_head;      /**< String representation of the literals first arg*/
     DATALOG_LIT_t lit_type; /** Type of literal */
 };
 

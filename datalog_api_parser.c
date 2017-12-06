@@ -109,7 +109,7 @@ DATALOG_ERR_t datalog_assert_fact_list(dl_parser_return_doc_t* doc)
 
     return DATALOG_OK;
 }
-
+/*
 // wrap data types
 datalog_literal_t* datalog_wrap_literal(dl_parser_literal_t* literal)
 {
@@ -160,7 +160,7 @@ datalog_literal_t* datalog_wrap_literal(dl_parser_literal_t* literal)
 
     return ret;
 }
-
+*/
 datalog_clause_t* datalog_wrap_rule(dl_parser_rule_t* rule)
 {
     datalog_clause_t* ret =
