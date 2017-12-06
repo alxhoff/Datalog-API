@@ -170,9 +170,10 @@ datalog_literal_t* datalog_clause_get_literal_index(datalog_clause_t* clause,
     return ret;
 }
 
-DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause)
+
+DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause)
 {
-    DATALOG_ERR_t ret = 0;
+    DATALOG_ERR_t ret = DATALOG_OK;
     
     //create head on the stack
     if(datalog_literal_create(clause->head) != DATALOG_OK){
@@ -206,8 +207,8 @@ DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause)
         
         ret = dl_addliteral(datalog_db);
 
-#ifdef PARSER_DEBUG_VERBOSE
-        fprintf(stderr, "[DATALOG][API] Verbose: asserting clause literal #%d    %s\n"
+#ifdef DATALOG_DEBUG_VERBOSE
+        fprintf(stderr, "[DATALOG][API] Verbose: adding clause literal #%d    %s\n"
                 , i, (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
         if(ret) return DATALOG_ASRT;
@@ -215,8 +216,8 @@ DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause)
 
     ret = dl_makeclause(datalog_db);
 
-#ifdef PARSER_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG][PARSER] Verbose: asserting clause:           %s\n",
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG][API] Verbose: making clause:           %s\n",
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
     if(ret) return DATALOG_ASRT;
@@ -224,6 +225,36 @@ DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause)
     return DATALOG_OK;
 }
 
+DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause)
+{
+    DATALOG_ERR_t ret = DATALOG_OK;
+
+    datalog_clause_create(clause);
+    
+    ret = dl_assert(datalog_db);
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG][API] Verbose: asserting clause:           %s\n",
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    return ret;
+}
+
+DATALOG_ERR_t datalog_clause_create_and_retract(datalog_clause_t* clause)
+{
+    DATALOG_ERR_t ret = DATALOG_OK;
+
+    datalog_clause_create(clause);
+    
+    ret = dl_retract(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG][API] VERBOSE: clause retracted:                   %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    return DATALOG_OK;
+}
 
 DATALOG_ERR_t datalog_assert_clause(int literal_count)
 {
@@ -233,7 +264,7 @@ DATALOG_ERR_t datalog_assert_clause(int literal_count)
     ret = dl_pushhead(datalog_db);
     
 #ifdef DATALOG_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG] VERBOSE: empty clause created:               %s\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: empty clause created:               %s\n", 
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 
@@ -241,7 +272,7 @@ DATALOG_ERR_t datalog_assert_clause(int literal_count)
         ret = dl_addliteral(datalog_db);
 
 #ifdef DATALOG_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG] VERBOSE: literal %d added to clause:         %s\n",
+    fprintf(stderr, "[DATALOG][API] VERBOSE: literal %d added to clause:         %s\n",
         i, (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
     }
@@ -250,7 +281,7 @@ DATALOG_ERR_t datalog_assert_clause(int literal_count)
     ret = dl_makeclause(datalog_db);
 
 #ifdef DATALOG_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG] VERBOSE: clause finalised:                   %s\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: clause finalised:                   %s\n", 
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 
@@ -258,71 +289,17 @@ DATALOG_ERR_t datalog_assert_clause(int literal_count)
     ret = dl_assert(datalog_db);
 
 #ifdef DATALOG_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG] VERBOSE: clause asserted:                    %s\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: clause asserted:                    %s\n", 
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
     
-    return DATALOG_OK;
-}
-
-/*
-DATALOG_ERR_t datalog_create_and_retract_clause_s(datalog_clause_t* clause)
-{
-    //create head on the stack
-    if(datalog_create_literal_s(clause->head) != DATALOG_OK){
-#ifdef DATALOG_ERR
-            fprintf(stderr, "[DATALOG][API] Err: failed to assert clause head \n");
-#endif
-        return DATALOG_LIT;
-    }
-
-    //assert clause
-    if(datalog_retract_clause() != DATALOG_OK){
-#ifdef DATALOG_ERR
-        fprintf(stderr, "[DATALOG][API] Err: failed to retract "
-                "clause with #%d literals\n", clause->literal_count +1);
-#endif
-        return DATALOG_ASRT;
-    }
-    return DATALOG_OK;
-}
-*/
-
-DATALOG_ERR_t datalog_retract_clause(void)
-{
-    int ret = 0;
-
-    //create clause from complete literal
-    ret = dl_pushhead(datalog_db);
-    
-#ifdef DATALOG_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG] VERBOSE: empty clause created:               %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
-#endif
-
-    //finalise the clause
-    ret = dl_makeclause(datalog_db);
-
-#ifdef DATALOG_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG] VERBOSE: clause finalised:                   %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
-#endif
-
-    //retract clause
-    ret = dl_retract(datalog_db);
-
-#ifdef DATALOG_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG] VERBOSE: clause retracted:                   %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
-#endif
-
     return DATALOG_OK;
 }
 
 void datalog_print_answers(datalog_query_answer_t* a)
 {
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG] DEBUG: printing query answers\n"); 
+    fprintf(stderr, "[DATALOG][API] DEBUG: printing query answers\n"); 
 #endif
     printf("!!-----------DATALOG ANSWERS-----------!!\n");
     printf(" Predicate: %s\n", a->predic);
