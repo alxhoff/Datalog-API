@@ -273,18 +273,18 @@ typedef enum{
 }DATALOG_ERR_t;
 
 /**
-* @typedef datalog_query_answer_pair_t
-* @brief Typdef for datalog_query_answer_pair
+* @typedef datalog_query_answers_t
+* @brief Typdef for datalog_query_answers
 */
-typedef struct datalog_query_answer_pair datalog_query_answer_pair_t;
+typedef struct datalog_query_answers datalog_query_answers_t;
 
 /**
-* @struct datalog_query_answer_pair
+* @struct datalog_query_answers
 * @brief Struct used to represent individual query answers in the API
 */
-struct datalog_query_answer_pair{
-    char* arg1;
-    char* arg2;
+struct datalog_query_answers{
+    int term_count;
+    char** term_list;
 };
 
 /**
@@ -300,7 +300,7 @@ typedef struct datalog_query_answer datalog_query_answer_t;
 struct datalog_query_answer{
     char* predic;
     int argc;
-    datalog_query_answer_pair_t** answer_pairs;
+    datalog_query_answers_t** answers;
 };
 
 /**
