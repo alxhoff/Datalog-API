@@ -40,7 +40,7 @@ char* dl_cli_remove_spaces(char* input)
         else
             j--;                                     
     }
-        output[j]=0;
+    output[j]=0;
     return output;
 }
 
