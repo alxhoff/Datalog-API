@@ -119,7 +119,7 @@ int main(void)
     
     datalog_literal_t* test_lit_4 = datalog_literal_init("test");
     datalog_literal_add_term(test_lit_4, "hello", DL_TERM_C);
-    datalog_literal_add_term(test_lit_4, "world", DL_TERM_C);
+    datalog_literal_add_term(test_lit_4, "universe", DL_TERM_C);
     datalog_literal_print(test_lit_4);
     datalog_literal_create_and_assert(test_lit_4);
 
@@ -132,13 +132,10 @@ int main(void)
     datalog_query_print(test_query);
     
     datalog_clause_t* test_clause = datalog_clause_init(test_lit);
-    datalog_literal_t* test_lit_3 = datalog_literal_init("hello");
+    datalog_literal_t* test_lit_3 = datalog_literal_init("test");
+    datalog_literal_add_term(test_lit_3, "hello", DL_TERM_C);
     datalog_literal_add_term(test_lit_3, "world", DL_TERM_C);
-    datalog_literal_add_term(test_lit_3, "yo", DL_TERM_C);
-    datalog_clause_add_literal(test_clause, test_lit_3);
-    datalog_clause_add_literal(test_clause, test_lit_3);
     datalog_clause_print(test_clause);
-    datalog_clause_create_and_assert(test_clause);
     datalog_clause_create_and_retract(test_clause);
 
 /*
