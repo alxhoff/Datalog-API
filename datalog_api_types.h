@@ -38,8 +38,8 @@ typedef enum{
 } DATALOG_LIT_t;
 
 typedef enum{
-    DL_TERM_C,
-    DL_TERM_V,
+    DL_TERM_C = 0x00,
+    DL_TERM_V = 0x01,
 } DATALOG_TERM_t;
 
 typedef struct datalog_term datalog_term_t;
@@ -62,6 +62,7 @@ typedef struct datalog_literal datalog_literal_t;
 */
 struct datalog_literal{
     char* predicate; /**< Literal's precidate string represenation*/
+    int term_count;
     datalog_term_t* term_head;      /**< String representation of the literals first arg*/
     DATALOG_LIT_t lit_type; /** Type of literal */
 };

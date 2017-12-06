@@ -112,7 +112,13 @@ int main(void)
     if(ret != DATALOG_OK) return -1;
 
     datalog_literal_t* test_lit = datalog_literal_init("testPredicate");
+    datalog_literal_add_term(test_lit, "test term 1", DL_TERM_C);
+    datalog_literal_add_term(test_lit, "test term 2", DL_TERM_C);
+    datalog_literal_add_term(test_lit, "test term 3", DL_TERM_C);
+    datalog_literal_add_term(test_lit, "test term 4", DL_TERM_C);
+    datalog_literal_add_term(test_lit, "test term 5", DL_TERM_C);
     datalog_literal_print(test_lit);
+    datalog_literal_assert(test_lit);
 /*
 
     datalog_literal_t* test_lit = datalog_init_literal("test", "hello", "world", DL_CC);

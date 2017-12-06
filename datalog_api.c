@@ -605,8 +605,9 @@ DATALOG_ERR_t datalog_literal_add_term(datalog_literal_t* lit, char* value,
     }
     strcpy(term->value, value);
     datalog_term_t* list_tail = datalog_literal_get_last_term(lit);
-    if(list_tail == NULL) return DATALOG_TERM;
-    list_tail->next = term;
+    if(list_tail == NULL) lit->term_head = term;
+    else list_tail->next = term;
+    lit->term_count++;
     return DATALOG_OK;
 }
 
@@ -632,12 +633,89 @@ DATALOG_ERR_t datalog_literal_print(datalog_literal_t* lit)
         printf("  No terms\n");
         goto print_literal_return;
     }
+    
     datalog_term_t* term_head = lit->term_head;
-    int i=0;
-    do printf("  Term #%d: %s\n", i++, term_head->value); while(term_head->next != NULL);
+    
+    for(int i = 0; i<lit->term_count; i++){
+        printf("  Term #%d: %s\n", i, term_head->value); 
+        term_head = term_head->next;
+    }
 
 print_literal_return: printf("!!========LITERAL========!!\n");
     return DATALOG_OK;
+}
+
+DATALOG_ERR_t datalog_literal_assert(datalog_literal_t* lit)
+{
+    DATALOG_ERR_t ret = DATALOG_OK;
+    
+    //start literal, push empty literal onto stack
+    ret = dl_pushliteral(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: empty literal pushed onto stack:    %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+
+    //push predicate symbol onto the stack via string
+    ret = dl_pushlstring(datalog_db, lit->predicate, 
+            (size_t)strlen(lit->predicate));
+        
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: predicate string pushed onto stack: %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+   
+    ret = dl_addpred(datalog_db); 
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG] VERBOSE: predicate created:                  %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+    if(ret) return DATALOG_LIT;
+
+    //push args onto the stack
+    datalog_term_t* tmp;
+    for(int i = 0; i < lit->term_count; i++){
+        tmp = datalog_literal_get_term_index(lit, i);
+        if(tmp != NULL) ret = dl_pushlstring(datalog_db, tmp->value,
+                (size_t)strlen(tmp->value));
+
+#ifdef DATALOG_DEBUG_VERBOSE 
+        fprintf(stderr, "[DATALOG] VERBOSE: arg1 string pushed onto stack:      %s\n", 
+            (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+        if(ret) return DATALOG_LIT;
+
+        if(tmp->type == DL_TERM_C) ret = dl_addconst(datalog_db);
+        else if(tmp->type == DL_TERM_V) ret = dl_addvar(datalog_db);
+        else return DATALOG_TERM;
+        
+#ifdef DATALOG_DEBUG_VERBOSE
+        fprintf(stderr, "[DATALOG] VERBOSE: term %d created:                     %s\n", 
+            i, (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+        if(ret) return DATALOG_LIT;
+    }
+    
+    //finish creating literal
+    ret = dl_makeliteral(datalog_db);
+
+#ifdef DATALOG_DEBUG_VERBOSE
+    fprintf(stderr, "[DATALOG] VERBOSE: literal created:                    %s\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+
+   if(ret) return DATALOG_LIT;
+
+   return DATALOG_OK;
 }
 
 /*
@@ -671,95 +749,6 @@ DATALOG_ERR_t datalog_create_and_assert_literal_s(datalog_literal_t* lit)
 }
 */
 
-/*
-DATALOG_ERR_t datalog_create_literal(char* predicate, char* arg1, 
-        char* arg2, DATALOG_LIT_t lit_type)
-{
-#ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG] DEBUG: create literal \n%s(%s, %s)\n",
-            predicate, arg1, arg2); 
-#endif
-
-    int ret = 0;
-    
-    //start literal, push empty literal onto stack
-    ret = dl_pushliteral(datalog_db);
-
-#ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: empty literal pushed onto stack:    %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
-#endif
-
-    if(ret) return DATALOG_LIT;
-
-    //push predicate symbol onto the stack via string
-    char* test_predicate = predicate;
-    ret = dl_pushlstring(datalog_db, test_predicate, 
-            (size_t)strlen(test_predicate));
-        
-#ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: predicate string pushed onto stack: %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
-#endif
-
-    if(ret) return DATALOG_LIT;
-   
-    ret = dl_addpred(datalog_db); 
-
-#ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: predicate created:                  %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
-#endif
-
-    if(ret) return DATALOG_LIT;
-
-    //push const1's string onto the stack
-    char* test_arg1 = arg1;
-    ret = dl_pushlstring(datalog_db, test_arg1, 
-           (size_t)strlen(test_arg1));
-
-#ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: arg1 string pushed onto stack:      %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
-#endif
-
-    if(ret) return DATALOG_LIT;
-
-    //create const1 from string on stack
-    ret = datalog_add_var_const(lit_type, 0);
-
-    if(ret) return DATALOG_LIT;
-    
-    //push const2's string onto the stack
-    char* test_arg2 = arg2;
-    ret = dl_pushlstring(datalog_db, test_arg2, 
-            (size_t)strlen(test_arg2));
-
-#ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: arg2 string pushed onto stack       %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
-#endif
-
-    if(ret) return DATALOG_LIT;
-    
-    //create arg2 from string on stack
-    ret = datalog_add_var_const(lit_type, 1);
-
-    if(ret) return DATALOG_LIT;
-
-    //finish creating literal
-    ret = dl_makeliteral(datalog_db);
-
-#ifdef DATALOG_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG] VERBOSE: literal created:                    %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
-#endif
-
-   if(ret) return DATALOG_LIT;
-
-   return DATALOG_OK;
-}
-*/
 
 /*
 DATALOG_ERR_t datalog_create_literal_s(datalog_literal_t* literal) 

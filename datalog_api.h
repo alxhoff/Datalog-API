@@ -408,6 +408,9 @@ DATALOG_ERR_t datalog_query(char* predicate, char* const1,
 */
 DATALOG_ERR_t datalog_query_s(datalog_query_t* query);
 
+DATALOG_ERR_t datalog_literal_add_term(datalog_literal_t* lit, char* value, 
+        DATALOG_TERM_t type);
+
 /**
 * @brief Initialises a datalog literal struct, does not create the literal
 * in the database.
@@ -422,6 +425,7 @@ DATALOG_ERR_t datalog_query_s(datalog_query_t* query);
 datalog_literal_t* datalog_literal_init(char* predicate);
 
 DATALOG_ERR_t datalog_literal_print(datalog_literal_t* lit);
+DATALOG_ERR_t datalog_literal_assert(datalog_literal_t* lit);
 
 //TODO lit type error checking. can all types be directly asserted?
 //
