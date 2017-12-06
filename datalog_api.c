@@ -32,7 +32,7 @@
 datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
 {
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG] DEBUG: processing query answers\n"); 
+    fprintf(stderr, "[DATALOG][API] DEBUG: processing query answers\n"); 
 #endif
     //alloc return struct
     datalog_query_answer_t* ret_struct = (datalog_query_answer_t*)
@@ -43,7 +43,7 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
     ret_struct->predic = dl_getpred(a);
 
 #ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: predicate:                          %s\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: predicate:                          %s\n", 
         ret_struct->predic);
 #endif
    
@@ -68,7 +68,7 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
     ret_struct->answer_pairs[0]->arg2 = tmp2;
 
 #ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: first constant pair: (%s, %s)\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: first constant pair: (%s, %s)\n", 
             tmp1, tmp2);
 #endif
     while(tmp1 != NULL){
@@ -81,7 +81,7 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
         if(tmp2 == NULL) break;
 
 #ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: index %d constant pair: (%s, %s)\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: index %d constant pair: (%s, %s)\n", 
             index, tmp1, tmp2);
 #endif
         ret_struct->answer_pairs = (datalog_query_answer_pair_t**)
@@ -96,7 +96,7 @@ datalog_query_answer_t* datalog_process_answer(dl_answers_t a)
     }
     ret_struct->argc = index;
 #ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: found \"%d\" answers\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: found \"%d\" answers\n", 
             ret_struct->argc);
 #endif
     return ret_struct;
@@ -256,7 +256,7 @@ DATALOG_ERR_t datalog_clause_create_and_retract(datalog_clause_t* clause)
     return DATALOG_OK;
 }
 
-DATALOG_ERR_t datalog_assert_clause(int literal_count)
+DATALOG_ERR_t datalog_clause_assert(int literal_count)
 {
     int ret = 0;
 
@@ -332,7 +332,7 @@ DATALOG_ERR_t datalog_query_print(datalog_query_t* query)
 DATALOG_ERR_t datalog_query_ask(datalog_query_t* query)  
 {
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG] DEBUG: query clause for predicate: %s\n", query->literal->predicate); 
+    fprintf(stderr, "[DATALOG][API] DEBUG: query clause for predicate: %s\n", query->literal->predicate); 
 #endif
 
     DATALOG_ERR_t ret = DATALOG_OK;
@@ -340,7 +340,7 @@ DATALOG_ERR_t datalog_query_ask(datalog_query_t* query)
     ret = datalog_literal_create(query->literal);
 
 #ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: query literal created:              %s\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: query literal created:              %s\n", 
             (ret == DATALOG_OK ? "SUCCSESS" : "FAIL"));
 #endif
 
@@ -349,11 +349,11 @@ DATALOG_ERR_t datalog_query_ask(datalog_query_t* query)
     ret = dl_ask(datalog_db, &a);
 
 #ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: query sent:                         %s\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: query sent:                         %s\n", 
             (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG] VERBOSE: query resulted in answer:           %s\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: query resulted in answer:           %s\n", 
             (a != NULL ? "SUCCSESS" : "FAIL"));
 #endif
 
@@ -446,7 +446,7 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
     ret = dl_pushliteral(datalog_db);
 
 #ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: empty literal pushed onto stack:    %s\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: empty literal pushed onto stack:    %s\n", 
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 
@@ -457,7 +457,7 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
             (size_t)strlen(lit->predicate));
         
 #ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: predicate string pushed onto stack: %s\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: predicate string pushed onto stack: %s\n", 
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 
@@ -466,7 +466,7 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
     ret = dl_addpred(datalog_db); 
 
 #ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG] VERBOSE: predicate created:                  %s\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: predicate created:                  %s\n", 
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 
@@ -480,7 +480,7 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
                 (size_t)strlen(tmp->value));
 
 #ifdef DATALOG_DEBUG_VERBOSE 
-        fprintf(stderr, "[DATALOG] VERBOSE: term #%d string pushed onto stack:   %s\n" 
+        fprintf(stderr, "[DATALOG][API] VERBOSE: term #%d string pushed onto stack:   %s\n" 
             , i, (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 
@@ -489,19 +489,19 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
         if(tmp->type == DL_TERM_C){
             ret = dl_addconst(datalog_db);
 #ifdef DATALOG_DEBUG_VERBOSE 
-            fprintf(stderr, "[DATALOG] VERBOSE: term #%d added as constant:          %s\n" 
+            fprintf(stderr, "[DATALOG][API] VERBOSE: term #%d added as constant:          %s\n" 
                 , i, (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
         }else if(tmp->type == DL_TERM_V){
             ret = dl_addvar(datalog_db);
 #ifdef DATALOG_DEBUG_VERBOSE 
-            fprintf(stderr, "[DATALOG] VERBOSE: term #%d added as variable:          %s\n" 
+            fprintf(stderr, "[DATALOG][API] VERBOSE: term #%d added as variable:          %s\n" 
                 , i, (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
         }else return DATALOG_TERM;
         
 #ifdef DATALOG_DEBUG_VERBOSE
-        fprintf(stderr, "[DATALOG] VERBOSE: term %d created:                     %s\n", 
+        fprintf(stderr, "[DATALOG][API] VERBOSE: term %d created:                     %s\n", 
             i, (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 
@@ -512,7 +512,7 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
     ret = dl_makeliteral(datalog_db);
 
 #ifdef DATALOG_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG] VERBOSE: literal created:                    %s\n", 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: literal created:                    %s\n", 
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 
@@ -525,7 +525,7 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
 DATALOG_ERR_t datalog_literal_create_and_assert(datalog_literal_t* lit)
 {
     if(datalog_literal_create(lit) != DATALOG_OK) return DATALOG_LIT;
-    if(datalog_assert_clause(0) != DATALOG_OK) return DATALOG_ASRT;
+    if(datalog_clause_assert(0) != DATALOG_OK) return DATALOG_ASRT;
 
     return DATALOG_OK;
 }
@@ -542,12 +542,12 @@ DATALOG_ERR_t datalog_engine_db_init(void)
    
 #ifdef DATALOG_ERR
     if(datalog_db == NULL){
-        fprintf(stderr, "[DATALOG] ERR: dl_open() failed\n");
+        fprintf(stderr, "[DATALOG][API] ERR: dl_open() failed\n");
         return DATALOG_MEM;
     }
 #ifdef DATALOG_DEBUG
     if(datalog_db != NULL)
-        fprintf(stderr, "[DATALOG] DEBUG: database opened \n");
+        fprintf(stderr, "[DATALOG][API] DEBUG: database opened \n");
 #endif
 #endif
 
@@ -559,7 +559,7 @@ DATALOG_ERR_t datalog_engine_db_deinit(void)
     dl_close(datalog_db);
 
 #ifdef DATALOG_DEBUG
-    printf("[DATALOG] DEBUG: database closed\n");
+    printf("[DATALOG][API] DEBUG: database closed\n");
 #endif
 
     return DATALOG_OK;
