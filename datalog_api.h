@@ -315,9 +315,13 @@ typedef struct datalog_query datalog_query_t;
 * @brief Struct used to represent send a query the API
 */
 struct datalog_query{
-   datalog_literal_t* literal;
-   dl_answers_t* answer;
-   datalog_query_processed_answers_t* processed_answer;
+    datalog_literal_t* literal;
+    dl_answers_t* answer;
+    datalog_query_processed_answers_t* processed_answer;
+
+    DATALOG_ERR_t (*ask)(datalog_query_t*);
+    DATALOG_ERR_t (*print)(datalog_query_t*);
+    DATALOG_ERR_t (*print_answers)(datalog_query_t*);
 };
 
 /**
@@ -334,6 +338,11 @@ struct datalog_clause{
     datalog_literal_t* head;        /**< Clause's head literal pointer*/
     int literal_count;              /**< Number of literals in the clause's body*/
     datalog_literal_t** body_list;  /**< List of pointers to the literals in the clause's body*/
+
+    DATALOG_ERR_t (*add_literal)(datalog_clause_t*,datalog_literal_t*);
+    DATALOG_ERR_t (*print)(datalog_clause_t*);
+    DATALOG_ERR_t (*assert)(datalog_clause_t*);
+    DATALOG_ERR_t (*retract)(datalog_clause_t*);
 };
 
 /**
@@ -358,7 +367,7 @@ datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a);
 * @param a API datalog query answers struct to be printed 
 * @return void
 */
-void datalog_print_answers(datalog_query_processed_answers_t* a);
+DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a);
 
 /**
 * @brief Initialises a datalog query struct from a literal struct
@@ -381,7 +390,7 @@ DATALOG_ERR_t datalog_query_print(datalog_query_t* query);
 */
 DATALOG_ERR_t datalog_query_ask(datalog_query_t* query);
 
-DATALOG_ERR_t datalog_literal_add_term(datalog_literal_t* lit, char* value, 
+int datalog_literal_add_term(datalog_literal_t* lit, char* value, 
         DATALOG_TERM_t type);
 
 /**
@@ -397,9 +406,9 @@ DATALOG_ERR_t datalog_literal_add_term(datalog_literal_t* lit, char* value,
 */
 datalog_literal_t* datalog_literal_init(char* predicate);
 
-DATALOG_ERR_t datalog_literal_print(datalog_literal_t* lit);
+int datalog_literal_print(datalog_literal_t* lit);
 DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit);
-DATALOG_ERR_t datalog_literal_create_and_assert(datalog_literal_t* lit);
+int datalog_literal_create_and_assert(datalog_literal_t* lit);
 
 //TODO lit type error checking. can all types be directly asserted?
 //

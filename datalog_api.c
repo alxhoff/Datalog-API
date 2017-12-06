@@ -77,49 +77,7 @@ datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a)
     }
     ret_struct->answer_term_count = answer_term_count;
     ret_struct->answer_count = answer_count - 1;
-/*
-    int index = 0;
-    int arg1_len;
-    //get first term
-    char* tmp1 = dl_getconst(a, index, 0); 
-    arg1_len = dl_getconstlen(a, index, 0);
-    //get second term
-    char* tmp2 = tmp1 + arg1_len + 1;
-
-
-#ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG][API] VERBOSE: index 0 constant pair: (%s, %s)\n", 
-            tmp1, tmp2);
-#endif
-    while(tmp1 != NULL){
-        index++;
-        
-        tmp1 = dl_getconst(a, index, 0);
-        if(tmp1 == NULL) break;
-        arg1_len = dl_getconstlen(a, index, 0);
-        tmp2 = tmp1 + arg1_len + 1;
-        if(tmp2 == NULL) break;
-
-#ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG][API] VERBOSE: index %d constant pair: (%s, %s)\n", 
-            index, tmp1, tmp2);
-#endif
-        ret_struct->answers = (datalog_query_answers_t**)
-            realloc((ret_struct->answers),
-                    sizeof(datalog_query_answers_t*) * (index + 1));
-
-        ret_struct->answers[index] = (datalog_query_answers_t*)
-            malloc(sizeof(datalog_query_answers_t));
-
-//        ret_struct->answers[index]->arg1 = tmp1;
-//        ret_struct->answers[index]->arg2 = tmp2;
-    }
-    ret_struct->argc = index;
-#ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG][API] VERBOSE: found \"%d\" answers\n", 
-            ret_struct->argc);
-#endif
-*/
+    
     return ret_struct;
 }
 
@@ -161,7 +119,12 @@ datalog_clause_t* datalog_clause_init(datalog_literal_t* lit)
     if(ret_clause->head == NULL) return NULL;
 
     memcpy(ret_clause->head, lit, sizeof(datalog_literal_t));
-    
+   
+    ret_clause->add_literal = &datalog_clause_add_literal;
+    ret_clause->print = &datalog_clause_print;
+    ret_clause->assert = &datalog_clause_create_and_assert;
+    ret_clause->retract = &datalog_clause_create_and_retract;
+
     return ret_clause;
 }
 
@@ -313,8 +276,7 @@ DATALOG_ERR_t datalog_clause_assert(int literal_count)
     return DATALOG_OK;
 }
 
-
-void datalog_print_answers(datalog_query_processed_answers_t* a)
+DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a)
 {
 #ifdef DATALOG_DEBUG 
     fprintf(stderr, "[DATALOG][API]   DEBUG: printing query answers\n"); 
@@ -322,32 +284,34 @@ void datalog_print_answers(datalog_query_processed_answers_t* a)
     char* tmp;
     size_t prev_size;
     printf("!!=====QUERY ANSWERS=====!!\n");
-    for(int i=0; i<a->answer_count; i++){
-        tmp = (char*)realloc(tmp, sizeof(char) * (strlen(a->predic) + 2));
-        if(tmp == NULL) return;
-        strcpy(tmp, a->predic);
-        strcpy(tmp + strlen(a->predic), "(");
-        for(int j=0; j<a->answer_term_count; j++){
+    for(int i=0; i < a->processed_answer->answer_count; i++){
+        tmp = (char*)realloc(tmp, sizeof(char) * (strlen(a->processed_answer->predic) + 2));
+        if(tmp == NULL) return DATALOG_MEM;;
+        strcpy(tmp, a->processed_answer->predic);
+        strcpy(tmp + strlen(a->processed_answer->predic), "(");
+        for(int j=0; j<a->processed_answer->answer_term_count; j++){
             prev_size = strlen(tmp);
             if(j == 0){ 
                 tmp = (char*)realloc(tmp, 
-                        sizeof(char) * (prev_size + strlen(a->answers[i]->term_list[j]) + 1));
-                if(tmp == NULL) return;
-                strcpy(tmp + prev_size, a->answers[i]->term_list[j]);
+                        sizeof(char) * (prev_size + strlen(a->processed_answer->answers[i]->term_list[j]) + 1));
+                if(tmp == NULL) return DATALOG_MEM;
+                strcpy(tmp + prev_size, a->processed_answer->answers[i]->term_list[j]);
             }else{ 
                 tmp = (char*)realloc(tmp, 
-                        sizeof(char) * (prev_size + strlen(a->answers[i]->term_list[j]) + 2));
-                if(tmp == NULL) return;
+                        sizeof(char) * (prev_size + strlen(a->processed_answer->answers[i]->term_list[j]) + 2));
+                if(tmp == NULL) return DATALOG_MEM;
                 strcpy(tmp + prev_size, ",");
-                strcpy(tmp + prev_size + 1, a->answers[i]->term_list[j]);
+                strcpy(tmp + prev_size + 1, a->processed_answer->answers[i]->term_list[j]);
             }
         }
         prev_size = strlen(tmp);
         tmp = (char*)realloc(tmp, sizeof(char) * (sizeof(tmp) + 2));
+        if(tmp == NULL) return DATALOG_MEM;
         strcpy(tmp + prev_size, ")");
         printf("  %s\n",tmp);
     }
     printf("!!====/QUERY ANSWERS=====!!\n");
+    return DATALOG_OK;
 }
 
 
@@ -358,6 +322,9 @@ datalog_query_t* datalog_query_init(datalog_literal_t* lit)
     if(query == NULL) return NULL;
 
     query->literal = lit;
+    query->ask = &datalog_query_ask;
+    query->print = &datalog_query_print;
+    query->print_answers = &datalog_query_print_answers;
 
     return query;
 }
@@ -366,7 +333,6 @@ DATALOG_ERR_t datalog_query_print(datalog_query_t* query)
 {
     printf("!!=========QUERY=========!!\n");
     datalog_literal_print(query->literal);
-    //TODO print answers
     printf("!!========/QUERY=========!!\n");
     return DATALOG_OK;
 }
@@ -426,7 +392,7 @@ datalog_term_t* datalog_literal_get_last_term(datalog_literal_t* lit)
     return term_head;
 }
 
-DATALOG_ERR_t datalog_literal_add_term(datalog_literal_t* lit, char* value, 
+int datalog_literal_add_term(datalog_literal_t* lit, char* value, 
         DATALOG_TERM_t type)
 {
     datalog_term_t* term = (datalog_term_t*)calloc(1, sizeof(datalog_term_t));
@@ -456,10 +422,13 @@ datalog_literal_t* datalog_literal_init(char* predicate)
         return NULL;
     }
     strcpy(lit->predicate, predicate);
+    lit->add_term = &datalog_literal_add_term;
+    lit->print = &datalog_literal_print;
+    lit->assert = &datalog_literal_create_and_assert;
     return lit;
 }
 
-DATALOG_ERR_t datalog_literal_print(datalog_literal_t* lit)
+int datalog_literal_print(datalog_literal_t* lit)
 {
     printf("!!========LITERAL========!!\n");
     printf("  Predicate: %s\n", (lit->predicate != NULL) ? lit->predicate : "NULL");
@@ -563,7 +532,7 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
 }
 
 
-DATALOG_ERR_t datalog_literal_create_and_assert(datalog_literal_t* lit)
+int datalog_literal_create_and_assert(datalog_literal_t* lit)
 {
     if(datalog_literal_create(lit) != DATALOG_OK) return DATALOG_LIT;
     if(datalog_clause_assert(0) != DATALOG_OK) return DATALOG_ASRT;
