@@ -131,20 +131,9 @@ int main(void)
     test_query->ask(test_query);
     test_query->print(test_query);
     
-    datalog_clause_t* test_clause = datalog_clause_init(test_lit);
-    datalog_literal_t* test_lit_3 = datalog_literal_init("test");
-    datalog_literal_add_term(test_lit_3, "hello", DL_TERM_C);
-    datalog_literal_add_term(test_lit_3, "universe", DL_TERM_C);
-    test_clause->add_literal(test_clause, test_lit_3);
-    test_clause->print(test_clause);
-    test_clause->retract(test_clause);
-    test_query->ask(test_query);
-    
-    test_query->print_answers(test_query); 
-   
-    dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
+    //dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
 
-    ret = datalog_parser_assert_doc(doc);
+    //ret = datalog_parser_assert_doc(doc);
 
     datalog_command_line_run();
 

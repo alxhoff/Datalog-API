@@ -140,7 +140,7 @@ datalog_cli_literal_t* dl_cli_process_literal(char* lit_string)
     }
     
     char* tmp;
-    tmp = strtok(lit_string, "(,).");
+    tmp = strtok(lit_string, "(,).?");
     
     if(tmp == NULL){
 #ifdef CLI_DEBUG
@@ -158,7 +158,7 @@ datalog_cli_literal_t* dl_cli_process_literal(char* lit_string)
 
     strcpy(ret->predicate, tmp);
 
-    tmp = strtok(NULL, "(,).");
+    tmp = strtok(NULL, "(,).?");
     datalog_cli_term_t *tmp_term, *prev_term;
     while(tmp != NULL){
         if(tmp != NULL){
@@ -176,11 +176,12 @@ datalog_cli_literal_t* dl_cli_process_literal(char* lit_string)
         tmp_term->value = (char*)malloc(sizeof(char) * (strlen(tmp) + 1));
         if(tmp_term->value == NULL) return NULL;
         strcpy(tmp_term->value, tmp);
-        
+        ret->term_count++;
+
         tmp_term->type = dl_cli_process_string_type(tmp);
         
         prev_term = tmp_term;
-        tmp = strtok(NULL, "(,).");
+        tmp = strtok(NULL, "(,).?");
     }
     return ret;
 }

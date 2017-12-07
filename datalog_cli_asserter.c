@@ -27,6 +27,7 @@
 #include <string.h>
 
 #include "datalog_cli_asserter.h"
+#include "datalog_api.h"
 
 datalog_literal_t* dl_cli_wrap_literal(datalog_cli_literal_t* lit)
 {
@@ -123,7 +124,7 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
 #endif
             datalog_query_t* query = dl_cli_wrap_query(command);
             datalog_query_ask(query);
-            datalog_query_print(query);
+            datalog_query_print_answers(query);
             free(query);
             }
             break;
