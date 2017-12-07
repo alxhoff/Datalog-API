@@ -21,6 +21,9 @@
                     <terms>
                         <constant>hello</constant>
                         <constant>milkyway</constant>
+                        <constant>how</constant>
+                        <constant>are</constant>
+                        <constant>you</constant>
                     </terms>
                 </literal>
             </head>
@@ -41,6 +44,8 @@
                     <terms>
                         <variable>test_rule_body1_arg1</variable>
                         <variable>test_rule_body1_arg2</variable>
+                        <variable>test_rule_body1_arg3</variable>
+                        <variable>test_rule_body1_arg4</variable>
                     </terms>
                 </literal>
                 <literal>

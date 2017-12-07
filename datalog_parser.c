@@ -193,30 +193,47 @@ DL_PARSER_ERR_t dl_parser_add_fact(dl_parser_doc_t* doc, dl_parser_fact_t* fact)
     return DL_PARSER_OK;
 }
 
-DL_PARSER_ERR_t dl_parser_terms(dl_parser_doc_t* doc, xmlNode* terms_node, 
+DL_PARSER_ERR_t dl_parse_terms(dl_parser_doc_t* doc, xmlNode* terms_node, 
         dl_parser_literal_t* literal)
 {
     xmlChar* contents;
     xmlNode* tmp; 
-    char* temp_str; 
+    char* temp_str;
+    dl_parser_term_t *tmp_term, *new_term;
     tmp = terms_node->xmlChildrenNode;
 
     while(tmp != NULL){
         if(!xmlStrcmp(tmp->name, (const xmlChar*) "constant")){
+            new_term = (dl_parser_term_t*)calloc(1, sizeof(dl_parser_term_t));
+            if(new_term == NULL) return DL_PARSER_MEM;
+            if(literal->term_head == NULL)
+                literal->term_head = new_term;
+            else{
+                tmp_term = literal->term_head;
+                while(tmp_term->next != NULL) tmp_term = tmp_term->next;
+                tmp_term->next = new_term;
+            }
             contents = xmlNodeListGetString(doc->document, tmp->xmlChildrenNode, 1);
-            temp_str = (char*)malloc(sizeof(char) * strlen((const char*)contents));
-            strcpy(temp_str, (const char*)contents);
-#ifdef PARSER_DEBUG_VERBOSE
-            fprintf(stderr, "[DATALOG][PARSER] Verbose: constant found for arg1 in process"
-                    " literal, value is \"%s\"\n", temp_str);
-#endif
+            new_term->type = DL_PARSE_TERM_C; 
+            goto parse_terms_set_contents;
         }else if(!xmlStrcmp(tmp->name, (const xmlChar*) "variable")){
+            new_term = (dl_parser_term_t*)calloc(1, sizeof(dl_parser_term_t));
+            if(new_term == NULL) return DL_PARSER_MEM;
+            if(literal->term_head == NULL)
+                literal->term_head = new_term;
+            else{
+                tmp_term = literal->term_head;
+                while(tmp_term->next != NULL) tmp_term = tmp_term->next;
+                tmp_term->next = new_term;
+            }
             contents = xmlNodeListGetString(doc->document, tmp->xmlChildrenNode, 1);
-            temp_str = (char*)malloc(sizeof(char) * strlen((const char*)contents));
-            strcpy(temp_str, (const char*)contents);
+            new_term->type = DL_PARSE_TERM_V; 
+parse_terms_set_contents: 
+            new_term->value = (char*)malloc(sizeof(char) * strlen((const char*)contents));
+            strcpy(new_term->value, (const char*)contents);
 #ifdef PARSER_DEBUG_VERBOSE
-            fprintf(stderr, "[DATALOG][PARSER] Verbose: variable found for arg1 in process"
-                    " literal, value is \"%s\"\n", temp_str);
+            fprintf(stderr, "[DATALOG][PARSER] Verbose: term found for literal %s"
+                    " literal, value is \"%s\"\n", literal->predicate, new_term->value);
 #endif
         }
         tmp = tmp->next;
@@ -226,7 +243,7 @@ DL_PARSER_ERR_t dl_parser_terms(dl_parser_doc_t* doc, xmlNode* terms_node,
 
 dl_parser_literal_t* dl_parser_process_literal(dl_parser_doc_t* doc, xmlNode* literal_node)
 {
-    dl_parser_literal_t* ret = (dl_parser_literal_t*)malloc(sizeof(dl_parser_literal_t));
+    dl_parser_literal_t* ret = (dl_parser_literal_t*)calloc(1, sizeof(dl_parser_literal_t));
 
     if(ret == NULL){
 #ifdef PARSER_ERR 
@@ -247,14 +264,15 @@ dl_parser_literal_t* dl_parser_process_literal(dl_parser_doc_t* doc, xmlNode* li
             ret->predicate = (char*)malloc(sizeof(char) * strlen((const char*)contents));
             strcpy(ret->predicate, (const char*)contents);
 #ifdef PARSER_DEBUG_VERBOSE
-            fprintf(stderr, "[DATALOG][PARSER] Verbose: predicate found in process literal,"
+            fprintf(stderr, "[DATALOG][PARSER] Verbose: predicate found in process literal "
                     "value is \"%s\"\n", ret->predicate);
 #endif
         }else if(!xmlStrcmp(tmp->name, (const xmlChar*) "terms")){
 #ifdef PARSER_DEBUG_VERBOSE
             fprintf(stderr, "[DATALOG][PARSER] Verbose: terms found in process literal\n");
-#endif
-            dl_parser_terms(doc, tmp, ret);
+#endif  
+            if(ret->predicate != NULL) dl_parse_terms(doc, tmp, ret);
+            else return NULL;
         }
         tmp = tmp->next;
     }
@@ -306,8 +324,8 @@ dl_parser_clause_body_t* dl_parser_body_get_literal_nodes(dl_parser_doc_t* doc,
             temp_literal = dl_parser_process_literal(doc, node);
 
 #ifdef PARSER_DEBUG 
-            fprintf(stderr, "[DATALOG][PARSER] Debug: literal found in body \"%s\"\n"
-                    , temp_literal->predicate);
+    //        fprintf(stderr, "[DATALOG][PARSER] Debug: literal found in body \"%s(%s, %s)\"\n"
+    //                , temp_literal->predicate, temp_literal->arg1, temp_literal->arg2);
 #endif
             
             ret->literals = (dl_parser_literal_t**)realloc(ret->literals,
@@ -414,7 +432,7 @@ DL_PARSER_ERR_t dl_parser_mappings(dl_parser_doc_t* doc)
         }
         node = node->next;
     }
-
+    
     //process lists
     dl_parser_fact_t* fact_head = doc->facts_head;
 

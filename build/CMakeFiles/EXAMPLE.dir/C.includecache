@@ -238,12 +238,6 @@ datalog.h
 datalog_api_types.h
 /home/alxhoff/git/Datalog-API/datalog_api_types.h
 
-/home/alxhoff/git/Datalog-API/datalog_api_parser.h
-datalog_api.h
-/home/alxhoff/git/Datalog-API/datalog_api.h
-datalog_parser.h
-/home/alxhoff/git/Datalog-API/datalog_parser.h
-
 /home/alxhoff/git/Datalog-API/datalog_api_types.h
 
 /home/alxhoff/git/Datalog-API/datalog_cli.h
@@ -277,8 +271,8 @@ config.h
 /home/alxhoff/git/Datalog-API/config.h
 datalog_api.h
 /home/alxhoff/git/Datalog-API/datalog_api.h
-datalog_api_parser.h
-/home/alxhoff/git/Datalog-API/datalog_api_parser.h
+datalog_parser.h
+/home/alxhoff/git/Datalog-API/datalog_parser.h
 datalog_cli.h
 /home/alxhoff/git/Datalog-API/datalog_cli.h
 datalog_opcua_generator.h

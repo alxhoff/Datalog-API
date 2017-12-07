@@ -29,8 +29,8 @@
 #include "config.h"
 
 #include "datalog_api.h"
-/*#include "datalog_parser.h"
-#include "datalog_api_parser.h"
+#include "datalog_parser.h"
+/*#include "datalog_api_parser.h"
 #include "datalog_cli.h"
 #include "datalog_opcua_generator.h"
 */
@@ -141,7 +141,11 @@ int main(void)
     test_query->ask(test_query);
     
     test_query->print_answers(test_query); 
-    
+   
+    dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
+
+    //ret = datalog_parser_assert_doc(doc);
+
     ret = datalog_engine_db_deinit();
 
     if(ret != DATALOG_OK) return -1;
