@@ -123,6 +123,7 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
 #endif
             datalog_query_t* query = dl_cli_wrap_query(command);
             datalog_query_ask(query);
+            datalog_query_print(query);
             free(query);
             }
             break;
