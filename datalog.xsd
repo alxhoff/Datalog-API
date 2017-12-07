@@ -16,9 +16,9 @@
     <!-- doc elements types-->
     
     <xs:complexType name="variableOrConstant">
-        <xs:choice minOccurs="2" maxOccurs="2">
-            <xs:element minOccurs="0" name="variable" type="xs:string"/>
-            <xs:element minOccurs="0" name="constant" type="xs:string"/>
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="variable" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="constant" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
         </xs:choice>
     </xs:complexType>
 
