@@ -146,7 +146,7 @@ int main(void)
     test_clause->add_literal(test_clause, clause_lit2);
     test_clause->add_literal(test_clause, clause_lit3);
 
-    //test_clause->assert(test_clause);
+    test_clause->assert(test_clause);
 
     printf("parsing doc\n");
 
