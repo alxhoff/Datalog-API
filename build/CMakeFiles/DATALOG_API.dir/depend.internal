@@ -8,3 +8,33 @@ CMakeFiles/DATALOG_API.dir/datalog_api.c.o
  /home/alxhoff/git/Datalog-API/datalog_api.c
  /home/alxhoff/git/Datalog-API/datalog_api.h
  /home/alxhoff/git/Datalog-API/datalog_api_types.h
+CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o
+ ../libs/libdatalog/datalog.h
+ ../libs/libdatalog/lua/lua.h
+ ../libs/libdatalog/lua/luaconf.h
+ ../libs/libxml2/include/libxml2/libxml/SAX.h
+ ../libs/libxml2/include/libxml2/libxml/SAX2.h
+ ../libs/libxml2/include/libxml2/libxml/dict.h
+ ../libs/libxml2/include/libxml2/libxml/encoding.h
+ ../libs/libxml2/include/libxml2/libxml/entities.h
+ ../libs/libxml2/include/libxml2/libxml/globals.h
+ ../libs/libxml2/include/libxml2/libxml/hash.h
+ ../libs/libxml2/include/libxml2/libxml/list.h
+ ../libs/libxml2/include/libxml2/libxml/parser.h
+ ../libs/libxml2/include/libxml2/libxml/threads.h
+ ../libs/libxml2/include/libxml2/libxml/tree.h
+ ../libs/libxml2/include/libxml2/libxml/valid.h
+ ../libs/libxml2/include/libxml2/libxml/xlink.h
+ ../libs/libxml2/include/libxml2/libxml/xmlIO.h
+ ../libs/libxml2/include/libxml2/libxml/xmlautomata.h
+ ../libs/libxml2/include/libxml2/libxml/xmlerror.h
+ ../libs/libxml2/include/libxml2/libxml/xmlexports.h
+ ../libs/libxml2/include/libxml2/libxml/xmlmemory.h
+ ../libs/libxml2/include/libxml2/libxml/xmlregexp.h
+ ../libs/libxml2/include/libxml2/libxml/xmlstring.h
+ ../libs/libxml2/include/libxml2/libxml/xmlversion.h
+ /home/alxhoff/git/Datalog-API/datalog_api.h
+ /home/alxhoff/git/Datalog-API/datalog_api_parser.c
+ /home/alxhoff/git/Datalog-API/datalog_api_parser.h
+ /home/alxhoff/git/Datalog-API/datalog_api_types.h
+ /home/alxhoff/git/Datalog-API/datalog_parser.h

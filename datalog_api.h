@@ -270,6 +270,7 @@ typedef enum{
     DATALOG_QUE,
     DATALOG_TYPE,
     DATALOG_TERM,
+    DATALOG_WRAP,
 }DATALOG_ERR_t;
 
 /**

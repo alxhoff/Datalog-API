@@ -28,12 +28,11 @@
 
 #include "datalog_api_parser.h"
 
-/*
 DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
 
-    //ret = datalog_assert_fact_list(doc);
+    ret = datalog_assert_fact_list(doc);
 
     if(ret != DATALOG_OK) return DATALOG_ASRT;
 
@@ -41,7 +40,7 @@ DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc)
     fprintf(stderr, "[DATALOG][PARSER] Debug: fact list asserted\n");
 #endif
      
-    ret = datalog_assert_rule_list(doc);
+    //ret = datalog_assert_rule_list(doc);
 
     if(ret != DATALOG_OK) return DATALOG_ASRT;
 
@@ -51,9 +50,7 @@ DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc)
 
     return DATALOG_OK;
 }
-*/
 
-/*
 DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
@@ -69,7 +66,7 @@ DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
         fprintf(stderr, "[DATALOG][PARSER] Verbose: rule clause wrapped\n");
 #endif
         
-        ret = clause_tmp->assert(clause_tmp);
+        ret = datalog_clause_create_and_assert(clause_tmp);
         
         if(ret != DATALOG_OK){
 #ifdef DATALOG_ERR
@@ -86,9 +83,7 @@ DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
     }
     return DATALOG_OK;
 }
-*/
 
-/*
 DATALOG_ERR_t datalog_assert_fact_list(dl_parser_return_doc_t* doc)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
@@ -100,7 +95,8 @@ DATALOG_ERR_t datalog_assert_fact_list(dl_parser_return_doc_t* doc)
         
         lit_tmp = datalog_wrap_fact(dl_p_fact_tmp);
 
-        ret = lit_tmp->assert(lit_tmp);
+        if(lit_tmp == NULL) return DATALOG_WRAP; 
+        ret = (DATALOG_ERR_t)datalog_literal_create_and_assert(lit_tmp);
 
         if(ret != DATALOG_OK){
 
@@ -114,9 +110,7 @@ DATALOG_ERR_t datalog_assert_fact_list(dl_parser_return_doc_t* doc)
 
     return DATALOG_OK;
 }
-*/
 
-/*
 // wrap data types
 datalog_literal_t* datalog_wrap_literal(dl_parser_literal_t* literal)
 {
@@ -129,8 +123,6 @@ datalog_literal_t* datalog_wrap_literal(dl_parser_literal_t* literal)
 #endif
         return NULL;
     }
-   
-    ret->lit_type = literal->lit_type;
 
     ret->predicate = 
         (char*)malloc(sizeof(char)*strlen(literal->predicate));
@@ -141,35 +133,28 @@ datalog_literal_t* datalog_wrap_literal(dl_parser_literal_t* literal)
 #endif
         return NULL;
     }
+    
     strcpy(ret->predicate, literal->predicate);
-    
-    ret->arg1 = 
-        (char*)malloc(sizeof(char)*strlen(literal->arg1));
-    if(ret->arg1 == NULL){
-#ifdef DATALOG_ERR
-        fprintf(stderr, "[DATALOG][WRAP] Err: wrapping literal"
-            " arg1 failed\n");
-#endif
-        return NULL;
-    }
-    strcpy(ret->arg1, literal->arg1);
-    
-    ret->arg2 = 
-        (char*)malloc(sizeof(char)*strlen(literal->arg2));
-    if(ret->arg2 == NULL){
-#ifdef DATALOG_ERR
-        fprintf(stderr, "[DATALOG][WRAP] Err: wrapping literal"
-            " arg2 failed\n");
-#endif
-        return NULL;
-    }
-    strcpy(ret->arg2, literal->arg2);
+    ret->term_count = literal->term_count;
 
+    if(literal->term_head == NULL) return ret;
+    dl_parser_term_t* term_to_wrap = literal->term_head;
+    
+    datalog_term_t *head, *prev;
+
+    for(int i = 0; i < literal->term_count; i++){
+        if(term_to_wrap == NULL) return ret;
+        head = (datalog_term_t*)calloc(1,sizeof(datalog_term_t));
+        if(head == NULL) return NULL;
+        memcpy(head, term_to_wrap, sizeof(datalog_term_t));
+        if(i > 0) prev->next = head;
+        else ret->term_head = head;
+        prev = head;
+        term_to_wrap = term_to_wrap->next; 
+    }
     return ret;
 }
-*/
 
-/*
 datalog_clause_t* datalog_wrap_rule(dl_parser_rule_t* rule)
 {
     datalog_clause_t* ret =
@@ -219,9 +204,7 @@ datalog_clause_t* datalog_wrap_rule(dl_parser_rule_t* rule)
 
     return ret;
 }
-*/
 
-/*
 datalog_literal_t* datalog_wrap_fact(dl_parser_fact_t* fact)
 {
     datalog_literal_t* ret = datalog_wrap_literal(fact->literal); 
@@ -235,4 +218,3 @@ datalog_literal_t* datalog_wrap_fact(dl_parser_fact_t* fact)
   
     return ret;
 }
-*/

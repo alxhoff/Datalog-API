@@ -27,8 +27,8 @@ CMakeFiles/EXAMPLE.dir/main.c.o: ../libs/libxml2/include/libxml2/libxml/xmlstrin
 CMakeFiles/EXAMPLE.dir/main.c.o: ../libs/libxml2/include/libxml2/libxml/xmlversion.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../config.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_api.h
+CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_api_parser.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_api_types.h
-CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_cli.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_opcua_generator.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../datalog_parser.h
 CMakeFiles/EXAMPLE.dir/main.c.o: ../main.c

@@ -16,6 +16,11 @@
 },
 {
   "directory": "/home/alxhoff/git/Datalog-API/build",
+  "command": "/usr/bin/cc -DDATALOG_API_EXPORTS -DDATALOG_DEBUG -DDATALOG_DEBUG_VERBOSE -DDATALOG_ERR -DPARSER_DEBUG -DPARSER_DEBUG_VERBOSE -DPARSER_ERR -I/home/alxhoff/git/Datalog-API -I/home/alxhoff/git/Datalog-API/libs/libdatalog -I/home/alxhoff/git/Datalog-API/libs/libdatalog/lua -I/home/alxhoff/git/Datalog-API/libs/libxml2/include/libxml2  -g -fPIC   -o CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o   -c /home/alxhoff/git/Datalog-API/datalog_api_parser.c",
+  "file": "/home/alxhoff/git/Datalog-API/datalog_api_parser.c"
+},
+{
+  "directory": "/home/alxhoff/git/Datalog-API/build",
   "command": "/usr/bin/cc -DDATALOG_DEBUG -DDATALOG_DEBUG_VERBOSE -DDATALOG_ERR -DDATALOG_EXPORTS -DPARSER_DEBUG -DPARSER_DEBUG_VERBOSE -DPARSER_ERR -I/home/alxhoff/git/Datalog-API -I/home/alxhoff/git/Datalog-API/libs/libdatalog -I/home/alxhoff/git/Datalog-API/libs/libdatalog/lua -I/home/alxhoff/git/Datalog-API/libs/libxml2/include/libxml2  -g -fPIC   -o CMakeFiles/DATALOG.dir/libs/libdatalog/datalog.c.o   -c /home/alxhoff/git/Datalog-API/libs/libdatalog/datalog.c",
   "file": "/home/alxhoff/git/Datalog-API/libs/libdatalog/datalog.c"
 },
