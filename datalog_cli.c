@@ -96,9 +96,10 @@ datalog_cli_unprocessed_body_t* dl_cli_get_body_literals(
     while(tmp != NULL){
         printf("%s\n",tmp);
         
-        ret->body_literals[body_lit_count] = tmp;
+        ret->body_literals[body_lit_count] = (char*)malloc(sizeof(char)*(strlen(tmp) +1));
+        if(ret->body_literals[body_lit_count] == NULL) return NULL;
+        strcpy(ret->body_literals[body_lit_count], tmp);
         body_lit_count++;
-       
         
         ret->body_literals = (char**)realloc(ret->body_literals,
                 sizeof(char*) * (body_lit_count + 1));
@@ -201,6 +202,7 @@ DATALOG_CLI_ERR_t dl_cli_process_body_list(
 
     for(int i = 0; i < body_list->lit_count; i++){
         command->body[i] = dl_cli_process_literal(body_list->body_literals[i]); 
+        command->body_count++;
         if(command->body[i] == NULL){
 #ifdef CLI_DEBUG
             fprintf(stderr, "[DATALOG][CLI] Debug: process body list, process literal #%d failed\n",

@@ -32,8 +32,7 @@
 #include "datalog_parser.h"
 #include "datalog_api_parser.h"
 #include "datalog_cli.h"
-/*#include "datalog_opcua_generator.h"
-*/
+#include "datalog_opcua_generator.h"
 
 #define clear() printf("\033[H\033[J")
 
@@ -131,10 +130,32 @@ int main(void)
     test_query->ask(test_query);
     test_query->print(test_query);
     
-    //dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
+    datalog_literal_t* clause_lit = datalog_literal_init("ancestor");
+    clause_lit->add_term(clause_lit, "A", DL_TERM_V);
+    clause_lit->add_term(clause_lit, "B", DL_TERM_C);
+    datalog_clause_t* test_clause = datalog_clause_init(clause_lit);
 
-    //ret = datalog_parser_assert_doc(doc);
+    datalog_literal_t* clause_lit2 = datalog_literal_init("parent");
+    clause_lit2->add_term(clause_lit2, "A", DL_TERM_V);
+    clause_lit2->add_term(clause_lit2, "C", DL_TERM_C);
+    
+    datalog_literal_t* clause_lit3 = datalog_literal_init("ancestor");
+    clause_lit3->add_term(clause_lit3, "C", DL_TERM_V);
+    clause_lit3->add_term(clause_lit3, "B", DL_TERM_C);
 
+    test_clause->add_literal(test_clause, clause_lit2);
+    test_clause->add_literal(test_clause, clause_lit3);
+
+    //test_clause->assert(test_clause);
+
+    printf("parsing doc\n");
+
+    dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
+
+    ret = datalog_parser_assert_doc(doc);
+
+    datalog_opcua_runtime();
+    
     datalog_command_line_run();
 
     ret = datalog_engine_db_deinit();

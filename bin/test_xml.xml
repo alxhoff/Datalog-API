@@ -31,26 +31,26 @@
         <rule>
             <head>
                 <literal>
-                    <predicate>test_rule_head</predicate>
+                    <predicate>ancestor</predicate>
                     <terms>
-                        <constant>test_rule_head_arg1</constant>
-                        <variable>test_rule_head_arg2</variable>
+                        <variable>A</variable>
+                        <constant>B</constant>
                     </terms>
                 </literal>
             </head>
             <body>
                 <literal>
-                    <predicate>test_rule_head</predicate>
+                    <predicate>parent</predicate>
                     <terms>
-                        <variable>test_rule_body1_arg1</variable>
-                        <variable>test_rule_body1_arg3</variable>
+                        <variable>A</variable>
+                        <constant>C</constant>
                     </terms>
                 </literal>
                 <literal>
-                    <predicate>test_rule_body2</predicate>
+                    <predicate>ancestor</predicate>
                     <terms>
-                        <variable>test_rule_body1_arg2</variable>
-                        <variable>test_rule_body2_arg3</variable>
+                        <variable>A</variable>
+                        <constant>B</constant>
                     </terms>
                 </literal>
             </body>

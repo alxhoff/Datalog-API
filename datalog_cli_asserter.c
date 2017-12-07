@@ -80,12 +80,13 @@ datalog_clause_t* dl_cli_wrap_body(datalog_cli_command_t* command)
 
     ret->head = dl_cli_wrap_literal(command->head);
     
-    if(command->body_count)  ret->body_list = 
-        (datalog_literal_t**)calloc(command->body_count, sizeof(datalog_literal_t*));
+    if(command->body_count)  
+        ret->body_list = 
+            (datalog_literal_t**)calloc(command->body_count, sizeof(datalog_literal_t*));
 
     for(int i = 0; i < command->body_count; i++)
         ret->body_list[i] = dl_cli_wrap_literal(command->body[i]);
-
+    ret->literal_count = command->body_count; 
     return ret;    
 }
 
@@ -108,8 +109,7 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
                     command->head->predicate, command->head->term1,
                     command->head->term2);
 #endif
-            datalog_clause_t* clause = 
-                dl_cli_wrap_body(command);
+            datalog_clause_t* clause = dl_cli_wrap_body(command);
             datalog_clause_create_and_assert(clause);
             free(clause->head);
             free(clause->body_list);
@@ -134,8 +134,7 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
                     command->head->predicate, command->head->term1,
                     command->head->term2);
 #endif
-            datalog_clause_t* clause = 
-                dl_cli_wrap_body(command);
+            datalog_clause_t* clause = dl_cli_wrap_body(command);
             datalog_clause_create_and_retract(clause);
             free(clause->head);
             free(clause->body_list);
