@@ -40,7 +40,7 @@ DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc)
     fprintf(stderr, "[DATALOG][PARSER] Debug: fact list asserted\n");
 #endif
      
-    //ret = datalog_assert_rule_list(doc);
+    ret = datalog_assert_rule_list(doc);
 
     if(ret != DATALOG_OK) return DATALOG_ASRT;
 
