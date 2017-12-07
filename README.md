@@ -3,9 +3,9 @@
 _windows users you are on your own_
 
 ## Introduction
-The original implementation of the LUA/C library is not the easiest to work with and does not lead to logical or easy to follow code. I have quickly thrown this API together to make the datalog coding style similar to that of the Python implementation. 
+The original implementation of the LUA/C library is not the easiest to work with and does not lead to logical or easy to follow code. I have quickly thrown this API together to make the datalog coding style similar to that of the Python implementation.
 
-## Prerequisites 
+## Prerequisites
 The LUA/C library can be found [here](http://datalog.sourceforge.net) and must be downloaded and placed into the libs folder such that the file tree looks like this  
 ```
   |--- Datalog-API  
@@ -55,7 +55,7 @@ To generate the documentation run the command
 ```bash
 doxygen
 ```
-from the doc folder. Then navigate to ./html/index.html 
+from the doc folder. Then navigate to ./html/index.html
 
 ## Work in progress
 
@@ -74,15 +74,15 @@ I wrote this quickly and dirtily, so excuse the mess.
 + Lots more stuff I am to yet to discover
 + Check file existance
 
-# Objects 
+# Objects
 
 The API revolves around a struct objects to enable a more logical way or representing datalog commands rather than the push and pop confusion found in the library.  
 
-Literals are represented by the object __datalog_literal_t__, queries by __datalog_query_t__ and clauses by __datalog_clause_t__. I may of missed a few methods to be implemented but I should get these done as I actually use this API for other code. 
+Literals are represented by the object __datalog_literal_t__, queries by __datalog_query_t__ and clauses by __datalog_clause_t__. I may of missed a few methods to be implemented but I should get these done as I actually use this API for other code.
 
 ## Literal objects
 
-The parser represents literals using the dl_parser_literal_t object that stores the predicate and arguments for the literal. Literals are probably not used directly in the parser.
+The parser represents literals using the dl_parser_literal_t object that stores the predicate and arguments for the literal.
 
 ## Fact objects
 
@@ -100,7 +100,7 @@ In Datalog rules are clauses that contain a body, the body being a potentially i
 
 ## Using the parser
 
-Parser use should pretty much only require the user to call 
+Parser use should pretty much only require the user to call
 
 ```c
 dl_parser_doc_t* dl_doc = dl_parser_init(filename);
@@ -121,7 +121,7 @@ The parser must be started by calling the dl_parser_init function, specifying th
 
 The function dl_parser_runtime can be called to completley pass a document, returning a dl_parser_return_doc_t object that contains a linked list to all the parsed rules, a linked list to all the parsed facts found within the document as well as populating the dl_parser_metadata_t object within the return doc object.   
 
-One can also parse the various types of data seperatley by running either: dl_parser_metadata or dl_parser_mappings to parse only the metadata or the rules and facts respectivley. 
+One can also parse the various types of data seperatley by running either: dl_parser_metadata or dl_parser_mappings to parse only the metadata or the rules and facts respectivley.
 
 ### Asserting a Parsed Document
 
@@ -169,7 +169,7 @@ A rule is represented by two tags, a `<head>` tag and a `<body>` tag. The head c
 
 #### Literal
 
-A literal is used to display datalog's most rudementary data type. One literal is comprised of a predicate and the corresponsing terms.   
+A literal is used to display datalog's most rudementary data type. One literal is comprised of a predicate and the corresponsing terms (minimum 1, infinite maximum).   
 A literal such as test(foo, BAR). would be represented using the following
 ```xml
 <literal>
@@ -211,6 +211,9 @@ A literal such as test(foo, BAR). would be represented using the following
                     <terms>
                         <constant>hello</constant>
                         <constant>world</constant>
+                        <constant>how</constant>
+                        <constant>are</constant>
+                        <constant>you</constant>
                     </terms>
                 </literal>
             </head>
@@ -248,9 +251,8 @@ A literal such as test(foo, BAR). would be represented using the following
 ```
 
 # Command Line Interface (CLI)
-I have made a small set of funtions that work on a loop to read commands from the native CLI to the Datalog's CLI emulator. The CLI can be used to interact with and previous datalog happenings run within the same program as it shares the same global database as the other API modules. 
+I have made a small set of funtions that work on a loop to read commands from the native CLI to the Datalog's CLI emulator. The CLI can be used to interact with and previous datalog happenings run within the same program as it shares the same global database as the other API modules.
 ## Using the CLI
 The CLI accepts 4 types of input: normal datalog statements, "help" to display help, "clear" to clear the CLI and "exit" to exit the CLI function loop.   
 Please see the inbuilt help function for information on how to express datalog statements.   
 The CLI can be embedded into a program via it's main runtime fuction datalog_command_line_run. The function runs on a goto loop and will run until the program is terminated or the "exit" command is given.
-

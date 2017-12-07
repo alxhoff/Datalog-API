@@ -374,7 +374,7 @@ void dl_cli_print_help(void)
         printf("        [literal] :- [literal].[literal].[literal]...\n");
         printf("\n");
         printf("Literal structure: \n");
-        printf("        [term]([term], [term]).\n");
+        printf("        [term]([term], [term], ....).\n");
         printf("\n");
         printf("Queries: literals followed by a ? are treated as queries\n");
         printf("        [term]([term], [term])?\n");
