@@ -38,3 +38,21 @@ CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o: ../datalog_api_parser.h
 CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o: ../datalog_api_types.h
 CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o: ../datalog_parser.h
 
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o: ../libs/libdatalog/datalog.h
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o: ../libs/libdatalog/lua/lua.h
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o: ../libs/libdatalog/lua/luaconf.h
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o: ../datalog_api.h
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o: ../datalog_api_types.h
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o: ../datalog_cli.c
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o: ../datalog_cli.h
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o: ../datalog_cli_asserter.h
+
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o: ../libs/libdatalog/datalog.h
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o: ../libs/libdatalog/lua/lua.h
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o: ../libs/libdatalog/lua/luaconf.h
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o: ../datalog_api.h
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o: ../datalog_api_types.h
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o: ../datalog_cli.h
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o: ../datalog_cli_asserter.c
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o: ../datalog_cli_asserter.h
+

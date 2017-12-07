@@ -124,13 +124,13 @@ DATALOG_TERM_TYPE_t dl_cli_process_string_type(char* term)
         return DL_CLI_VARIABLE;
     else if(term[0] >= 'a' && term[0] <= 'z')
         return DL_CLI_CONSTANT;
-    else return 0;
+    else return (DATALOG_TERM_TYPE_t) -1;
 }
 
 datalog_cli_literal_t* dl_cli_process_literal(char* lit_string)
 {
     datalog_cli_literal_t* ret = (datalog_cli_literal_t*)
-        malloc(sizeof(datalog_cli_literal_t));
+        calloc(1, sizeof(datalog_cli_literal_t));
 
     if(ret == NULL){
 #ifdef CLI_ERR
@@ -139,40 +139,15 @@ datalog_cli_literal_t* dl_cli_process_literal(char* lit_string)
         return NULL;
     }
     
-    char* predicate;
-    char* term1, *term2;
-
-    predicate = strtok(lit_string, "(,).");
+    char* tmp;
+    tmp = strtok(lit_string, "(,).");
     
-    if(predicate == NULL){
+    if(tmp == NULL){
 #ifdef CLI_DEBUG
         fprintf(stderr,"[DATALOG][CLI] Err: process literal failed, predicate is NULL\n");
 #endif
     }
-    
-    term1 = strtok(NULL, "(,).");
-    
-    if(term1 == NULL){
-#ifdef CLI_DEBUG
-        fprintf(stderr,"[DATALOG][CLI] Err: process literal failed, term1 is NULL\n");
-#endif
-    }
-    
-    term2 = strtok(NULL, "(,).");
-    
-    if(term2 == NULL){
-#ifdef CLI_DEBUG
-        fprintf(stderr,"[DATALOG][CLI] Err: process literal failed, term2 is NULL\n");
-#endif
-    }
-
-#ifdef CLI_DEBUG_VERBOSE
-    fprintf(stderr, "[DATALOG][CLI] Verbose: processing literal predicate: %s\n", predicate);
-    fprintf(stderr, "[DATALOG][CLI] Verbose: processing literal term 1: %s\n", term1);
-    fprintf(stderr, "[DATALOG][CLI] Verbose: processing literal term 2: %s\n", term2);
-#endif
-
-    ret->predicate = (char*)malloc(sizeof(char) * strlen(predicate));
+    ret->predicate = (char*)malloc(sizeof(char) * strlen(tmp));
 
     if(ret->predicate == NULL){
 #ifdef CLI_ERR
@@ -181,60 +156,32 @@ datalog_cli_literal_t* dl_cli_process_literal(char* lit_string)
         return NULL;
     }
 
-    strcpy(ret->predicate, predicate);
-    
-    ret->term1 = (char*)malloc(sizeof(char) * strlen(term1));
-    
-    if(ret->term1 == NULL){
-#ifdef CLI_ERR
-        fprintf(stderr, "[DATALOG][CLI] Err: process literal term 1 alloc failed\n");
-#endif
-        return NULL;
-    }
-   
-    strcpy(ret->term1, term1);
+    strcpy(ret->predicate, tmp);
 
-    ret->term2 = (char*)malloc(sizeof(char) * strlen(term2));
-    
-    if(ret->term2 == NULL){
-#ifdef CLI_ERR
-        fprintf(stderr, "[DATALOG][CLI] Err: process literal term 2 alloc failed\n");
-#endif
-        return NULL;
-    }
-    
-    strcpy(ret->term2, term2);
-    
-    DATALOG_TERM_TYPE_t term1_type = dl_cli_process_string_type(term1);
-    if(term1_type == 0){
+    tmp = strtok(NULL, "(,).");
+    datalog_cli_term_t *tmp_term, *prev_term;
+    while(tmp != NULL){
+        if(tmp != NULL){
 #ifdef CLI_DEBUG
-        fprintf(stderr, "[DATALOG][CLI] Debug: term 1 type could not be resolved\n");
+            fprintf(stderr,"[DATALOG][CLI] DEBUG: process literal term found: %s \n", tmp);
 #endif
-        return NULL;
+        }
+        tmp_term = (datalog_cli_term_t*)calloc(1,sizeof(datalog_cli_term_t));
+        if(tmp_term == NULL) return NULL;
+        
+        if(ret->term_head == NULL) ret->term_head = tmp_term;
+        else prev_term->next = tmp_term;      
+        
+        
+        tmp_term->value = (char*)malloc(sizeof(char) * (strlen(tmp) + 1));
+        if(tmp_term->value == NULL) return NULL;
+        strcpy(tmp_term->value, tmp);
+        
+        tmp_term->type = dl_cli_process_string_type(tmp);
+        
+        prev_term = tmp_term;
+        tmp = strtok(NULL, "(,).");
     }
-    DATALOG_TERM_TYPE_t term2_type = dl_cli_process_string_type(term2);
-    if(term1_type == 0){
-#ifdef CLI_DEBUG
-        fprintf(stderr, "[DATALOG][CLI] Debug: term 2 type could not be resolved\n");
-#endif
-        return NULL;
-    }
-
-    if(term1_type == DL_CLI_VARIABLE && term2_type == DL_CLI_VARIABLE)
-        ret->lit_type = DL_VV;
-    else if(term1_type == DL_CLI_VARIABLE && term2_type == DL_CLI_CONSTANT)
-        ret->lit_type = DL_VC;
-    else if(term1_type == DL_CLI_CONSTANT && term2_type == DL_CLI_VARIABLE)
-        ret->lit_type = DL_CV;
-    else if(term1_type == DL_CLI_CONSTANT && term2_type == DL_CLI_CONSTANT)
-        ret->lit_type = DL_CC;
-    else{
-#ifdef CLI_DEBUG
-        fprintf(stderr, "[DATALOG][CLI] Debug: literal type could not be resolved\n");
-#endif
-        return NULL;
-    }
-
     return ret;
 }
 

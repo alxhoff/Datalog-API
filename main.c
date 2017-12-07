@@ -31,8 +31,8 @@
 #include "datalog_api.h"
 #include "datalog_parser.h"
 #include "datalog_api_parser.h"
-/*#include "datalog_cli.h"
-#include "datalog_opcua_generator.h"
+#include "datalog_cli.h"
+/*#include "datalog_opcua_generator.h"
 */
 
 #define clear() printf("\033[H\033[J")
@@ -80,7 +80,7 @@ void datalog_command_line_splash(void)
     printf("*==========================================* \n");
     printf(" \n");
 }
-/*
+
 void datalog_command_line_run(void)
 {
     DATALOG_CLI_ERR_t ret = DATALOG_CLI_OK;
@@ -102,7 +102,7 @@ datalog_cli_restart:
     }else
         goto datalog_cli_restart;
 }
-*/
+
 int main(void)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
@@ -145,6 +145,8 @@ int main(void)
     dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
 
     ret = datalog_parser_assert_doc(doc);
+
+    datalog_command_line_run();
 
     ret = datalog_engine_db_deinit();
 

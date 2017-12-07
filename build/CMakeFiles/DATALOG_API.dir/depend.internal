@@ -38,3 +38,21 @@ CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o
  /home/alxhoff/git/Datalog-API/datalog_api_parser.h
  /home/alxhoff/git/Datalog-API/datalog_api_types.h
  /home/alxhoff/git/Datalog-API/datalog_parser.h
+CMakeFiles/DATALOG_API.dir/datalog_cli.c.o
+ ../libs/libdatalog/datalog.h
+ ../libs/libdatalog/lua/lua.h
+ ../libs/libdatalog/lua/luaconf.h
+ /home/alxhoff/git/Datalog-API/datalog_api.h
+ /home/alxhoff/git/Datalog-API/datalog_api_types.h
+ /home/alxhoff/git/Datalog-API/datalog_cli.c
+ /home/alxhoff/git/Datalog-API/datalog_cli.h
+ /home/alxhoff/git/Datalog-API/datalog_cli_asserter.h
+CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o
+ ../libs/libdatalog/datalog.h
+ ../libs/libdatalog/lua/lua.h
+ ../libs/libdatalog/lua/luaconf.h
+ /home/alxhoff/git/Datalog-API/datalog_api.h
+ /home/alxhoff/git/Datalog-API/datalog_api_types.h
+ /home/alxhoff/git/Datalog-API/datalog_cli.h
+ /home/alxhoff/git/Datalog-API/datalog_cli_asserter.c
+ /home/alxhoff/git/Datalog-API/datalog_cli_asserter.h

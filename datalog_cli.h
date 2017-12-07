@@ -54,8 +54,8 @@ typedef enum{
 * @brief used to specify the type of literal to be created
 */
 typedef enum{
-    DL_CLI_VARIABLE = 1,    /*!< Denotes a literal term that is a variable */
-    DL_CLI_CONSTANT = 2     /*!< Denotes a literal term that is a constant */
+    DL_CLI_CONSTANT = 0x00,     /*!< Denotes a literal term that is a constant */
+    DL_CLI_VARIABLE = 0x01,    /*!< Denotes a literal term that is a variable */
 } DATALOG_TERM_TYPE_t;
 
 /**
@@ -87,6 +87,14 @@ typedef struct datalog_cli_unprocessed_body{
     char** body_literals;   /*!< Pointer array of literal strings to be parsed */
 } datalog_cli_unprocessed_body_t;
 
+typedef struct datalog_cli_term datalog_cli_term_t;
+
+struct datalog_cli_term{
+    char* value;
+    DATALOG_TERM_TYPE_t type;
+    datalog_cli_term_t* next;
+};
+
 /**
 * @typedef datalog_cli_literal_t
 * @brief Typdef for struct datalog_cli_literal
@@ -97,9 +105,8 @@ typedef struct datalog_cli_unprocessed_body{
 */
 typedef struct datalog_cli_literal{
     char* predicate;        /*!< Literal's predicate */
-    char* term1;            /*!< Literal's first term */
-    char* term2;            /*!< Literal's second term */
-    DATALOG_LIT_t lit_type; /*!< Literal's type */
+    int term_count;
+    datalog_cli_term_t* term_head; 
 } datalog_cli_literal_t;
 
 /**

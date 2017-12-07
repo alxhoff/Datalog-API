@@ -40,19 +40,17 @@
             </head>
             <body>
                 <literal>
-                    <predicate>test_rule_body1</predicate>
+                    <predicate>test_rule_head</predicate>
                     <terms>
                         <variable>test_rule_body1_arg1</variable>
-                        <variable>test_rule_body1_arg2</variable>
                         <variable>test_rule_body1_arg3</variable>
-                        <variable>test_rule_body1_arg4</variable>
                     </terms>
                 </literal>
                 <literal>
                     <predicate>test_rule_body2</predicate>
                     <terms>
-                        <variable>test_rule_body2_arg1</variable>
-                        <constant>test_rule_body2_arg2</constant>
+                        <variable>test_rule_body1_arg2</variable>
+                        <variable>test_rule_body2_arg3</variable>
                     </terms>
                 </literal>
             </body>

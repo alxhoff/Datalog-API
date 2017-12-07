@@ -24,12 +24,16 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "datalog_cli_asserter.h"
 
 datalog_literal_t* dl_cli_wrap_literal(datalog_cli_literal_t* lit)
 {
-    return (datalog_literal_t*)lit;
+    datalog_literal_t* ret = (datalog_literal_t*)malloc(sizeof(datalog_literal_t));
+    if(ret == NULL) return NULL;
+    memcpy(ret, lit, sizeof(datalog_literal_t));
+    return ret;
 }
 
 datalog_query_t* dl_cli_wrap_query(datalog_cli_command_t* command)
@@ -94,7 +98,7 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
                     command->head->predicate, command->head->term1,
                     command->head->term2);
 #endif
-            datalog_create_and_assert_literal_s(
+            datalog_literal_create_and_assert(
                     dl_cli_wrap_literal(command->head));
             break;
         case DL_CLI_RULE:{
@@ -105,7 +109,7 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
 #endif
             datalog_clause_t* clause = 
                 dl_cli_wrap_body(command);
-            datalog_create_and_assert_clause_s(clause);
+            datalog_clause_create_and_assert(clause);
             free(clause->head);
             free(clause->body_list);
             free(clause);
@@ -118,7 +122,7 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
                     command->head->term2);
 #endif
             datalog_query_t* query = dl_cli_wrap_query(command);
-            datalog_query_s(query);
+            datalog_query_ask(query);
             free(query);
             }
             break;
@@ -130,7 +134,7 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
 #endif
             datalog_clause_t* clause = 
                 dl_cli_wrap_body(command);
-            datalog_create_and_retract_clause_s(clause);
+            datalog_clause_create_and_retract(clause);
             free(clause->head);
             free(clause->body_list);
             free(clause);
