@@ -80,18 +80,15 @@ print_literal_return: printf("!!=======/LITERAL========!!\n");
 
 void dl_parser_print_clause_body(dl_parser_clause_body_t* clause_body)
 {
-    printf("Body: ");
-    for(int i = 0; i < clause_body->literal_count; i++){
+    printf("Body: \n");
+    for(int i = 0; i < clause_body->literal_count; i++)
         dl_parser_print_literal(clause_body->literals[i]);
-        if(i != clause_body->literal_count - 1 )
-            printf(", ");
-    }
 }
 
 void dl_parser_print_rule(dl_parser_rule_t* rule)
 {
     printf("Rule \n");
-    printf("Head: ");
+    printf("Head:\n");
     dl_parser_print_literal(rule->head);
     printf("\n");
     dl_parser_print_clause_body(rule->body);
@@ -120,7 +117,7 @@ void dl_parser_print_rule_list(dl_parser_doc_t* doc)
 
 void dl_parser_print_fact(dl_parser_fact_t* fact)
 {
-    printf("Fact: ");
+    printf("Fact: \n");
     dl_parser_print_literal(fact->literal);
     printf("\n");
 }
@@ -231,6 +228,7 @@ DL_PARSER_ERR_t dl_parse_terms(dl_parser_doc_t* doc, xmlNode* terms_node,
 parse_terms_set_contents: 
             new_term->value = (char*)malloc(sizeof(char) * strlen((const char*)contents));
             strcpy(new_term->value, (const char*)contents);
+            literal->term_count++;
 #ifdef PARSER_DEBUG_VERBOSE
             fprintf(stderr, "[DATALOG][PARSER] Verbose: term found for literal %s"
                     " literal, value is \"%s\"\n", literal->predicate, new_term->value);
