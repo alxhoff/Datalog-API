@@ -79,8 +79,8 @@ datalog_clause_t* dl_cli_wrap_body(datalog_cli_command_t* command)
     }
 
     ret->head = dl_cli_wrap_literal(command->head);
-
-    ret->body_list = 
+    
+    if(command->body_count)  ret->body_list = 
         (datalog_literal_t**)calloc(command->body_count, sizeof(datalog_literal_t*));
 
     for(int i = 0; i < command->body_count; i++)

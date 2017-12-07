@@ -140,7 +140,7 @@ datalog_cli_literal_t* dl_cli_process_literal(char* lit_string)
     }
     
     char* tmp;
-    tmp = strtok(lit_string, "(,).?");
+    tmp = strtok(lit_string, "(,).?~");
     
     if(tmp == NULL){
 #ifdef CLI_DEBUG
@@ -158,7 +158,7 @@ datalog_cli_literal_t* dl_cli_process_literal(char* lit_string)
 
     strcpy(ret->predicate, tmp);
 
-    tmp = strtok(NULL, "(,).?");
+    tmp = strtok(NULL, "(,).?~");
     datalog_cli_term_t *tmp_term, *prev_term;
     while(tmp != NULL){
         if(tmp != NULL){
@@ -181,7 +181,7 @@ datalog_cli_literal_t* dl_cli_process_literal(char* lit_string)
         tmp_term->type = dl_cli_process_string_type(tmp);
         
         prev_term = tmp_term;
-        tmp = strtok(NULL, "(,).?");
+        tmp = strtok(NULL, "(,).?~");
     }
     return ret;
 }
@@ -216,7 +216,7 @@ DATALOG_CLI_ERR_t dl_cli_process_body_list(
 datalog_cli_command_t* dl_cli_process_head(char* head_string)
 {
     datalog_cli_command_t* ret = 
-        (datalog_cli_command_t*)malloc(sizeof(datalog_cli_command_t));
+        (datalog_cli_command_t*)calloc(1, sizeof(datalog_cli_command_t));
    
     if(ret == NULL){
 #ifdef CLI_ERR
