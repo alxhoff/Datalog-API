@@ -276,6 +276,44 @@ DATALOG_ERR_t datalog_clause_assert(int literal_count)
     return DATALOG_OK;
 }
 
+DATALOG_ERR_t datalog_processed_answers_print(datalog_query_processed_answers_t* a)
+{
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG][API]   DEBUG: printing query answers\n"); 
+#endif
+    char* tmp;
+    size_t prev_size;
+    printf("!!=====QUERY ANSWERS=====!!\n");
+    for(int i=0; i < a->answer_count; i++){
+        tmp = (char*)realloc(tmp, sizeof(char) * (strlen(a->predic) + 2));
+        if(tmp == NULL) return DATALOG_MEM;;
+        strcpy(tmp, a->predic);
+        strcpy(tmp + strlen(a->predic), "(");
+        for(int j=0; j<a->answer_term_count; j++){
+            prev_size = strlen(tmp);
+            if(j == 0){ 
+                tmp = (char*)realloc(tmp, 
+                        sizeof(char) * (prev_size + strlen(a->answers[i]->term_list[j]) + 1));
+                if(tmp == NULL) return DATALOG_MEM;
+                strcpy(tmp + prev_size, a->answers[i]->term_list[j]);
+            }else{ 
+                tmp = (char*)realloc(tmp, 
+                        sizeof(char) * (prev_size + strlen(a->answers[i]->term_list[j]) + 2));
+                if(tmp == NULL) return DATALOG_MEM;
+                strcpy(tmp + prev_size, ",");
+                strcpy(tmp + prev_size + 1, a->answers[i]->term_list[j]);
+            }
+        }
+        prev_size = strlen(tmp);
+        tmp = (char*)realloc(tmp, sizeof(char) * (sizeof(tmp) + 2));
+        if(tmp == NULL) return DATALOG_MEM;
+        strcpy(tmp + prev_size, ")");
+        printf("  %s\n",tmp);
+    }
+    printf("!!====/QUERY ANSWERS=====!!\n");
+    return DATALOG_OK;
+}
+
 DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a)
 {
 #ifdef DATALOG_DEBUG 
@@ -314,7 +352,6 @@ DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a)
     return DATALOG_OK;
 }
 
-
 datalog_query_t* datalog_query_init(datalog_literal_t* lit)
 {
     datalog_query_t* query = (datalog_query_t*)malloc(sizeof(datalog_query_t));
@@ -337,10 +374,42 @@ DATALOG_ERR_t datalog_query_print(datalog_query_t* query)
     return DATALOG_OK;
 }
 
+datalog_query_processed_answers_t* datalog_query_stand_alone_create_and_ask(char* predicate,
+        int num_of_terms, char** terms, uint32_t term_type_mask)
+{
+    DATALOG_ERR_t err = DATALOG_OK;
+    datalog_query_processed_answers_t* ret = (datalog_query_processed_answers_t*)
+        calloc(1,sizeof(datalog_query_processed_answers_t));
+
+    datalog_literal_stand_alone_create_and_assert(predicate, num_of_terms, terms, 
+            term_type_mask, false);
+
+    ret->predic = (char*)malloc(sizeof(char) * (strlen(predicate) + 1));
+    if(ret->predic == NULL) return NULL;
+    strcpy(ret->predic, predicate);
+   
+    dl_answers_t a;
+
+    err = dl_ask(datalog_db, &a);
+#ifdef DATALOG_DEBUG_VERBOSE 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: query sent:                         %s\n", 
+            (err == 0 ? "SUCCSESS" : "FAIL"));
+#endif
+#ifdef DATALOG_DEBUG 
+    fprintf(stderr, "[DATALOG][API] VERBOSE: query resulted in answer:           %s\n", 
+            (a != NULL ? "SUCCSESS" : "FAIL"));
+#endif
+    
+    if(a != NULL) ret = datalog_process_answer(a);
+
+    return ret;
+}
+
 DATALOG_ERR_t datalog_query_ask(datalog_query_t* query)  
 {
 #ifdef DATALOG_DEBUG 
-    fprintf(stderr, "[DATALOG][API]   DEBUG: query clause for predicate: %s\n", query->literal->predicate); 
+    fprintf(stderr, "[DATALOG][API]   DEBUG: query clause for predicate: %s\n"
+            , query->literal->predicate); 
 #endif
 
     DATALOG_ERR_t ret = DATALOG_OK;
@@ -365,9 +434,7 @@ DATALOG_ERR_t datalog_query_ask(datalog_query_t* query)
             (a != NULL ? "SUCCSESS" : "FAIL"));
 #endif
 
-    if(a != NULL){
-        query->processed_answer = datalog_process_answer(a);
-    }
+    if(a != NULL) query->processed_answer = datalog_process_answer(a);
 
     return DATALOG_OK;
 }
@@ -531,8 +598,21 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
    return DATALOG_OK;
 }
 
+void datalog_free_term_list(datalog_term_t* list_head)
+{
+    datalog_term_t *head, *prev;
+
+    head = list_head;
+    while(head->next != NULL){
+        prev = head;
+        head = head->next;
+        free(prev);
+    }
+    free(head);
+}
+
 DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
-        int num_of_terms, char** terms, uint32_t term_type_mask)
+        int num_of_terms, char** terms, uint32_t term_type_mask, bool assert)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
     datalog_literal_t tmp_lit = {0};
@@ -560,7 +640,11 @@ DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
         tmp_lit.term_count++;
     }
 
-    ret = datalog_literal_create_and_assert(&tmp_lit); 
+    if(assert) ret = datalog_literal_create_and_assert(&tmp_lit); 
+    else ret = datalog_literal_create(&tmp_lit);
+
+    datalog_free_term_list(tmp_lit.term_head);
+    free(tmp_lit.predicate);
 
     return ret;
 }
@@ -570,12 +654,6 @@ int datalog_literal_create_and_assert(datalog_literal_t* lit)
     if(datalog_literal_create(lit) != DATALOG_OK) return DATALOG_LIT;
     if(datalog_clause_assert(0) != DATALOG_OK) return DATALOG_ASRT;
 
-    return DATALOG_OK;
-}
-
-DATALOG_ERR_t datalog_push_string(char* string)
-{
-    
     return DATALOG_OK;
 }
 

@@ -257,6 +257,16 @@
 #include "datalog.h"
 #include "datalog_api_types.h"
 
+#ifndef bool
+#define bool unsigned char
+#endif
+#ifndef true
+#define true 1
+#endif
+#ifndef false
+#define false 0
+#endif
+
 /**
 * @enum DATALOG_ERR_t
 * @brief error messages
@@ -290,15 +300,15 @@ struct datalog_query_answers{
 
 /**
 * @typedef datalog_query_processed_answers_t
-* @brief Typdef for datalog_query_answer
+* @brief Typdef for datalog_query_processed_answers
 */
-typedef struct datalog_query_answer datalog_query_processed_answers_t;
+typedef struct datalog_query_processed_answers datalog_query_processed_answers_t;
 
 /**
-* @struct datalog_query_answer
+* @struct datalog_query_processed_answers
 * @brief Struct used to represent query answers in the API
 */
-struct datalog_query_answer{
+struct datalog_query_processed_answers{
     char* predic;
     int answer_term_count;
     int answer_count;
@@ -361,6 +371,7 @@ extern dl_db_t datalog_db;
 * @return Pointer to an API query answer struct
 */
 datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a);
+DATALOG_ERR_t datalog_processed_answers_print(datalog_query_processed_answers_t* a);
 
 /**
 * @brief Prints a visual representation of a query answer struct
@@ -378,6 +389,8 @@ DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a);
 */
 datalog_query_t* datalog_query_init(datalog_literal_t* lit);
 DATALOG_ERR_t datalog_query_print(datalog_query_t* query);
+datalog_query_processed_answers_t* datalog_query_stand_alone_create_and_ask(char* predicate,
+        int num_of_terms, char** terms, uint32_t term_type_mask);
 
 /**
 * @brief Issues a query and saves the answer 
@@ -410,7 +423,7 @@ datalog_literal_t* datalog_literal_init(char* predicate);
 int datalog_literal_print(datalog_literal_t* lit);
 DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit);
 DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
-        int num_of_terms, char** terms, uint32_t term_type_mask);
+        int num_of_terms, char** terms, uint32_t term_type_mask, bool assert);
 int datalog_literal_create_and_assert(datalog_literal_t* lit);
 
 //TODO lit type error checking. can all types be directly asserted?

@@ -151,8 +151,14 @@ int main(void)
     char* terms[] = {"first", "second", "third", "fourth"};
     char* test_predicate = "predicate";
 
-    datalog_literal_stand_alone_create_and_assert(test_predicate, 4, terms, 0x00);
+    datalog_literal_stand_alone_create_and_assert(test_predicate, 4, terms, 0x00, true);
 
+    datalog_query_processed_answers_t* answers = 
+        datalog_query_stand_alone_create_and_ask(test_predicate, 4, terms, 0x00);
+
+    datalog_processed_answers_print(answers);
+
+ /*
     printf("parsing doc\n");
 
     dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
@@ -160,7 +166,7 @@ int main(void)
     ret = datalog_parser_assert_doc(doc);
 
     datalog_opcua_runtime();
-    
+*/    
     datalog_command_line_run();
 
     ret = datalog_engine_db_deinit();
