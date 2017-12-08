@@ -95,20 +95,10 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
     //type of command
     switch(command->cmd_type){
         case DL_CLI_FACT:
-#ifdef CLI_DEBUG_VERBOSE
-            fprintf(stderr, "[DATALOG][CLI] Verbose: Asserting fact %s(%s,%s).\n",
-                    command->head->predicate, command->head->term1,
-                    command->head->term2);
-#endif
             datalog_literal_create_and_assert(
                     dl_cli_wrap_literal(command->head));
             break;
         case DL_CLI_RULE:{
-#ifdef CLI_DEBUG_VERBOSE
-            fprintf(stderr, "[DATALOG][CLI] Verbose: Asserting rule %s(%s,%s).\n",
-                    command->head->predicate, command->head->term1,
-                    command->head->term2);
-#endif
             datalog_clause_t* clause = dl_cli_wrap_body(command);
             datalog_clause_create_and_assert(clause);
             free(clause->head);
@@ -117,11 +107,6 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
             }
             break;
         case DL_CLI_QUERY:{
-#ifdef CLI_DEBUG_VERBOSE
-            fprintf(stderr, "[DATALOG][CLI] Verbose: Asserting query %s(%s,%s)?\n",
-                    command->head->predicate, command->head->term1,
-                    command->head->term2);
-#endif
             datalog_query_t* query = dl_cli_wrap_query(command);
             datalog_query_ask(query);
             if(query->processed_answer != NULL) datalog_query_print_answers(query);
@@ -129,11 +114,6 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
             }
             break;
         case DL_CLI_RETRACTION:{
-#ifdef CLI_DEBUG_VERBOSE
-            fprintf(stderr, "[DATALOG][CLI] Verbose: Asserting retraction %s(%s,%s)\n",
-                    command->head->predicate, command->head->term1,
-                    command->head->term2);
-#endif
             datalog_clause_t* clause = dl_cli_wrap_body(command);
             datalog_clause_create_and_retract(clause);
             free(clause->head);
