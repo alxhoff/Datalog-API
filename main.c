@@ -148,6 +148,11 @@ int main(void)
 
     test_clause->assert(test_clause);
 
+    char* terms[] = {"first", "second", "third", "fourth"};
+    char* test_predicate = "predicate";
+
+    datalog_literal_stand_alone_create_and_assert(test_predicate, 4, terms, 0x00);
+
     printf("parsing doc\n");
 
     dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");

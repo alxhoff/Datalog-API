@@ -531,6 +531,39 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
    return DATALOG_OK;
 }
 
+DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
+        int num_of_terms, char** terms, uint32_t term_type_mask)
+{
+    DATALOG_ERR_t ret = DATALOG_OK;
+    datalog_literal_t tmp_lit = {0};
+
+    tmp_lit.predicate = (char*)malloc(sizeof(char)*(strlen(predicate) + 1));
+    if(tmp_lit.predicate == NULL)  return DATALOG_MEM;
+    strcpy(tmp_lit.predicate, predicate);
+
+    datalog_term_t *tmp_term, *tail_term;
+    for(int i = 0; i < num_of_terms; i++){
+        if(terms[i] != NULL){
+            tmp_term = (datalog_term_t*)calloc(1, sizeof(datalog_term_t));
+            if(tmp_term == NULL) return DATALOG_MEM;
+            tmp_term->value = (char*)malloc(sizeof(char) * (strlen(terms[i]) + 1));
+            if(tmp_term == NULL) return DATALOG_MEM;
+            strcpy(tmp_term->value, terms[i]);
+            if(((term_type_mask >> i) & 1U) == DL_TERM_V) tmp_term->type = DL_TERM_V;
+            else tmp_term->type = DL_TERM_C;
+            if(i == 0) tmp_lit.term_head = tmp_term;
+            else{
+                tail_term = datalog_literal_get_last_term(&tmp_lit);
+                tail_term->next = tmp_term;
+            }
+        }
+        tmp_lit.term_count++;
+    }
+
+    ret = datalog_literal_create_and_assert(&tmp_lit); 
+
+    return ret;
+}
 
 int datalog_literal_create_and_assert(datalog_literal_t* lit)
 {

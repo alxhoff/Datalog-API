@@ -409,6 +409,8 @@ datalog_literal_t* datalog_literal_init(char* predicate);
 
 int datalog_literal_print(datalog_literal_t* lit);
 DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit);
+DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
+        int num_of_terms, char** terms, uint32_t term_type_mask);
 int datalog_literal_create_and_assert(datalog_literal_t* lit);
 
 //TODO lit type error checking. can all types be directly asserted?
