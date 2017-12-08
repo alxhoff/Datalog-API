@@ -30,26 +30,29 @@
     </xs:complexType>
 
     <xs:complexType name="DLhead">
-        <xs:sequence>
-            <xs:element name="literal" type="DLliteral" minOccurs="0" maxOccurs="1"/>
+        <xs:sequence minOccurs="1" maxOccurs="1">
+        	<xs:element name="literal" type="DLliteral" minOccurs="1"
+        		maxOccurs="1" />
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="DLfact">
-        <xs:sequence>
-            <xs:element name="head" type="DLhead" minOccurs="1" maxOccurs="1"/>
+        <xs:sequence minOccurs="1" maxOccurs="1">
+        	<xs:element name="head" type="DLhead" minOccurs="1"
+        		maxOccurs="1" />
         </xs:sequence>
     </xs:complexType>
     
     <xs:complexType name="DLrule">
         <xs:sequence>
-            <xs:element name="head" type="DLhead"/>
-            <xs:element name="body">
-                <xs:complexType>
-                    <xs:choice minOccurs="0" maxOccurs="unbounded">
-                        <xs:element name="literal" type="DLliteral"/>
-                    </xs:choice>
-                </xs:complexType>
+            <xs:element name="head" type="DLhead" minOccurs="1"
+            	maxOccurs="1" />
+            <xs:element name="body" minOccurs="1" maxOccurs="unbounded">
+            	<xs:complexType>
+            		<xs:choice minOccurs="0" maxOccurs="unbounded">
+            			<xs:element name="literal" type="DLliteral" />
+            		</xs:choice>
+            	</xs:complexType>
             </xs:element>
         </xs:sequence>
     </xs:complexType>

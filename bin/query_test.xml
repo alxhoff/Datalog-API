@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datalog>
+    <metadata>
+        <description>Query engine test</description>
+        <author>alex</author>
+        <device>
+            <name>test device</name>
+            <type>test type</type>
+            <manufacturer>siemens</manufacturer>
+            <contact>alxhoff@gmail.com</contact>
+            <model>test model</model>
+            <serial>test serial</serial>
+            <year>2017</year>
+        </device>
+    </metadata>
+    <mappings>
+        <fact>
+            <head>
+                <literal>
+                    <predicate>test</predicate>
+                    <terms>
+                        <constant>hello</constant>
+                        <constant>milkyway</constant>
+                        <constant>how</constant>
+                        <constant>are</constant>
+                        <constant>you</constant>
+                    </terms>
+                </literal>
+            </head>
+        </fact>
+        <rule>
+            <head>
+                <literal>
+                    <predicate>ancestor</predicate>
+                    <terms>
+                        <variable>A</variable>
+                        <constant>B</constant>
+                    </terms>
+                </literal>
+            </head>
+            <body>
+                <literal>
+                    <predicate>parent</predicate>
+                    <terms>
+                        <variable>A</variable>
+                        <constant>C</constant>
+                    </terms>
+                </literal>
+                <literal>
+                    <predicate>ancestor</predicate>
+                    <terms>
+                        <variable>A</variable>
+                        <constant>B</constant>
+                    </terms>
+                </literal>
+            </body>
+        </rule>
+        <fact>
+            <head>
+                <literal>
+                    <predicate>test</predicate>
+                    <terms>
+                        <constant>hello</constant>
+                        <constant>darko</constant>
+                    </terms>
+                </literal>
+            </head>
+        </fact>
+    </mappings>
+</datalog>
+

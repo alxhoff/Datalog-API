@@ -158,7 +158,6 @@ int main(void)
 
     datalog_processed_answers_print(answers);
 
- /*
     printf("parsing doc\n");
 
     dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
@@ -166,7 +165,7 @@ int main(void)
     ret = datalog_parser_assert_doc(doc);
 
     datalog_opcua_runtime();
-*/    
+    
     datalog_command_line_run();
 
     ret = datalog_engine_db_deinit();
