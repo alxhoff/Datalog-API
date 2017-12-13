@@ -206,8 +206,6 @@ libxml/xmlexports.h
 ansidecl.h
 -
 
-/home/alxhoff/git/Datalog-API/config.h
-
 /home/alxhoff/git/Datalog-API/datalog_api_types.h
 
 /home/alxhoff/git/Datalog-API/datalog_parser.c
@@ -217,8 +215,6 @@ string.h
 -
 libxml/parser.h
 /home/alxhoff/git/Datalog-API/libxml/parser.h
-config.h
-/home/alxhoff/git/Datalog-API/config.h
 datalog_parser.h
 /home/alxhoff/git/Datalog-API/datalog_parser.h
 

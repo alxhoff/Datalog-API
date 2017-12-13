@@ -36,11 +36,14 @@ datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a)
 #endif
     //alloc return struct
     datalog_query_processed_answers_t* ret_struct = (datalog_query_processed_answers_t*)
-        malloc(sizeof(datalog_query_processed_answers_t));
+        calloc(1, sizeof(datalog_query_processed_answers_t));
 
     if(ret_struct == NULL) return NULL;
 
-    ret_struct->predic = dl_getpred(a);
+    char* tmp_pred = dl_getpred(a);
+    ret_struct->predic = (char*)malloc(sizeof(char) * strlen(tmp_pred) + 1);
+    if(ret_struct->predic == NULL) return NULL;
+    strcpy(ret_struct->predic, tmp_pred);
 
 #ifdef DATALOG_DEBUG_VERBOSE 
     fprintf(stderr, "[DATALOG][API] VERBOSE: predicate:                          %s\n", 
@@ -58,25 +61,35 @@ datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a)
     int i = 0;
     char* tmp = dl_getconst(a, answer_count, 0);
     while(tmp != NULL){
+        ret_struct->answers = (datalog_query_answers_t**)
+            realloc(ret_struct->answers, sizeof(datalog_query_answers_t*) * (answer_count + 1));
         ret_struct->answers[answer_count] = (datalog_query_answers_t*)
             calloc(1, sizeof(datalog_query_answers_t));
+        if(ret_struct->answers[answer_count] == NULL) return NULL;
+
         ret_struct->answers[answer_count]->term_list = (char**)
             calloc(answer_term_count, sizeof(char*));
+        if(ret_struct->answers[answer_count]->term_list == NULL) return NULL;
+
+        ret_struct->answers[answer_count]->term_count = answer_term_count;
+        
         for(i = 0; i < answer_term_count; i++){
             tmp = dl_getconst(a, answer_count, i);
             ans_length = dl_getconstlen(a, answer_count, i);
             if(tmp == NULL) break;
+       
             ret_struct->answers[answer_count]->term_list[i] = (char*)
                 malloc(sizeof(char) * ans_length);
             if(ret_struct->answers[answer_count]->term_list[i] == NULL) 
                 return NULL;
+            
             strcpy(ret_struct->answers[answer_count]->term_list[i], tmp);
-            printf("Term: %s\n", tmp);
         }
         answer_count++;
+        tmp = dl_getconst(a, answer_count, 0);
     }
     ret_struct->answer_term_count = answer_term_count;
-    ret_struct->answer_count = answer_count - 1;
+    ret_struct->answer_count = answer_count;
     
     return ret_struct;
 }
@@ -343,7 +356,7 @@ DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a)
             }
         }
         prev_size = strlen(tmp);
-        tmp = (char*)realloc(tmp, sizeof(char) * (sizeof(tmp) + 2));
+        tmp = (char*)realloc(tmp, sizeof(char) * (prev_size + 2));
         if(tmp == NULL) return DATALOG_MEM;
         strcpy(tmp + prev_size, ")");
         printf("  %s\n",tmp);
@@ -380,7 +393,8 @@ datalog_query_processed_answers_t* datalog_query_stand_alone_create_and_ask(char
     DATALOG_ERR_t err = DATALOG_OK;
     datalog_query_processed_answers_t* ret = (datalog_query_processed_answers_t*)
         calloc(1,sizeof(datalog_query_processed_answers_t));
-
+    if(ret == NULL) return NULL;
+        
     datalog_literal_stand_alone_create_and_assert(predicate, num_of_terms, terms, 
             term_type_mask, false);
 
@@ -506,10 +520,8 @@ int datalog_literal_print(datalog_literal_t* lit)
     
     datalog_term_t* term_head = lit->term_head;
     
-    for(int i = 0; i<lit->term_count; i++){
-        printf("  Term #%d: %s\n", i, term_head->value); 
+    for(int i = 0; i<lit->term_count; i++)
         term_head = term_head->next;
-    }
 
 print_literal_return: printf("!!=======/LITERAL========!!\n");
     return DATALOG_OK;
@@ -609,6 +621,26 @@ void datalog_free_term_list(datalog_term_t* list_head)
         free(prev);
     }
     free(head);
+}
+
+void datalog_free_query_answers_list(datalog_query_answers_t** answers,
+        int answer_count)
+{
+    for(int i = 0; i<answer_count; i++){
+        for(int j=0; j<answers[i]->term_count; j++)
+            free(answers[i]->term_list[j]);
+        free(answers[i]->term_list);
+        free(answers[i]);
+    }
+    free(answers);
+}
+
+void datalog_free_query_processed_answers( 
+        datalog_query_processed_answers_t* answers)
+{
+    free(answers->predic);
+    datalog_free_query_answers_list(answers->answers, answers->answer_count);
+    memset(answers, 0, sizeof(datalog_query_processed_answers_t));
 }
 
 DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,

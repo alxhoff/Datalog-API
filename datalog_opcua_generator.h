@@ -25,7 +25,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    along with this program.  If not, see \<http://www.gnu.org/licenses/>.
    ----------------------------------------------------------------------
 @endverbatim
  */
@@ -58,6 +58,24 @@
 
 #define NAMESPACE_URI       "urn:UnifiedAutomation:CppDemoServer:BuildingAutomation"
 
+#define FOR_EACH_TYPE_W_LABEL(FUNC)     FUNC(object_type, UAObjectType)         \
+                                        FUNC(variable, UAVariable)              \
+                                        FUNC(object, UAObject)                  \
+                                        FUNC(method, UAMethod)                  \
+                                        FUNC(variable_type, UAVariableType)     \
+                                        FUNC(reference_type, UAReferenceType)   \
+                                        FUNC(data_type, UADataType)             \
+                                        FUNC(view, UAView)
+
+#define FOR_EACH_TYPE(FUNC) FUNC(object_type)           \
+                            FUNC(variable)              \
+                            FUNC(method)                \
+                            FUNC(object)                \
+                            FUNC(variable_type)         \
+                            FUNC(reference_type)        \
+                            FUNC(data_type)             \
+                            FUNC(view)                 
+
 /**
 * @enum DL_OPCUA_ERR_t
 * @brief Error messages 
@@ -75,15 +93,15 @@ typedef enum{
 * @brief Types of XML node objects 
 */
 typedef enum{
-    DL_OPC_VARIABLE,        /**< <UAVariable>*/
-    DL_OPC_METHOD,          /**< <UAMethod>*/
-    DL_OPC_OBJ,             /**< <UAObject>*/
-    DL_OPC_OBJ_TYPE,        /**< <UAObjectType>*/
-    DL_OPC_VAR_TYPE,
-    DL_OPC_REF_TYPE,
-    DL_OPC_DATA_TYPE,
-    DL_OPC_VIEW,
-    DL_OPC_ATTR
+    DL_OPC_variable,        /**< \<UAVariable>*/
+    DL_OPC_method,          /**< \<UAMethod>*/
+    DL_OPC_object,             /**< \<UAObject>*/
+    DL_OPC_object_type,        /**< \<UAObjectType>*/
+    DL_OPC_variable_type,
+    DL_OPC_reference_type,
+    DL_OPC_data_type,
+    DL_OPC_view,
+    DL_OPC_attribute
 }DL_OPCUA_TYPE_t;
 
 /**
@@ -92,7 +110,7 @@ typedef enum{
 */
 /**
 * @struct alias_pair
-* @brief Represents an <Alias> pair of alias name and i value
+* @brief Represents an \<Alias\>pair of alias name and i value
 */
 typedef struct alias_pair{
     char* name;                 /**< Alias pair name*/
@@ -162,7 +180,7 @@ typedef struct opcua_reference opcua_reference_t;
 
 /**
 * @struct opcua_reference
-* @brief Object representing a <Reference> node
+* @brief Object representing a \<Reference\>node
 */
 struct opcua_reference{
     char* type;                 /**< Reference type*/
@@ -195,7 +213,7 @@ typedef struct opcua_node_attributes opcua_node_attributes_t;
 * @struct opcua_node_attributes
 * @brief Object representing a the attributes represented within a node
 *
-* Object nodes such as <UAObject>,<UAVariable>,<UAMethod> and <UAObjectType>
+* Object nodes such as \<UAObject>,<UAVariable>,<UAMethod\>and \<UAObjectType>
 * have attributes within the tag head. These attributes are represented by
 * this object.
 */
@@ -205,8 +223,8 @@ struct opcua_node_attributes{
     char* browse_name;              /**< Node's "BrowseNode" attribute string*/
     char* display_name;             /**< Node's "DisplayName" attribute string*/
     char* description;              /**< localized texual description of the node*/
-    uint32_t user_access_level;     /**< "UserAccessLevel" attribute*/
-    uint32_t access_level;          /**< "AccessLevel" attribute*/
+    uint32_t user_write_mask;     /**< "UserAccessLevel" attribute*/
+    uint32_t write_mask;          /**< "AccessLevel" attribute*/
 
     DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_node_attributes_t*,int);   /**< Sets the node's parent ID ns 
                                                                             attribute*/
@@ -220,8 +238,8 @@ struct opcua_node_attributes{
                                                                             attribute*/
     DL_OPCUA_ERR_t (*set_node_id_s)(opcua_node_attributes_t*,char*);    /**< Sets the node's node ID s
                                                                             attribute*/
-    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_node_attributes_t*,int);                                                                        
-    DL_OPCUA_ERR_t (*set_access_level)(opcua_node_attributes_t*,int);                                                                        
+    DL_OPCUA_ERR_t (*set_user_write_mask)(opcua_node_attributes_t*,int);                                                                        
+    DL_OPCUA_ERR_t (*set_write_mask)(opcua_node_attributes_t*,int);                                                                        
     DL_OPCUA_ERR_t (*set_browse_name)(opcua_node_attributes_t*,char*);  /**< Sets the node's browse name
                                                                             attribute*/
     DL_OPCUA_ERR_t (*set_display_name)(opcua_node_attributes_t*,char*); /**< Sets the node's display name
@@ -235,7 +253,7 @@ struct opcua_node_attributes{
 */
 /**
 * @struct opcua_object_type_attributes
-* @brief Attributes specific to a <UAObjectType> node
+* @brief Attributes specific to a \<UAObjectType\>node
 */
 typedef struct opcua_object_type_attributes{
     bool is_abstract; 
@@ -247,10 +265,12 @@ typedef struct opcua_object_type_attributes{
 */
 /**
 * @struct opcua_method_attributes
-* @brief Attributes specific to a <UAMethod> node
+* @brief Attributes specific to a \<UAMethod\>node
 */
 typedef struct opcua_method_attributes{
-    int method_declaration_id;      /**< <UAMethod>'s method declaration ID attribute*/
+    int method_declaration_id;      /**< \<UAMethod>'s method declaration ID attribute*/
+    bool executable;
+    bool user_executable;
 }opcua_method_attributes_t;
 
 typedef struct opcua_data_type opcua_data_type_t;
@@ -261,14 +281,17 @@ typedef struct opcua_data_type opcua_data_type_t;
 */
 /**
 * @struct opcua_variable_attributes
-* @brief Attributes specific to a <UAVariable> node
+* @brief Attributes specific to a \<UAVariable\>node
 */
 typedef struct opcua_variable_attributes{
     void* value;
     opcua_node_id_t data_type;     /**< Variable's "DataType" attribute*/ 
-    uint32_t array_dimensions;      /**< Variable's "ArrayDimensions" attribute*/
     int32_t value_rank;             /**< Variable's "ValueRank" attribute*/
-    bool is_abstract;               /**< */ 
+    uint32_t array_dimensions;      /**< Variable's "ArrayDimensions" attribute*/
+    unsigned char access_level;
+    unsigned char user_access_level;
+    double min_samp_interval;
+    bool historizing;
 }opcua_variable_attributes_t;
 
 /**
@@ -277,7 +300,7 @@ typedef struct opcua_variable_attributes{
 */
 /**
 * @struct opcua_object_attributes
-* @brief Attributes specific to a <UAObject> node
+* @brief Attributes specific to a \<UAObject\>node
 */
 typedef struct opcua_object_attributes{
     unsigned char event_notifier; 
@@ -337,312 +360,78 @@ typedef struct opcua_view_attributes{
     bool contains_no_loops; 
     unsigned char event_notifier; 
 }opcua_view_attributes_t;
-
-/**
-* @typedef opcua_object_type_t
-* @brief Typdef for opcua_object_type
-*/
-typedef struct opcua_object_type opcua_object_type_t;
-
-/**
-* @struct opcua_object_type
-* @brief Object representing a <UAObjectType> node
-*/
-struct opcua_object_type{
-    xmlNodePtr node;                /**< Pointer to <UAObjectType> XML node*/
-    xmlNodePtr references_node;     /**< Pointer to <References> XML node*/
-    xmlNodePtr display_name_node;   /**< Pointer to <DisplayName> XML node*/
-
-    opcua_node_attributes_t* attributes;                    /**< Pointer to the object's general attributes*/
-    opcua_object_type_attributes_t* object_type_attributes; /**< Pointer to the object's specific attributes*/
-    opcua_reference_t* reference_head;                      /**< Pointer to the head of the object's reference linked list*/
     
-    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_object_type_t*,int);       /**< Sets the object's parent ID ns attribute*/
-    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_object_type_t*,int);        /**< Sets the object's parent ID i attirbute*/
-    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_object_type_t*,char*);      /**< Sets the object's parent ID s attribute*/
-    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_object_type_t*,int);         /**< Sets the object's node ID ns attribute*/
-    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_object_type_t*,int);          /**< Sets the object's node ID i attribute*/
-    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_object_type_t*,char*);        /**< Sets the object's node ID s attribute*/
-    DL_OPCUA_ERR_t (*set_browse_name)(opcua_object_type_t*,char*);      /**< Sets the object's browse name attribute*/
-    DL_OPCUA_ERR_t (*set_display_name)(opcua_object_type_t*,char*);     /**< Sets the object's display name attribute*/
-    DL_OPCUA_ERR_t (*set_description)(opcua_object_type_t*,char*);      /**< Sets the object type's description attribute*/
-    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_object_type_t*,int);  /**< Sets the objects's user access level attribute*/
-    DL_OPCUA_ERR_t (*set_access_level)(opcua_object_type_t*,int);       /**< Sets the objects's access level attribute*/
-    DL_OPCUA_ERR_t (*create_references)(opcua_object_type_t*);          /**< Creates <Reference> nodes from all the
-                                                                            reference objects in the object's reference list*/
-    DL_OPCUA_ERR_t (*add_reference)(opcua_object_type_t*,   
-                                    opcua_reference_t*);                /**< Adds a reference object to the object's
-                                                                            references linked list*/
-    DL_OPCUA_ERR_t (*create_node)(opcua_object_type_t*);                                                                                    
-    DL_OPCUA_ERR_t (*set_is_abstract)(opcua_object_type_t*,bool);       //TODO
+#define object_type_CREATE_STRUCT    \
+    DL_OPCUA_ERR_t (*set_is_abstract)(opcua_object_type_t*,bool);                                                               
+
+#define method_CREATE_STRUCT        \
+    DL_OPCUA_ERR_t (*set_declaration_id)(opcua_method_t*,int);      /**< Sets the method's declaration ID attribute*/           \
+    DL_OPCUA_ERR_t (*set_executable)(opcua_method_t*,bool);                                                                     \
+    DL_OPCUA_ERR_t (*set_user_executable)(opcua_method_t*,bool);                                                                \
+
+#define variable_CREATE_STRUCT      \
+    DL_OPCUA_ERR_t (*set_value)(opcua_variable_t*,void*);                                                                       \
+    DL_OPCUA_ERR_t (*set_data_type)(opcua_variable_t*,char*);               /**< Sets the variable's data type attribute*/      \
+    DL_OPCUA_ERR_t (*set_value_rank)(opcua_variable_t*,int32_t);            /**< Sets the variable's value rank attribute*/     \
+    DL_OPCUA_ERR_t (*set_array_dimensions)(opcua_variable_t*,uint32_t);     /**< Sets the variable's array dimensions attribute*/\
+    DL_OPCUA_ERR_t (*set_access_level)(opcua_variable_t*,unsigned char);                                                        \
+    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_variable_t*, unsigned char);                                                  \
+    DL_OPCUA_ERR_t (*set_min_samp_interval)(opcua_variable_t*, double);                                                         \
+    DL_OPCUA_ERR_t (*set_historizing)(opcua_variable_t*, bool); 
+
+#define object_CREATE_STRUCT        \
+    DL_OPCUA_ERR_t (*set_event_notifier)(opcua_object_t*, unsigned char);             
     
-    DL_OPCUA_ERR_t (*free_object_type)(opcua_object_type_t**);
-};
+#define variable_type_CREATE_STRUCT \
+    DL_OPCUA_ERR_t (*set_value)(opcua_variable_type_t*,void*);                  \
+    DL_OPCUA_ERR_t (*set_data_type)(opcua_variable_type_t*,char*);              \
+    DL_OPCUA_ERR_t (*set_array_dimensions)(opcua_variable_type_t*,uint32_t);    \
+    DL_OPCUA_ERR_t (*set_value_rank)(opcua_variable_type_t*,int32_t);           \
+    DL_OPCUA_ERR_t (*set_is_abstract)(opcua_variable_type_t*,bool);             
 
-/**
-* @typedef opcua_method_t
-* @brief Typdef for opcua_method
-*/
-typedef struct opcua_method opcua_method_t;
+#define reference_type_CREATE_STRUCT    \
+    DL_OPCUA_ERR_t (*set_is_abstract)(opcua_reference_type_t*,bool);            \
+    DL_OPCUA_ERR_t (*set_symmetric)(opcua_reference_type_t*,bool);              \
+    DL_OPCUA_ERR_t (*set_inverse_name)(opcua_reference_type_t*,char*);          \
 
-/**
-* @struct opcua_method
-* @brief Object representing a <UAMethod> node
-*/
-struct opcua_method{
-    xmlNodePtr node;                                /**< Pointer to <UAMethod> XML node */
-    xmlNodePtr references_node;                     /**< Pointer to <Reference> XML node*/
-    xmlNodePtr display_name_node;                   /**< Pointer to <DisplayName> XML node*/
-
-    opcua_node_attributes_t* attributes;            /**< Pointer to the method's general attributes*/
-    opcua_method_attributes_t* method_attributes;   /**< Pointer to the method's specific attributes*/
-    opcua_reference_t* reference_head;              /**< Pointer to the head of the object's reference linked list*/
-    
-    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_method_t*,int);        /**< Sets the method's parent ID ns attribute*/
-    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_method_t*,int);         /**< Sets the method's parent ID i attribute*/
-    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_method_t*,char*);       /**< Sets the method's parent s attribute*/
-    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_method_t*,int);          /**< Sets the method's node ns attribute*/
-    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_method_t*,int);           /**< Sets the method's node i attribute*/
-    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_method_t*,char*);         /**< Sets the method's node s attribute*/
-    DL_OPCUA_ERR_t (*set_browse_name)(opcua_method_t*,char*);       /**< Sets the method's drowse name attribute*/
-    DL_OPCUA_ERR_t (*set_display_name)(opcua_method_t*,char*);      /**< Sets the method's display name attribute*/
-    DL_OPCUA_ERR_t (*set_description)(opcua_method_t*,char*);       /**< Sets the method's description attribute*/
-    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_method_t*,int);   /**< Sets the method's user access level attribute*/
-    DL_OPCUA_ERR_t (*set_access_level)(opcua_method_t*,int);        /**< Sets the method's access level attribute*/
-    DL_OPCUA_ERR_t (*create_references)(opcua_method_t*);           /**< Creates <Reference nodes from all the 
-                                                                        reference objects in the object's reference list*/
-    DL_OPCUA_ERR_t (*add_reference)(opcua_method_t*, 
-                                    opcua_reference_t*);            /**< Add a reference object to the object's
-                                                                        references linked list*/
-    DL_OPCUA_ERR_t (*create_node)(opcua_method_t*);                                                                                    
-    DL_OPCUA_ERR_t (*set_declaration_id)(opcua_method_t*,int);      /**< Sets the method's declaration ID attribute*/
-    
-    DL_OPCUA_ERR_t (*free_method)(opcua_method_t**);
-};
-
-/**
-* @typedef opcua_variable_t
-* @brief Typdef for opcua_variable
-*/
-typedef struct opcua_variable opcua_variable_t;
-
-/**
-* @struct opcua_variable
-* @brief Object representing a <UAVariable> node
-*/
-struct opcua_variable{
-    xmlNodePtr node;                                    /**< Pointer to <UAVariable> XML node */
-    xmlNodePtr references_node;                         /**< Pointer to <Reference> XML node*/
-    xmlNodePtr display_name_node;                       /**< Pointer to <DisplayName> XML node*/
-        
-    opcua_node_attributes_t* attributes;                /**< Pointer to the variable's general attributes*/
-    opcua_variable_attributes_t* variable_attributes;   /**< Pointer to the variable's specific attributes*/
-    opcua_reference_t* reference_head;                  /**< Pointer to the head of the object's reference linked list*/
-
-    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_variable_t*,int);          /**< Sets the variable's parent ID ns attribute*/
-    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_variable_t*,int);           /**< Sets the variable's parent ID i attribute*/
-    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_variable_t*,char*);         /**< Sets the variable's parent ID s attribute*/
-    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_variable_t*,int);            /**< Sets the variable's node ID ns attribute*/
-    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_variable_t*,int);             /**< Sets the variable's node ID i attribute*/
-    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_variable_t*,char*);           /**< Sets the variable's node ID s attribute*/
-    DL_OPCUA_ERR_t (*set_browse_name)(opcua_variable_t*,char*);         /**< Sets the variable's browse name attribute*/
-    DL_OPCUA_ERR_t (*set_display_name)(opcua_variable_t*,char*);        /**< Sets the variable's display name attribute*/
-    DL_OPCUA_ERR_t (*set_description)(opcua_variable_t*,char*);         /**< Sets the variable's description attribute*/
-    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_variable_t*,int);     /**< Sets the variable's user access level attribute*/
-    DL_OPCUA_ERR_t (*set_access_level)(opcua_variable_t*,int);          /**< Sets the variable's access level attribute*/
-    DL_OPCUA_ERR_t (*create_references)(opcua_variable_t*);             /**< Creates <Reference nodes from all the 
-                                                                        reference objects in the object's reference list*/
-    DL_OPCUA_ERR_t (*add_reference)(opcua_variable_t*, 
-                                    opcua_reference_t*);                /**< Add a reference object to the object's
-                                                                            references linked list*/
-    DL_OPCUA_ERR_t (*create_node)(opcua_variable_t*);                                                                                    
-    DL_OPCUA_ERR_t (*set_value)(opcua_variable_t*,void*);               //TODO
-    DL_OPCUA_ERR_t (*set_data_type)(opcua_variable_t*,opcua_node_id_t*);/**< Sets the variable's data type attribute*/
-    DL_OPCUA_ERR_t (*set_array_dimensions)(opcua_variable_t*,int);      /**< Sets the variable's array dimensions attribute*/
-    DL_OPCUA_ERR_t (*set_value_rank)(opcua_variable_t*,int32_t);        /**< Sets the variable's value rank attribute*/
-    DL_OPCUA_ERR_t (*set_is_abstract)(opcua_variable_t*,bool);          //TODO
-    
-    DL_OPCUA_ERR_t (*free_variable)(opcua_variable_t**);
-};
-
-/**
-* @typedef opcua_object_t
-* @brief Typdef for opcua_object
-*/
-typedef struct opcua_object opcua_object_t;
-
-/**
-* @struct opcua_object
-* @brief Object representing a <UAObject> node
-*/
-struct opcua_object{
-    xmlNodePtr node;                                /**< Pointer to <UAObject> node*/
-    xmlNodePtr references_node;                     /**< Pointer to <References> node, this is the parent for <Reference> items*/
-    xmlNodePtr display_name_node;                   /**< Pointer to <DisplayName> node*/
-    
-    opcua_node_attributes_t* attributes;            /**< <UAObject>'s general attributes*/
-    opcua_object_attributes_t* object_attributes;   /**< <UAObject>'s type specific attributes*/
-    opcua_reference_t* reference_head;              /**< Pointer to the head of the object's references linked list*/
-
-    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_object_t*,int);            /**< Sets the ParentNodeId attribute's ns property*/
-    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_object_t*,int);             /**< Sets the ParentNodeId attribute's i property*/
-    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_object_t*,char*);           /**< Sets the ParentNodeId attribute's s property*/
-    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_object_t*,int);              /**< Sets the NodeId attribute's ns property*/
-    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_object_t*,int);               /**< Sets the NodeId attribute's i property*/
-    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_object_t*,char*);             /**< Sets the NodeId attribute's s property*/
-    DL_OPCUA_ERR_t (*set_browse_name)(opcua_object_t*,char*);           /**< Sets the BrowseName attribute's property*/
-    DL_OPCUA_ERR_t (*set_display_name)(opcua_object_t*,char*);          /**< Sets the DisplayName node's contents*/
-    DL_OPCUA_ERR_t (*set_description)(opcua_object_t*,char*);           /**< Sets the object's description attribute*/
-    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_object_t*,int);       /**< Sets the objects's user access level attribute*/
-    DL_OPCUA_ERR_t (*set_access_level)(opcua_object_t*,int);            /**< Sets the objects's access level attribute*/
-    DL_OPCUA_ERR_t (*create_references)(opcua_object_t*);               /**< Creates <Reference> nodes for each reference in 
-                                                                            the object's references linked list*/
-    DL_OPCUA_ERR_t (*add_reference)(opcua_object_t*, 
-                                    opcua_reference_t*);                /**< Adds a reference object to the object's references 
-                                                                                linked list*/
-    DL_OPCUA_ERR_t (*create_node)(opcua_object_t*);                                                                                    
-    DL_OPCUA_ERR_t (*set_event_notifier)(opcua_object_t*, 
-                                            unsigned char);             //TODO
-    
-    DL_OPCUA_ERR_t (*free_object)(opcua_object_t**);
-};
-
-typedef struct opcua_variable_type opcua_variable_type_t;
-
-struct opcua_variable_type{
-    xmlNodePtr node;
-    xmlNodePtr references_node;
-    xmlNodePtr display_name_node;
-
-    opcua_node_attributes_t* attributes;
-    opcua_variable_type_attributes_t* variable_type_attributes;
-    opcua_reference_t* reference_head;              /**< Pointer to the head of the variable type's references linked list*/
-    
-    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_variable_type_t*,int);             /**< Sets the ParentNodeId attribute's ns property*/
-    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_variable_type_t*,int);              /**< Sets the ParentNodeId attribute's i property*/
-    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_variable_type_t*,char*);            /**< Sets the ParentNodeId attribute's s property*/
-    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_variable_type_t*,int);               /**< Sets the NodeId attribute's ns property*/
-    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_variable_type_t*,int);                /**< Sets the NodeId attribute's i property*/
-    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_variable_type_t*,char*);              /**< Sets the NodeId attribute's s property*/
-    DL_OPCUA_ERR_t (*set_browse_name)(opcua_variable_type_t*,char*);            /**< Sets the BrowseName attribute's property*/
-    DL_OPCUA_ERR_t (*set_display_name)(opcua_variable_type_t*,char*);           /**< Sets the DisplayName node's contents*/
-    DL_OPCUA_ERR_t (*set_description)(opcua_variable_type_t*,char*);            /**< Sets the variable type's description attribute*/
-    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_variable_type_t*,int);        /**< Sets the variable type's user access level attribute*/
-    DL_OPCUA_ERR_t (*set_access_level)(opcua_variable_type_t*,int);             /**< Sets the variable type's access level attribute*/
-    DL_OPCUA_ERR_t (*create_references)(opcua_variable_type_t*);                /**< Creates <Reference> nodes for each reference in the 
-                                                                                    variable type's references linked list*/
-    DL_OPCUA_ERR_t (*add_reference)(opcua_variable_type_t*, 
-                                    opcua_reference_t*);                        /**< Adds a reference variable_type to the variable type's 
-                                                                                        references linked list*/
-    DL_OPCUA_ERR_t (*create_node)(opcua_variable_type_t*);                                                                                    
-    DL_OPCUA_ERR_t (*set_value)(opcua_variable_type_t*,void*);                  //TODO
-    DL_OPCUA_ERR_t (*set_data_type)(opcua_variable_type_t*,opcua_node_id_t*);   //TODO
-    DL_OPCUA_ERR_t (*set_array_dimensions)(opcua_variable_type_t*,uint32_t);    //TODO
-    DL_OPCUA_ERR_t (*set_value_rank)(opcua_variable_type_t*,int32_t);           //TODO
-    DL_OPCUA_ERR_t (*set_is_abstract)(opcua_variable_type_t*,bool);             //TODO
-    
-    DL_OPCUA_ERR_t (*free_variable_type)(opcua_variable_type_t**);
-};
-
-typedef struct opcua_reference_type opcua_reference_type_t;
-    
-struct opcua_reference_type{
-    xmlNodePtr node;
-    xmlNodePtr references_node;
-    xmlNodePtr display_name_node;
-
-    opcua_node_attributes_t* attributes;
-    opcua_reference_type_attributes_t* reference_type_attributes;
-    opcua_reference_t* reference_head;                                      /**< Pointer to the head of the reference type's references linked list*/
-    
-    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_reference_type_t*,int);        /**< Sets the ParentNodeId attribute's ns property*/
-    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_reference_type_t*,int);         /**< Sets the ParentNodeId attribute's i property*/
-    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_reference_type_t*,char*);       /**< Sets the ParentNodeId attribute's s property*/
-    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_reference_type_t*,int);          /**< Sets the NodeId attribute's ns property*/
-    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_reference_type_t*,int);           /**< Sets the NodeId attribute's i property*/
-    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_reference_type_t*,char*);         /**< Sets the NodeId attribute's s property*/
-    DL_OPCUA_ERR_t (*set_browse_name)(opcua_reference_type_t*,char*);       /**< Sets the BrowseName attribute's property*/
-    DL_OPCUA_ERR_t (*set_display_name)(opcua_reference_type_t*,char*);      /**< Sets the DisplayName node's contents*/
-    DL_OPCUA_ERR_t (*set_description)(opcua_reference_type_t*,char*);       /**< Sets the reference type's description attribute*/
-    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_reference_type_t*,int);   /**< Sets the reference type's user access level attribute*/
-    DL_OPCUA_ERR_t (*set_access_level)(opcua_reference_type_t*,int);        /**< Sets the reference type's access level attribute*/
-    DL_OPCUA_ERR_t (*create_references)(opcua_reference_type_t*);           /**< Creates <Reference> nodes for each reference in the 
-                                                                                reference type's references linked list*/
-    DL_OPCUA_ERR_t (*add_reference)(opcua_reference_type_t*, 
-                                    opcua_reference_t*);                    /**< Adds a reference reference_type to the reference 
-                                                                                type's references linked list*/
-    DL_OPCUA_ERR_t (*create_node)(opcua_reference_type_t*);                                                                                    
-    DL_OPCUA_ERR_t (*set_is_abstract)(opcua_reference_type_t*,bool);        //TODO
-    DL_OPCUA_ERR_t (*set_symmetric)(opcua_reference_type_t*,bool);          //TODO
-    DL_OPCUA_ERR_t (*set_inverse_name)(opcua_reference_type_t*,char*);      //TODO
-    
-    DL_OPCUA_ERR_t (*free_reference_type)(opcua_reference_type_t**);
-};
-
-struct opcua_data_type{
-    xmlNodePtr node;
-    xmlNodePtr references_node;
-    xmlNodePtr display_name_node;
-    
-    opcua_node_attributes_t* attributes;
-    opcua_data_type_attributes_t* data_type_attributes;
-    opcua_reference_t* reference_head;                                  /**< Pointer to the head of the data type's references linked list*/
-    
-    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_data_type_t*,int);         /**< Sets the ParentNodeId attribute's ns property*/
-    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_data_type_t*,int);          /**< Sets the ParentNodeId attribute's i property*/
-    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_data_type_t*,char*);        /**< Sets the ParentNodeId attribute's s property*/
-    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_data_type_t*,int);           /**< Sets the NodeId attribute's ns property*/
-    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_data_type_t*,int);            /**< Sets the NodeId attribute's i property*/
-    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_data_type_t*,char*);          /**< Sets the NodeId attribute's s property*/
-    DL_OPCUA_ERR_t (*set_browse_name)(opcua_data_type_t*,char*);        /**< Sets the BrowseName attribute's property*/
-    DL_OPCUA_ERR_t (*set_display_name)(opcua_data_type_t*,char*);       /**< Sets the DisplayName node's contents*/
-    DL_OPCUA_ERR_t (*set_description)(opcua_data_type_t*,char*);        /**< Sets the data type's description attribute*/
-    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_data_type_t*,int);    /**< Sets the data type's user access level attribute*/
-    DL_OPCUA_ERR_t (*set_access_level)(opcua_data_type_t*,int);         /**< Sets the data type's access level attribute*/
-    DL_OPCUA_ERR_t (*create_references)(opcua_data_type_t*);            /**< Creates <Reference> nodes for each reference in the 
-                                                                             data type's references linked list*/
-    DL_OPCUA_ERR_t (*add_reference)(opcua_data_type_t*, 
-                                    opcua_reference_t*);                /**< Adds a reference object to the data type's references 
-                                                                            linked list*/
-    DL_OPCUA_ERR_t (*create_node)(opcua_data_type_t*);                                                                                    
+#define data_type_CREATE_STRUCT         \
     DL_OPCUA_ERR_t (*set_is_abstract)(opcua_data_type_t*,bool);
     
-    DL_OPCUA_ERR_t (*free_data_type)(opcua_data_type_t**);
+#define view_CREATE_STRUCT              \
+    DL_OPCUA_ERR_t (*set_contains_no_loops)(opcua_view_t*,bool);                \
+    DL_OPCUA_ERR_t (*set_event_notifier)(opcua_view_t*, unsigned char);
+
+#define OBJECT_STRUCT(TYPE, LABEL)                                                                                              \
+/**@typedef opcua_##TYPE##_t @brief Typdef for opcua_##TYPE */                                                                  \
+typedef struct opcua_##TYPE opcua_##TYPE##_t;                                                                                   \
+/** @struct opcua_##TYPE  @brief brief Object representing a \<LABEL\> node */                                                  \
+struct opcua_##TYPE{                                                                                                            \
+    xmlNodePtr node;                                                /**< Pointer to \<LABEL\>XML node*/                         \
+    xmlNodePtr references_node;                                     /**< Pointer to \<References\>XML node*/                   \
+    xmlNodePtr display_name_node;                                   /**< Pointer to \<DisplayName\>XML node*/                  \
+    opcua_node_attributes_t* attributes;                            /**< Pointer to the object's general attributes*/                   \
+    opcua_##TYPE##_attributes_t* TYPE##_attributes;                 /**< Pointer to the object's specific attributes*/                  \
+    opcua_reference_t* reference_head;                              /**< Pointer to the head of the object's reference linked list*/    \
+    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_##TYPE##_t*,int);      /**< Sets the object's parent ID ns attribute*/             \
+    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_##TYPE##_t*,int);       /**< Sets the object's parent ID i attirbute*/              \
+    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_##TYPE##_t*,char*);     /**< Sets the object's parent ID s attribute*/              \
+    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_##TYPE##_t*,int);        /**< Sets the object's node ID ns attribute*/               \
+    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_##TYPE##_t*,int);         /**< Sets the object's node ID i attribute*/                \
+    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_##TYPE##_t*,char*);       /**< Sets the object's node ID s attribute*/                \
+    DL_OPCUA_ERR_t (*set_browse_name)(opcua_##TYPE##_t*,char*);     /**< Sets the object's browse name attribute*/              \
+    DL_OPCUA_ERR_t (*set_display_name)(opcua_##TYPE##_t*,char*);    /**< Sets the object's display name attribute*/             \
+    DL_OPCUA_ERR_t (*set_description)(opcua_##TYPE##_t*,char*);     /**< Sets the object's description attribute*/         \
+    DL_OPCUA_ERR_t (*set_user_write_mask)(opcua_##TYPE##_t*,int);   /**< Sets the objects's user access level attribute*/       \
+    DL_OPCUA_ERR_t (*set_write_mask)(opcua_##TYPE##_t*,int);        /**< Sets the objects's access level attribute*/            \
+    DL_OPCUA_ERR_t (*create_references)(opcua_##TYPE##_t*);         /**< Creates \<Reference\>nodes from all the reference objects in the object's reference list*/    \
+    DL_OPCUA_ERR_t (*add_reference)(opcua_##TYPE##_t*,                                                                          \
+                                    opcua_reference_t*);            /**< Adds a reference object to the object's references linked list*/   \
+    DL_OPCUA_ERR_t (*create_node)(opcua_##TYPE##_t*);                                                                           \
+    DL_OPCUA_ERR_t (*free_##TYPE)(opcua_##TYPE##_t**);                                                                          \
+    TYPE##_CREATE_STRUCT                                                                                                        \
 };
 
-typedef struct opcua_view opcua_view_t;
-    
-struct opcua_view{
-    xmlNodePtr node;
-    xmlNodePtr references_node;
-    xmlNodePtr display_name_node;
-    
-    opcua_node_attributes_t* attributes;
-    opcua_view_attributes_t* view_attributes;
-    opcua_reference_t* reference_head;                          /**< Pointer to the head of the view's references linked list*/
-    
-    DL_OPCUA_ERR_t (*set_parent_id_ns)(opcua_view_t*,int);      /**< Sets the ParentNodeId attribute's ns property*/
-    DL_OPCUA_ERR_t (*set_parent_id_i)(opcua_view_t*,int);       /**< Sets the ParentNodeId attribute's i property*/
-    DL_OPCUA_ERR_t (*set_parent_id_s)(opcua_view_t*,char*);     /**< Sets the ParentNodeId attribute's s property*/
-    DL_OPCUA_ERR_t (*set_node_id_ns)(opcua_view_t*,int);        /**< Sets the NodeId attribute's ns property*/
-    DL_OPCUA_ERR_t (*set_node_id_i)(opcua_view_t*,int);         /**< Sets the NodeId attribute's i property*/
-    DL_OPCUA_ERR_t (*set_node_id_s)(opcua_view_t*,char*);       /**< Sets the NodeId attribute's s property*/
-    DL_OPCUA_ERR_t (*set_browse_name)(opcua_view_t*,char*);     /**< Sets the BrowseName attribute's property*/
-    DL_OPCUA_ERR_t (*set_display_name)(opcua_view_t*,char*);    /**< Sets the DisplayName node's contents*/
-    DL_OPCUA_ERR_t (*set_description)(opcua_view_t*,char*);     /**< Sets the view's description attribute*/
-    DL_OPCUA_ERR_t (*set_user_access_level)(opcua_view_t*,int); /**< Sets the view's user access level attribute*/
-    DL_OPCUA_ERR_t (*set_access_level)(opcua_view_t*,int);      /**< Sets the view's access level attribute*/
-    DL_OPCUA_ERR_t (*create_references)(opcua_view_t*);         /**< Creates <Reference> nodes for each reference in the 
-                                                                     view's references linked list*/
-    DL_OPCUA_ERR_t (*add_reference)(opcua_view_t*, 
-                                    opcua_reference_t*);        /**< Adds a reference object to the view's references linked list*/
-    DL_OPCUA_ERR_t (*create_node)(opcua_view_t*);                                                                                    
-    DL_OPCUA_ERR_t (*set_contains_no_loops)(opcua_view_t*,bool);
-    DL_OPCUA_ERR_t (*set_event_notifier)(opcua_view_t*,
-                                            unsigned char);
-    
-    DL_OPCUA_ERR_t (*free_view)(opcua_view_t**);
-};
+FOR_EACH_TYPE_W_LABEL(OBJECT_STRUCT)
 
 //SERVER CONFIG
 opcua_reference_t object_type_array[] = {
@@ -747,7 +536,7 @@ void datalog_opcua_save_deinit_doc(void);
 * @brief Allocates all memory for the document and libxml2 functionality
 *
 * Allocates the global opcua_document_t object as well as creating the 
-* libxml2 document object. The root <UANodeSet> node is created and set into the
+* libxml2 document object. The root \<UANodeSet\>node is created and set into the
 * xmlDoc. 
 * 
 * @param filename Filename to be assigned to the OPCUA XML document
@@ -767,364 +556,55 @@ opcua_document_t* datalog_opcua_create_document(char* filename, char* version);
 */
 DL_OPCUA_ERR_t datalog_opcua_init_doc(void);
 
-/**
-* @brief Sets the parent node id ns value for object types
-* 
-* @param self pointer to object to be set
-* @param ns NS value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_type_parent_node_id_ns(opcua_object_type_t* self, 
-    int ns);
+#define BASE_NODE_SELF_PROTOTYPES(TYPE)      \
+/** @brief Sets the parent node id ns value for TYPE */ \
+/* @param self pointer to object to be set */                   \
+/* @param ns NS value to be set */                              \
+/*@return DL_OPCUA_ERR_t error message */                       \
+DL_OPCUA_ERR_t self_set_##TYPE##_parent_node_id_ns(opcua_##TYPE##_t* self, int ns); \
+/** @brief Sets the parent node id i value for TYPE objects */   \
+/* @param self pointer to object to be set */                           \
+/* @param i I value to be set */                                        \
+/* @return DL_OPCUA_ERR_t error message */                              \
+DL_OPCUA_ERR_t self_set_##TYPE##_parent_node_id_i(opcua_##TYPE##_t* self, int i);\
+/** @brief Sets the parent node id s value for TYPE objects */   \
+/* @param self pointer to object to be set */                           \
+/* @param s S string to be seta */                                      \
+/* @return DL_OPCUA_ERR_t error message*/                               \
+DL_OPCUA_ERR_t self_set_##TYPE##_parent_node_id_s(opcua_##TYPE##_t* self, char* s);   \
+/** @brief Sets the node id ns value for TYPE objects */         \
+/* @param self pointer to object to be set */                           \
+/* @param ns NS value to be set */                                      \
+/* @return DL_OPCUA_ERR_t error message */                              \
+DL_OPCUA_ERR_t self_set_##TYPE##_node_id_ns(opcua_##TYPE##_t* self, int ns);  \
+/** @brief Sets the node id i value for TYPE objects */          \
+/* @param self pointer to object to be set */                           \
+/* @param i I value to be set */                                        \
+/* @return DL_OPCUA_ERR_t error message */                              \
+DL_OPCUA_ERR_t self_set_##TYPE##_node_id_i(opcua_##TYPE##_t* self, int i);    \
+/** @brief Sets the node id s value for TYPE objects */          \
+/* @param self pointer to object to be set */                           \
+/* @param s S string to be set */                                       \
+/* @return DL_OPCUA_ERR_t error message */                              \
+DL_OPCUA_ERR_t self_set_##TYPE##_node_id_s(opcua_##TYPE##_t* self, char* s);  \
+/** @brief Sets the browse name for TYPE objects */              \
+/* @param self pointer to object to be set */                           \
+/* @param browse_name String representation of browse name */           \
+/* @return DL_OPCUA_ERR_t error message */                              \
+DL_OPCUA_ERR_t self_set_##TYPE##_browse_name(opcua_##TYPE##_t* self, char* browse_name);  \
+/** @brief Sets the dislay name value for TYPE objects */        \
+/* @param self pointer to object to be set */                           \
+/* @param display_name String representation of display name */         \
+/* @return DL_OPCUA_ERR_t error message */                              \
+DL_OPCUA_ERR_t self_set_##TYPE##_display_name(opcua_##TYPE##_t* self, char* display_name);\
+/** @brief Sets the description for TYPE objects */              \
+/* @param self pointer to object to be set */                           \
+/* @param display_name String representation of display name */         \
+/* @return DL_OPCUA_ERR_t error message */                              \
+DL_OPCUA_ERR_t self_set_##TYPE##_description(opcua_##TYPE##_t* self, char* description);\
 
-/**
-* @brief Sets the parent node id i value for object type objects
-* 
-* @param self pointer to object to be set
-* @param i I value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-
-DL_OPCUA_ERR_t self_set_object_type_parent_node_id_i(opcua_object_type_t* self, int i);
-
-/**
-* @brief Sets the parent node id s value for object type objects
-* 
-* @param self pointer to object to be set
-* @param s S string to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_type_parent_node_id_s(opcua_object_type_t* self, 
-    char* s);
-
-/**
-* @brief Sets the node id ns value for object type objects
-* 
-* @param self pointer to object to be set
-* @param ns NS value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_type_node_id_ns(opcua_object_type_t* self, int ns);
-
-/**
-* @brief Sets the node id i value for object type objects
-* 
-* @param self pointer to object to be set
-* @param i I value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_type_node_id_i(opcua_object_type_t* self, int i);
-
-/**
-* @brief Sets the node id s value for object type objects
-* 
-* @param self pointer to object to be set
-* @param s S string to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_type_node_id_s(opcua_object_type_t* self, char* s);
-
-/**
-* @brief Sets the browse name for object type objects
-* 
-* @param self pointer to object to be set
-* @param browse_name String representation of browse name
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_type_browse_name(opcua_object_type_t* self, 
-        char* browse_name);
-
-/**
-* @brief Sets the dislay name value for object type objects
-* 
-* @param self pointer to object to be set
-* @param display_name String representation of display name
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_type_display_name(opcua_object_type_t* self, char* display_name);
-
-/**
-* @brief Sets the parent node id ns value for variable objects
-* 
-* @param self pointer to object to be set
-* @param ns NS value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_parent_node_id_ns(opcua_variable_t* self, int ns);
-
-/**
-* @brief Sets the parent node id i value for variable objects
-* 
-* @param self pointer to object to be set
-* @param i I value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_parent_node_id_i(opcua_variable_t* self, int i);
-
-/**
-* @brief Sets the parent node id s value for variable objects
-* 
-* @param self pointer to object to be set
-* @param s S string to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_parent_node_id_s(opcua_variable_t* self, char* s);
-
-/**
-* @brief Sets the node id ns value for variable objects
-* 
-* @param self pointer to object to be set
-* @param ns NS value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_node_id_ns(opcua_variable_t* self, int ns);
-
-/**
-* @brief Sets the node id i value for variable objects
-* 
-* @param self pointer to object to be set
-* @param i I value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_node_id_i(opcua_variable_t* self, int i);
-
-/**
-* @brief Sets the node id s value for variable objects
-* 
-* @param self pointer to object to be set
-* @param s S string to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_node_id_s(opcua_variable_t* self, char* s);
-
-/**
-* @brief Sets the datatype value for variable objects
-* 
-* @param self pointer to object to be set
-* @param data_type Data type string to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_data_type(opcua_variable_t* self, opcua_node_id_t* ID);
-
-/**
-* @brief Sets the user access level value for variable objects
-* 
-* @param self pointer to object to be set
-* @param ual User access level value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_user_access_level(opcua_variable_t* self, int ual);
-
-/**
-* @brief Sets the access level value for variable objects
-* 
-* @param self pointer to object to be set
-* @param al Access level value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_access_level(opcua_variable_t* self, int al);
-
-/**
-* @brief Sets the array dimensions value for variable objects
-* 
-* @param self pointer to object to be set
-* @param ad Array dimension value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_array_dimensions(opcua_variable_t* self, int ad);
-
-/**
-* @brief Sets the value rank value for variable objects
-* 
-* @param self pointer to object to be set
-* @param vr Value rank value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_value_rank(opcua_variable_t* self, int32_t vr);
-
-/**
-* @brief Sets the browse name for variable objects
-* 
-* @param self pointer to object to be set
-* @param browse_name String representation of browse name
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_browse_name(opcua_variable_t* self, 
-    char* browse_name);
-
-/**
-* @brief Sets the display name for variable objects
-* 
-* @param self pointer to object to be set
-* @param display_name String representation of display name
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_display_name(opcua_variable_t* self, 
-    char* display_name);
-
-/**
-* @brief Sets the description for variable objects
-* 
-* @param self pointer to object to be set
-* @param description Description string
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_variable_description(opcua_variable_t* self,
-        char* description);
-
-/**
-* @brief Sets the parent node id ns value for method objects
-* 
-* @param self pointer to object to be set
-* @param ns NS value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_method_parent_node_id_ns(opcua_method_t* self, int ns);
-
-/**
-* @brief Sets the parent node id i value for method objects
-* 
-* @param self pointer to object to be set
-* @param i I value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_method_parent_node_id_i(opcua_method_t* self, int i);
-
-/**
-* @brief Sets the parent node id s value for method objects
-* 
-* @param self pointer to object to be set
-* @param s S string to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_method_parent_node_id_s(opcua_method_t* self, char* s);
-
-/**
-* @brief Sets the node id ns value for method objects
-* 
-* @param self pointer to object to be set
-* @param ns NS value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_method_node_id_ns(opcua_method_t* self, int ns);
-
-/**
-* @brief Sets the node id i value for method objects
-* 
-* @param self pointer to object to be set
-* @param i I value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_method_node_id_i(opcua_method_t* self, int i);
-
-/**
-* @brief Sets the node id s value for method objects
-* 
-* @param self pointer to object to be set
-* @param s S string to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_method_node_id_s(opcua_method_t* self, char* s);
-
-/**
-* @brief Sets the method declaration id value for method objects
-* 
-* @param self pointer to object to be set
-* @param id Declaration ID value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_method_declaration_id(opcua_method_t* self, int id);
-
-/**
-* @brief Sets the browse name value for method objects
-* 
-* @param self pointer to object to be set
-* @param browse_name String representation of browse name
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_method_browse_name(opcua_method_t* self, char* browse_name);
-
-/**
-* @brief Sets the display name value for method objects
-* 
-* @param self pointer to object to be set
-* @param display_name String representation of display name
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_method_display_name(opcua_method_t* self, char* display_name);
-
-/**
-* @brief Sets the parent node id ns value for object objects
-* 
-* @param self pointer to object to be set
-* @param ns NS value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_parent_node_id_ns(opcua_object_t* self, int ns);
-
-/**
-* @brief Sets the parent node id i value for object objects
-* 
-* @param self pointer to object to be set
-* @param I value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_parent_node_id_i(opcua_object_t* self, int i);
-
-/**
-* @brief Sets the parent node id s value for object objects
-* 
-* @param self pointer to object to be set
-* @param S string to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_parent_node_id_s(opcua_object_t* self, char* s);
-
-/**
-* @brief Sets the node id ns value for object objects
-* 
-* @param self pointer to object to be set
-* @param ns NS value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_node_id_ns(opcua_object_t* self, int ns);
-
-/**
-* @brief Sets the node id i value for object objects
-* 
-* @param self pointer to object to be set
-* @param I value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_node_id_i(opcua_object_t* self, int i);
-
-/**
-* @brief Sets the node id s value for object objects
-* 
-* @param self pointer to object to be set
-* @param S string to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_node_id_s(opcua_object_t* self, char* s);
-
-/**
-* @brief Sets the browse name value for object objects
-* 
-* @param self pointer to object to be set
-* @param browse_name String representation of browse name
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_browse_name(opcua_object_t* self, char* browse_name);
-
-/**
-* @brief Sets display name value for object objects
-* 
-* @param self pointer to object to be set
-* @param display_name String representation of display name
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_object_display_name(opcua_object_t* self, char* display_name);
-
+FOR_EACH_TYPE(BASE_NODE_SELF_PROTOTYPES)
+BASE_NODE_SELF_PROTOTYPES(node_attributes)
 /**
 * @brief Sets the reference type for reference objects
 * 
@@ -1170,153 +650,23 @@ DL_OPCUA_ERR_t self_set_reference_id_s(opcua_reference_t* self, char* s);
 */
 DL_OPCUA_ERR_t self_set_reference_is_forward(opcua_reference_t* self, bool val);
 
-/**
-* @brief Sets the parent node id ns value for attribute objects
-* 
-* @param self pointer to object to be set
-* @param ns NS value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_attribute_parent_node_id_ns(
-        opcua_node_attributes_t* self, int ns);
+#define SELF_CREATE_NODE_REFERENCES_PROTOTYPE(TYPE)     \
+/** @brief Creates a reference node from the reference object */    \
+/* @param object Pointer to TYPE object */                   \
+/* @return DL_OPCUA_ERR_t error message */                          \
+DL_OPCUA_ERR_t self_create_node_##TYPE##_references(opcua_##TYPE##_t* object);
 
-/**
-* @brief Sets the parent node id i value for attribute objects
-* 
-* @param self pointer to object to be set
-* @param I value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_attribute_parent_node_id_i(opcua_node_attributes_t* self, int i);
+FOR_EACH_TYPE(SELF_CREATE_NODE_REFERENCES_PROTOTYPE)
 
-/**
-* @brief Sets the parent node id s value for attribute objects
-* 
-* @param self pointer to object to be set
-* @param S string to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_attribute_parent_node_id_s(opcua_node_attributes_t* self, 
-        char* s);
+#define SELF_ADD_REFERENCE_PROTOTYPE(TYPE)              \
+/** @brief Adds a reference object to the references linked list of the TYPE object */   \
+/* @param object_t Pointer to the TYPE object to whom the referencei shall be added */   \
+/* @param reference Pointer to the reference object that is to be added */                      \
+/* @return DL_OPCUA_ERR_t error message */                                                      \
+DL_OPCUA_ERR_t self_add_ref_##TYPE(opcua_##TYPE##_t* object_t, opcua_reference_t* reference);
 
-/**
-* @brief Sets the node id ns value for attribute objects
-* 
-* @param self pointer to object to be set
-* @param ns NS value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_attribute_node_id_ns(opcua_node_attributes_t* self, int ns);
+FOR_EACH_TYPE(SELF_ADD_REFERENCE_PROTOTYPE)
 
-/**
-* @brief Sets the node id i value for attribute objects
-* 
-* @param self pointer to object to be set
-* @param I value to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_attribute_node_id_i(opcua_node_attributes_t* self, int i);
-
-/**
-* @brief Sets the node id s value for attribute objects
-* 
-* @param self pointer to object to be set
-* @param S string to be set
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_attribute_node_id_s(opcua_node_attributes_t* self, char* s);
-
-/**
-* @brief Sets the browse name value for attribute objects
-* 
-* @param self pointer to object to be set
-* @param browse_name String representation of browse name
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_attribute_browse_name(opcua_node_attributes_t* self, 
-        char* browse_name);
-
-/**
-* @brief Sets display name value for attribute objects
-* 
-* @param self pointer to object to be set
-* @param display_name String representation of display name
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_set_attribute_display_name(opcua_node_attributes_t* self, 
-        char* display_name);
-
-/**
-* @brief Creates a reference node from the reference object
-* 
-* @param object Pointer to object type object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_create_node_object_type_references(opcua_object_type_t* object);
-
-/**
-* @brief Creates a method node from the method object
-* 
-* @param method Pointer to method object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_create_node_method_references(opcua_method_t* method);
-
-/**
-* @brief Creates a variable node from the variable object
-* 
-* @param variable Pointer to variable object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_create_node_variable_references(opcua_variable_t* variable);
-
-/**
-* @brief Creates an object node from the object object
-* 
-* @param object Pointer to object object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_create_node_object_references(opcua_object_t* object);
-
-/**
-* @brief Adds a reference object to the references linked list of the object type object
-* 
-* @param object_t Pointer to the object type object to whom the reference shall be added
-* @param reference Pointer to the reference object that is to be added
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_add_ref_object_type(opcua_object_type_t* object_t, 
-        opcua_reference_t* reference);
-
-/**
-* @brief Adds a reference object to the references linked list of the method object 
-* 
-* @param object_t Pointer to the method object to whom the reference shall be added
-* @param reference Pointer to the reference object that is to be added
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_add_ref_method(opcua_method_t* method,
-        opcua_reference_t* reference);
-
-/**
-* @brief Adds a reference object to the references linked list of the variable object
-* 
-* @param object_t Pointer to the variable object to whom the reference shall be added
-* @param reference Pointer to the reference object that is to be added
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_add_ref_variable(opcua_variable_t* variable,
-        opcua_reference_t* reference);
-
-/**
-* @brief Adds a reference object to the references linked list of the object object
-* 
-* @param object_t Pointer to the object object to whom the reference shall be added
-* @param reference Pointer to the reference object that is to be added
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t self_add_ref_object(opcua_object_t* object,
-        opcua_reference_t* reference);
 /**
 * @brief Generalised function to set the browse name of an object
 * 
@@ -1378,85 +728,33 @@ DL_OPCUA_ERR_t datalog_opcua_set_description(opcua_node_attributes_t* attribute,
 DL_OPCUA_ERR_t datalog_opcua_create_node_attributes(xmlNodePtr node, 
         xmlNodePtr display_name_node, opcua_node_attributes_t* attributes);
 
-/**
-* @brief Creates node type specific attributes for a given XML node
-* 
-* @param object_t pointer to object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_attributes(
-        opcua_object_type_t* object_t);
+#define CREATE_XML_NODE_ATTRIBUTES_PROTOTYPE(TYPE)      \
+/** @brief Creates node type specific attributes for a given XML node */    \
+/* @param object_t pointer to object */                                     \
+/* @return DL_OPCUA_ERR_t error message */                                  \
+DL_OPCUA_ERR_t datalog_opcua_create_node_##TYPE##_attributes(opcua_##TYPE##_t* object_t);
+
+FOR_EACH_TYPE(CREATE_XML_NODE_ATTRIBUTES_PROTOTYPE)
 
 /**
-* @brief Creates node type specific attributes for a given XML node
-* 
-* @param method pointer to object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t datalog_opcua_create_node_method_attributes(opcua_method_t* method);
-
-/**
-* @brief Creates node type specific attributes for a given XML node
-* 
-* @param variable pointer to object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t datalog_opcua_create_node_variable_attributes(opcua_variable_t* variable);
-
-/**
-* @brief Creates node type specific attributes for a given XML node
-* 
-* @param object pointer to object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t datalog_opcua_create_node_object_attributes(opcua_object_t* object);
-
-/**
-* @brief Creates a <UAObjectType> node and populates it from an array
+* @brief Creates a \<UAObjectType\>node and populates it from an array
 * 
 * @param array Pointer to array storing initialisation references
 * @param attributes Pointer to attributes object that stores the
-* <UAObjectType> nodes initialisation attribute values
+* \<UAObjectType\>nodes initialisation attribute values
 * @return DL_OPCUA_ERR_t error message
 */
 DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_from_array(
         opcua_reference_t* array, opcua_node_attributes_t* attributes);
 
-/**
-* @brief Creates a XML node from an object type object, also allocates object specific attributes
-* and general attributes.
-* 
-* @param object Pointer to object type object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t datalog_opcua_create_node_object_type(opcua_object_type_t* object);
+#define SELF_CREATE_XML_NODE_PROTOTYPE(TYPE)            \
+/** @brief Creates a XML node from an TYPE object, also allocates object */  \
+/* specific attributes and general attributes. */       \
+/* @param object Pointer to TYPE object */       \
+/* @return DL_OPCUA_ERR_t error message */              \
+DL_OPCUA_ERR_t datalog_opcua_create_node_##TYPE(opcua_##TYPE##_t* object);
 
-/**
-* @brief Creates a XML node from a method object, also allocates object specific attributes
-* and general attributes.
-* 
-* @param method Pointer to method object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t datalog_opcua_create_node_method(opcua_method_t* method);
-
-/**
-* @brief Creates a XML node from a  variable, also allocates object specific attributes
-* and general attributes.
-* 
-* @param variable Pointer to variable object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t datalog_opcua_create_node_variable(opcua_variable_t* variable);
-
-/**
-* @brief Creates a XML node from an object object, also allocates object specific attributes
-* and general attributes.
-* 
-* @param object Pointer to object object
-* @return DL_OPCUA_ERR_t error message
-*/
-DL_OPCUA_ERR_t datalog_opcua_create_node_object(opcua_object_t* object);
+FOR_EACH_TYPE(SELF_CREATE_XML_NODE_PROTOTYPE)
 
 /**
 * @brief Searches for and returns the first reference found with a matching
@@ -1591,62 +889,20 @@ DL_OPCUA_ERR_t datalog_opcua_add_id_attribute(xmlNodePtr node, char* attribute,
 */
 opcua_node_attributes_t* datalog_opcua_create_attributes(void);
 
-/**
-* @brief Creates an opcua_object_type_attributes_t object
-* 
-* @return opcua_object_type_attributes_t* Pointer to newly created 
-* opcua_object_type_attributes_t object
-*/
-opcua_object_type_attributes_t* datalog_opcua_create_object_type_attributes(void);
+#define CREATE_NODE_ATTRIBUTES_PROTOTYPE(TYPE)      \
+/** @brief Creates an opcua_##TYPE##_attributes_t object */          \
+/* @return opcua_##TYPE##_attributes_t* Pointer to newly created */  \
+/* opcua_##TYPE##_attributes_t object */                             \
+opcua_##TYPE##_attributes_t* datalog_opcua_create_##TYPE##_attributes(void);
 
-/**
-* @brief Creates an opcua_method_attributes_t object
-* 
-* @return opcua_method_attributes_t* Pointer to newly created opcua_method_attributes_t object
-*/
-opcua_method_attributes_t* datalog_opcua_create_method_attributes(void);
+FOR_EACH_TYPE(CREATE_NODE_ATTRIBUTES_PROTOTYPE)
 
-/**
-* @brief Creates an opcua_variable_attributes_t object
-* 
-* @return opcua_variable_attributes_t* Pointer to newly created opcua_variable_attributes_t object
-*/
-opcua_variable_attributes_t* datalog_opcua_create_variable_attributes(void);
+#define CREATE_NODE_PROTOTYPE(TYPE)             \
+/** @brief Creates an opcua_##TYPE##_t object */                      \
+/* @return opcua_##TYPE##_t* Pointer to newly created TYPE object */  \
+opcua_##TYPE##_t* datalog_opcua_create_##TYPE(void);
 
-/**
-* @brief Creates an opcua_object_attributes_t object
-* 
-* @return opcua_object_attributes_t* Pointer to newly created opcua_object_attributes_t object
-*/
-opcua_object_attributes_t* datalog_opcua_create_object_attributes(void);
-
-/**
-* @brief Creates an opcua_object_type_t object
-* 
-* @return opcua_object_type_t* Pointer to newly created opcua_object_type_t object
-*/
-opcua_object_type_t* datalog_opcua_create_object_type(void);
-
-/**
-* @brief Creates an opcua_method_t object
-* 
-* @return opcua_method_t* Pointer to newly created opcua_method_t object
-*/
-opcua_method_t* datalog_opcua_create_method(void);
-
-/**
-* @brief Creates an opcua_variable_t object
-* 
-* @return opcua_variable_t* Pointer to newly created opcua_variable_t object
-*/
-opcua_variable_t* datalog_opcua_create_variable(void);
-
-/**
-* @brief Creates an opcua_object_t object
-* 
-* @return opcua_object_t* Pointer to newly created opcua_object_t object
-*/
-opcua_object_t* datalog_opcua_create_object(void);
+FOR_EACH_TYPE(CREATE_NODE_PROTOTYPE)
 
 /**
 * @brief Creates an opcua_reference_t object
@@ -1654,6 +910,15 @@ opcua_object_t* datalog_opcua_create_object(void);
 * @return opcua_reference_t* Pointer to newly created opcua_reference_t object
 */
 opcua_reference_t* datalog_opcua_create_reference(void);
+DL_OPCUA_ERR_t datalog_opcua_create_attach_reference(
+        opcua_reference_t* reference_head, char* parent_ID, char* target_ID,
+        char* type, bool is_forward);
+DL_OPCUA_ERR_t datalog_opcua_create_attach_reference_head(
+        opcua_reference_t** ref_head, char* parent_ID, char* target_ID, 
+        char* type, bool is_forward);
+int datalog_opcua_parse_id_i(char* id);
+int datalog_opcua_parse_id_ns(char* id);
+char* datalog_opcua_parse_id_s(char* id);
 
 /**
 * @brief Entry function to the OPCUA XML generator

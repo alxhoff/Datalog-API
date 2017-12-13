@@ -23,7 +23,6 @@ CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o
  ../libs/libxml2/include/libxml2/libxml/xmlregexp.h
  ../libs/libxml2/include/libxml2/libxml/xmlstring.h
  ../libs/libxml2/include/libxml2/libxml/xmlversion.h
- /home/alxhoff/git/Datalog-API/config.h
  /home/alxhoff/git/Datalog-API/datalog_api_types.h
  /home/alxhoff/git/Datalog-API/datalog_parser.c
  /home/alxhoff/git/Datalog-API/datalog_parser.h

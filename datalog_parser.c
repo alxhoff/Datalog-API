@@ -29,8 +29,6 @@
 
 #include "libxml/parser.h"
 
-#include "config.h"
-
 #include "datalog_parser.h"
 
 void dl_parser_print_root(dl_parser_doc_t* doc)

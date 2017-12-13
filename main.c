@@ -160,7 +160,7 @@ int main(void)
 
     printf("parsing doc\n");
 
-    dl_parser_return_doc_t* doc = dl_parser_runtime("test_xml.xml");
+    dl_parser_return_doc_t* doc = dl_parser_runtime("query_test.xml");
 
     ret = datalog_parser_assert_doc(doc);
 
