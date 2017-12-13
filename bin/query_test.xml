@@ -17,7 +17,7 @@
   			<literal>
   				<predicate>opc_UAObject</predicate>
   				<terms><constant>ns=1;i=288</constant>
-  					<constant>EventNotifierTest1</constant></terms>
+  					<constant>8</constant></terms>
   			</literal>
   		</head>
   	</fact>
@@ -37,7 +37,7 @@
         <literal>
           <predicate>opc_UAObject</predicate>
           <terms><constant>ns=1;i=289</constant>
-            <constant>EventNotifierTest2</constant></terms>
+            <constant>9</constant></terms>
         </literal>
       </head>
     </fact>
@@ -57,7 +57,7 @@
         <literal>
           <predicate>opc_UAObject</predicate>
           <terms><constant>ns=1;i=56</constant>
-            <constant>EventNotifierTest3</constant></terms>
+            <constant>10</constant></terms>
         </literal>
       </head>
     </fact>
@@ -77,7 +77,7 @@
         <literal>
           <predicate>opc_UAObject</predicate>
           <terms><constant>ns=1;i=104</constant>
-            <constant>EventNotifierTest4</constant></terms>
+            <constant>11</constant></terms>
         </literal>
       </head>
     </fact>
@@ -89,7 +89,7 @@
             <constant>ns=1;i=290</constant>
             <constant>UAObject</constant>
           </terms>
-        </literal>
+      </literal>
       </head>
     </fact>
     <fact>
@@ -97,7 +97,7 @@
         <literal>
           <predicate>opc_UAObject</predicate>
           <terms><constant>ns=1;i=290</constant>
-            <constant>EventNotifierTest5</constant></terms>
+            <constant>12</constant></terms>
         </literal>
       </head>
     </fact>
@@ -117,7 +117,7 @@
         <literal>
           <predicate>opc_UAObjectType</predicate>
           <terms><constant>ns=1;i=55</constant>
-            <constant>IsAbstract1</constant></terms>
+            <constant>true</constant></terms>
         </literal>
       </head>
     </fact>
@@ -139,7 +139,12 @@
           <terms><constant>ns=1;i=105</constant>
             <constant>TestValue1</constant>
             <constant>TestDataType1</constant>
-            <constant>TestValueRank1</constant>
+            <constant>2</constant>
+            <constant>5</constant>
+            <constant>6</constant>
+            <constant>7</constant>
+            <constant>8.8</constant>
+            <constant>true</constant>
           </terms>
         </literal>
       </head>
@@ -162,7 +167,12 @@
           <terms><constant>ns=1;i=108</constant>
             <constant>TestValue2</constant>
             <constant>TestDataType2</constant>
-            <constant>TestValueRank2</constant>
+            <constant>3</constant>
+            <constant>5</constant>
+            <constant>6</constant>
+            <constant>7</constant>
+            <constant>8.8</constant>
+            <constant>true</constant>
           </terms>
         </literal>
       </head>
@@ -185,7 +195,12 @@
           <terms><constant>ns=1;i=291</constant>
             <constant>TestValue3</constant>
             <constant>TestDataType3</constant>
-            <constant>TestValueRank3</constant>
+            <constant>3</constant>
+            <constant>5</constant>
+            <constant>6</constant>
+            <constant>7</constant>
+            <constant>8.8</constant>
+            <constant>true</constant>
           </terms>
         </literal>
       </head>
@@ -208,7 +223,12 @@
           <terms><constant>ns=1;i=295</constant>
             <constant>TestValue4</constant>
             <constant>TestDataType4</constant>
-            <constant>TestValueRank4</constant>
+            <constant>4</constant>
+            <constant>5</constant>
+            <constant>6</constant>
+            <constant>7</constant>
+            <constant>8.8</constant>
+            <constant>true</constant>
           </terms>
         </literal>
       </head>
@@ -390,6 +410,9 @@
             <constant>nodeClass#1</constant>
             <constant>1:Boiler#1</constant>
             <constant>Boiler#1</constant>
+            <constant>testdescription</constant>
+            <constant>10</constant>
+            <constant>55</constant>
           </terms>
         </literal>
       </head>
@@ -403,6 +426,9 @@
             <constant>nodeClass#1</constant>
             <constant>1:PipeX001</constant>
             <constant>Pipe1001</constant>
+            <constant>testdescription</constant>
+            <constant>10</constant>
+            <constant>55</constant>
           </terms>
         </literal>
       </head>
@@ -416,6 +442,9 @@
             <constant>nodeClass#1</constant>
             <constant>1:FTX001</constant>
             <constant>FTX001</constant>
+            <constant>testdescription</constant>
+            <constant>10</constant>
+            <constant>55</constant>
           </terms>
         </literal>
       </head>
@@ -429,6 +458,9 @@
             <constant>nodeClass#1</constant>
             <constant>1:ValveX001</constant>
             <constant>ValveX001</constant>
+            <constant>testdescription</constant>
+            <constant>10</constant>
+            <constant>55</constant>
           </terms>
         </literal>
       </head>
@@ -442,6 +474,9 @@
             <constant>nodeClass#2</constant>
             <constant>1:BoilerType</constant>
             <constant>BoilerType</constant>
+            <constant>testdescription</constant>
+            <constant>10</constant>
+            <constant>55</constant>
           </terms>
         </literal>
       </head>
@@ -455,6 +490,9 @@
             <constant>nodeClass#3</constant>
             <constant>1:PipeX001</constant>
             <constant>PipeX001</constant>
+            <constant>testdescription</constant>
+            <constant>10</constant>
+            <constant>55</constant>
           </terms>
         </literal>
       </head>
@@ -468,6 +506,9 @@
             <constant>nodeClass#4</constant>
             <constant>1:FTX001</constant>
             <constant>FTX001</constant>
+            <constant>testdescription</constant>
+            <constant>10</constant>
+            <constant>55</constant>
           </terms>
         </literal>
       </head>
@@ -481,6 +522,9 @@
             <constant>nodeClass#5</constant>
             <constant>1:Output</constant>
             <constant>Output</constant>
+            <constant>testdescription</constant>
+            <constant>10</constant>
+            <constant>55</constant>
           </terms>
         </literal>
       </head>
@@ -494,6 +538,9 @@
             <constant>nodeClass#6</constant>
             <constant>EURange</constant>
             <constant>EURange</constant>
+            <constant>testdescription</constant>
+            <constant>10</constant>
+            <constant>55</constant>
           </terms>
         </literal>
       </head>
@@ -507,6 +554,9 @@
             <constant>nodeClass#6</constant>
             <constant>1:Output</constant>
             <constant>Output</constant>
+            <constant>testdescription</constant>
+            <constant>10</constant>
+            <constant>55</constant>
           </terms>
         </literal>
       </head>
@@ -520,9 +570,62 @@
             <constant>nodeClass#6</constant>
             <constant>1:EURange</constant>
             <constant>EURange</constant>
+            <constant>testdescription</constant>
+            <constant>10</constant>
+            <constant>55</constant>
           </terms>
         </literal>
       </head>
     </fact>
+    <rule>
+        <head>
+            <literal>
+                <predicate>opc_BaseNodeVariableType</predicate>
+                <terms>
+                <variable>EDDL_LABEL</variable>
+                <variable>EDDL_VariableName</variable>
+                <constant>NodeId_from_DD_ID</constant>    
+                <constant>VariableType</constant>    
+                <variable>EDDL_HELP</variable>
+                <variable>EDDL_TYPE</variable>
+                <constant>Scalar</constant>    
+                <constant>empty</constant>    
+                <constant>false</constant>    
+                <constant>0</constant>    
+                <constant>0</constant>    
+                <constant>-1</constant>    
+                <constant>false</constant>    
+                </terms>
+            </literal>
+        </head>
+        <body>
+            <literal>
+                <predicate>eddl_Variable</predicate>
+                <terms>
+                <variable>EDDL_VariableName</variable>
+                <variable>EDDL_CLASS</variable>
+                <variable>EDDL_LABEL</variable>
+                <variable>EDDL_TYPE</variable>
+                <variable>EDDL_CONSTANT_UNIT</variable>
+                <variable>EDDL_DEFAULT_VALUE</variable>
+                <variable>EDDL_HANDLING</variable>
+                <variable>EDDL_HELP</variable>
+                <variable>EDDL_INITIAL_VALUE</variable>
+                <variable>EDDL_POST_EDIT_ACTIONS</variable>
+                <variable>EDDL_POST_READ_ACTIONS</variable>
+                <variable>EDDL_POST_WRITE_ACTIONS</variable>
+                <variable>EDDL_PRE_EDIT_ACTIONS</variable>
+                <variable>EDDL_PRE_READ_ACTIONS</variable>
+                <variable>EDDL_PRE_WRITE_ACTIONS</variable>
+                <variable>EDDL_READ_TIMEOUT</variable>
+                <variable>EDDL_REFRESH_ACTIONS</variable>
+                <variable>EDDL_RESPONSE_CODES</variable>
+                <variable>EDDL_STYLE</variable>
+                <variable>EDDL_VALIDITY</variable>
+                <variable>EDDL_WRITE_TIMEOUT</variable>
+                </terms>
+            </literal>
+        </body>
+    </rule>
   </mappings>
 </datalog>
