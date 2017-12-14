@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -230,37 +230,39 @@ libxml/xmlexports.h
 ansidecl.h
 -
 
-/home/alxhoff/git/Datalog-API/datalog_api.c
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api.c
+stdint.h
+-
 stdlib.h
 -
 string.h
 -
 datalog_api.h
-/home/alxhoff/git/Datalog-API/datalog_api.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api.h
 
-/home/alxhoff/git/Datalog-API/datalog_api.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api.h
 datalog.h
-/home/alxhoff/git/Datalog-API/datalog.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog.h
 datalog_api_types.h
-/home/alxhoff/git/Datalog-API/datalog_api_types.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api_types.h
 
-/home/alxhoff/git/Datalog-API/datalog_api_parser.c
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api_parser.c
 stdlib.h
 -
 string.h
 -
 datalog_api_parser.h
-/home/alxhoff/git/Datalog-API/datalog_api_parser.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api_parser.h
 
-/home/alxhoff/git/Datalog-API/datalog_api_parser.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api_parser.h
 datalog_api.h
-/home/alxhoff/git/Datalog-API/datalog_api.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api.h
 datalog_parser.h
-/home/alxhoff/git/Datalog-API/datalog_parser.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_parser.h
 
-/home/alxhoff/git/Datalog-API/datalog_api_types.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api_types.h
 
-/home/alxhoff/git/Datalog-API/datalog_cli.c
+/home/alxhoff/git/GitHub/Datalog-API/datalog_cli.c
 string.h
 -
 stdio.h
@@ -268,39 +270,39 @@ stdio.h
 stdlib.h
 -
 datalog_cli.h
-/home/alxhoff/git/Datalog-API/datalog_cli.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_cli.h
 datalog_cli_asserter.h
-/home/alxhoff/git/Datalog-API/datalog_cli_asserter.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_cli_asserter.h
 
-/home/alxhoff/git/Datalog-API/datalog_cli.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_cli.h
 datalog_api_types.h
-/home/alxhoff/git/Datalog-API/datalog_api_types.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api_types.h
 
-/home/alxhoff/git/Datalog-API/datalog_cli_asserter.c
+/home/alxhoff/git/GitHub/Datalog-API/datalog_cli_asserter.c
 stdlib.h
 -
 string.h
 -
 datalog_cli_asserter.h
-/home/alxhoff/git/Datalog-API/datalog_cli_asserter.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_cli_asserter.h
 datalog_api.h
-/home/alxhoff/git/Datalog-API/datalog_api.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api.h
 
-/home/alxhoff/git/Datalog-API/datalog_cli_asserter.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_cli_asserter.h
 datalog_api_types.h
-/home/alxhoff/git/Datalog-API/datalog_api_types.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api_types.h
 datalog_cli.h
-/home/alxhoff/git/Datalog-API/datalog_cli.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_cli.h
 datalog_api.h
-/home/alxhoff/git/Datalog-API/datalog_api.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api.h
 
-/home/alxhoff/git/Datalog-API/datalog_parser.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_parser.h
 stdlib.h
 -
 stdint.h
 -
 libxml/parser.h
-/home/alxhoff/git/Datalog-API/libxml/parser.h
+/home/alxhoff/git/GitHub/Datalog-API/libxml/parser.h
 datalog_api_types.h
-/home/alxhoff/git/Datalog-API/datalog_api_types.h
+/home/alxhoff/git/GitHub/Datalog-API/datalog_api_types.h
 

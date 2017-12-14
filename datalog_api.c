@@ -24,6 +24,7 @@
 @endverbatim
  */
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -170,7 +171,7 @@ datalog_literal_t* datalog_clause_get_literal_index(datalog_clause_t* clause,
 
 DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause)
 {
-    DATALOG_ERR_t ret = DATALOG_OK;
+    int ret = 0;
     
     //create head on the stack
     if(datalog_literal_create(clause->head) != DATALOG_OK){
@@ -215,12 +216,12 @@ DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause)
 #endif
     if(ret) return DATALOG_ASRT;
 
-    return DATALOG_OK;
+    return (DATALOG_ERR_t)ret;
 }
 
 DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause)
 {
-    DATALOG_ERR_t ret = DATALOG_OK;
+    int ret = 0;
 
     datalog_clause_create(clause);
     
@@ -230,12 +231,12 @@ DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause)
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 
-    return ret;
+    return (DATALOG_ERR_t)ret;
 }
 
 DATALOG_ERR_t datalog_clause_create_and_retract(datalog_clause_t* clause)
 {
-    DATALOG_ERR_t ret = DATALOG_OK;
+    int ret = 0; 
 
     datalog_clause_create(clause);
     
@@ -246,7 +247,7 @@ DATALOG_ERR_t datalog_clause_create_and_retract(datalog_clause_t* clause)
         (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
 
-    return DATALOG_OK;
+    return (DATALOG_ERR_t)ret;
 }
 
 DATALOG_ERR_t datalog_clause_assert(int literal_count)
@@ -437,7 +438,7 @@ DATALOG_ERR_t datalog_query_ask(datalog_query_t* query)
 
     dl_answers_t a;
 
-    ret = dl_ask(datalog_db, &a);
+    ret = (DATALOG_ERR_t) dl_ask(datalog_db, &a);
 
 #ifdef DATALOG_DEBUG_VERBOSE 
     fprintf(stderr, "[DATALOG][API] VERBOSE: query sent:                         %s\n", 
@@ -529,8 +530,8 @@ print_literal_return: printf("!!=======/LITERAL========!!\n");
 
 DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
 {
-    DATALOG_ERR_t ret = DATALOG_OK;
-    
+    int ret = 0;
+
     //start literal, push empty literal onto stack
     ret = dl_pushliteral(datalog_db);
 
@@ -607,14 +608,20 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
 
    if(ret) return DATALOG_LIT;
 
-   return DATALOG_OK;
+   return (DATALOG_ERR_t)ret;
 }
 
-void datalog_free_term_list(datalog_term_t* list_head)
+void datalog_free_literal(datalog_literal_t** lit)
+{
+    if((*lit)->predicate!=NULL) free((*lit)->predicate);
+    if((*lit)->term_head != NULL) datalog_free_term_list(&(*lit)->term_head);
+}
+
+void datalog_free_term_list(datalog_term_t** list_head)
 {
     datalog_term_t *head, *prev;
 
-    head = list_head;
+    head = *list_head;
     while(head->next != NULL){
         prev = head;
         head = head->next;
@@ -674,9 +681,10 @@ DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
 
     if(assert) ret = datalog_literal_create_and_assert(&tmp_lit); 
     else ret = datalog_literal_create(&tmp_lit);
+    
+    datalog_literal_t* tmp_lit_point = &tmp_lit;
 
-    datalog_free_term_list(tmp_lit.term_head);
-    free(tmp_lit.predicate);
+    datalog_free_literal(&tmp_lit_point);
 
     return ret;
 }
