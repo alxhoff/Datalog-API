@@ -366,50 +366,20 @@ struct datalog_clause{
 extern dl_db_t datalog_db;
 
 /**
-* @brief Processes the answers returned from a query.
+* @brief Initialises the datalog database
 *
-* Takes the answers struct provided by the LUA/C library and exports it
-* into an struct that this API uses to process query answers.
-* 
-* @param a The queries returned answers
-* @return Pointer to an API query answer struct
-*/
-datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a);
-DATALOG_ERR_t datalog_processed_answers_print(datalog_query_processed_answers_t* a);
-
-/**
-* @brief Prints a visual representation of a query answer struct
-*
-* @param a API datalog query answers struct to be printed 
-* @return void
-*/
-DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a);
-
-/**
-* @brief Initialises a datalog query struct from a literal struct
-*
-* @param lit pointer to literal struct to be used in the query object
-* @return datalog_query_t* pointer to created query object. NULL on error 
-*/
-datalog_query_t* datalog_query_init(datalog_literal_t* lit);
-DATALOG_ERR_t datalog_query_print(datalog_query_t* query);
-datalog_query_processed_answers_t* datalog_query_stand_alone_create_and_ask(char* predicate,
-        int num_of_terms, char** terms, uint32_t term_type_mask);
-
-/**
-* @brief Issues a query and saves the answer 
-*
-* The datalog database is queried using the literal pointed to from within the
-* query struct.
-* 
-* @param query struct holding a pointer to the literal to be used for the query
-* and a pointer to where the answer should be stored.
+* @param none
 * @return DATALOG_ERR_t error message 
 */
-DATALOG_ERR_t datalog_query_ask(datalog_query_t* query);
+DATALOG_ERR_t datalog_engine_db_init(void);
 
-int datalog_literal_add_term(datalog_literal_t* lit, char* value, 
-        DATALOG_TERM_t type);
+/**
+* @brief Deinitialises the datalog database
+*
+* @param none
+* @return DATALOG_ERR_t error message 
+*/
+DATALOG_ERR_t datalog_engine_db_deinit(void);
 
 /**
 * @brief Initialises a datalog literal struct, does not create the literal
@@ -424,112 +394,64 @@ int datalog_literal_add_term(datalog_literal_t* lit, char* value,
 */
 datalog_literal_t* datalog_literal_init(char* predicate);
 
-int datalog_literal_print(datalog_literal_t* lit);
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
+int datalog_literal_add_term(datalog_literal_t* lit, char* value, 
+        DATALOG_TERM_t type);
+
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
 DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit);
-DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
-        int num_of_terms, char** terms, uint32_t term_type_mask, bool assert);
+
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
 int datalog_literal_create_and_assert(datalog_literal_t* lit);
 
-//TODO lit type error checking. can all types be directly asserted?
-//
 /**
-* @brief Updates the values of a preexsisting literal structure and 
-* asserts the literal.
-*
-* @param lit_type specifies the types of arguments to be created in the
-* literal. 
-* @param predicate string literal of the literal's predicate
-* @param arg1 string literal for the literal's first term
-* @param arg2 string literal for the literal's second term
-* @return DATALOG_ERR_t error message
-*/
-DATALOG_ERR_t datalog_update_and_assert_literal(datalog_literal_t* lit,
-        char* predicate, char* arg1, char* arg2, DATALOG_LIT_t lit_type);
-
-/**
-* @brief Updates the values of a preexsisting literal structure
-*
-* @param lit_type specifies the types of arguments to be created in the
-* literal. 
-* @param predicate string literal of the literal's predicate
-* @param arg1 string literal for the literal's first term
-* @param arg2 string literal for the literal's second term
-* @return DATALOG_ERR_t error message
-*/
-DATALOG_ERR_t datalog_update_literal(datalog_literal_t* lit,
-        char* predicate, char* arg1, char* arg2, DATALOG_LIT_t lit_type);
-
-/**
-* @brief Creates and asserts a literal from a literal struct 
-*
-* Creates a literal from the given struct, of a specified type,
-* instead of leaving the literal on top of the stack the literal
-* is asserted into the database.
+* @brief 
 * 
-* @param literal struct containing the information required to
-* create the literal. 
-* @return DATALOG_ERR_t error message
+* @param 
+* @return 
 */
-DATALOG_ERR_t datalog_create_and_assert_literal_s(datalog_literal_t* lit);
+DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
+        int num_of_terms, char** terms, uint32_t term_type_mask, bool assert);
 
 /**
-* @brief Creates a literal from the given arguments
-*
-* Creates a literal from the given terms, of a specified type,
-* and leaves the literal on top of the stack.
+* @brief 
 * 
-* @param predicate string literal of the literal's predicate
-* @param arg1 string literal for the literal's first term
-* @param arg2 string literal for the literal's second term
-* @param lit_type specifies the types of arguments to be created in the
-* literal. 
-* @return DATALOG_ERR_t error message
+* @param 
+* @return 
 */
-DATALOG_ERR_t datalog_create_literal(char* predicate, char* var1, 
-    char* var2, DATALOG_LIT_t lit_type);
+int datalog_literal_print(datalog_literal_t* lit);
 
 /**
-* @brief Creates a literal from a literal struct 
-*
-* Creates a literal from the given struct, of a specified type,
-* and leaves the literal on top of the stack.
+* @brief 
 * 
-* @param literal struct containing the information required to
-* create the literal. 
-* @return DATALOG_ERR_t error message
+* @param 
+* @return 
 */
-DATALOG_ERR_t datalog_create_literal_s(datalog_literal_t* literal);
+datalog_term_t* datalog_literal_get_term_index(datalog_literal_t* lit,
+        int index);
 
 /**
-* @brief Pushes the given string on to the top of the datalog stack
-*
-* @param string string to be pushed onto the stack
-* @return DATALOG_ERR_t error message
-*/
-DATALOG_ERR_t datalog_push_string(char* string);
-
-/**
-* @brief Adds either a variable or constant to the current literal
-*
-* Whilst a literal is in creation (whilst it is on top of the stack)
-* this function takes the string ontop of the stack and adds it to the
-* literal as either a variable or constant.
+* @brief 
 * 
-* @param lit_type specifies the types of arguments to be created in the
-* literal. 
-* @param index specifies if the variable or constant to be created is the
-* 0th term or the 1st term of the literal
-* @return 0 on success
+* @param 
+* @return 
 */
-int datalog_add_var_const(DATALOG_LIT_t lit_type, int index);
-
-/**
-* @brief Prints a clause structure in a datalog representation 
-*
-* @param clause pointer to the clause object to be printed
-* @return DATALOG_ERR_t 
-*/
-DATALOG_ERR_t datalog_clause_print(datalog_clause_t* clause);
+datalog_term_t* datalog_literal_get_last_term(datalog_literal_t* lit);
 
 /**
 * @brief Initialises a clause structure, populating the head literal
@@ -560,32 +482,14 @@ datalog_clause_t* datalog_clause_init(datalog_literal_t* lit);
 */
 DATALOG_ERR_t datalog_clause_add_literal(datalog_clause_t* clause, 
         datalog_literal_t* lit);
-DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause);
 
 /**
-* @brief Initialises a clause structure, the clause's head literal
-* is created as a copy of the literal that is passed to the function
-*
-* With this function one can free the initialising head literal
-*
-* @param clause pointer to the clause object to which the literal shall
-* be added
-* @param literal pointer to the literal object that will be copied in as
-* the clause's head literal
-* @return DATALOG_ERR_t error message
+* @brief 
+* 
+* @param 
+* @return 
 */
-DATALOG_ERR_t datalog_clause_add_literal_s_copy(datalog_clause_t* clause,
-        datalog_literal_t* literal);
-
-/**
-* @brief Pushes a clause structure onto the stack then asserts the 
-* terms as a clause.
-*
-* @param clause pointer to the clause object to which the literal shall
-* be asserted
-* @return DATALOG_ERR_t error message
-*/
-DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause);
+DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause);
 
 /**
 * @brief Asserts a clause that has its head and body literals already 
@@ -600,6 +504,14 @@ DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause);
 DATALOG_ERR_t datalog_clause_assert(int literal_count);
 
 /**
+* @brief 
+* 
+* @param 
+* @return 
+*/
+DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause);
+
+/**
 * @brief Pushes a clause structure onto the stack then retracts the 
 * terms as a clause.
 *
@@ -610,42 +522,148 @@ DATALOG_ERR_t datalog_clause_assert(int literal_count);
 DATALOG_ERR_t datalog_clause_create_and_retract(datalog_clause_t* clause);
 
 /**
-* @brief Retracts a clause that does not have a body
+* @brief Prints a clause structure in a datalog representation 
 *
-* Pops a literal off the stack to create and retracts a clause.
-* Literal must be already on the stack. Ordered appropriatley.
+* @param clause pointer to the clause object to be printed
+* @return DATALOG_ERR_t 
+*/
+DATALOG_ERR_t datalog_clause_print(datalog_clause_t* clause);
+
+/**
+* @brief 
 * 
-* @param literal_count Number of literals in the body of the clause
-* @return DATALOG_ERR_t error message
+* @param 
+* @return 
 */
-DATALOG_ERR_t datalog_retract_clause(void);
+datalog_literal_t* datalog_clause_get_literal_index(datalog_clause_t* clause,
+        int index);
 
 /**
-* @brief Initialises the datalog database
+* @brief Initialises a datalog query struct from a literal struct
 *
-* @param none
-* @return DATALOG_ERR_t error message 
+* @param lit pointer to literal struct to be used in the query object
+* @return datalog_query_t* pointer to created query object. NULL on error 
 */
-DATALOG_ERR_t datalog_engine_db_init(void);
+datalog_query_t* datalog_query_init(datalog_literal_t* lit);
 
 /**
-* @brief Deinitialises the datalog database
+* @brief Issues a query and saves the answer 
 *
-* @param none
+* The datalog database is queried using the literal pointed to from within the
+* query struct.
+* 
+* @param query struct holding a pointer to the literal to be used for the query
+* and a pointer to where the answer should be stored.
 * @return DATALOG_ERR_t error message 
 */
-DATALOG_ERR_t datalog_engine_db_deinit(void);
+DATALOG_ERR_t datalog_query_ask(datalog_query_t* query);
 
-//FREE
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
+datalog_query_processed_answers_t* datalog_query_stand_alone_create_and_ask(
+    char* predicate, int num_of_terms, char** terms, uint32_t term_type_mask);
 
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
+DATALOG_ERR_t datalog_query_print(datalog_query_t* query);
+
+/**
+* @brief Prints a visual representation of a query answer struct
+*
+* @param a API datalog query answers struct to be printed 
+* @return void
+*/
+DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a);
+
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
+datalog_query_processed_answers_t* datalog_query_processed_answers_init(void);
+
+/**
+* @brief Processes the answers returned from a query.
+*
+* Takes the answers struct provided by the LUA/C library and exports it
+* into an struct that this API uses to process query answers.
+* 
+* @param a The queries returned answers
+* @return Pointer to an API query answer struct
+*/
+datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a);
+
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
+DATALOG_ERR_t datalog_processed_answers_print(datalog_query_processed_answers_t* a);
+
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
 void datalog_free_term_list(datalog_term_t** list_head);
+
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
 void datalog_free_literal(datalog_literal_t** lit);
+
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
 void datalog_free_string_array(char** array, int array_size);
-void datalog_free_query_answers_list(datalog_query_answers_t*** answers,
-        int answer_count);
-void datalog_free_query_processed_answers( 
-        datalog_query_processed_answers_t** answers);
+
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
+void datalog_free_query_answers_list(datalog_query_answers_t*** answers, int answer_count);
+
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
+void datalog_free_query_processed_answers(datalog_query_processed_answers_t** answers);
+
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
 void datalog_free_query(datalog_query_t** query);
+
+/**
+* @brief 
+* 
+* @param 
+* @return 
+*/
 void datalog_free_clause(datalog_clause_t** clause);
 
 #endif
