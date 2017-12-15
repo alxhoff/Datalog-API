@@ -167,6 +167,8 @@ int main(void)
 
     datalog_processed_answers_print(answers);
 
+    answers->free(&answers); 
+
     printf("parsing doc\n");
 
     dl_parser_return_doc_t* doc = dl_parser_runtime("query_test.xml");

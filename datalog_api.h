@@ -313,6 +313,8 @@ struct datalog_query_processed_answers{
     int answer_term_count;
     int answer_count;
     datalog_query_answers_t** answers;
+
+    void (*free)(datalog_query_processed_answers_t**);
 };
 
 /**
@@ -642,7 +644,7 @@ void datalog_free_string_array(char** array, int array_size);
 void datalog_free_query_answers_list(datalog_query_answers_t*** answers,
         int answer_count);
 void datalog_free_query_processed_answers( 
-        datalog_query_processed_answers_t* answers);
+        datalog_query_processed_answers_t** answers);
 void datalog_free_query(datalog_query_t** query);
 void datalog_free_clause(datalog_clause_t** clause);
 

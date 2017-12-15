@@ -30,17 +30,23 @@
 
 #include "datalog_api.h"
 
+datalog_query_processed_answers_t* datalog_query_processed_answers_init(void)
+{
+    //alloc return struct
+    datalog_query_processed_answers_t* ret_struct = (datalog_query_processed_answers_t*)
+        calloc(1, sizeof(datalog_query_processed_answers_t));
+    ret_struct->free = &datalog_free_query_processed_answers;
+
+    if(ret_struct == NULL) return NULL;
+}
+
 datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a)
 {
 #ifdef DATALOG_DEBUG 
     fprintf(stderr, "[DATALOG][API]   DEBUG: processing query answers\n"); 
 #endif
-    //alloc return struct
-    datalog_query_processed_answers_t* ret_struct = (datalog_query_processed_answers_t*)
-        calloc(1, sizeof(datalog_query_processed_answers_t));
-
-    if(ret_struct == NULL) return NULL;
-
+    datalog_query_processed_answers_t* ret_struct = 
+            datalog_query_processed_answers_init();
     char* tmp_pred = dl_getpred(a);
     ret_struct->predic = (char*)malloc(sizeof(char) * strlen(tmp_pred) + 1);
     if(ret_struct->predic == NULL) return NULL;
@@ -631,9 +637,14 @@ void datalog_free_term_list(datalog_term_t** list_head)
 
 void datalog_free_literal(datalog_literal_t** lit)
 {
-    if((*lit)->predicate!=NULL) free((*lit)->predicate);
-    if((*lit)->term_head != NULL) datalog_free_term_list(&(*lit)->term_head);
-    (*lit) = NULL;
+    if((*lit)->predicate!=NULL) {
+        free((*lit)->predicate);
+        (*lit)->predicate = NULL;
+    }
+    if((*lit)->term_head != NULL) {
+        datalog_free_term_list(&(*lit)->term_head);
+        (*lit)->term_head = NULL;
+    }
 }
 
 void datalog_free_string_array(char** array, int array_size)
@@ -646,21 +657,25 @@ void datalog_free_string_array(char** array, int array_size)
 
 void datalog_free_query_answers(datalog_query_answers_t** answers)
 {
-    datalog_free_string_array((*answers)->term_list, (*answers)->term_count);
-    free((*answers)->term_list);
+    if((*answers)->term_list != NULL){
+        datalog_free_string_array((*answers)->term_list, (*answers)->term_count);
+        free((*answers)->term_list);
+    }
     (*answers)->term_list = NULL;
-    free(answers);
-    answers = NULL;
+    if(*answers != NULL) free(*answers);
+    *answers = NULL;
 }
 
 void datalog_free_query_processed_answers( 
-        datalog_query_processed_answers_t* answers)
+        datalog_query_processed_answers_t** answers)
 {
-    if(answers->predic != NULL) free(answers->predic);
-    if(answers->answers != NULL){
-        datalog_free_query_answers(answers->answers);
-        answers->answers = NULL;
+    if((*answers)->predic != NULL) free((*answers)->predic);
+    if((*answers)->answers != NULL){
+        datalog_free_query_answers((*answers)->answers);
+        (*answers)->answers = NULL;
     }
+    if(*answers != NULL) free(*answers);
+    *answers = NULL;
 }
 
 void datalog_free_query(datalog_query_t** query)
@@ -669,10 +684,10 @@ void datalog_free_query(datalog_query_t** query)
     //TODO
     //if((*query)->answer != NULL) dl_free(*(*query)->answer);
     if((*query)->processed_answer != NULL){
-        datalog_free_query_processed_answers((*query)->processed_answer);
+        datalog_free_query_processed_answers(&(*query)->processed_answer);
         (*query)->processed_answer = NULL;
     }
-    free(*query);
+    if(*query != NULL) free(*query);
     *query = NULL;
 }
 
@@ -683,10 +698,10 @@ void datalog_free_clause(datalog_clause_t** clause)
     if((*clause)->body_list != NULL){
         for(int i = 0; i < (*clause)->literal_count; i++)
             if((*clause)->body_list[i] != NULL) free((*clause)->body_list[i]);
-        free((*clause)->body_list);
+        if((*clause)->body_list != NULL) free((*clause)->body_list);
         (*clause)->body_list = NULL;
     }
-    free(*clause);
+    if(*clause != NULL) free(*clause);
     *clause = NULL;
 }
 
