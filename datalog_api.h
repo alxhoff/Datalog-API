@@ -395,61 +395,79 @@ DATALOG_ERR_t datalog_engine_db_deinit(void);
 datalog_literal_t* datalog_literal_init(char* predicate);
 
 /**
-* @brief 
+* @brief Adds a term to a literal object
 * 
-* @param 
-* @return 
+* @param lit Literal object to which the term shall be added
+* @param value Term value to be added
+* @param type Type of term to be added, can either be a constant
+* DL_TERM_C or a variable DL_TERM_V
+* @return 0 on success 
 */
 int datalog_literal_add_term(datalog_literal_t* lit, char* value, 
         DATALOG_TERM_t type);
 
 /**
-* @brief 
+* @brief Creates a literal on the Datalog stack
 * 
-* @param 
-* @return 
+* @param lit Literal object to be created
+* @return DATALOG_ERR_t error message
 */
 DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit);
 
 /**
-* @brief 
+* @brief Creates a literal ontop of the Datalog stack and asserts the
+* literal into the Datalog database
 * 
-* @param 
-* @return 
+* @param lit Literal object to be created on the Datalog stack and then
+* asserted
+* @return 0 on success
 */
 int datalog_literal_create_and_assert(datalog_literal_t* lit);
 
 /**
-* @brief 
+* @brief Creates and asserts a literal without requiring a literal structure
+*
+* The functions takes an array of char*, a predicate, a term type mask and a boolean
+* that specifies if the literal should be asserted or not. The terms for the must be
+* stored in the input char* array, the term type mask specifies if the term as that 
+* position is to be a constant or a variable, 1 for variable, 0 for constant. The first
+* term is masked using the LSB. Similarly the 4th term is masked using X in
+* 0b0000X000.
 * 
-* @param 
-* @return 
+* @param predicate String representing the literal's predicate
+* @param num_of_terms The number of terms to be read from the char* array
+* @param terms String array holding the terms to be assigned to the literal
+* @param term_type_mask Bit representation of the terms' types
+* @param assert Boolean flag that indicates if the literal should be asserted after
+* being created on the Datalog stack
+* @return DATALOG_ERR_t error message
 */
 DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
         int num_of_terms, char** terms, uint32_t term_type_mask, bool assert);
 
 /**
-* @brief 
+* @brief Prints to contents of a literal
 * 
-* @param 
-* @return 
+* @param lit Pointer to literal object to be printed
+* @return 0 on success
 */
 int datalog_literal_print(datalog_literal_t* lit);
 
 /**
-* @brief 
+* @brief Returns to term stored at a certain index in a literal object 
 * 
-* @param 
-* @return 
+* @param lit Literal object from which the term is to be retrieved
+* @param index Index of the term to be returned
+* @return datalog_term_t* Pointer to the term stored at the specified index
 */
 datalog_term_t* datalog_literal_get_term_index(datalog_literal_t* lit,
         int index);
 
 /**
-* @brief 
+* @brief Returns the last term stored within a literal's term list
 * 
-* @param 
-* @return 
+* @param lit literal object that is to have its final term returned
+* @return datalog_term_* Pointer to the literal's last term, NULL otherwise
 */
 datalog_term_t* datalog_literal_get_last_term(datalog_literal_t* lit);
 
@@ -462,7 +480,7 @@ datalog_term_t* datalog_literal_get_last_term(datalog_literal_t* lit);
 * @param head_arg2 string literal for the literal's second term
 * @param head_lit_type specifies the types of arguments to be created in the
 * literal. 
-* @return datalog_clause_t* pointer to the clause struct created 
+* @return datalog_clause_t* pointer to the clause struct created, NULL otherwise
 */
 datalog_clause_t* datalog_clause_init(datalog_literal_t* lit);
 
@@ -484,10 +502,10 @@ DATALOG_ERR_t datalog_clause_add_literal(datalog_clause_t* clause,
         datalog_literal_t* lit);
 
 /**
-* @brief 
+* @brief Creates a clause on the Datalog stack
 * 
-* @param 
-* @return 
+* @param clause Pointer to the clause object to be created
+* @return DATALOG_ERR_t error message
 */
 DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause);
 
@@ -504,10 +522,11 @@ DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause);
 DATALOG_ERR_t datalog_clause_assert(int literal_count);
 
 /**
-* @brief 
+* @brief Creates a clause on the Datalog stack and asserts it into the
+* Datalog database
 * 
-* @param 
-* @return 
+* @param clause Clause object to be created
+* @return DATALOG_ERR_t error message
 */
 DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause);
 
@@ -530,10 +549,12 @@ DATALOG_ERR_t datalog_clause_create_and_retract(datalog_clause_t* clause);
 DATALOG_ERR_t datalog_clause_print(datalog_clause_t* clause);
 
 /**
-* @brief 
+* @brief Returns a literal at a given index from a clause's literal list
 * 
-* @param 
-* @return 
+* @param clause Clause object from which the literal shall be returned
+* @param index Index of the literal that is to be returned
+* @return datalog_literal_t* Pointer to the literal at the given index,
+* NULL otherwise
 */
 datalog_literal_t* datalog_clause_get_literal_index(datalog_clause_t* clause,
         int index);
@@ -559,19 +580,24 @@ datalog_query_t* datalog_query_init(datalog_literal_t* lit);
 DATALOG_ERR_t datalog_query_ask(datalog_query_t* query);
 
 /**
-* @brief 
+* @brief Creates a query and asks the Datalog database with the created query
 * 
-* @param 
-* @return 
+* @param predicate The queries predicate
+* @param num_of_terms The number of terms to be read in from the term array
+* @param terms String array storing the terms that are to be used in the query
+* @param term_type_mask Bit mask specifing if a term is a constant or a variable.
+* LSB represents the first term. 1 for variable, 0 for constant.
+* @return datalog_query_processed_answers_t Pointer to the processed answers
+* resulting from the query.
 */
 datalog_query_processed_answers_t* datalog_query_stand_alone_create_and_ask(
     char* predicate, int num_of_terms, char** terms, uint32_t term_type_mask);
 
 /**
-* @brief 
+* @brief Prints a query object's contents
 * 
-* @param 
-* @return 
+* @param query Pointer to the query object to be printed
+* @return DATALOG_ERR_t error message
 */
 DATALOG_ERR_t datalog_query_print(datalog_query_t* query);
 
@@ -584,10 +610,10 @@ DATALOG_ERR_t datalog_query_print(datalog_query_t* query);
 DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a);
 
 /**
-* @brief 
+* @brief Initializes a stuct that stores processed queries answers
 * 
-* @param 
-* @return 
+* @return datalog_query_processed_answers_t* Pointer to newly created
+* object
 */
 datalog_query_processed_answers_t* datalog_query_processed_answers_init(void);
 
@@ -603,66 +629,70 @@ datalog_query_processed_answers_t* datalog_query_processed_answers_init(void);
 datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a);
 
 /**
-* @brief 
+* @brief Prints the processed answers structure 
 * 
-* @param 
-* @return 
+* @param a Pointer to the processed answers object
+* @return DATALOG_ERR_t error message
 */
 DATALOG_ERR_t datalog_processed_answers_print(datalog_query_processed_answers_t* a);
 
 /**
-* @brief 
+* @brief Steps through a term list and free's the entries as well as the lits
+* itself
 * 
-* @param 
-* @return 
+* @param list_head Pointer to the head of the list 
+* @return void
 */
 void datalog_free_term_list(datalog_term_t** list_head);
 
 /**
-* @brief 
+* @brief Frees a literal objects and all its terms
 * 
-* @param 
-* @return 
+* @param lit Pointer to the literal object to be freed
+* @return void
 */
 void datalog_free_literal(datalog_literal_t** lit);
 
 /**
-* @brief 
+* @brief Frees a string array
 * 
-* @param 
+* @param array String array to be freed
+* @param amount of terms in the string array
 * @return 
 */
 void datalog_free_string_array(char** array, int array_size);
 
 /**
-* @brief 
+* @brief Frees a query's answer's list
 * 
-* @param 
+* @param answers Pointer to the answer list 
+* @param answer_count Number of answers in the answer list
 * @return 
 */
-void datalog_free_query_answers_list(datalog_query_answers_t*** answers, int answer_count);
+void datalog_free_query_answers_list(datalog_query_answers_t*** answers, 
+    int answer_count);
 
 /**
-* @brief 
+* @brief Frees a processed answers struct
 * 
-* @param 
-* @return 
+* @param answers Double pointer to the structure to be freed
+* @return void
 */
 void datalog_free_query_processed_answers(datalog_query_processed_answers_t** answers);
 
 /**
-* @brief 
+* @brief Frees a query object
 * 
-* @param 
-* @return 
+* @param Double pointer to the query object to be freed
+* @return void
 */
 void datalog_free_query(datalog_query_t** query);
 
 /**
-* @brief 
+* @brief Frees a clause object
 * 
-* @param 
-* @return 
+* @param Double pointer to the query object to be freed
+* @return void
 */
 void datalog_free_clause(datalog_clause_t** clause);
 
