@@ -1068,9 +1068,9 @@ DL_OPCUA_ERR_t datalog_opcua_free_##TYPE(opcua_##TYPE##_t** TYPE){          \
     DL_OPCUA_ERR_t ret = DL_OPCUA_OK;                                       \
     ret = datalog_opcua_free_reference_list((void**)TYPE, DL_OPC_##TYPE);   \
     if((*TYPE)->TYPE##_attributes != NULL);                                 \
-        datalog_opcua_free_##TYPE##_attributes(&(*TYPE)->TYPE##_attributes); \
+        datalog_opcua_free_##TYPE##_attributes(&(*TYPE)->TYPE##_attributes);\
     if((*TYPE)->attributes != NULL)                                         \
-        datalog_opcua_free_attribiute(&(*TYPE)->attributes);                 \
+        datalog_opcua_free_attribiute(&(*TYPE)->attributes);                \
     free(*TYPE);                                                            \
     *TYPE = NULL;                                                           \
     return DL_OPCUA_OK;}                                                    \

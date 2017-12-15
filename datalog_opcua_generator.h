@@ -920,6 +920,11 @@ int datalog_opcua_parse_id_i(char* id);
 int datalog_opcua_parse_id_ns(char* id);
 char* datalog_opcua_parse_id_s(char* id);
 
+#define FREE_OBJECT_PROTO(TYPE) \
+DL_OPCUA_ERR_t datalog_opcua_free_##TYPE(opcua_##TYPE##_t** TYPE);
+
+FOR_EACH_TYPE(FREE_OBJECT_PROTO)
+
 /**
 * @brief Entry function to the OPCUA XML generator
 * 
