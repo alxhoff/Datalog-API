@@ -413,14 +413,77 @@ DL_PARSER_ERR_t dl_parser_metadata(dl_parser_doc_t* doc);
 */
 dl_parser_doc_t* dl_parser_init(char* filename);
 
+/**
+* @brief Frees a term list
+* 
+* @param Pointer to the term list head
+* @return void
+*/
 void datalog_parser_free_term_list(dl_parser_term_t** term_head);
+
+/**
+* @brief Frees a parser literal object
+* 
+* @param Double pointer to the literal object to be freed
+* @return void
+*/
 void datalog_parser_free_literal(dl_parser_literal_t** lit);
+
+/**
+* @brief Frees a parser clause body object
+* 
+* @param Double pointer to the clause body object
+* @return void
+*/
 void datalog_parser_free_clause_body(dl_parser_clause_body_t** body);
+
+/**
+* @brief Frees a parser fact object
+* 
+* @param Double pointer to the fact object
+* @return void
+*/
 void datalog_parser_free_fact(dl_parser_fact_t** fact);
+
+/**
+* @brief Frees a fact list
+* 
+* @param Double pointer to the fact list's head
+* @return void
+*/
 void datalog_parser_free_fact_list(dl_parser_fact_t** fact_head);
+
+/**
+* @brief Frees a rule object 
+* 
+* @param Double pointer to the rule object
+* @return void
+*/
 void datalog_parser_free_rule(dl_parser_rule_t** rule);
+
+/**
+* @brief Frees a rule list
+* 
+* @param Double pointer to the rule list's head
+* @return void
+*/
 void datalog_parser_free_rule_list(dl_parser_rule_t** rule_head);
+
+/**
+* @brief Deinitialises a return document, freeing memory resources
+* 
+* @param Double pointer to the return document object to be deinitialised
+* @return DL_PARSER_ERR_t error message
+*/
 DL_PARSER_ERR_t dl_parser_deinit_return_doc(dl_parser_return_doc_t** doc);
+
+/**
+* @brief Deinitialises a document object whilst preserving the processed data.
+* Important if the processed data is being pointed to from a return doc object
+* 
+* @param Double pointer to doc object to be freed
+* @return DL_PARSER_ERR_t error message
+*/
 DL_PARSER_ERR_t dl_parser_deinit_with_data(dl_parser_doc_t** doc);
 
 /**

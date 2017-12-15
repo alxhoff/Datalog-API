@@ -319,11 +319,6 @@ dl_parser_clause_body_t* dl_parser_body_get_literal_nodes(dl_parser_doc_t* doc,
             //TODO checks
             temp_literal = dl_parser_process_literal(doc, node);
 
-#ifdef PARSER_DEBUG 
-    //        fprintf(stderr, "[DATALOG][PARSER] Debug: literal found in body \"%s(%s, %s)\"\n"
-    //                , temp_literal->predicate, temp_literal->arg1, temp_literal->arg2);
-#endif
-            
             ret->literals = (dl_parser_literal_t**)realloc(ret->literals,
                     sizeof(dl_parser_literal_t*) * (ret->literal_count + 1));
 
