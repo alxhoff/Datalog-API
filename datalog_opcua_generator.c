@@ -51,13 +51,13 @@
                             SET_VALUE_RANK(variable_type)\
                             SET_IS_ABSTRACT(variable_type)
 
-#define reference_type_ATTS    SET_IS_ABSTRACT(reference_type) \
-                                SET_SYMMETRIC(reference_type)   \
-                                SET_INVERSE_NAME(reference_type)
+#define reference_type_ATTS SET_IS_ABSTRACT(reference_type) \
+                            SET_SYMMETRIC(reference_type)   \
+                            SET_INVERSE_NAME(reference_type)
 
-#define data_type_ATTS     SET_IS_ABSTRACT(data_type)
+#define data_type_ATTS      SET_IS_ABSTRACT(data_type)
 
-#define view_ATTS          SET_CONT_NO_LOOPS(view)     \
+#define view_ATTS           SET_CONT_NO_LOOPS(view)     \
                             SET_EVENT_NOTIFIER(view)    
 
 #define BASE_NODE(TYPE)     SET_PARENT_ID_NS(TYPE)      \
@@ -75,77 +75,77 @@
 
 #define SET_PARENT_ID_NS(TYPE)  DL_OPCUA_ERR_t self_set_##TYPE##_parent_node_id_ns(             \
                                 opcua_##TYPE##_t* self, int ns){                                \
-                            DL_OPCUA_ERR_t ret =                                                \
+                                DL_OPCUA_ERR_t ret =                                            \
                                 datalog_opcua_set_id_ns(&self->attributes->parent_node_id, ns); \
-                            return ret;}
+                                return ret;}
 
 #define SET_PARENT_ID_I(TYPE)   DL_OPCUA_ERR_t self_set_##TYPE##_parent_node_id_i(              \
                                 opcua_##TYPE##_t* self, int i){                                 \
-                            DL_OPCUA_ERR_t ret =                                                \
-                            datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);       \
-                            return ret;}
+                                DL_OPCUA_ERR_t ret =                                            \
+                                datalog_opcua_set_id_i(&self->attributes->parent_node_id, i);   \
+                                return ret;}
 
 #define SET_PARENT_ID_S(TYPE)   DL_OPCUA_ERR_t self_set_##TYPE##_parent_node_id_s(              \
                                 opcua_##TYPE##_t* self, char* s){                               \
-                            DL_OPCUA_ERR_t ret =                                                \
+                                DL_OPCUA_ERR_t ret =                                            \
                                 datalog_opcua_set_id_s(&self->attributes->parent_node_id, s);   \
-                            return ret;}
+                                return ret;}
 
 #define SET_NODE_ID_NS(TYPE)    DL_OPCUA_ERR_t self_set_##TYPE##_node_id_ns(                    \
                                 opcua_##TYPE##_t* self, int ns){                                \
-                            DL_OPCUA_ERR_t ret =                                                \
+                                DL_OPCUA_ERR_t ret =                                            \
                                 datalog_opcua_set_id_ns(&self->attributes->node_id, ns);        \
-                            return ret;}
+                                return ret;}
 
 #define SET_NODE_ID_I(TYPE)     DL_OPCUA_ERR_t self_set_##TYPE##_node_id_i(                     \
                                 opcua_##TYPE##_t* self, int i){                                 \
-                            DL_OPCUA_ERR_t ret =                                                \
+                                DL_OPCUA_ERR_t ret =                                            \
                                 datalog_opcua_set_id_i(&self->attributes->node_id, i);          \
-                            return ret;}
+                                return ret;}
 
 #define SET_NODE_ID_S(TYPE)     DL_OPCUA_ERR_t self_set_##TYPE##_node_id_s(                     \
                                 opcua_##TYPE##_t* self, char* s){                               \
-                            DL_OPCUA_ERR_t ret =                                                \
+                                DL_OPCUA_ERR_t ret =                                            \
                                 datalog_opcua_set_id_s(&self->attributes->node_id, s);          \
-                            return ret;}
+                                return ret;}
 
 #define SET_BROWSE_NAME(TYPE)   DL_OPCUA_ERR_t self_set_##TYPE##_browse_name(                   \
                                 opcua_##TYPE##_t* self, char* browse_name){                     \
-                            DL_OPCUA_ERR_t ret =                                                \
+                                DL_OPCUA_ERR_t ret =                                            \
                                 datalog_opcua_set_browse_name(self->attributes, browse_name);   \
-                            return ret;}
+                                return ret;}
 
 #define SET_DISPLAY_NAME(TYPE)  DL_OPCUA_ERR_t self_set_##TYPE##_display_name(                  \
                                 opcua_##TYPE##_t* self,char* display_name){                     \
-                            DL_OPCUA_ERR_t ret =                                                \
+                                DL_OPCUA_ERR_t ret =                                            \
                                 datalog_opcua_set_display_name(self->attributes,display_name);  \
-                            return ret;}
+                                return ret;}
 
 #define SET_DESCRIPTION(TYPE)   DL_OPCUA_ERR_t self_set_##TYPE##_description(                   \
                                 opcua_##TYPE##_t* self,char* description){                      \
-                            DL_OPCUA_ERR_t ret =                                                \
+                                DL_OPCUA_ERR_t ret =                                            \
                                 datalog_opcua_set_description(self->attributes, description);   \
-                            return ret;}                            
+                                return ret;}                            
 
 #define SET_U_WRITE_MASK(TYPE)  DL_OPCUA_ERR_t self_set_##TYPE##_user_write_mask(               \
                                 opcua_##TYPE##_t* self, int ual){                               \
-                            if(self->attributes == NULL) return DL_OPCUA_INVAL;                 \
-                            self->attributes->user_write_mask = ual;                            \
-                            return DL_OPCUA_OK;}
+                                if(self->attributes == NULL) return DL_OPCUA_INVAL;             \
+                                self->attributes->user_write_mask = ual;                        \
+                                return DL_OPCUA_OK;}
 
 #define SET_WRITE_MASK(TYPE)    DL_OPCUA_ERR_t self_set_##TYPE##_write_mask(                    \
                                 opcua_##TYPE##_t* self, int al){                                \
-                            if(self->attributes == NULL) return DL_OPCUA_INVAL;                 \
-                            self->attributes->write_mask = al;                                  \
-                            return DL_OPCUA_OK;}
+                                if(self->attributes == NULL) return DL_OPCUA_INVAL;             \
+                                self->attributes->write_mask = al;                              \
+                                return DL_OPCUA_OK;}
 
 //SPECIFIC
 
 #define SET_IS_ABSTRACT(TYPE)   DL_OPCUA_ERR_t self_set_##TYPE##_is_abstract(                   \
                                 opcua_##TYPE##_t* self, bool abstract){                         \
-                            if(self->TYPE##_attributes == NULL) return DL_OPCUA_INVAL;          \
-                            self->TYPE##_attributes->is_abstract = abstract;                    \
-                            return DL_OPCUA_OK;}
+                                if(self->TYPE##_attributes == NULL) return DL_OPCUA_INVAL;      \
+                                self->TYPE##_attributes->is_abstract = abstract;                \
+                                return DL_OPCUA_OK;}
 
 #define SET_VALUE(TYPE)         DL_OPCUA_ERR_t self_set_##TYPE##_value(                         \
                                 opcua_##TYPE##_t* self, void* value){                           \
@@ -193,11 +193,11 @@
                                 self->variable_attributes->historizing = hist;                  \
                                 return DL_OPCUA_OK;}                        
 
-#define SET_DEC_ID(TYPE)    DL_OPCUA_ERR_t self_set_##TYPE##_declaration_id(                    \
+#define SET_DEC_ID(TYPE)        DL_OPCUA_ERR_t self_set_##TYPE##_declaration_id(                \
                                 opcua_##TYPE##_t* self, int id){                                \
-                            if(self->TYPE##_attributes == NULL) return DL_OPCUA_INVAL;          \
-                            self->TYPE##_attributes->TYPE##_declaration_id = id;                \
-                            return DL_OPCUA_OK;}                
+                                if(self->TYPE##_attributes == NULL) return DL_OPCUA_INVAL;      \
+                                self->TYPE##_attributes->TYPE##_declaration_id = id;            \
+                                return DL_OPCUA_OK;}                
 
 #define SET_EXECUTABLE(TYPE)    DL_OPCUA_ERR_t self_set_##TYPE##_execuatble(                    \
                                     opcua_##TYPE##_t* self, bool val){                          \
@@ -212,7 +212,7 @@
                                 return DL_OPCUA_OK;}                                          
 
 #define SET_EVENT_NOTIFIER(TYPE)    DL_OPCUA_ERR_t self_set_##TYPE##_event_notifier(            \
-                                    opcua_##TYPE##_t* self, unsigned char event_notifier){      \
+                                opcua_##TYPE##_t* self, unsigned char event_notifier){          \
                                 if(self->TYPE##_attributes == NULL) return DL_OPCUA_INVAL;      \
                                 self->TYPE##_attributes->event_notifier = event_notifier;       \
                                 return DL_OPCUA_OK;}
@@ -224,8 +224,9 @@
                                 if(self->TYPE##_attributes == NULL) return DL_OPCUA_INVAL;      \
                                 self->TYPE##_attributes->symmetric = symmetric;                 \
                                 return DL_OPCUA_OK;}
+
 #define SET_INVERSE_NAME(TYPE)  DL_OPCUA_ERR_t self_set_##TYPE##_inverse_name(                  \
-                                    opcua_##TYPE##_t* self, char* inverse_name){                \
+                                opcua_##TYPE##_t* self, char* inverse_name){                    \
                                 if(self->TYPE##_attributes == NULL) return DL_OPCUA_INVAL;      \
                                 if(inverse_name == NULL) return DL_OPCUA_INVAL;                 \
                                 self->TYPE##_attributes->inverse_name =                         \
@@ -243,32 +244,32 @@
                                 return DL_OPCUA_OK;}
 
 //CREATE REFERENCES
-#define CREATE_REFERENCES_FUNCTIONS(TYPE)                                                   \
-DL_OPCUA_ERR_t self_create_node_##TYPE##_references(opcua_##TYPE##_t* object){              \
-    DL_OPCUA_ERR_t ret = datalog_opcua_create_node_references(object, DL_OPC_##TYPE);       \
+#define CREATE_REFERENCES_FUNCTIONS(TYPE)                                                       \
+DL_OPCUA_ERR_t self_create_node_##TYPE##_references(opcua_##TYPE##_t* object){                  \
+    DL_OPCUA_ERR_t ret = datalog_opcua_create_node_references(object, DL_OPC_##TYPE);           \
     return ret;}
 
 //SELF ADD REF 
-#define SELF_ADD_REF(TYPE)                                                                  \
-DL_OPCUA_ERR_t self_add_ref_##TYPE(opcua_##TYPE##_t* object, opcua_reference_t* reference){ \
-    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;                                                       \
-    ret = datalog_opcua_add_reference(reference, object, DL_OPC_##TYPE);                    \
-    return DL_OPCUA_OK;}                                                                    \
+#define SELF_ADD_REF(TYPE)                                                                      \
+DL_OPCUA_ERR_t self_add_ref_##TYPE(opcua_##TYPE##_t* object, opcua_reference_t* reference){     \
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;                                                           \
+    ret = datalog_opcua_add_reference(reference, object, DL_OPC_##TYPE);                        \
+    return DL_OPCUA_OK;}                                                                        \
 
 #define CREATE_XML_NODE(TYPE, LABEL) \
-DL_OPCUA_ERR_t datalog_opcua_create_node_##TYPE(opcua_##TYPE##_t* object){  \
-    if(object == NULL) return DL_OPCUA_INVAL;                               \
-    if(object->attributes == NULL) return DL_OPCUA_INVAL;                   \
-    if(object->TYPE##_attributes == NULL) return DL_OPCUA_INVAL;            \
-    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;                                       \
-    object->node = xmlNewChild(opcua_document->root_node,                   \
-            NULL, BAD_CAST #LABEL, NULL);                                  \
-    ret = datalog_opcua_create_node_attributes(object->node, object->display_name_node,\
-            object->attributes);                                            \
-    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;                            \
-    ret = datalog_opcua_create_node_##TYPE##_attributes(object);            \
-    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;                            \
-    return DL_OPCUA_OK;}                                                    \
+DL_OPCUA_ERR_t datalog_opcua_create_node_##TYPE(opcua_##TYPE##_t* object){                      \
+    if(object == NULL) return DL_OPCUA_INVAL;                                                   \
+    if(object->attributes == NULL) return DL_OPCUA_INVAL;                                       \
+    if(object->TYPE##_attributes == NULL) return DL_OPCUA_INVAL;                                \
+    DL_OPCUA_ERR_t ret = DL_OPCUA_OK;                                                           \
+    object->node = xmlNewChild(opcua_document->root_node,                                       \
+            NULL, BAD_CAST #LABEL, NULL);                                                       \
+    ret = datalog_opcua_create_node_attributes(object->node, object->display_name_node,         \
+            object->attributes);                                                                \
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;                                                \
+    ret = datalog_opcua_create_node_##TYPE##_attributes(object);                                \
+    if(ret != DL_OPCUA_OK) return DL_OPCUA_ATTR;                                                \
+    return DL_OPCUA_OK;}                                                                        \
 
 
 opcua_document_t* opcua_document;
@@ -789,8 +790,8 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_object_type_from_array(
 }
 
 FOR_EACH_TYPE_W_LABEL(CREATE_XML_NODE)
-//REFERENCE
 
+//REFERENCE
 #define TYPE_CAST_SWITCH_REF_HEAD(TYPE)  \
     case DL_OPC_##TYPE:                                             \
         ref_head = ((opcua_object_type_t*)object)->reference_head;  \
@@ -998,23 +999,80 @@ DL_OPCUA_ERR_t datalog_opcua_create_node_references(void* object, DL_OPCUA_TYPE_
 }
 
 //FREE
-DL_OPCUA_ERR_t datalog_opcua_free_attribiute(opcua_node_attributes_t* attribute)
+DL_OPCUA_ERR_t datalog_opcua_free_attribiute(opcua_node_attributes_t** attribute)
 {
-    if(attribute->browse_name != NULL) free(attribute->browse_name);
-    if(attribute->display_name != NULL) free(attribute->display_name);
-    if(attribute->description != NULL) free(attribute->description);
+    if((*attribute)->browse_name != NULL) free((*attribute)->browse_name);
+    if((*attribute)->display_name != NULL) free((*attribute)->display_name);
+    if((*attribute)->description != NULL) free((*attribute)->description);
     return DL_OPCUA_OK;
 }
 
+void datalog_opcua_free_object_type_attributes(opcua_object_type_attributes_t** attribs)
+{
+    
+    free(*attribs);
+    *attribs = NULL;
+}
+
+void datalog_opcua_free_method_attributes(opcua_method_attributes_t** attribs)
+{
+
+    free(*attribs);
+    *attribs = NULL;
+}
+
+void datalog_opcua_free_variable_attributes(opcua_variable_attributes_t** attribs)
+{
+
+    free(*attribs);
+    *attribs = NULL;
+}
+
+void datalog_opcua_free_object_attributes(opcua_object_attributes_t** attribs)
+{
+
+    free(*attribs);
+    *attribs = NULL;
+}
+
+void datalog_opcua_free_variable_type_attributes(opcua_variable_type_attributes_t** attribs)
+{
+    //TODO WHEN VALUE IS DONE
+    free(*attribs);
+    *attribs = NULL;
+}
+
+void datalog_opcua_free_reference_type_attributes(opcua_reference_type_attributes_t** attribs)
+{
+
+    free(*attribs);
+    *attribs = NULL;
+}
+
+void datalog_opcua_free_data_type_attributes(opcua_data_type_attributes_t** attribs)
+{
+
+    free(*attribs);
+    *attribs = NULL;
+}
+
+void datalog_opcua_free_view_attributes(opcua_view_attributes_t** attribs)
+{
+
+    free(*attribs);
+    *attribs = NULL;
+}
+
 #define FREE_OBJECT(TYPE) \
-DL_OPCUA_ERR_t datalog_opcua_free_##TYPE(opcua_##TYPE##_t** TYPE){         \
+DL_OPCUA_ERR_t datalog_opcua_free_##TYPE(opcua_##TYPE##_t** TYPE){          \
     DL_OPCUA_ERR_t ret = DL_OPCUA_OK;                                       \
     ret = datalog_opcua_free_reference_list((void**)TYPE, DL_OPC_##TYPE);   \
-    free((*TYPE)->TYPE##_attributes);                                  \
-    free((*TYPE)->attributes);                                              \
+    if((*TYPE)->TYPE##_attributes != NULL);                                 \
+        datalog_opcua_free_##TYPE##_attributes(&(*TYPE)->TYPE##_attributes); \
     if((*TYPE)->attributes != NULL)                                         \
-        datalog_opcua_free_attribiute((*TYPE)->attributes);                 \
+        datalog_opcua_free_attribiute(&(*TYPE)->attributes);                 \
     free(*TYPE);                                                            \
+    *TYPE = NULL;                                                           \
     return DL_OPCUA_OK;}                                                    \
 
 FOR_EACH_TYPE(FREE_OBJECT)
