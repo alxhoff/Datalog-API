@@ -622,67 +622,93 @@ DL_PARSER_ERR_t dl_parser_metadata(dl_parser_doc_t* doc)
     return DL_PARSER_OK;
 }
 
-DL_PARSER_ERR_t dl_parser_deinit_lit(dl_parser_literal_t* lit_head)
+void datalog_parser_free_term_list(dl_parser_term_t** term_head)
 {
-    dl_parser_literal_t* lit_tmp = lit_head;
-    dl_parser_literal_t* prev_lit;
-
-    while(lit_tmp != NULL){
-        prev_lit = lit_tmp->next;
-        free(lit_tmp);
-        lit_tmp = prev_lit;
+    dl_parser_term_t* tmp = *term_head;
+    dl_parser_term_t* to_free;
+    while(tmp->next != NULL){
+        if(tmp->value != NULL) free(tmp->value);
+        to_free = tmp;
+        tmp = tmp->next;
+        free(to_free);
     }
-    return DL_PARSER_OK;
+    if(tmp->value != NULL) free(tmp->value);
+    to_free = tmp;
+    tmp = tmp->next;
+    free(to_free);
 }
 
-DL_PARSER_ERR_t dl_parser_deinit_rule(dl_parser_rule_t* rules_head)
+void datalog_parser_free_literal(dl_parser_literal_t** lit)
 {
-    dl_parser_rule_t* rule_tmp = rules_head;
-    dl_parser_rule_t* prev_rule;
+    if((*lit)->predicate != NULL) free((*lit)->next);
+    if((*lit)->term_head != NULL) 
+        datalog_parser_free_term_list(&(*lit)->term_head);
+    free(*lit);
+    *lit = NULL;
+}
 
-    while(rule_tmp != NULL){
-        prev_rule = rule_tmp->next;
-        free(rule_tmp);
-        rule_tmp = prev_rule;
+void datalog_parser_free_clause_body(dl_parser_clause_body_t** body)
+{
+    for(int i = 0; i < (*body)->literal_count; i++)
+        if((*body)->literals[i] != NULL)
+            datalog_parser_free_literal(&(*body)->literals[i]);
+   free(*body);
+   *body = NULL;
+}
+
+void datalog_parser_free_fact(dl_parser_fact_t** fact)
+{
+    if((*fact)->literal != NULL) 
+        datalog_parser_free_literal(&(*fact)->literal);
+}
+
+void datalog_parser_free_fact_list(dl_parser_fact_t** fact_head)
+{
+    dl_parser_fact_t* tmp = *fact_head;
+    dl_parser_fact_t* to_free;
+    while(tmp->next != NULL){
+        to_free = tmp;
+        datalog_parser_free_fact(&to_free);
+        tmp = tmp->next;
     }
-    return DL_PARSER_OK;
+    datalog_parser_free_fact(&tmp);
 }
 
-DL_PARSER_ERR_t dl_parser_deinit_facts(dl_parser_fact_t* facts_head)
+void datalog_parser_free_rule(dl_parser_rule_t** rule)
 {
-    dl_parser_fact_t* fact_tmp = facts_head;
-    dl_parser_fact_t* prev_fact;
+    if((*rule)->head != NULL) free((*rule)->head);
+    datalog_parser_free_clause_body(&(*rule)->body);
+}
 
-    while(fact_tmp != NULL){
-        prev_fact = fact_tmp->next;
-        free(fact_tmp);
-        fact_tmp = prev_fact;
+void datalog_parser_free_rule_list(dl_parser_rule_t** rule_head)
+{
+    dl_parser_rule_t* tmp = *rule_head;
+    dl_parser_rule_t* to_free;
+    while(tmp->next != NULL){
+        to_free = tmp;
+        datalog_parser_free_rule(&to_free);
+        tmp = tmp->next;
     }
+    datalog_parser_free_rule(&tmp);
+}
+
+DL_PARSER_ERR_t dl_parser_deinit_return_doc(dl_parser_return_doc_t** doc)
+{
+    if((*doc)->filename != NULL) free((*doc)->filename);
+    (*doc)->filename = NULL;
+    if((*doc)->facts_head != NULL)
+        datalog_parser_free_fact_list(&(*doc)->facts_head);
+    if((*doc)->rules_head != NULL)
+        datalog_parser_free_rule_list(&(*doc)->rules_head);
+    free(*doc);
+    *doc = NULL;
     return DL_PARSER_OK;
 }
 
-DL_PARSER_ERR_t dl_parser_deinit_wo_data(dl_parser_doc_t* doc)
+DL_PARSER_ERR_t dl_parser_deinit_with_data(dl_parser_doc_t** doc)
 {
-    free(doc);
-    return DL_PARSER_OK;
-}
-
-DL_PARSER_ERR_t dl_parser_deinit_w_data(dl_parser_doc_t* doc)
-{
-    //free lists.
-    dl_parser_deinit_lit(doc->literals_head);
-    dl_parser_deinit_rule(doc->rules_head);
-    dl_parser_deinit_facts(doc->facts_head);
-
-    //free metadata
-    free(doc->metadata);
-
-    //free filename
-    free(doc->filename);
-
-    //free struct
-    free(doc);
-        
+    free(*doc);
+    *doc = NULL;
     return DL_PARSER_OK;
 }
 
@@ -803,7 +829,7 @@ dl_parser_return_doc_t* dl_parser_runtime(char* filename)
     //return results
     dl_parser_return_doc_t* ret_doc = dl_parser_prepare_return_doc(dl_doc);
 
-    dl_parser_deinit_wo_data(dl_doc);
+    dl_parser_deinit_with_data(&dl_doc);
 
 //TODO script parsing
     

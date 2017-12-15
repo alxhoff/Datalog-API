@@ -28,12 +28,81 @@
 
 #include "datalog_api_parser.h"
 
+void datalog_parser_free_term_list(dl_parser_term_t** term_head)
+{
+    dl_parser_term_t* tmp = *term_head;
+    dl_parser_term_t* to_free;
+    while(tmp->next != NULL){
+        if(tmp->value != NULL) free(tmp->value);
+        to_free = tmp;
+        tmp = tmp->next;
+        free(to_free);
+    }
+    if(tmp->value != NULL) free(tmp->value);
+    to_free = tmp;
+    tmp = tmp->next;
+    free(to_free);
+}
+
+void datalog_parser_free_literal(dl_parser_literal_t** lit)
+{
+    if((*lit)->predicate != NULL) free((*lit)->next);
+    if((*lit)->term_head != NULL) 
+        datalog_parser_free_term_list(&(*lit)->term_head);
+    free(*lit);
+    *lit = NULL;
+}
+
+void datalog_parser_free_clause_body(dl_parser_clause_body_t** body)
+{
+    for(int i = 0; i < (*body)->literal_count; i++)
+        if((*body)->literals[i] != NULL)
+            datalog_parser_free_literal(&(*body)->literals[i]);
+   free(*body);
+   *body = NULL;
+}
+
+void datalog_parser_free_fact(dl_parser_fact_t** fact)
+{
+    if((*fact)->literal != NULL) 
+        datalog_parser_free_literal(&(*fact)->literal);
+}
+
+void datalog_parser_free_fact_list(dl_parser_fact_t** fact_head)
+{
+    dl_parser_fact_t* tmp = *fact_head;
+    dl_parser_fact_t* to_free;
+    while(tmp->next != NULL){
+        to_free = tmp;
+        datalog_parser_free_fact(&to_free);
+        tmp = tmp->next;
+    }
+    datalog_parser_free_fact(&tmp);
+}
+
+void datalog_parser_free_rule(dl_parser_rule_t** rule)
+{
+    if((*rule)->head != NULL) free((*rule)->head);
+    datalog_parser_free_clause_body(&(*rule)->body);
+}
+
+void datalog_parser_free_rule_list(dl_parser_rule_t** rule_head)
+{
+    dl_parser_rule_t* tmp = *rule_head;
+    dl_parser_rule_t* to_free;
+    while(tmp->next != NULL){
+        to_free = tmp;
+        datalog_parser_free_rule(&to_free);
+        tmp = tmp->next;
+    }
+    datalog_parser_free_rule(&tmp);
+}
+
 DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
 
     ret = datalog_assert_fact_list(doc);
-
     if(ret != DATALOG_OK) return DATALOG_ASRT;
 
 #ifdef PARSER_DEBUG
@@ -41,7 +110,6 @@ DATALOG_ERR_t datalog_parser_assert_doc(dl_parser_return_doc_t* doc)
 #endif
      
     ret = datalog_assert_rule_list(doc);
-
     if(ret != DATALOG_OK) return DATALOG_ASRT;
 
 #ifdef PARSER_DEBUG
@@ -56,6 +124,7 @@ DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
     DATALOG_ERR_t ret = DATALOG_OK;
 
     dl_parser_rule_t* dl_p_rule_tmp = doc->rules_head;
+    dl_parser_rule_t* rule_to_free;
     datalog_clause_t* clause_tmp;
 
     while(dl_p_rule_tmp != NULL){
@@ -65,7 +134,7 @@ DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
 #ifdef PARSER_DEBUG_VERBOSE
         fprintf(stderr, "[DATALOG][PARSER] Verbose: rule clause wrapped\n");
 #endif
-        
+
         ret = datalog_clause_create_and_assert(clause_tmp);
         
         if(ret != DATALOG_OK){
@@ -79,6 +148,7 @@ DATALOG_ERR_t datalog_assert_rule_list(dl_parser_return_doc_t* doc)
 #ifdef PARSER_DEBUG_VERBOSE
         fprintf(stderr, "[DATALOG][PARSER] Verbose: rule asserted\n");
 #endif
+        rule_to_free = dl_p_rule_tmp;
         dl_p_rule_tmp = dl_p_rule_tmp->next;
     }
     return DATALOG_OK;

@@ -133,6 +133,8 @@ struct dl_parser_rule{
     xmlNode* node;                  /*!< XML node */
 
     dl_parser_rule_t* next;         /*!< next rule in a linked list */
+
+    void (*free)(dl_parser_rule_t**);
 };
 
 /**
@@ -411,52 +413,15 @@ DL_PARSER_ERR_t dl_parser_metadata(dl_parser_doc_t* doc);
 */
 dl_parser_doc_t* dl_parser_init(char* filename);
 
-/**
-* @brief frees all the entires in the linked list of parsed literals
-* 
-* @param lit_head pointer to the head of the literal linked list
-* @return DL_PARSER_ERR_t error message
-*/
-DL_PARSER_ERR_t dl_parser_deinit_lit(dl_parser_literal_t* lit_head);
-
-/**
-* @brief frees all the entires in the linked list of parsed literals
-* 
-* @param rules_head pointer to the head of the rules linked list
-* @return DL_PARSER_ERR_t error message
-*/
-DL_PARSER_ERR_t dl_parser_deinit_rule(dl_parser_rule_t* rules_head);
-
-/**
-* @brief frees all the entires in the linked list of parsed literals
-* 
-* @param facts_head pointer to the head of the facts linked list
-* @return DL_PARSER_ERR_t error message
-*/
-DL_PARSER_ERR_t dl_parser_deinit_facts(dl_parser_fact_t* facts_head);
-
-/**
-* @brief deinitilises the parser but does not free the parsed data 
-* 
-* Frees just the document struct, does not walk and free the linked lists
-* of parsed data.
-* 
-* @param doc pointer to parser document stuct
-* @return DL_PARSER_ERR_t error message
-*/
-DL_PARSER_ERR_t dl_parser_deinit_wo_data(dl_parser_doc_t* doc);
-
-/**
-* @brief deinitilises the parser document and frees the parsed data
-* 
-* Free's all structs linked to the parser document object. Does not 
-* free the XML tree created by libxml2, that must be done my calling
-* the libraries deinit functions.
-* 
-* @param doc pointer to parser document stuct
-* @return DL_PARSER_ERR_t error message
-*/
-DL_PARSER_ERR_t dl_parser_deinit_w_data(dl_parser_doc_t* doc);
+void datalog_parser_free_term_list(dl_parser_term_t** term_head);
+void datalog_parser_free_literal(dl_parser_literal_t** lit);
+void datalog_parser_free_clause_body(dl_parser_clause_body_t** body);
+void datalog_parser_free_fact(dl_parser_fact_t** fact);
+void datalog_parser_free_fact_list(dl_parser_fact_t** fact_head);
+void datalog_parser_free_rule(dl_parser_rule_t** rule);
+void datalog_parser_free_rule_list(dl_parser_rule_t** rule_head);
+DL_PARSER_ERR_t dl_parser_deinit_return_doc(dl_parser_return_doc_t** doc);
+DL_PARSER_ERR_t dl_parser_deinit_with_data(dl_parser_doc_t** doc);
 
 /**
 * @brief runtime funciton that takes a XML filename and returns the parsed

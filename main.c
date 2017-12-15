@@ -172,8 +172,10 @@ int main(void)
     printf("parsing doc\n");
 
     dl_parser_return_doc_t* doc = dl_parser_runtime("query_test.xml");
+    printf("parsing doc2\n");
 
     ret = datalog_parser_assert_doc(doc);
+    printf("parsing doc3\n");
 
     datalog_opcua_runtime();
     
