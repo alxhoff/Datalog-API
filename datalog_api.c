@@ -138,6 +138,7 @@ datalog_clause_t* datalog_clause_init(datalog_literal_t* lit)
     ret_clause->print = &datalog_clause_print;
     ret_clause->assert = &datalog_clause_create_and_assert;
     ret_clause->retract = &datalog_clause_create_and_retract;
+    ret_clause->free = &datalog_free_clause;
 
     return ret_clause;
 }
@@ -376,6 +377,7 @@ datalog_query_t* datalog_query_init(datalog_literal_t* lit)
     query->ask = &datalog_query_ask;
     query->print = &datalog_query_print;
     query->print_answers = &datalog_query_print_answers;
+    query->free = &datalog_free_query;
 
     return query;
 }
@@ -613,13 +615,6 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
    return (DATALOG_ERR_t)ret;
 }
 
-void datalog_free_literal(datalog_literal_t** lit)
-{
-    if((*lit)->predicate!=NULL) free((*lit)->predicate);
-    if((*lit)->term_head != NULL) datalog_free_term_list(&(*lit)->term_head);
-    (*lit) = NULL;
-}
-
 void datalog_free_term_list(datalog_term_t** list_head)
 {
     datalog_term_t *head, *prev;
@@ -632,6 +627,13 @@ void datalog_free_term_list(datalog_term_t** list_head)
     }
     free(head);
     (*list_head) = NULL;
+}
+
+void datalog_free_literal(datalog_literal_t** lit)
+{
+    if((*lit)->predicate!=NULL) free((*lit)->predicate);
+    if((*lit)->term_head != NULL) datalog_free_term_list(&(*lit)->term_head);
+    (*lit) = NULL;
 }
 
 void datalog_free_string_array(char** array, int array_size)
@@ -664,7 +666,8 @@ void datalog_free_query_processed_answers(
 void datalog_free_query(datalog_query_t** query)
 {
     if((*query)->literal != NULL) free((*query)->literal);
-    if((*query)->answer != NULL) dl_free(*(*query)->answer);
+    //TODO
+    //if((*query)->answer != NULL) dl_free(*(*query)->answer);
     if((*query)->processed_answer != NULL){
         datalog_free_query_processed_answers((*query)->processed_answer);
         (*query)->processed_answer = NULL;
@@ -676,7 +679,7 @@ void datalog_free_query(datalog_query_t** query)
 void datalog_free_clause(datalog_clause_t** clause)
 {
     if((*clause)->head != NULL) 
-        datalog_free_literal((*clause)->head);
+        datalog_free_literal(&(*clause)->head);
     if((*clause)->body_list != NULL){
         for(int i = 0; i < (*clause)->literal_count; i++)
             if((*clause)->body_list[i] != NULL) free((*clause)->body_list[i]);

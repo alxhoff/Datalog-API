@@ -333,6 +333,7 @@ struct datalog_query{
     DATALOG_ERR_t (*ask)(datalog_query_t*);
     DATALOG_ERR_t (*print)(datalog_query_t*);
     DATALOG_ERR_t (*print_answers)(datalog_query_t*);
+    void (*free)(datalog_query_t**);
 };
 
 /**
@@ -354,6 +355,7 @@ struct datalog_clause{
     DATALOG_ERR_t (*print)(datalog_clause_t*);
     DATALOG_ERR_t (*assert)(datalog_clause_t*);
     DATALOG_ERR_t (*retract)(datalog_clause_t*);
+    void (*free)(datalog_clause_t**);
 };
 
 /**
@@ -634,12 +636,14 @@ DATALOG_ERR_t datalog_engine_db_deinit(void);
 
 //FREE
 
-void datalog_free_literal(datalog_literal_t** lit);
 void datalog_free_term_list(datalog_term_t** list_head);
+void datalog_free_literal(datalog_literal_t** lit);
 void datalog_free_string_array(char** array, int array_size);
 void datalog_free_query_answers_list(datalog_query_answers_t*** answers,
         int answer_count);
 void datalog_free_query_processed_answers( 
         datalog_query_processed_answers_t* answers);
+void datalog_free_query(datalog_query_t** query);
+void datalog_free_clause(datalog_clause_t** clause);
 
 #endif

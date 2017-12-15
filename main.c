@@ -113,6 +113,9 @@ int main(void)
     datalog_literal_t* test_lit = datalog_literal_init("test");
     datalog_literal_add_term(test_lit, "hello", DL_TERM_C);
     datalog_literal_add_term(test_lit, "world", DL_TERM_C);
+    datalog_literal_add_term(test_lit, "world", DL_TERM_C);
+    datalog_literal_add_term(test_lit, "world", DL_TERM_C);
+    datalog_literal_add_term(test_lit, "world", DL_TERM_C);
     datalog_literal_print(test_lit);
     datalog_literal_create_and_assert(test_lit);
     
@@ -131,7 +134,9 @@ int main(void)
     datalog_query_t* test_query = datalog_query_init(test_lit_2);
     test_query->ask(test_query);
     test_query->print(test_query);
-    
+   
+    test_query->free(&test_query);
+
     datalog_literal_t* clause_lit = datalog_literal_init("ancestor");
     clause_lit->add_term(clause_lit, "A", DL_TERM_V);
     clause_lit->add_term(clause_lit, "B", DL_TERM_C);
@@ -149,6 +154,8 @@ int main(void)
     test_clause->add_literal(test_clause, clause_lit3);
 
     test_clause->assert(test_clause);
+
+    test_clause->free(&test_clause);
 
     char* terms[] = {"first", "second", "third", "fourth"};
     char* test_predicate = "predicate";
