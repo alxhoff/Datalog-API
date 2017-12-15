@@ -507,6 +507,7 @@ datalog_literal_t* datalog_literal_init(char* predicate)
     lit->add_term = &datalog_literal_add_term;
     lit->print = &datalog_literal_print;
     lit->assert = &datalog_literal_create_and_assert;
+    lit->free = &datalog_free_literal;
     return lit;
 }
 
@@ -516,7 +517,8 @@ int datalog_literal_print(datalog_literal_t* lit)
     printf("  Predicate: %s\n", (lit->predicate != NULL) ? lit->predicate : "NULL");
     if(lit->term_head == NULL){
         printf("  No terms\n");
-        goto print_literal_return;
+        printf("!!=======/LITERAL========!!\n");
+        return DATALOG_OK;
     }
     
     datalog_term_t* term_head = lit->term_head;
@@ -524,7 +526,7 @@ int datalog_literal_print(datalog_literal_t* lit)
     for(int i = 0; i<lit->term_count; i++)
         term_head = term_head->next;
 
-print_literal_return: printf("!!=======/LITERAL========!!\n");
+    printf("!!=======/LITERAL========!!\n");
     return DATALOG_OK;
 }
 
@@ -615,6 +617,7 @@ void datalog_free_literal(datalog_literal_t** lit)
 {
     if((*lit)->predicate!=NULL) free((*lit)->predicate);
     if((*lit)->term_head != NULL) datalog_free_term_list(&(*lit)->term_head);
+    (*lit) = NULL;
 }
 
 void datalog_free_term_list(datalog_term_t** list_head)
@@ -628,33 +631,70 @@ void datalog_free_term_list(datalog_term_t** list_head)
         free(prev);
     }
     free(head);
+    (*list_head) = NULL;
 }
 
-void datalog_free_query_answers_list(datalog_query_answers_t** answers,
-        int answer_count)
+void datalog_free_string_array(char** array, int array_size)
 {
-    for(int i = 0; i<answer_count; i++){
-        for(int j=0; j<answers[i]->term_count; j++)
-            free(answers[i]->term_list[j]);
-        free(answers[i]->term_list);
-        free(answers[i]);
+    for(int i = 0; i < array_size; i++){
+        if(array[i] != NULL) free(array[i]);
+        array[i] = NULL;
     }
+}
+
+void datalog_free_query_answers(datalog_query_answers_t** answers)
+{
+    datalog_free_string_array((*answers)->term_list, (*answers)->term_count);
+    free((*answers)->term_list);
+    (*answers)->term_list = NULL;
     free(answers);
+    answers = NULL;
 }
 
 void datalog_free_query_processed_answers( 
         datalog_query_processed_answers_t* answers)
 {
-    free(answers->predic);
-    datalog_free_query_answers_list(answers->answers, answers->answer_count);
-    memset(answers, 0, sizeof(datalog_query_processed_answers_t));
+    if(answers->predic != NULL) free(answers->predic);
+    if(answers->answers != NULL){
+        datalog_free_query_answers(answers->answers);
+        answers->answers = NULL;
+    }
+}
+
+void datalog_free_query(datalog_query_t** query)
+{
+    if((*query)->literal != NULL) free((*query)->literal);
+    if((*query)->answer != NULL) dl_free(*(*query)->answer);
+    if((*query)->processed_answer != NULL){
+        datalog_free_query_processed_answers((*query)->processed_answer);
+        (*query)->processed_answer = NULL;
+    }
+    free(*query);
+    *query = NULL;
+}
+
+void datalog_free_clause(datalog_clause_t** clause)
+{
+    if((*clause)->head != NULL) 
+        datalog_free_literal((*clause)->head);
+    if((*clause)->body_list != NULL){
+        for(int i = 0; i < (*clause)->literal_count; i++)
+            if((*clause)->body_list[i] != NULL) free((*clause)->body_list[i]);
+        free((*clause)->body_list);
+        (*clause)->body_list = NULL;
+    }
+    free(*clause);
+    *clause = NULL;
 }
 
 DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
         int num_of_terms, char** terms, uint32_t term_type_mask, bool assert)
 {
     DATALOG_ERR_t ret = DATALOG_OK;
-    datalog_literal_t tmp_lit = {0};
+    datalog_literal_t tmp_lit;
+    tmp_lit.term_count = 0;
+    tmp_lit.predicate = NULL;
+    tmp_lit.term_head = NULL;
 
     tmp_lit.predicate = (char*)malloc(sizeof(char)*(strlen(predicate) + 1));
     if(tmp_lit.predicate == NULL)  return DATALOG_MEM;
@@ -679,7 +719,7 @@ DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
         tmp_lit.term_count++;
     }
 
-    if(assert) ret = datalog_literal_create_and_assert(&tmp_lit); 
+    if(assert) ret = (DATALOG_ERR_t)datalog_literal_create_and_assert(&tmp_lit); 
     else ret = datalog_literal_create(&tmp_lit);
     
     datalog_literal_t* tmp_lit_point = &tmp_lit;

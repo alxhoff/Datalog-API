@@ -68,6 +68,7 @@ struct datalog_literal{
     int (*add_term)(datalog_literal_t*, char*, DATALOG_TERM_t);
     int (*print)(datalog_literal_t*);
     int (*assert)(datalog_literal_t*);
+    void (*free)(datalog_literal_t**);
 };
 
 #endif

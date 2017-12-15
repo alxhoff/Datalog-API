@@ -249,10 +249,10 @@ clean: CMakeFiles/LUA.dir/clean
 
 # All Build rule for target.
 CMakeFiles/EXAMPLE.dir/all: CMakeFiles/DATALOG_PARSER.dir/all
+CMakeFiles/EXAMPLE.dir/all: CMakeFiles/DATALOG_OPCUA.dir/all
 CMakeFiles/EXAMPLE.dir/all: CMakeFiles/DATALOG_API.dir/all
 CMakeFiles/EXAMPLE.dir/all: CMakeFiles/DATALOG.dir/all
 CMakeFiles/EXAMPLE.dir/all: CMakeFiles/LUA.dir/all
-CMakeFiles/EXAMPLE.dir/all: CMakeFiles/DATALOG_OPCUA.dir/all
 	$(MAKE) -f CMakeFiles/EXAMPLE.dir/build.make CMakeFiles/EXAMPLE.dir/depend
 	$(MAKE) -f CMakeFiles/EXAMPLE.dir/build.make CMakeFiles/EXAMPLE.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/alxhoff/git/GitHub/Datalog-API/build/CMakeFiles --progress-num=12,13 "Built target EXAMPLE"

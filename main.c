@@ -126,6 +126,8 @@ int main(void)
     test_lit_2->add_term(test_lit_2, "hello", DL_TERM_C);
     test_lit_2->add_term(test_lit_2, "X", DL_TERM_V);
 
+    test_lit->free(&test_lit);
+
     datalog_query_t* test_query = datalog_query_init(test_lit_2);
     test_query->ask(test_query);
     test_query->print(test_query);

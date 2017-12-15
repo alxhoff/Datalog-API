@@ -636,7 +636,8 @@ DATALOG_ERR_t datalog_engine_db_deinit(void);
 
 void datalog_free_literal(datalog_literal_t** lit);
 void datalog_free_term_list(datalog_term_t** list_head);
-void datalog_free_query_answers_list(datalog_query_answers_t** answers,
+void datalog_free_string_array(char** array, int array_size);
+void datalog_free_query_answers_list(datalog_query_answers_t*** answers,
         int answer_count);
 void datalog_free_query_processed_answers( 
         datalog_query_processed_answers_t* answers);
