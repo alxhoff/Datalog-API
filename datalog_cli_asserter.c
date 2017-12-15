@@ -40,7 +40,7 @@ datalog_literal_t* dl_cli_wrap_literal(datalog_cli_literal_t* lit)
 datalog_query_t* dl_cli_wrap_query(datalog_cli_command_t* command)
 {
     datalog_query_t* ret = 
-        (datalog_query_t*)malloc(sizeof(datalog_query_t));
+        (datalog_query_t*)calloc(1, sizeof(datalog_query_t));
 
     if(ret == NULL){
 #ifdef CLI_ERR
@@ -90,6 +90,43 @@ datalog_clause_t* dl_cli_wrap_body(datalog_cli_command_t* command)
     return ret;    
 }
 
+ 
+void datalog_cli_free_term_list(datalog_cli_term_t** list_head)
+{
+    datalog_cli_term_t *head, *prev;
+
+    head = *list_head;
+    while(head->next != NULL){
+        prev = head;
+        head = head->next;
+        free(prev);
+    }
+    free(head);
+    (*list_head) = NULL;
+}
+
+void datalog_cli_free_literal(datalog_cli_literal_t** lit)
+{
+    if((*lit)->predicate!=NULL) {
+        free((*lit)->predicate);
+        (*lit)->predicate = NULL;
+    }
+    if((*lit)->term_head != NULL) {
+        datalog_cli_free_term_list(&(*lit)->term_head);
+        (*lit)->term_head = NULL;
+    }
+}
+
+void dl_cli_free_command(datalog_cli_command_t** command)
+{
+    if((*command)->head != NULL) datalog_cli_free_literal(&(*command)->head);
+    if((*command)->body != NULL)
+        for(int i =0; i < (*command)->body_count; i++)
+            datalog_cli_free_literal(&(*command)->body[i]);
+    free(*command);
+    *command = NULL;
+}
+
 void dl_cli_assert_command(datalog_cli_command_t* command)
 {
     //type of command
@@ -101,28 +138,24 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
         case DL_CLI_RULE:{
             datalog_clause_t* clause = dl_cli_wrap_body(command);
             datalog_clause_create_and_assert(clause);
-            free(clause->head);
-            free(clause->body_list);
-            free(clause);
+            datalog_free_clause(&clause);
             }
             break;
         case DL_CLI_QUERY:{
             datalog_query_t* query = dl_cli_wrap_query(command);
             datalog_query_ask(query);
             if(query->processed_answer != NULL) datalog_query_print_answers(query);
-            free(query);
+            datalog_free_query(&query);
             }
             break;
         case DL_CLI_RETRACTION:{
             datalog_clause_t* clause = dl_cli_wrap_body(command);
             datalog_clause_create_and_retract(clause);
-            free(clause->head);
-            free(clause->body_list);
-            free(clause);
+            datalog_free_clause(&clause);
             }
             break;
         default:
             break;
     }
-    free(command);
+    dl_cli_free_command(&command);
 }
