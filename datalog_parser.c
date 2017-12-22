@@ -36,24 +36,24 @@ void dl_parser_print_root(dl_parser_doc_t* doc)
     printf("*==========================================* \n");
     printf("  Root node for XML file \"%s\"\n", doc->filename);
     printf(" \n");
-    printf(" Name: %s\n", doc->root_node->name);
-    printf(" Type: %i\n", doc->root_node->type);
+    printf(" Name: %s\n", (doc->root_node->name != NULL) ? (char*)doc->root_node->name : "NULL");
+    printf(" Type: %i\n", (doc->root_node->type != 0) ? doc->root_node->type : 0);
     printf("*==========================================* \n");
 }
 
 void dl_parser_print_metadata(dl_parser_doc_t* doc)
 {
     printf("*==========================================* \n");
-    printf("  Metadata for XML file \"%s\"\n", doc->filename);
+    printf("  Metadata for XML file \"%s\"\n", (doc->filename != NULL) ? doc->filename : "NULL");
     printf(" \n");
-    printf(" Description: %s\n", doc->metadata->description);
-    printf(" Author: %s\n", doc->metadata->author);
-    printf(" Device Name: %s\n", doc->metadata->device_name);
-    printf(" Device Type: %s\n", doc->metadata->device_type);
-    printf(" Manufacturer: %s\n", doc->metadata->device_manufacturer);
-    printf(" Contact: %s\n", doc->metadata->device_contact);
-    printf(" Model: %s\n", doc->metadata->device_model);
-    printf(" Serial No#: %s\n", doc->metadata->device_serial);
+    printf(" Description: %s\n", (doc->metadata->description != NULL) ? doc->metadata->description : "NULL");
+    printf(" Author: %s\n", (doc->metadata->author != NULL) ?  doc->metadata->author : "NULL");
+    printf(" Device Name: %s\n", (doc->metadata->device_name != NULL) ? doc->metadata->device_name : "NULL");
+    printf(" Device Type: %s\n", (doc->metadata->device_type != NULL) ? doc->metadata->device_type : "NULL");
+    printf(" Manufacturer: %s\n", (doc->metadata->device_manufacturer != NULL) ? doc->metadata->device_manufacturer : "NULL");
+    printf(" Contact: %s\n", (doc->metadata->device_contact != NULL) ? doc->metadata->device_contact : "NULL");
+    printf(" Model: %s\n", (doc->metadata->device_model != NULL) ? doc->metadata->device_model : "NULL");
+    printf(" Serial No#: %s\n", (doc->metadata->device_serial != NULL) ? doc->metadata->device_serial : "NULL");
     printf("*==========================================* \n");
 }
 
@@ -225,6 +225,7 @@ DL_PARSER_ERR_t dl_parse_terms(dl_parser_doc_t* doc, xmlNode* terms_node,
             new_term->type = DL_PARSE_TERM_V; 
 parse_terms_set_contents: 
             new_term->value = (char*)malloc(sizeof(char) * (strlen((const char*)contents) + 1));
+            if(new_term->value == NULL) return DL_PARSER_MEM;
             strcpy(new_term->value, (const char*)contents);
             literal->term_count++;
 #ifdef PARSER_DEBUG_VERBOSE
@@ -461,7 +462,7 @@ DL_PARSER_ERR_t dl_parser_script(dl_parser_doc_t* doc)
 
 DL_PARSER_ERR_t dl_parser_alloc_xml_string(char** pointer, xmlChar* string)
 {
-    *pointer = (char*)malloc(sizeof(char) * strlen((const char*) string));
+    *pointer = (char*)malloc(sizeof(char) * (strlen((const char*) string) + 1));
 
     if(*pointer == NULL) return DL_PARSER_MEM;
 
@@ -579,7 +580,7 @@ DL_PARSER_ERR_t dl_parser_metadata(dl_parser_doc_t* doc)
 
             contents = xmlNodeListGetString(doc->document, node->xmlChildrenNode, 1);
             doc->metadata->description = 
-                (char*)malloc(sizeof(char) * strlen((const char*) contents));
+                (char*)malloc(sizeof(char) * (strlen((const char*) contents) + 1));
      
             if(doc->metadata->description == NULL) return DL_PARSER_MEM;
             strcpy(doc->metadata->description, (const char*)contents);
@@ -593,7 +594,7 @@ DL_PARSER_ERR_t dl_parser_metadata(dl_parser_doc_t* doc)
             
             contents = xmlNodeListGetString(doc->document, node->xmlChildrenNode, 1);
             doc->metadata->author = 
-                (char*)malloc(sizeof(char) * strlen((const char*)contents));
+                (char*)malloc(sizeof(char) * (strlen((const char*)contents) + 1));
             if(doc->metadata->author == NULL) return DL_PARSER_MEM;
             strcpy(doc->metadata->author, (const char*)contents);
             xmlFree(contents);
@@ -734,7 +735,7 @@ dl_parser_doc_t* dl_parser_init(char* filename)
         return NULL;
     }
 
-    doc->filename = (char*)malloc(sizeof(char)*strlen(filename));
+    doc->filename = (char*)malloc(sizeof(char)* (strlen(filename) + 1));
     if(doc->filename == NULL){
 #ifdef PARSER_ERR
         fprintf(stderr, "[DATALOG][PARSER] ERR: Couldn't alloc doc filename");
@@ -781,7 +782,7 @@ dl_parser_doc_t* dl_parser_init(char* filename)
 
 DL_PARSER_ERR_t dl_parser_copy_string(char* pointer, char* string)
 {
-    pointer = (char*)malloc(sizeof(char)*strlen(string));
+    pointer = (char*)malloc(sizeof(char) * (strlen(string) + 1));
     if(pointer == NULL) return DL_PARSER_MEM;
     strcpy(pointer, string);
     return DL_PARSER_OK;

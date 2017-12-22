@@ -110,9 +110,11 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
 
     if(ret) return DATALOG_LIT;
 
+    if(lit->predicate != NULL)
     //push predicate symbol onto the stack via string
-    ret = dl_pushlstring(datalog_db, lit->predicate, 
-            (size_t)strlen(lit->predicate));
+        ret = dl_pushlstring(datalog_db, lit->predicate, 
+                (size_t)strlen(lit->predicate) + 1);
+    else return DATALOG_MEM;
         
 #ifdef DATALOG_DEBUG_VERBOSE 
     fprintf(stderr, "[DATALOG][API] VERBOSE: predicate string pushed onto stack: %s\n", 
@@ -692,7 +694,7 @@ DATALOG_ERR_t datalog_processed_answers_print(datalog_query_processed_answers_t*
             }
         }
         prev_size = strlen(tmp);
-        tmp = (char*)realloc(tmp, sizeof(char) * (sizeof(tmp) + 2));
+        tmp = (char*)realloc(tmp, sizeof(char) * (prev_size + 2));
         if(tmp == NULL) return DATALOG_MEM;
         strcpy(tmp + prev_size, ")");
         printf("  %s\n",tmp);
