@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -36,7 +36,7 @@ stdint.h
 lua.h
 ../libs/libdatalog/lua/lua.h
 
-/home/alxhoff/git/GitHub/Datalog-API/libs/libdatalog/datalog.c
+/home/alxhoff/git/Datalog-API/libs/libdatalog/datalog.c
 stdio.h
 -
 stddef.h
@@ -52,15 +52,15 @@ lualib.h
 lauxlib.h
 -
 datalog.h
-/home/alxhoff/git/GitHub/Datalog-API/libs/libdatalog/datalog.h
+/home/alxhoff/git/Datalog-API/libs/libdatalog/datalog.h
 dl_lua.h
-/home/alxhoff/git/GitHub/Datalog-API/libs/libdatalog/dl_lua.h
+/home/alxhoff/git/Datalog-API/libs/libdatalog/dl_lua.h
 
-/home/alxhoff/git/GitHub/Datalog-API/libs/libdatalog/datalog.h
+/home/alxhoff/git/Datalog-API/libs/libdatalog/datalog.h
 stdio.h
 -
 lua.h
 -
 
-/home/alxhoff/git/GitHub/Datalog-API/libs/libdatalog/dl_lua.h
+/home/alxhoff/git/Datalog-API/libs/libdatalog/dl_lua.h
 

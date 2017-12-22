@@ -257,7 +257,7 @@ dl_parser_literal_t* dl_parser_process_literal(dl_parser_doc_t* doc, xmlNode* li
         
         if(!xmlStrcmp(tmp->name, (const xmlChar*) "predicate")){
             contents = xmlNodeListGetString(doc->document, tmp->xmlChildrenNode, 1);
-            ret->predicate = (char*)malloc(sizeof(char) * strlen((const char*)contents));
+            ret->predicate = (char*)malloc(sizeof(char) * (strlen((const char*)contents) + 1));
             strcpy(ret->predicate, (const char*)contents);
 #ifdef PARSER_DEBUG_VERBOSE
             fprintf(stderr, "[DATALOG][PARSER] Verbose: predicate found in process literal "

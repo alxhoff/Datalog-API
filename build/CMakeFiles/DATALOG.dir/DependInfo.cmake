@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/alxhoff/git/GitHub/Datalog-API/libs/libdatalog/datalog.c" "/home/alxhoff/git/GitHub/Datalog-API/build/CMakeFiles/DATALOG.dir/libs/libdatalog/datalog.c.o"
+  "/home/alxhoff/git/Datalog-API/libs/libdatalog/datalog.c" "/home/alxhoff/git/Datalog-API/build/CMakeFiles/DATALOG.dir/libs/libdatalog/datalog.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

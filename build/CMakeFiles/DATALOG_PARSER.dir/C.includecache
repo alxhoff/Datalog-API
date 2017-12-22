@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -206,25 +206,25 @@ libxml/xmlexports.h
 ansidecl.h
 -
 
-/home/alxhoff/git/GitHub/Datalog-API/datalog_api_types.h
+/home/alxhoff/git/Datalog-API/datalog_api_types.h
 
-/home/alxhoff/git/GitHub/Datalog-API/datalog_parser.c
+/home/alxhoff/git/Datalog-API/datalog_parser.c
 stdlib.h
 -
 string.h
 -
 libxml/parser.h
-/home/alxhoff/git/GitHub/Datalog-API/libxml/parser.h
+/home/alxhoff/git/Datalog-API/libxml/parser.h
 datalog_parser.h
-/home/alxhoff/git/GitHub/Datalog-API/datalog_parser.h
+/home/alxhoff/git/Datalog-API/datalog_parser.h
 
-/home/alxhoff/git/GitHub/Datalog-API/datalog_parser.h
+/home/alxhoff/git/Datalog-API/datalog_parser.h
 stdlib.h
 -
 stdint.h
 -
 libxml/parser.h
-/home/alxhoff/git/GitHub/Datalog-API/libxml/parser.h
+/home/alxhoff/git/Datalog-API/libxml/parser.h
 datalog_api_types.h
-/home/alxhoff/git/GitHub/Datalog-API/datalog_api_types.h
+/home/alxhoff/git/Datalog-API/datalog_api_types.h
 
