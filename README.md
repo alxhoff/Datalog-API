@@ -74,6 +74,12 @@ I wrote this quickly and dirtily, so excuse the mess.
 + Lots more stuff I am to yet to discover
 + Check file existance
 
+### Known bugs to fix
+
++ Same rule twice seg faults
++ Tilde on last position of rule seg faults
++
+
 # Objects
 
 The API revolves around a struct objects to enable a more logical way or representing datalog commands rather than the push and pop confusion found in the library.  
@@ -82,17 +88,17 @@ Literals are represented by the object __datalog_literal_t__, queries by __datal
 
 ## Literal objects
 
-The parser represents literals using the dl_parser_literal_t object that stores the predicate and arguments for the literal.
+The parser represents literals using the __dl_parser_literal_t__ object that stores the predicate and arguments for the literal.
 
 ## Fact objects
 
-A fact in Datalog is a clause without a body, aka it's a standard literal. Facts are essentailly a literal stored in a container allowing them to be used as elements of a linked list as well as storing a reference to the XML node that corresponds to the fact. The parser will scan the entire document for facts, creating a linked list. This linked list is then traversed and each XML fact node is walked and processed so that each fact is represented by a dl_parser_fact_t object which contains the fact's literal.   
+A fact in Datalog is a clause without a body, aka it's a standard literal. Facts are essentially a literal stored in a container allowing them to be used as elements of a linked list as well as storing a reference to the XML node that corresponds to the fact. The parser will scan the entire document for facts, creating a linked list. This linked list is then traversed and each XML fact node is walked and processed so that each fact is represented by a __dl_parser_fact_t__ object which contains the fact's literal.   
 
- The facts in the XML tree can be found by calling dl_parser_mappings as this will in turn walk the XML tree and call dl_parser_add_fact on all found facts. Found facts are then processed using dl_parser_process_fact. After processing the found facts can be found pointed to by the linked list head pointer dl_parser_fact_t* facts_head found within the dl_parser_doc_t object.
+ The facts in the XML tree can be found by calling __dl_parser_mappings__ as this will in turn walk the XML tree and call __dl_parser_add_fact__ on all found facts. Found facts are then processed using __dl_parser_process_fact__. After processing the found facts can be found pointed to by the linked list head pointer __dl_parser_fact_t* facts_head__ found within the __dl_parser_doc_t__ object.
 
 ## Rule objects
 
-In Datalog rules are clauses that contain a body, the body being a potentially infinite length array of literals. In the XML parser rules are represented similarly to facts, using the dl_parser_rule_t object, with the exception that the rules object represents the body of the rule by an array of literal pointers. This list is dynamically allocated to allow for potentially infinite length rules. Parsing of rules happens in the same fashion as facts, in that a call to dl_parser_mappings will walk the XML tree and call dl_parser_add_rule on any found rules. These are then stores in a similar linked list fashion and processed through calls to dl_parser_process_rule whilst iterating over the linked list. The linked list of processed rules can be found using the head pointer dl_parser_rule_t* rules_head found in the dl_parser_doc_t object.
+In Datalog rules are clauses that contain a body, the body being a potentially infinite length array of literals. In the XML parser rules are represented similarly to facts, using the __dl_parser_rule_t__ object, with the exception that the rules object represents the body of the rule by an array of literal pointers. This list is dynamically allocated to allow for potentially infinite length rules. Parsing of rules happens in the same fashion as facts, in that a call to __dl_parser_mappings__ will walk the XML tree and call __dl_parser_add_rule__ on any found rules. These are then stores in a similar linked list fashion and processed through calls to __dl_parser_process_rule__ whilst iterating over the linked list. The linked list of processed rules can be found using the head pointer __dl_parser_rule_t* rules_head__ found in the __dl_parser_doc_t__ object.
 
 # XML Parser (very Beta)
 
@@ -109,40 +115,50 @@ followed by
 ```c
 dl_parser_mappings(dl_doc);
 ```
-but one can also print any number of the objects in the library though the number of print functions. Document metadata can also be parsed by calling dl_parser_metadata which will populat a dl_parser_metadata_t object stored in the main dl_parser_doc_t object.   
+but one can also print any number of the objects in the library though the number of print functions. Document meta-data can also be parsed by calling __dl_parser_metadata__ which will populate a __dl_parser_metadata_t__ object stored in the main __dl_parser_doc_t__ object.   
 
-See included example for furthur usage.
+See included example for further usage.
 
 ### Initialisation and Deinitialisation
 
-The parser must be started by calling the dl_parser_init function, specifying the file to be opened. This will initialise the document object used by the parser. Calling dl_parser_deinit all objects used by the parser are free'd and the parser deinit'd.
+The parser must be started by calling the __dl_parser_init__ function, specifying the file to be opened. This will initialize the document object used by the parser. Calling __dl_parser_deinit__ all objects used by the parser are free'd and the parser deinit'd.
 
 ### Parsing a Document
 
-The function dl_parser_runtime can be called to completley pass a document, returning a dl_parser_return_doc_t object that contains a linked list to all the parsed rules, a linked list to all the parsed facts found within the document as well as populating the dl_parser_metadata_t object within the return doc object.   
+The function __dl_parser_runtime__ can be called to completely pass a document, returning a __dl_parser_return_doc_t__ object that contains a linked list to all the parsed rules, a linked list to all the parsed facts found within the document as well as populating the __dl_parser_metadata_t__ object within the return doc object.   
 
-One can also parse the various types of data seperatley by running either: dl_parser_metadata or dl_parser_mappings to parse only the metadata or the rules and facts respectivley.
+One can also parse the various types of data separately by running either: __dl_parser_metadata__ or __dl_parser_mappings__ to parse only the meta-data or the rules and facts respectively.
 
 ### Asserting a Parsed Document
 
-The dl_parser_return_doc_t object can have both it's rules list and facts lists asserted by calling the functions dl_assert_fact_list and dl_assert_rule_list respectivley.
+The __dl_parser_return_doc_t__ object can have both it's rules list and facts lists asserted by calling the functions __dl_assert_fact_list__ and __dl_assert_rule_list__ respectively.
 
 ## XML Style Guide
 
-The XML documents to be parsed must adhere to a strict style guide. I would like to say I have been scrupulous in implementing error checking but as this is more a time>quality implementation, you will most likley crash your program by parsing an invalid XML document. More throrogh error checking is on the TODO.
+The XML documents to be parsed must adhere to a strict style guide. I would like to say I have been scrupulous in implementing error checking but as this is more a time>quality implementation, you will most likely crash your program by parsing an invalid XML document. More through error checking is on the TODO.
+
+### XML Schema
+
+A XML Schema can be found in the API directory. An XML file can be validated using ```xmllint```
+
+Example on the file query_test.xml,w:
+```bash
+xmllint -schema datalog.xsd query_test.xml --noout
+```
+Remove the ```--noout``` option for a verbose output.
 
 ### Tags
 
 #### Document
 
-All datalog XML documents must have a root tag <datalog>
+All Datalog XML documents must have a root tag __<datalog>__
 
 #### Metadata
 
 + `<name>`: The name of the device
 + `<type>`: The type of device
 + `<manufacturer>`: Manufacturer of the device
-+ `<contact>`: Contact reguarding the device, probably from supplier
++ `<contact>`: Contact regarding the device, probably from supplier
 + `<model>`: Device model
 + `<serial>`: Device serial number
 + `<year>`: Year the device was produced
@@ -157,7 +173,7 @@ A fact is represented very similarly to a rule, except it does not contain a `<b
 
 #### Rules
 
-A rule is represented by two tags, a `<head>` tag and a `<body>` tag. The head can only contain one literal while the body can contain a theorerically infinite number of literals.
+A rule is represented by two tags, a `<head>` tag and a `<body>` tag. The head can only contain one literal while the body can contain a theoretically infinite number of literals.
 
 #### Head
 
@@ -165,18 +181,18 @@ A rule is represented by two tags, a `<head>` tag and a `<body>` tag. The head c
 
 #### Body
 
- `<body>` tags are used to represent the body of a calsue can can contain a theoretically infiinite number of literals.
+ `<body>` tags are used to represent the body of a clause can can contain a theoretically infinite number of literals.
 
 #### Literal
 
-A literal is used to display datalog's most rudementary data type. One literal is comprised of a predicate and the corresponsing terms (minimum 1, infinite maximum).   
-A literal such as test(foo, BAR). would be represented using the following
+A literal is used to display Datalog's most rudimentary data type. One literal is comprised of a predicate and the corresponding terms (minimum 1, infinite maximum).   
+A literal such as __test(foo, BAR)__. would be represented using the following
 ```xml
 <literal>
     <predicate>test</predicate>
     <terms>
-        <constant>foo</constant> <-- constant as the term has a lowercase letter
-        <variable>BAR</variable> <-- Variable as the term has a capital letter
+        <constant>foo</constant> <!-- constant as the term has a lowercase letter -->
+        <variable>BAR</variable> <!-- Variable as the term has a capital letter -->
     </terms>
 </literal>
 ```
@@ -251,8 +267,8 @@ A literal such as test(foo, BAR). would be represented using the following
 ```
 
 # Command Line Interface (CLI)
-I have made a small set of funtions that work on a loop to read commands from the native CLI to the Datalog's CLI emulator. The CLI can be used to interact with and previous datalog happenings run within the same program as it shares the same global database as the other API modules.
+I have made a small set of functions that work on a loop to read commands from the native CLI to the Datalog's CLI emulator. The CLI can be used to interact with and previous Datalog happenings run within the same program as it shares the same global database as the other API modules.
 ## Using the CLI
-The CLI accepts 4 types of input: normal datalog statements, "help" to display help, "clear" to clear the CLI and "exit" to exit the CLI function loop.   
-Please see the inbuilt help function for information on how to express datalog statements.   
-The CLI can be embedded into a program via it's main runtime fuction datalog_command_line_run. The function runs on a goto loop and will run until the program is terminated or the "exit" command is given.
+The CLI accepts 4 types of input: normal Datalog statements, "help" to display help, "clear" to clear the CLI and "exit" to exit the CLI function loop.   
+Please see the inbuilt help function for information on how to express Datalog statements.   
+The CLI can be embedded into a program via it's main runtime function __datalog_command_line_run__. The function runs on a goto loop and will run until the program is terminated or the "exit" command is given.
