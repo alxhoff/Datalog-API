@@ -78,7 +78,6 @@ I wrote this quickly and dirtily, so excuse the mess.
 
 + Same rule twice seg faults
 + Tilde on last position of rule seg faults
-+
 
 # Objects
 
