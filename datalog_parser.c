@@ -224,7 +224,7 @@ DL_PARSER_ERR_t dl_parse_terms(dl_parser_doc_t* doc, xmlNode* terms_node,
             contents = xmlNodeListGetString(doc->document, tmp->xmlChildrenNode, 1);
             new_term->type = DL_PARSE_TERM_V; 
 parse_terms_set_contents: 
-            new_term->value = (char*)malloc(sizeof(char) * strlen((const char*)contents));
+            new_term->value = (char*)malloc(sizeof(char) * (strlen((const char*)contents) + 1));
             strcpy(new_term->value, (const char*)contents);
             literal->term_count++;
 #ifdef PARSER_DEBUG_VERBOSE
