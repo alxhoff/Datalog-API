@@ -321,8 +321,8 @@ dl_parser_clause_body_t* dl_parser_body_get_literal_nodes(dl_parser_doc_t* doc,
 
             ret->literals = (dl_parser_literal_t**)realloc(ret->literals,
                     sizeof(dl_parser_literal_t*) * (ret->literal_count + 1));
-
-            if(ret->literals[ret->literal_count] == NULL){
+        
+            if(ret->literals == NULL){
 #ifdef PARSER_ERR
                 fprintf(stderr, "[DATALOG][PARSER] Err: realloc of literal list failed\n");
 #endif
