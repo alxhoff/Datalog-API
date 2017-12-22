@@ -125,7 +125,7 @@ datalog_literal_t* datalog_wrap_literal(dl_parser_literal_t* literal)
     }
 
     ret->predicate = 
-        (char*)malloc(sizeof(char)*strlen(literal->predicate));
+        (char*)malloc(sizeof(char) * (strlen(literal->predicate) + 1));
     if(ret->predicate == NULL){
 #ifdef DATALOG_ERR
         fprintf(stderr, "[DATALOG][WRAP] Err: wrapping literal"
