@@ -71,9 +71,11 @@ datalog_literal_t* datalog_literal_init(char* predicate)
     }
     strcpy(lit->predicate, predicate);
     lit->add_term = &datalog_literal_add_term;
+    lit->set_predicate = &datalog_literal_set_predicate;
     lit->print = &datalog_literal_print;
     lit->assert = &datalog_literal_create_and_assert;
     lit->free = &datalog_free_literal;
+    lit->clear_terms = &datalog_literal_clear_terms;
     return lit;
 }
 
@@ -137,7 +139,7 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
     for(int i = 0; i < lit->term_count; i++){
         tmp = datalog_literal_get_term_index(lit, i);
         if(tmp != NULL) ret = dl_pushlstring(datalog_db, tmp->value,
-                (size_t)strlen(tmp->value));
+                (size_t)strlen(tmp->value) + 1);
 
 #ifdef DATALOG_DEBUG_VERBOSE 
         fprintf(stderr, "[DATALOG][API] VERBOSE: term #%d string pushed onto stack:   %s\n" 
@@ -180,7 +182,6 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
 
    return (DATALOG_ERR_t)ret;
 }
-
 
 int datalog_literal_create_and_assert(datalog_literal_t* lit)
 {
@@ -271,6 +272,14 @@ datalog_term_t* datalog_literal_get_last_term(datalog_literal_t* lit)
     return term_head;
 }
 
+int datalog_literal_set_predicate(datalog_literal_t* lit,
+        char* predicate)
+{
+    if(lit->predicate != NULL) free(lit->predicate);
+    lit->predicate = (char*)realloc(lit->predicate, sizeof(char) * (strlen(predicate) + 1));
+    strcpy(lit->predicate, predicate);
+    return 0;
+}
 
 datalog_clause_t* datalog_clause_init(datalog_literal_t* lit)
 {
@@ -602,6 +611,7 @@ datalog_query_processed_answers_t* datalog_query_processed_answers_init(void)
     ret_struct->free = &datalog_free_query_processed_answers;
 
     if(ret_struct == NULL) return NULL;
+    return ret_struct;
 }
 
 datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a)
@@ -706,15 +716,30 @@ DATALOG_ERR_t datalog_processed_answers_print(datalog_query_processed_answers_t*
 void datalog_free_term_list(datalog_term_t** list_head)
 {
     datalog_term_t *head, *prev;
-
-    head = *list_head;
-    while(head->next != NULL){
-        prev = head;
-        head = head->next;
-        free(prev);
+    
+    if(*list_head != NULL){
+        head = *list_head;
+        while(head->next != NULL){
+            prev = head;
+            head = head->next;
+            free(prev);
+        }
+        //free(*list_head);
     }
-    free(head);
-    (*list_head) = NULL;
+    //(*list_head) = NULL;
+}
+
+void datalog_literal_clear_terms(datalog_literal_t* lit)
+{
+    if(lit->predicate!=NULL) {
+        free(lit->predicate);
+        lit->predicate = NULL;
+    }
+    if(lit->term_head != NULL) {
+        datalog_free_term_list(&lit->term_head);
+        lit->term_head = NULL;
+    }
+    lit->term_count = 0;
 }
 
 void datalog_free_literal(datalog_literal_t** lit)
@@ -727,6 +752,7 @@ void datalog_free_literal(datalog_literal_t** lit)
         datalog_free_term_list(&(*lit)->term_head);
         (*lit)->term_head = NULL;
     }
+    //free(*lit);
 }
 
 void datalog_free_string_array(char** array, int array_size)
@@ -744,8 +770,8 @@ void datalog_free_query_answers(datalog_query_answers_t** answers)
         free((*answers)->term_list);
     }
     (*answers)->term_list = NULL;
-    if(*answers != NULL) free(*answers);
-    *answers = NULL;
+    //if(*answers != NULL) free(*answers);
+    //*answers = NULL;
 }
 
 void datalog_free_query_processed_answers( 
@@ -756,8 +782,8 @@ void datalog_free_query_processed_answers(
         datalog_free_query_answers((*answers)->answers);
         (*answers)->answers = NULL;
     }
-    if(*answers != NULL) free(*answers);
-    *answers = NULL;
+    //if(*answers != NULL) free(*answers);
+    //*answers = NULL;
 }
 
 void datalog_free_query(datalog_query_t** query)

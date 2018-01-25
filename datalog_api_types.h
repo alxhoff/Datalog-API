@@ -66,6 +66,8 @@ struct datalog_literal{
     datalog_term_t* term_head;      /**< String representation of the literals first arg*/
 
     int (*add_term)(datalog_literal_t*, char*, DATALOG_TERM_t);
+    int (*set_predicate)(datalog_literal_t*, char*);
+    void (*clear_terms)(datalog_literal_t*);
     int (*print)(datalog_literal_t*);
     int (*assert)(datalog_literal_t*);
     void (*free)(datalog_literal_t**);

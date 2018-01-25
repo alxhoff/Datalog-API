@@ -148,7 +148,7 @@ datalog_cli_literal_t* dl_cli_process_literal(char* lit_string)
         fprintf(stderr,"[DATALOG][CLI] Err: process literal failed, predicate is NULL\n");
 #endif
     }
-    ret->predicate = (char*)malloc(sizeof(char) * strlen(tmp));
+    ret->predicate = (char*)malloc(sizeof(char) * (strlen(tmp) + 1));
 
     if(ret->predicate == NULL){
 #ifdef CLI_ERR
@@ -191,7 +191,7 @@ DATALOG_CLI_ERR_t dl_cli_process_body_list(
         datalog_cli_unprocessed_body_t* body_list, datalog_cli_command_t* command)
 {
     command->body = (datalog_cli_literal_t**)
-        calloc(command->body_count, sizeof(datalog_cli_literal_t*));
+        calloc(body_list->lit_count, sizeof(datalog_cli_literal_t*));
 
     if(command->body == NULL){
 #ifdef CLI_ERR
@@ -201,14 +201,16 @@ DATALOG_CLI_ERR_t dl_cli_process_body_list(
     }
 
     for(int i = 0; i < body_list->lit_count; i++){
-        command->body[i] = dl_cli_process_literal(body_list->body_literals[i]); 
-        command->body_count++;
-        if(command->body[i] == NULL){
+        if(body_list->body_literals[i] != NULL){
+            command->body[i] = dl_cli_process_literal(body_list->body_literals[i]); 
+            command->body_count++;
+            if(command->body[i] == NULL){
 #ifdef CLI_DEBUG
-            fprintf(stderr, "[DATALOG][CLI] Debug: process body list, process literal #%d failed\n",
+                fprintf(stderr, "[DATALOG][CLI] Debug: process body list, process literal #%d failed\n",
                     i);
 #endif
-            return DATALOG_CLI_LIT; 
+                return DATALOG_CLI_LIT; 
+            }
         }
     }
     

@@ -267,6 +267,13 @@
 #define false 0
 #endif
 
+//adding term macros
+#define LIT_ADD_CONST(literal, constant) \
+    literal->add_term(literal, #constant, DL_TERM_C);
+
+#define LIT_ADD_VAR(literal, variable) \
+    literal->add_term(literal, #variable, DL_TERM_V);
+
 /**
 * @enum DATALOG_ERR_t
 * @brief error messages
@@ -471,6 +478,9 @@ datalog_term_t* datalog_literal_get_term_index(datalog_literal_t* lit,
 */
 datalog_term_t* datalog_literal_get_last_term(datalog_literal_t* lit);
 
+int datalog_literal_set_predicate(datalog_literal_t* lit,
+        char* predicate);
+
 /**
 * @brief Initialises a clause structure, populating the head literal
 * with the arguments parsed to the function.
@@ -644,6 +654,8 @@ DATALOG_ERR_t datalog_processed_answers_print(datalog_query_processed_answers_t*
 * @return void
 */
 void datalog_free_term_list(datalog_term_t** list_head);
+
+void datalog_literal_clear_terms(datalog_literal_t* lit);
 
 /**
 * @brief Frees a literal objects and all its terms

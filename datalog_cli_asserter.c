@@ -31,9 +31,12 @@
 
 datalog_literal_t* dl_cli_wrap_literal(datalog_cli_literal_t* lit)
 {
-    datalog_literal_t* ret = (datalog_literal_t*)malloc(sizeof(datalog_literal_t));
+    if(lit == NULL) return NULL;
+    datalog_literal_t* ret = datalog_literal_init(lit->predicate);
     if(ret == NULL) return NULL;
-    memcpy(ret, lit, sizeof(datalog_literal_t));
+    ret->predicate = lit->predicate;
+    ret->term_count = lit->term_count;
+    ret->term_head = (datalog_term_t*)lit->term_head;
     return ret;
 }
 
@@ -69,7 +72,7 @@ datalog_clause_t* dl_cli_wrap_body(datalog_cli_command_t* command)
         return NULL;
     }
 
-    ret->head = (datalog_literal_t*)malloc(sizeof(datalog_literal_t));
+    ret->head = (datalog_literal_t*)calloc(1, sizeof(datalog_literal_t));
     
     if(ret->head == NULL){
 #ifdef CLI_ERR
@@ -94,27 +97,32 @@ datalog_clause_t* dl_cli_wrap_body(datalog_cli_command_t* command)
 void datalog_cli_free_term_list(datalog_cli_term_t** list_head)
 {
     datalog_cli_term_t *head, *prev;
-
-    head = *list_head;
-    while(head->next != NULL){
-        prev = head;
-        head = head->next;
-        free(prev);
+    if(*list_head != NULL){
+        head = *list_head;
+        while(head->next != NULL){
+            prev = head;
+            head = head->next;
+            free(prev);
+        }
+        //free(*list_head);
     }
-    free(head);
-    (*list_head) = NULL;
+    //(*list_head) = NULL;
 }
 
 void datalog_cli_free_literal(datalog_cli_literal_t** lit)
 {
-    if((*lit)->predicate!=NULL) {
-        free((*lit)->predicate);
-        (*lit)->predicate = NULL;
+    if((*lit) != NULL){
+        //if((*lit)->predicate!=NULL) {
+            //free((*lit)->predicate);
+            //(*lit)->predicate = NULL;
+        //}
+        if((*lit)->term_head != NULL) {
+            datalog_cli_free_term_list(&(*lit)->term_head);
+            //(*lit)->term_head = NULL;
+        }
+    free(*lit);
     }
-    if((*lit)->term_head != NULL) {
-        datalog_cli_free_term_list(&(*lit)->term_head);
-        (*lit)->term_head = NULL;
-    }
+    //*lit = NULL;
 }
 
 void dl_cli_free_command(datalog_cli_command_t** command)
@@ -122,18 +130,21 @@ void dl_cli_free_command(datalog_cli_command_t** command)
     if((*command)->head != NULL) datalog_cli_free_literal(&(*command)->head);
     if((*command)->body != NULL)
         for(int i =0; i < (*command)->body_count; i++)
-            datalog_cli_free_literal(&(*command)->body[i]);
+            if((*command)->body[i] != NULL)
+                datalog_cli_free_literal(&(*command)->body[i]);
     free(*command);
-    *command = NULL;
+    //*command = NULL;
 }
 
 void dl_cli_assert_command(datalog_cli_command_t* command)
 {
     //type of command
     switch(command->cmd_type){
-        case DL_CLI_FACT:
-            datalog_literal_create_and_assert(
-                    dl_cli_wrap_literal(command->head));
+        case DL_CLI_FACT:{
+            datalog_literal_t* lit = dl_cli_wrap_literal(command->head);
+            datalog_literal_create_and_assert(lit);
+            lit->free(&lit);
+            }
             break;
         case DL_CLI_RULE:{
             datalog_clause_t* clause = dl_cli_wrap_body(command);
