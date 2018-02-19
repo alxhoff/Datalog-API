@@ -258,7 +258,7 @@
 #include "datalog_api_types.h"
 
 #ifndef bool
-#define bool unsigned char
+#define bool signed char
 #endif
 #ifndef true
 #define true 1
@@ -387,6 +387,7 @@ DATALOG_ERR_t datalog_engine_db_init(void);
 * @return DATALOG_ERR_t error message 
 */
 DATALOG_ERR_t datalog_engine_db_deinit(void);
+void datalog_literal_set_functions(datalog_literal_t* lit);
 
 /**
 * @brief Initialises a datalog literal struct, does not create the literal

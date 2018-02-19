@@ -59,6 +59,16 @@ DATALOG_ERR_t datalog_engine_db_deinit(void)
     return DATALOG_OK;
 }
 
+void datalog_literal_set_functions(datalog_literal_t* lit)
+{
+    lit->add_term = &datalog_literal_add_term;
+    lit->set_predicate = &datalog_literal_set_predicate;
+    lit->print = &datalog_literal_print;
+    lit->assert = &datalog_literal_create_and_assert;
+    lit->free = &datalog_free_literal;
+    lit->clear_terms = &datalog_literal_clear_terms;
+}
+
 datalog_literal_t* datalog_literal_init(char* predicate)
 {
     datalog_literal_t* lit = 
@@ -770,8 +780,8 @@ void datalog_free_query_answers(datalog_query_answers_t** answers)
         free((*answers)->term_list);
     }
     (*answers)->term_list = NULL;
-    //if(*answers != NULL) free(*answers);
-    //*answers = NULL;
+    if(*answers != NULL) free(*answers);
+    *answers = NULL;
 }
 
 void datalog_free_query_processed_answers( 
@@ -782,8 +792,8 @@ void datalog_free_query_processed_answers(
         datalog_free_query_answers((*answers)->answers);
         (*answers)->answers = NULL;
     }
-    //if(*answers != NULL) free(*answers);
-    //*answers = NULL;
+    if(*answers != NULL) free(*answers);
+    *answers = NULL;
 }
 
 void datalog_free_query(datalog_query_t** query)
