@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC -g  -shared -Wl,-soname,libDATALOG_API.so -o libDATALOG_API.so CMakeFiles/DATALOG_API.dir/datalog_api.c.o CMakeFiles/DATALOG_API.dir/datalog_api_parser.c.o CMakeFiles/DATALOG_API.dir/datalog_cli.c.o CMakeFiles/DATALOG_API.dir/datalog_cli_asserter.c.o 

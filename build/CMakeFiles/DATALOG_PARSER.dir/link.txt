@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC -g  -shared -Wl,-soname,libDATALOG_PARSER.so -o libDATALOG_PARSER.so CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o 

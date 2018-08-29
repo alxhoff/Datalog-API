@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC -g  -shared -Wl,-soname,libDATALOG_OPCUA.so -o libDATALOG_OPCUA.so CMakeFiles/DATALOG_OPCUA.dir/datalog_opcua_generator.c.o 

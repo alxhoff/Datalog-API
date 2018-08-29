@@ -1,3 +1,7 @@
+#generated libraries
+*.so
+*CMakeCashe.txt
+
 #documentation 
 *.html
 *.tex
