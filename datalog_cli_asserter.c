@@ -29,14 +29,49 @@
 #include "datalog_cli_asserter.h"
 #include "datalog_api.h"
 
+datalog_term_t* dl_cli_wrap_term_list(datalog_term_t* term_head)
+{
+    datalog_term_t *tmp_term, *ret_head = NULL, *ret_head_walker;
+    datalog_term_t* tmp_head = term_head;
+
+    while(tmp_head != NULL){
+        tmp_term = (datalog_term_t*)calloc(1, sizeof(datalog_term_t));
+        if(tmp_term == NULL) return NULL;
+        
+        if(tmp_head->value != NULL){
+            tmp_term->value = (char*)malloc(sizeof(char) * (strlen(tmp_head->value) + 1));
+            if(tmp_term->value == NULL) return NULL;
+            strcpy(tmp_term->value, tmp_head->value);
+        }
+
+        tmp_term->type = tmp_head->type;
+
+        if(ret_head == NULL) {
+            ret_head = tmp_term;
+            ret_head_walker = tmp_term;
+        }else{
+            ret_head_walker->next = tmp_term;
+            ret_head_walker = ret_head_walker->next;
+        }
+        tmp_head = tmp_head->next;
+    }
+    return ret_head;
+}
+
 datalog_literal_t* dl_cli_wrap_literal(datalog_cli_literal_t* lit)
 {
     if(lit == NULL) return NULL;
     datalog_literal_t* ret = datalog_literal_init(lit->predicate);
     if(ret == NULL) return NULL;
-    ret->predicate = lit->predicate;
+
+    if(lit->predicate != NULL){
+        ret->predicate = (char*)malloc(sizeof(char) * (strlen(lit->predicate) + 1));
+        if(ret->predicate == NULL) return NULL;
+        strcpy(ret->predicate, lit->predicate);
+    }
+
     ret->term_count = lit->term_count;
-    ret->term_head = (datalog_term_t*)lit->term_head;
+    ret->term_head = dl_cli_wrap_term_list((datalog_term_t*)lit->term_head);
     return ret;
 }
 
@@ -93,36 +128,43 @@ datalog_clause_t* dl_cli_wrap_body(datalog_cli_command_t* command)
     return ret;    
 }
 
+void datalog_cli_free_term(datalog_cli_term_t** term)
+{
+    if(*term != NULL){
+        if((*term)->value != NULL) free ((*term)->value);
+        free(*term);
+        *term = NULL;
+    }
+}
  
 void datalog_cli_free_term_list(datalog_cli_term_t** list_head)
 {
     datalog_cli_term_t *head, *prev;
     if(*list_head != NULL){
         head = *list_head;
-        while(head->next != NULL){
+        while(head != NULL){
             prev = head;
             head = head->next;
-            free(prev);
+            datalog_cli_free_term(&prev);
         }
-        //free(*list_head);
+        *list_head = NULL;
     }
-    //(*list_head) = NULL;
 }
 
 void datalog_cli_free_literal(datalog_cli_literal_t** lit)
 {
     if((*lit) != NULL){
-        //if((*lit)->predicate!=NULL) {
-            //free((*lit)->predicate);
-            //(*lit)->predicate = NULL;
-        //}
+        if((*lit)->predicate!=NULL) {
+            free((*lit)->predicate);
+            (*lit)->predicate = NULL;
+        }
         if((*lit)->term_head != NULL) {
             datalog_cli_free_term_list(&(*lit)->term_head);
-            //(*lit)->term_head = NULL;
+            (*lit)->term_head = NULL;
         }
     free(*lit);
+    *lit = NULL;
     }
-    //*lit = NULL;
 }
 
 void dl_cli_free_command(datalog_cli_command_t** command)
@@ -133,7 +175,7 @@ void dl_cli_free_command(datalog_cli_command_t** command)
             if((*command)->body[i] != NULL)
                 datalog_cli_free_literal(&(*command)->body[i]);
     free(*command);
-    //*command = NULL;
+    *command = NULL;
 }
 
 void dl_cli_assert_command(datalog_cli_command_t* command)
@@ -169,4 +211,70 @@ void dl_cli_assert_command(datalog_cli_command_t* command)
             break;
     }
     dl_cli_free_command(&command);
+}
+
+char* dl_cli_assert_command_ret_str(datalog_cli_command_t* command)
+{
+    //type of command
+    char* ret_str = NULL;
+    switch(command->cmd_type){
+        case DL_CLI_FACT:{
+            datalog_literal_t* lit = dl_cli_wrap_literal(command->head);
+            if(datalog_literal_create_and_assert(lit) == DATALOG_OK){
+                ret_str = (char*)malloc(sizeof(char) * (strlen("Fact asserted") + 1));
+                if(ret_str == NULL) return NULL;
+                strcpy(ret_str, "Fact asserted");
+            }else{
+                ret_str = 
+                    (char*)malloc(sizeof(char) * (strlen("Fact assertion failed") + 1));
+                if(ret_str == NULL) return NULL;
+                strcpy(ret_str, "Fact assertion failed");
+            }
+            lit->free(&lit);
+            }
+            break;
+        case DL_CLI_RULE:{
+            datalog_clause_t* clause = dl_cli_wrap_body(command);
+            if(datalog_clause_create_and_assert(clause) != DATALOG_OK){
+                ret_str = (char*)malloc(sizeof(char) * (strlen("Rule asserted") + 1));
+                if(ret_str == NULL) return NULL;
+                strcpy(ret_str, "Rule asserted");
+            }else{
+                ret_str = 
+                    (char*)malloc(sizeof(char) * (strlen("Rule assertion failed") + 1));
+                if(ret_str == NULL) return NULL;
+                strcpy(ret_str, "Rule assertion failed");
+            }
+            datalog_free_clause(&clause);
+            }
+            break;
+        case DL_CLI_QUERY:{
+            datalog_query_t* query = dl_cli_wrap_query(command);
+            datalog_query_ask(query);
+            if(query->processed_answer != NULL)
+                ret_str = datalog_query_return_answers(query);
+            datalog_free_query(&query);
+            }
+            break;
+        case DL_CLI_RETRACTION:{
+            datalog_clause_t* clause = dl_cli_wrap_body(command);
+            if(datalog_clause_create_and_retract(clause) != DATALOG_OK){
+                ret_str = (char*)malloc(sizeof(char) * (strlen("Retraction asserted") + 1));
+                if(ret_str == NULL) return NULL;
+                strcpy(ret_str, "Retraction asserted");
+            }else{
+                ret_str = 
+                    (char*)malloc(sizeof(char) * (strlen("Retraction assertion failed") + 1));
+                if(ret_str == NULL) return NULL;
+                strcpy(ret_str, "Retraction assertion failed");
+            }
+            datalog_free_clause(&clause);
+            }
+            break;
+        default:
+            break;
+    }
+    //TODO FIX CRASH ON THIS LINE
+    //dl_cli_free_command(&command);
+    return ret_str;
 }

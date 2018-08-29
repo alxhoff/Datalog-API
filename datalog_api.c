@@ -30,9 +30,17 @@
 
 #include "datalog_api.h"
 
+#ifdef DATALOG_TIMING
+double datalog_time_g;
+#endif
+#ifdef QUERY_TIMING
+int query_count_g;
+double query_time_g;
+#endif
+
 DATALOG_ERR_t datalog_engine_db_init(void)
 {
-   datalog_db = dl_open();
+    datalog_db = dl_open();
    
 #ifdef DATALOG_ERR
     if(datalog_db == NULL){
@@ -113,7 +121,15 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
     int ret = 0;
 
     //start literal, push empty literal onto stack
+#ifdef DATALOG_TIMING
+    clock_t tmp_start = clock();
+#endif
     ret = dl_pushliteral(datalog_db);
+#ifdef DATALOG_TIMING
+    clock_t tmp_end = clock();
+    double tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
 
 #ifdef DATALOG_DEBUG_VERBOSE 
     fprintf(stderr, "[DATALOG][API] VERBOSE: empty literal pushed onto stack:    %s\n", 
@@ -122,20 +138,36 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
 
     if(ret) return DATALOG_LIT;
 
-    if(lit->predicate != NULL)
-    //push predicate symbol onto the stack via string
+    if(lit->predicate != NULL){
+        //push predicate symbol onto the stack via string
+#ifdef DATALOG_TIMING
+        tmp_start = clock();
+#endif
         ret = dl_pushlstring(datalog_db, lit->predicate, 
                 (size_t)strlen(lit->predicate) + 1);
-    else return DATALOG_MEM;
+#ifdef DATALOG_TIMING
+        tmp_end = clock();
+        tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+        datalog_time_g += tmp_diff;
+#endif
+    }else return DATALOG_MEM;
         
 #ifdef DATALOG_DEBUG_VERBOSE 
-    fprintf(stderr, "[DATALOG][API] VERBOSE: predicate string pushed onto stack: %s\n", 
-        (ret == 0 ? "SUCCSESS" : "FAIL"));
+    fprintf(stderr, "[DATALOG][API] VERBOSE: predicate string pushed onto stack: %s \"%s\"\n", 
+        (ret == 0 ? "SUCCSESS" : "FAIL"), lit->predicate);
 #endif
 
     if(ret) return DATALOG_LIT;
    
+#ifdef DATALOG_TIMING
+    tmp_start = clock();
+#endif
     ret = dl_addpred(datalog_db); 
+#ifdef DATALOG_TIMING
+    tmp_end = clock();
+    tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
 
 #ifdef DATALOG_DEBUG_VERBOSE 
     fprintf(stderr, "[DATALOG][API] VERBOSE: predicate created:                  %s\n", 
@@ -148,24 +180,50 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
     datalog_term_t* tmp;
     for(int i = 0; i < lit->term_count; i++){
         tmp = datalog_literal_get_term_index(lit, i);
-        if(tmp != NULL) ret = dl_pushlstring(datalog_db, tmp->value,
+        if(tmp != NULL){ 
+#ifdef DATALOG_TIMING
+            tmp_start = clock();
+#endif
+            ret = dl_pushlstring(datalog_db, tmp->value,
                 (size_t)strlen(tmp->value) + 1);
+#ifdef DATALOG_TIMING
+            tmp_end = clock();
+            tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+            datalog_time_g += tmp_diff;
+#endif
+        }
 
 #ifdef DATALOG_DEBUG_VERBOSE 
-        fprintf(stderr, "[DATALOG][API] VERBOSE: term #%d string pushed onto stack:   %s\n" 
-            , i, (ret == 0 ? "SUCCSESS" : "FAIL"));
+        fprintf(stderr, "[DATALOG][API] VERBOSE: term #%d string pushed onto stack:   %s \"%s\"\n" 
+            , i, (ret == 0 ? "SUCCSESS" : "FAIL"), tmp->value);
 #endif
 
         if(ret) return DATALOG_LIT;
 
         if(tmp->type == DL_TERM_C){
+#ifdef DATALOG_TIMING
+            tmp_start = clock();
+#endif
             ret = dl_addconst(datalog_db);
+#ifdef DATALOG_TIMING
+            tmp_end = clock();
+            tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+            datalog_time_g += tmp_diff;
+#endif
 #ifdef DATALOG_DEBUG_VERBOSE 
             fprintf(stderr, "[DATALOG][API] VERBOSE: term #%d added as constant:          %s\n" 
                 , i, (ret == 0 ? "SUCCSESS" : "FAIL"));
 #endif
         }else if(tmp->type == DL_TERM_V){
+#ifdef DATALOG_TIMING
+            tmp_start = clock();
+#endif
             ret = dl_addvar(datalog_db);
+#ifdef DATALOG_TIMING
+            tmp_end = clock();
+            tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+            datalog_time_g += tmp_diff;
+#endif
 #ifdef DATALOG_DEBUG_VERBOSE 
             fprintf(stderr, "[DATALOG][API] VERBOSE: term #%d added as variable:          %s\n" 
                 , i, (ret == 0 ? "SUCCSESS" : "FAIL"));
@@ -181,7 +239,15 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
     }
     
     //finish creating literal
+#ifdef DATALOG_TIMING
+    tmp_start = clock();
+#endif
     ret = dl_makeliteral(datalog_db);
+#ifdef DATALOG_TIMING
+    tmp_end = clock();
+    tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
 
 #ifdef DATALOG_DEBUG_VERBOSE
     fprintf(stderr, "[DATALOG][API] VERBOSE: literal created:                    %s\n", 
@@ -193,7 +259,7 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit)
    return (DATALOG_ERR_t)ret;
 }
 
-int datalog_literal_create_and_assert(datalog_literal_t* lit)
+DATALOG_ERR_t datalog_literal_create_and_assert(datalog_literal_t* lit)
 {
     if(datalog_literal_create(lit) != DATALOG_OK) return DATALOG_LIT;
     if(datalog_clause_assert(0) != DATALOG_OK) return DATALOG_ASRT;
@@ -236,9 +302,8 @@ DATALOG_ERR_t datalog_literal_stand_alone_create_and_assert(char* predicate,
     if(assert) ret = (DATALOG_ERR_t)datalog_literal_create_and_assert(&tmp_lit); 
     else ret = datalog_literal_create(&tmp_lit);
     
-    datalog_literal_t* tmp_lit_point = &tmp_lit;
-
-    datalog_free_literal(&tmp_lit_point);
+    if(tmp_lit.predicate != NULL) free(tmp_lit.predicate);
+    datalog_free_term_list(&tmp_lit.term_head);
 
     return ret;
 }
@@ -350,7 +415,15 @@ DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause)
         return DATALOG_LIT;
     }
 
+#ifdef DATALOG_TIMING
+    clock_t tmp_start = clock();
+#endif
     ret = dl_pushhead(datalog_db);
+#ifdef DATALOG_TIMING
+    clock_t tmp_end = clock();
+    double tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
 
     if(ret){
 #ifdef DATALOG_ERR
@@ -368,7 +441,15 @@ DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause)
 #endif
         if(ret != DATALOG_OK) return DATALOG_LIT;
         
+#ifdef DATALOG_TIMING
+        tmp_start = clock();
+#endif
         ret = dl_addliteral(datalog_db);
+#ifdef DATALOG_TIMING
+        tmp_end = clock();
+        tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+        datalog_time_g += tmp_diff;
+#endif
 
 #ifdef DATALOG_DEBUG_VERBOSE
         fprintf(stderr, "[DATALOG][API] VERBOSE: adding clause literal #%d            %s\n"
@@ -377,7 +458,15 @@ DATALOG_ERR_t datalog_clause_create(datalog_clause_t* clause)
         if(ret) return DATALOG_ASRT;
     }
 
+#ifdef DATALOG_TIMING
+    tmp_start = clock();
+#endif
     ret = dl_makeclause(datalog_db);
+#ifdef DATALOG_TIMING
+    tmp_end = clock();
+    tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
 
 #ifdef DATALOG_DEBUG_VERBOSE
     fprintf(stderr, "[DATALOG][API] VERBOSE: making clause:                      %s\n",
@@ -393,7 +482,15 @@ DATALOG_ERR_t datalog_clause_assert(int literal_count)
     int ret = 0;
 
     //create empty clause
+#ifdef DATALOG_TIMING
+    clock_t tmp_start = clock();
+#endif
     ret = dl_pushhead(datalog_db);
+#ifdef DATALOG_TIMING
+    clock_t tmp_end = clock();
+    double tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
     
 #ifdef DATALOG_DEBUG_VERBOSE
     fprintf(stderr, "[DATALOG][API] VERBOSE: empty clause created:               %s\n", 
@@ -401,7 +498,15 @@ DATALOG_ERR_t datalog_clause_assert(int literal_count)
 #endif
 
     for(int i = 0; i < literal_count; i++){
+#ifdef DATALOG_TIMING
+        tmp_start = clock();
+#endif
         ret = dl_addliteral(datalog_db);
+#ifdef DATALOG_TIMING
+        tmp_end = clock();
+        tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+        datalog_time_g += tmp_diff;
+#endif
 
 #ifdef DATALOG_DEBUG_VERBOSE
     fprintf(stderr, "[DATALOG][API] VERBOSE: literal %d added to clause:         %s\n",
@@ -410,7 +515,15 @@ DATALOG_ERR_t datalog_clause_assert(int literal_count)
     }
 
     //finalise the clause
+#ifdef DATALOG_TIMING
+    tmp_start = clock();
+#endif
     ret = dl_makeclause(datalog_db);
+#ifdef DATALOG_TIMING
+    tmp_end = clock();
+    tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
 
 #ifdef DATALOG_DEBUG_VERBOSE
     fprintf(stderr, "[DATALOG][API] VERBOSE: clause finalised:                   %s\n", 
@@ -418,7 +531,15 @@ DATALOG_ERR_t datalog_clause_assert(int literal_count)
 #endif
 
     //assert clause
+#ifdef DATALOG_TIMING
+    tmp_start = clock();
+#endif
     ret = dl_assert(datalog_db);
+#ifdef DATALOG_TIMING
+    tmp_end = clock();
+    tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
 
 #ifdef DATALOG_DEBUG_VERBOSE
     fprintf(stderr, "[DATALOG][API] VERBOSE: clause asserted:                    %s\n", 
@@ -434,7 +555,15 @@ DATALOG_ERR_t datalog_clause_create_and_assert(datalog_clause_t* clause)
 
     datalog_clause_create(clause);
     
+#ifdef DATALOG_TIMING
+    clock_t tmp_start = clock();
+#endif
     ret = dl_assert(datalog_db);
+#ifdef DATALOG_TIMING
+    clock_t tmp_end = clock();
+    double tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
 #ifdef DATALOG_DEBUG_VERBOSE
     fprintf(stderr, "[DATALOG][API] VERBOSE: asserting clause:                   %s\n",
         (ret == 0 ? "SUCCSESS" : "FAIL"));
@@ -449,7 +578,15 @@ DATALOG_ERR_t datalog_clause_create_and_retract(datalog_clause_t* clause)
 
     datalog_clause_create(clause);
     
+#ifdef DATALOG_TIMING
+    clock_t tmp_start = clock();
+#endif
     ret = dl_retract(datalog_db);
+#ifdef DATALOG_TIMING
+    clock_t tmp_end = clock();
+    double tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
 
 #ifdef DATALOG_DEBUG_VERBOSE
     fprintf(stderr, "[DATALOG][API] VERBOSE: clause retracted:                   %s\n", 
@@ -519,7 +656,24 @@ DATALOG_ERR_t datalog_query_ask(datalog_query_t* query)
 
     dl_answers_t a;
 
+#ifdef DATALOG_TIMING
+    clock_t tmp_start = clock();
+#endif
+#ifdef QUERY_TIMING
+    clock_t query_s = clock();
+#endif 
     ret = (DATALOG_ERR_t) dl_ask(datalog_db, &a);
+#ifdef QUERY_TIMING
+    clock_t query_f = clock();
+    double query_tmp = (double)(query_f - query_s)/CLOCKS_PER_SEC;
+    query_time_g += query_tmp;
+    query_count_g++;
+#endif
+#ifdef DATALOG_TIMING
+    clock_t tmp_end = clock();
+    double tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
 
 #ifdef DATALOG_DEBUG_VERBOSE 
     fprintf(stderr, "[DATALOG][API] VERBOSE: query sent:                         %s\n", 
@@ -552,7 +706,24 @@ datalog_query_processed_answers_t* datalog_query_stand_alone_create_and_ask(
    
     dl_answers_t a;
 
+#ifdef DATALOG_TIMING
+    clock_t tmp_start = clock();
+#endif
+#ifdef QUERY_TIMING
+    clock_t query_s = clock();
+#endif 
     err = dl_ask(datalog_db, &a);
+#ifdef QUERY_TIMING
+    clock_t query_f = clock();
+    double query_tmp = (double)(query_f - query_s)/CLOCKS_PER_SEC;
+    query_time_g += query_tmp;
+    query_count_g++;
+#endif
+#ifdef DATALOG_TIMING
+    clock_t tmp_end = clock();
+    double tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
 #ifdef DATALOG_DEBUG_VERBOSE 
     fprintf(stderr, "[DATALOG][API] VERBOSE: query sent:                         %s\n", 
             (err == 0 ? "SUCCSESS" : "FAIL"));
@@ -580,7 +751,7 @@ DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a)
 #ifdef DATALOG_DEBUG 
     fprintf(stderr, "[DATALOG][API]   DEBUG: printing query answers\n"); 
 #endif
-    char* tmp;
+    char* tmp = NULL;
     size_t prev_size;
     printf("!!=====QUERY ANSWERS=====!!\n");
     for(int i=0; i < a->processed_answer->answer_count; i++){
@@ -613,6 +784,47 @@ DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a)
     return DATALOG_OK;
 }
 
+char* datalog_query_return_answers(datalog_query_t* a)
+{
+    char* ret = NULL;
+    char* tmp = NULL;
+    size_t prev_size;
+    
+    for(int i=0; i < a->processed_answer->answer_count; i++){
+        tmp = (char*)realloc(tmp, sizeof(char) * (strlen(a->processed_answer->predic) + 2));
+        if(tmp == NULL) return NULL;
+        strcpy(tmp, a->processed_answer->predic);
+        strcpy(tmp + strlen(a->processed_answer->predic), "(");
+        for(int j=0; j<a->processed_answer->answer_term_count; j++){
+            prev_size = strlen(tmp);
+            if(j == 0){ 
+                tmp = (char*)realloc(tmp, 
+                        sizeof(char) * (prev_size + strlen(a->processed_answer->answers[i]->term_list[j]) + 1));
+                if(tmp == NULL) return NULL;
+                strcpy(tmp + prev_size, a->processed_answer->answers[i]->term_list[j]);
+            }else{ 
+                tmp = (char*)realloc(tmp, 
+                        sizeof(char) * (prev_size + strlen(a->processed_answer->answers[i]->term_list[j]) + 2));
+                if(tmp == NULL) return NULL;
+                strcpy(tmp + prev_size, ",");
+                strcpy(tmp + prev_size + 1, a->processed_answer->answers[i]->term_list[j]);
+            }
+        }
+        prev_size = strlen(tmp);
+        tmp = (char*)realloc(tmp, sizeof(char) * (prev_size + 4));
+        if(tmp == NULL) return NULL;
+        strcpy(tmp + prev_size, ")\n");
+
+        //concat into ret
+        size_t ret_len = (ret == NULL) ? 0 : strlen(ret);
+        ret = (char*)realloc(ret, sizeof(char) * (ret_len + strlen(tmp) + 1));
+        if(ret == NULL) return NULL;
+        if(ret_len == 0) strcpy(ret, tmp);
+        else strcat(ret, tmp);
+    }
+    return ret;
+}
+
 datalog_query_processed_answers_t* datalog_query_processed_answers_init(void)
 {
     //alloc return struct
@@ -631,7 +843,15 @@ datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a)
 #endif
     datalog_query_processed_answers_t* ret_struct = 
             datalog_query_processed_answers_init();
+#ifdef DATALOG_TIMING
+    clock_t tmp_start = clock();
+#endif
     char* tmp_pred = dl_getpred(a);
+#ifdef DATALOG_TIMING
+    clock_t tmp_end = clock();
+    double tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
     ret_struct->predic = (char*)malloc(sizeof(char) * strlen(tmp_pred) + 1);
     if(ret_struct->predic == NULL) return NULL;
     strcpy(ret_struct->predic, tmp_pred);
@@ -646,11 +866,27 @@ datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a)
         malloc(sizeof(datalog_query_answers_t*));
     if(ret_struct->answers == NULL) return NULL;
 
+#ifdef DATALOG_TIMING
+    tmp_start = clock();
+#endif
     int answer_term_count = dl_getpredarity(a);
+#ifdef DATALOG_TIMING
+    tmp_end = clock();
+    tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
     int answer_count = 0;
     size_t ans_length;
     int i = 0;
+#ifdef DATALOG_TIMING
+    tmp_start = clock();
+#endif
     char* tmp = dl_getconst(a, answer_count, 0);
+#ifdef DATALOG_TIMING
+    tmp_end = clock();
+    tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
     while(tmp != NULL){
         ret_struct->answers = (datalog_query_answers_t**)
             realloc(ret_struct->answers, sizeof(datalog_query_answers_t*) * (answer_count + 1));
@@ -665,8 +901,24 @@ datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a)
         ret_struct->answers[answer_count]->term_count = answer_term_count;
         
         for(i = 0; i < answer_term_count; i++){
+#ifdef DATALOG_TIMING
+    tmp_start = clock();
+#endif
             tmp = dl_getconst(a, answer_count, i);
+#ifdef DATALOG_TIMING
+    tmp_end = clock();
+    tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
+#ifdef DATALOG_TIMING
+    tmp_start = clock();
+#endif
             ans_length = dl_getconstlen(a, answer_count, i);
+#ifdef DATALOG_TIMING
+    tmp_end = clock();
+    tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
             if(tmp == NULL) break;
        
             ret_struct->answers[answer_count]->term_list[i] = (char*)
@@ -677,7 +929,15 @@ datalog_query_processed_answers_t* datalog_process_answer(dl_answers_t a)
             strcpy(ret_struct->answers[answer_count]->term_list[i], tmp);
         }
         answer_count++;
+#ifdef DATALOG_TIMING
+    tmp_start = clock();
+#endif
         tmp = dl_getconst(a, answer_count, 0);
+#ifdef DATALOG_TIMING
+    tmp_end = clock();
+    tmp_diff = (double)(tmp_end - tmp_start)/CLOCKS_PER_SEC;
+    datalog_time_g += tmp_diff;
+#endif
     }
     ret_struct->answer_term_count = answer_term_count;
     ret_struct->answer_count = answer_count;
@@ -723,20 +983,28 @@ DATALOG_ERR_t datalog_processed_answers_print(datalog_query_processed_answers_t*
     return DATALOG_OK;
 }
 
+void datalog_free_term(datalog_term_t** term)
+{
+    if(*term != NULL){
+        if((*term)->value != NULL) free((*term)->value);
+        free(*term);
+        *term = NULL;
+    }
+}
+
 void datalog_free_term_list(datalog_term_t** list_head)
 {
     datalog_term_t *head, *prev;
     
     if(*list_head != NULL){
         head = *list_head;
-        while(head->next != NULL){
+        while(head != NULL){
             prev = head;
             head = head->next;
-            free(prev);
+            datalog_free_term(&prev);
         }
-        //free(*list_head);
     }
-    //(*list_head) = NULL;
+    *list_head = NULL;
 }
 
 void datalog_literal_clear_terms(datalog_literal_t* lit)
@@ -747,7 +1015,6 @@ void datalog_literal_clear_terms(datalog_literal_t* lit)
     }
     if(lit->term_head != NULL) {
         datalog_free_term_list(&lit->term_head);
-        lit->term_head = NULL;
     }
     lit->term_count = 0;
 }
@@ -760,9 +1027,10 @@ void datalog_free_literal(datalog_literal_t** lit)
     }
     if((*lit)->term_head != NULL) {
         datalog_free_term_list(&(*lit)->term_head);
-        (*lit)->term_head = NULL;
     }
-    //free(*lit);
+    (*lit)->term_count = 0;
+    free(*lit);
+    *lit = NULL;
 }
 
 void datalog_free_string_array(char** array, int array_size)
@@ -822,5 +1090,3 @@ void datalog_free_clause(datalog_clause_t** clause)
     if(*clause != NULL) free(*clause);
     *clause = NULL;
 }
-
-

@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/alxhoff/git/Datalog-API/datalog_parser.c" "/home/alxhoff/git/Datalog-API/build/CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o"
+  "/home/alxhoff/git/GitHub/Datalog-API/datalog_parser.c" "/home/alxhoff/git/GitHub/Datalog-API/build/CMakeFiles/DATALOG_PARSER.dir/datalog_parser.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

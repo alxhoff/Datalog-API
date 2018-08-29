@@ -254,6 +254,8 @@
 #ifndef __DATALOG_API_H__
 #define __DATALOG_API_H__
 
+#include <time.h>
+
 #include "datalog.h"
 #include "datalog_api_types.h"
 
@@ -273,6 +275,14 @@
 
 #define LIT_ADD_VAR(literal, variable) \
     literal->add_term(literal, #variable, DL_TERM_V);
+
+#ifdef DATALOG_TIMING
+extern double datalog_time_g;
+#endif
+#ifdef QUERY_TIMING
+extern int query_count_g;
+extern double query_time_g;
+#endif
 
 /**
 * @enum DATALOG_ERR_t
@@ -387,6 +397,8 @@ DATALOG_ERR_t datalog_engine_db_init(void);
 * @return DATALOG_ERR_t error message 
 */
 DATALOG_ERR_t datalog_engine_db_deinit(void);
+
+//TODO
 void datalog_literal_set_functions(datalog_literal_t* lit);
 
 /**
@@ -430,7 +442,7 @@ DATALOG_ERR_t datalog_literal_create(datalog_literal_t* lit);
 * asserted
 * @return 0 on success
 */
-int datalog_literal_create_and_assert(datalog_literal_t* lit);
+DATALOG_ERR_t datalog_literal_create_and_assert(datalog_literal_t* lit);
 
 /**
 * @brief Creates and asserts a literal without requiring a literal structure
@@ -621,6 +633,15 @@ DATALOG_ERR_t datalog_query_print(datalog_query_t* query);
 DATALOG_ERR_t datalog_query_print_answers(datalog_query_t* a);
 
 /**
+* @brief Returns a string representation of a query answer struct
+*
+* @param a API datalog query answers struct to be printed 
+* @return char* Returns a string representation of the query's
+* answers
+*/
+char* datalog_query_return_answers(datalog_query_t* a);
+
+/**
 * @brief Initializes a stuct that stores processed queries answers
 * 
 * @return datalog_query_processed_answers_t* Pointer to newly created
@@ -656,6 +677,12 @@ DATALOG_ERR_t datalog_processed_answers_print(datalog_query_processed_answers_t*
 */
 void datalog_free_term_list(datalog_term_t** list_head);
 
+/**
+* @brief Clears the predicate and terms list of a literl object
+* 
+* @param lit Literal object to be cleared 
+* @return void
+*/
 void datalog_literal_clear_terms(datalog_literal_t* lit);
 
 /**

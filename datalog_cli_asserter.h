@@ -62,4 +62,13 @@ datalog_clause_t* dl_cli_wrap_body(datalog_cli_command_t* command);
 */
 void dl_cli_assert_command(datalog_cli_command_t* command);
 
+/**
+* @brief Assersts a CLI command object using the API function set,
+* returning the output of the command
+* 
+* @param command Pointer to CLI command object
+* @return char* Returns the output of the command
+*/
+char* dl_cli_assert_command_ret_str(datalog_cli_command_t* command);
+
 #endif

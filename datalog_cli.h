@@ -210,6 +210,19 @@ datalog_cli_command_t* dl_cli_process_head(char* head_string);
 DATALOG_CLI_ERR_t dl_cli_parse_line(char* line);
 
 /**
+* @brief Parses a line of input, returning the query output as
+* a string
+*
+* The provided string will act as a line of input to the CLI.
+* This line is then parsed and asserted, query output will be
+* returned.
+* 
+* @param line String representing a line of input to the CLI
+* @return char* Query output string
+*/
+char* dl_cli_parse_line_ret_str(char* line);
+
+/**
 * @brief Prints the CLI's help message
 * 
 * @param void

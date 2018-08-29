@@ -27,7 +27,7 @@
 #define __DATALOG_API_PARSER_H__
 
 #include "datalog_api.h"
-#include "datalog_parser.h"
+#include "datalog_XML_parser.h"
 
 /**
  * @brief Calls functions to assert both the rule and fact list 

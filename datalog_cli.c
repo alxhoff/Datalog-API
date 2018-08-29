@@ -264,11 +264,8 @@ datalog_cli_command_t* dl_cli_process_head(char* head_string)
     return ret;
 }
 
-DATALOG_CLI_ERR_t dl_cli_parse_line(char* line)
+datalog_cli_command_t* create_command_from_string(char* line)
 {
-    if(!strcmp(line, "exit")) return DATALOG_CLI_EXIT;
-    if(!strcmp(line, "help")) return DATALOG_CLI_HELP;
-
     char* no_spaces = dl_cli_remove_spaces(line);
 
 #ifdef CLI_DEBUG_VERBOSE
@@ -282,7 +279,7 @@ DATALOG_CLI_ERR_t dl_cli_parse_line(char* line)
 #ifdef CLI_DEBUG
         fprintf(stderr, "[DATALOG][CLI] Debug: split line failed\n");
 #endif
-        return DATALOG_CLI_SPLIT; 
+        return NULL;
     }
 
     datalog_cli_command_t* test_cmd = dl_cli_process_head(head);
@@ -291,7 +288,7 @@ DATALOG_CLI_ERR_t dl_cli_parse_line(char* line)
 #ifdef CLI_DEGBUG
         fprintf(stderr, "[DATALOG][CLI] Debug: process head failed\n");
 #endif
-        return DATALOG_CLI_INVAL; 
+        return NULL;
     }
 
 #ifdef CLI_DEBUG_VERBOSE
@@ -322,7 +319,7 @@ DATALOG_CLI_ERR_t dl_cli_parse_line(char* line)
         if(test_cmd->head_type == DL_CLI_HEAD_QUERY){
             fprintf(stderr, "[DATALOG][CLI] Syntax error: head literal cannot be a query and"
                     " have a body\n");
-            return DATALOG_CLI_SYNTAX;
+            return NULL;
         }
         else if(test_cmd->head_type == DL_CLI_HEAD_STATEMENT){
 #ifdef CLI_DEBUG_VERBOSE
@@ -344,7 +341,7 @@ DATALOG_CLI_ERR_t dl_cli_parse_line(char* line)
 #ifdef CLI_DEBUG 
             fprintf(stderr, "[DATALOG][CLI] Debug: getting unprocessed body failed\n");
 #endif
-            return DATALOG_CLI_INVAL; 
+            return NULL;
         }
 
 #ifdef CLI_DEBUG_VERBOSE
@@ -358,14 +355,35 @@ DATALOG_CLI_ERR_t dl_cli_parse_line(char* line)
 #ifdef CLI_DEBUG
             fprintf(stderr, "[DATALOG][CLI] Debug: process body list failed\n");
 #endif
-            return DATALOG_CLI_INVAL; 
+            return NULL;
         }
     }
+    return test_cmd;
+}
 
-    //ASSERT CMD STRUCT
-    dl_cli_assert_command(test_cmd);
+DATALOG_CLI_ERR_t dl_cli_parse_line(char* line)
+{
+    if(!strcmp(line, "exit")) return DATALOG_CLI_EXIT;
+    if(!strcmp(line, "help")) return DATALOG_CLI_HELP;
+
+    datalog_cli_command_t* test_cmd = NULL;
+    test_cmd = create_command_from_string(line);
+
+    if(test_cmd != NULL) dl_cli_assert_command(test_cmd);
 
     return DATALOG_CLI_OK;
+}
+
+char* dl_cli_parse_line_ret_str(char* line)
+{
+    datalog_cli_command_t* test_cmd = NULL;
+    test_cmd = create_command_from_string(line);
+    
+    char* ret_str = NULL;
+    if(test_cmd != NULL) 
+        ret_str = dl_cli_assert_command_ret_str(test_cmd);
+
+    return ret_str;
 }
 
 void dl_cli_print_help(void)
