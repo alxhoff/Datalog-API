@@ -1,8 +1,11 @@
+/bin/EXAMPLE
+build
+
 #generated libraries
 *.so
 *CMakeCashe.txt
 
-#documentation 
+#documentation
 *.html
 *.tex
 *.png

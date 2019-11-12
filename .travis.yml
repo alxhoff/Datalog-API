@@ -1,0 +1,27 @@
+# This will run on Travis' 'new' container-based infrastructure
+sudo: false
+
+language: c
+
+os: linux
+
+compiler: gcc
+
+# Blacklist
+branches:
+    only:
+        - master
+
+          # Install dependencies
+    addons:
+        apt:
+            packages:
+                - cmake
+
+                  # Build your code e.g. by calling make
+            script:
+                - mkdir build
+                - cd build
+                - cmake ..
+                - make
+
