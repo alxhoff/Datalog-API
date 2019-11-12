@@ -1,67 +1,68 @@
 /bin/EXAMPLE
 build
+lib/cJSON/*
 
 #generated libraries
-*.so
-*CMakeCashe.txt
+          *.so
+          *CMakeCashe.txt
 
 #documentation
-*.html
-*.tex
-*.png
-*.css
-*.js
+          *.html
+          *.tex
+          *.png
+          *.css
+          *.js
 
 
 # Prerequisites
-*.d
+          *.d
 
 # Object files
-*.o
-*.ko
-*.obj
-*.elf
+          *.o
+          *.ko
+          *.obj
+          *.elf
 
 # Linker output
-*.ilk
-*.map
-*.exp
+          *.ilk
+          *.map
+          *.exp
 
 # Precompiled Headers
-*.gch
-*.pch
+          *.gch
+          *.pch
 
 # Libraries
-*.lib
-*.a
-*.la
-*.lo
+          *.lib
+          *.a
+          *.la
+          *.lo
 
 # Shared objects (inc. Windows DLLs)
-*.dll
-*.dylib
+          *.dll
+          *.dylib
 
 # Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+          *.exe
+          *.out
+          *.app
+          *.i*86
+          *.x86_64
+          *.hex
 
 # Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+          *.dSYM/
+          *.su
+          *.idb
+          *.pdb
 
 # Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
-doc/html/
-doc/latex/
+          *.mod*
+          *.cmd
+          .tmp_versions/
+          modules.order
+          Module.symvers
+          Mkfile.old
+          dkms.conf
+          doc/html/
+          doc/latex/
