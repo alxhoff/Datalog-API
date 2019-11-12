@@ -8,47 +8,31 @@ _windows users you are on your own_
 The original implementation of the LUA/C library is not the easiest to work with and does not lead to logical or easy to follow code. I have quickly thrown this API together to make the datalog coding style similar to that of the Python implementation.
 
 ## Prerequisites
-The LUA/C library can be found [here](http://datalog.sourceforge.net) and must be downloaded and placed into the libs folder such that the file tree looks like this
+
+### Ubuntu
+``` bash
+sudo apt-get install lua5.2 cmake libxml2-dev
 ```
-|--- Datalog-API
-|
-|---bin
-|---build
-|---doc
-|
-|---libs
-|---libdatalog <---rename downloaded folder to this
-|---source files
-|---lua
-|---lua source files
+### Arch
+
+``` bash
+sudo pacman -S cmake libxml2 lua52
 ```
+### Submodules
+
+The cJSON library is a submodule
+
+``` bash
+git submodule update --init
+```
+
 ## Building
-I have included a demo main.c as well as a demo CMake that will build the API as a shared library that can then be linked into an exsisting project.
-
-### How to build
-It's pretty tough....
-cd into the root director and create a build dir, or don't, it'll be your mess.
 
 ```bash
-cd Datalog-API
-mkdir build
-cd build
-```
-Generate CMake junk __or__ run ccmake to configure debugging options
-```bash
+mkdir build && cd build
 cmake ..
-```
-__or__
-```bash
-ccmake ..
-```
-and finally make
-```bash
 make
 ```
-The executable can be found in the bin subdirectory in the root dir.
-
-Library objects in the build subdirectory.
 
 ## Documentation
 
