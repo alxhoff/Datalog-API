@@ -16,6 +16,7 @@ branches:
     addons:
         apt:
             packages:
+                - lua5.2
                 - cmake
 
                   # Build your code e.g. by calling make

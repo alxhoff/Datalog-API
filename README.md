@@ -1,50 +1,52 @@
 # Datalog API
 
+[![Build Status](https://travis-ci.com/alxhoff/Datalog-API.svg?branch=master)](https://travis-ci.com/alxhoff/Datalog-API)
+
 _windows users you are on your own_
 
 ## Introduction
 The original implementation of the LUA/C library is not the easiest to work with and does not lead to logical or easy to follow code. I have quickly thrown this API together to make the datalog coding style similar to that of the Python implementation.
 
 ## Prerequisites
-The LUA/C library can be found [here](http://datalog.sourceforge.net) and must be downloaded and placed into the libs folder such that the file tree looks like this  
+The LUA/C library can be found [here](http://datalog.sourceforge.net) and must be downloaded and placed into the libs folder such that the file tree looks like this
 ```
-  |--- Datalog-API  
-        |  
-        |---bin  
-        |---build  
-        |---doc  
-        |  
-        |---libs  
-             |---libdatalog <---rename downloaded folder to this  
-                 |---source files  
-                 |---lua  
-                      |---lua source files  
+|--- Datalog-API
+|
+|---bin
+|---build
+|---doc
+|
+|---libs
+|---libdatalog <---rename downloaded folder to this
+|---source files
+|---lua
+|---lua source files
 ```
 ## Building
-I have included a demo main.c as well as a demo CMake that will build the API as a shared library that can then be linked into an exsisting project.  
+I have included a demo main.c as well as a demo CMake that will build the API as a shared library that can then be linked into an exsisting project.
 
 ### How to build
-It's pretty tough....  
-cd into the root director and create a build dir, or don't, it'll be your mess.  
+It's pretty tough....
+cd into the root director and create a build dir, or don't, it'll be your mess.
 
 ```bash
- cd Datalog-API
- mkdir build
- cd build
+cd Datalog-API
+mkdir build
+cd build
 ```
- Generate CMake junk __or__ run ccmake to configure debugging options
+Generate CMake junk __or__ run ccmake to configure debugging options
 ```bash
- cmake ..
+cmake ..
 ```
 __or__
 ```bash
- ccmake ..
+ccmake ..
 ```
 and finally make
 ```bash
- make
+make
 ```
-The executable can be found in the bin subdirectory in the root dir.  
+The executable can be found in the bin subdirectory in the root dir.
 
 Library objects in the build subdirectory.
 
@@ -59,9 +61,9 @@ from the doc folder. Then navigate to ./html/index.html
 
 ## Work in progress
 
-I wrote this quickly and dirtily, so excuse the mess.  
+I wrote this quickly and dirtily, so excuse the mess.
 
-### To-Do  
+### To-Do
 
 + ~~Fix demo project~~
 + ~~Integrate parser into API~~ Test parser wrapping
@@ -81,7 +83,7 @@ I wrote this quickly and dirtily, so excuse the mess.
 
 # Objects
 
-The API revolves around a struct objects to enable a more logical way or representing datalog commands rather than the push and pop confusion found in the library.  
+The API revolves around a struct objects to enable a more logical way or representing datalog commands rather than the push and pop confusion found in the library.
 
 Literals are represented by the object __datalog_literal_t__, queries by __datalog_query_t__ and clauses by __datalog_clause_t__. I may of missed a few methods to be implemented but I should get these done as I actually use this API for other code.
 
@@ -91,9 +93,9 @@ The parser represents literals using the __dl_parser_literal_t__ object that sto
 
 ## Fact objects
 
-A fact in Datalog is a clause without a body, aka it's a standard literal. Facts are essentially a literal stored in a container allowing them to be used as elements of a linked list as well as storing a reference to the XML node that corresponds to the fact. The parser will scan the entire document for facts, creating a linked list. This linked list is then traversed and each XML fact node is walked and processed so that each fact is represented by a __dl_parser_fact_t__ object which contains the fact's literal.   
+A fact in Datalog is a clause without a body, aka it's a standard literal. Facts are essentially a literal stored in a container allowing them to be used as elements of a linked list as well as storing a reference to the XML node that corresponds to the fact. The parser will scan the entire document for facts, creating a linked list. This linked list is then traversed and each XML fact node is walked and processed so that each fact is represented by a __dl_parser_fact_t__ object which contains the fact's literal.
 
- The facts in the XML tree can be found by calling __dl_parser_mappings__ as this will in turn walk the XML tree and call __dl_parser_add_fact__ on all found facts. Found facts are then processed using __dl_parser_process_fact__. After processing the found facts can be found pointed to by the linked list head pointer __dl_parser_fact_t* facts_head__ found within the __dl_parser_doc_t__ object.
+The facts in the XML tree can be found by calling __dl_parser_mappings__ as this will in turn walk the XML tree and call __dl_parser_add_fact__ on all found facts. Found facts are then processed using __dl_parser_process_fact__. After processing the found facts can be found pointed to by the linked list head pointer __dl_parser_fact_t* facts_head__ found within the __dl_parser_doc_t__ object.
 
 ## Rule objects
 
@@ -101,7 +103,7 @@ In Datalog rules are clauses that contain a body, the body being a potentially i
 
 # XML Parser (very Beta)
 
- The XML parser is designed to be used to be able parse XML files to a datalog program to load rules and facts into the datalog database. The parser is built around libxml2 and built into a shared library.
+The XML parser is designed to be used to be able parse XML files to a datalog program to load rules and facts into the datalog database. The parser is built around libxml2 and built into a shared library.
 
 ## Using the parser
 
@@ -110,11 +112,11 @@ Parser use should pretty much only require the user to call
 ```c
 dl_parser_doc_t* dl_doc = dl_parser_init(filename);
 ```
-followed by   
+followed by
 ```c
 dl_parser_mappings(dl_doc);
 ```
-but one can also print any number of the objects in the library though the number of print functions. Document meta-data can also be parsed by calling __dl_parser_metadata__ which will populate a __dl_parser_metadata_t__ object stored in the main __dl_parser_doc_t__ object.   
+but one can also print any number of the objects in the library though the number of print functions. Document meta-data can also be parsed by calling __dl_parser_metadata__ which will populate a __dl_parser_metadata_t__ object stored in the main __dl_parser_doc_t__ object.
 
 See included example for further usage.
 
@@ -124,7 +126,7 @@ The parser must be started by calling the __dl_parser_init__ function, specifyin
 
 ### Parsing a Document
 
-The function __dl_parser_runtime__ can be called to completely pass a document, returning a __dl_parser_return_doc_t__ object that contains a linked list to all the parsed rules, a linked list to all the parsed facts found within the document as well as populating the __dl_parser_metadata_t__ object within the return doc object.   
+The function __dl_parser_runtime__ can be called to completely pass a document, returning a __dl_parser_return_doc_t__ object that contains a linked list to all the parsed rules, a linked list to all the parsed facts found within the document as well as populating the __dl_parser_metadata_t__ object within the return doc object.
 
 One can also parse the various types of data separately by running either: __dl_parser_metadata__ or __dl_parser_mappings__ to parse only the meta-data or the rules and facts respectively.
 
@@ -180,87 +182,87 @@ A rule is represented by two tags, a `<head>` tag and a `<body>` tag. The head c
 
 #### Body
 
- `<body>` tags are used to represent the body of a clause can can contain a theoretically infinite number of literals.
+`<body>` tags are used to represent the body of a clause can can contain a theoretically infinite number of literals.
 
 #### Literal
 
-A literal is used to display Datalog's most rudimentary data type. One literal is comprised of a predicate and the corresponding terms (minimum 1, infinite maximum).   
+A literal is used to display Datalog's most rudimentary data type. One literal is comprised of a predicate and the corresponding terms (minimum 1, infinite maximum).
 A literal such as __test(foo, BAR)__. would be represented using the following
 ```xml
 <literal>
-    <predicate>test</predicate>
-    <terms>
-        <constant>foo</constant> <!-- constant as the term has a lowercase letter -->
-        <variable>BAR</variable> <!-- Variable as the term has a capital letter -->
-    </terms>
+<predicate>test</predicate>
+<terms>
+<constant>foo</constant> <!-- constant as the term has a lowercase letter -->
+<variable>BAR</variable> <!-- Variable as the term has a capital letter -->
+</terms>
 </literal>
 ```
 + `<predicate>`: The literal's predicated
 + `<terms>`: Terms can have two types, the tags can be interchanged to modify the type of literal you wish to express
-    + `<constant>`: represents a constant term
-    + `<variable>`: represents a variable term
++ `<constant>`: represents a constant term
++ `<variable>`: represents a variable term
 
 ### Example XML
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <datalog>
-    <metadata>
-        <description>EDD to NAMUR mappings</description>
-        <author>alex</author>
-        <device>
-            <name>test device</name>
-            <type>test type</type>
-            <manufacturer>siemens</manufacturer>
-            <contact>alxhoff@gmail.com</contact>
-            <model>test model</model>
-            <serial>test serial</serial>
-            <year>2017</year>
-        </device>
-    </metadata>
-    <mappings>
-        <fact>
-            <head>
-                <literal>
-                    <predicate>test</predicate>
-                    <terms>
-                        <constant>hello</constant>
-                        <constant>world</constant>
-                        <constant>how</constant>
-                        <constant>are</constant>
-                        <constant>you</constant>
-                    </terms>
-                </literal>
-            </head>
-        </fact>
-        <rule>
-            <head>
-                <literal>
-                    <predicate>test</predicate>
-                    <terms>
-                        <constant>this</constant>
-                        <variable>is</variable>
-                    </terms>
-                </literal>
-            </head>
-            <body>
-                <literal>
-                    <predicate>foo</predicate>
-                    <terms>
-                        <constant>a</constant>
-                        <variable>rule</variable>
-                    </terms>
-                </literal>
-                <literal>
-                    <predicate>test</predicate>
-                    <terms>
-                        <constant>with two</constant>
-                        <constant>literals</constant>
-                    </terms>
-                </literal>
-            </body>
-        </rule>
-    </mappings>
+<metadata>
+<description>EDD to NAMUR mappings</description>
+<author>alex</author>
+<device>
+<name>test device</name>
+<type>test type</type>
+<manufacturer>siemens</manufacturer>
+<contact>alxhoff@gmail.com</contact>
+<model>test model</model>
+<serial>test serial</serial>
+<year>2017</year>
+</device>
+</metadata>
+<mappings>
+<fact>
+<head>
+<literal>
+<predicate>test</predicate>
+<terms>
+<constant>hello</constant>
+<constant>world</constant>
+<constant>how</constant>
+<constant>are</constant>
+<constant>you</constant>
+</terms>
+</literal>
+</head>
+</fact>
+<rule>
+<head>
+<literal>
+<predicate>test</predicate>
+<terms>
+<constant>this</constant>
+<variable>is</variable>
+</terms>
+</literal>
+</head>
+<body>
+<literal>
+<predicate>foo</predicate>
+<terms>
+<constant>a</constant>
+<variable>rule</variable>
+</terms>
+</literal>
+<literal>
+<predicate>test</predicate>
+<terms>
+<constant>with two</constant>
+<constant>literals</constant>
+</terms>
+</literal>
+</body>
+</rule>
+</mappings>
 </datalog>
 
 ```
@@ -268,6 +270,6 @@ A literal such as __test(foo, BAR)__. would be represented using the following
 # Command Line Interface (CLI)
 I have made a small set of functions that work on a loop to read commands from the native CLI to the Datalog's CLI emulator. The CLI can be used to interact with and previous Datalog happenings run within the same program as it shares the same global database as the other API modules.
 ## Using the CLI
-The CLI accepts 4 types of input: normal Datalog statements, "help" to display help, "clear" to clear the CLI and "exit" to exit the CLI function loop.   
-Please see the inbuilt help function for information on how to express Datalog statements.   
+The CLI accepts 4 types of input: normal Datalog statements, "help" to display help, "clear" to clear the CLI and "exit" to exit the CLI function loop.
+Please see the inbuilt help function for information on how to express Datalog statements.
 The CLI can be embedded into a program via it's main runtime function __datalog_command_line_run__. The function runs on a goto loop and will run until the program is terminated or the "exit" command is given.
