@@ -13,16 +13,18 @@ branches:
         - master
 
           # Install dependencies
-    addons:
-        apt:
-            packages:
-                - lua5.2
-                - cmake
+addons:
+    apt:
+        packages:
+            - lua5.2
+            - cmake
 
-                  # Build your code e.g. by calling make
-            script:
-                - mkdir build
-                - cd build
-                - cmake ..
-                - make
+                # Build your code e.g. by calling make
+script:
+    - git submodule init
+    - git submodule update
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make
 
